@@ -2,6 +2,22 @@ using UnityEngine;
 
 public class Sinner : MonoBehaviour
 {
+    protected enum SecureClass
+    {
+        Secra,
+        Vigil,
+        Hazra,
+        Catra,
+        Nulla
+    }
+    protected enum LiskClass
+    {
+        Lumenis,
+        Velgra,
+        Dravex,
+        Zerath,
+        Oblivara
+    }
     protected enum Moods
     {
         Joy = 0,
@@ -14,24 +30,27 @@ public class Sinner : MonoBehaviour
         Trust,
         Max
     }
-    int[] probabilitys = new int[(int)Moods.Max];
-
+    protected int[] probabilitys = new int[(int)Moods.Max];
+    protected Moods mood;
+    protected SecureClass secureClass;
+    protected LiskClass liskClass;
+    protected int damege;
     virtual protected void AbnormalPhenomenon()
     {
-
+        
     }
-    protected void Damage()
+    protected void Damage(int damege)
     {
         Debug.Log("Damage");
         AbnormalPhenomenon();
     }
 
-    protected void Lottery(int value, Moods mood)
+    protected void Lottery()
     {
-        if (value < 100)
+        if (probabilitys[(int)mood] < 100)
         {
             int rand = Random.Range(0, 100);
-            if (rand < value) Damage();
+            if (rand < probabilitys[(int)mood]) Damage(damege);
         }
         int min = 100;
         int max = 150;
@@ -39,13 +58,14 @@ public class Sinner : MonoBehaviour
         const int death = 350;
         while (max >= death)
         {
-            if (min <= value && value < max)
+            if (min <= probabilitys[(int)mood] && probabilitys[(int)mood] < max)
             {
-                Damage();
-                break;
+                Damage(damege);
+                return;
             }
             min = max;
             max += add;
         }
+        Damage(damege);
     }
 }
