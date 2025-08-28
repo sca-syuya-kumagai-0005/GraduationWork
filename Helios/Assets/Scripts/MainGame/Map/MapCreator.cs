@@ -27,7 +27,7 @@ public class MapCreator : CsvReader
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log(Input.mousePresent);
     }
 
     void MapCreate(List<string[]> data)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
@@ -44,7 +44,8 @@ public class MapCreator : CsvReader
                 mapDatas[i].Add(md);
                 GameObject obj = Instantiate(objectSpace,new Vector3(0+j,0-i,0),Quaternion.identity,transform);
                 GameObject instObj = mapObjects[(int.Parse(data[i][j]))];
-                Instantiate(instObj,obj.transform.position,Quaternion.identity,obj.transform);
+                instObj = Instantiate(instObj,obj.transform.position,Quaternion.identity,obj.transform);
+                instObj.transform.parent.name = md.objectID.ToString()+"_"+md.positionID;
             }
         }
     }
