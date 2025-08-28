@@ -1,17 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Json;
+
+/*memo=========================================================================================
+ * 配達する側のScriptで、通った道の隣接するオブジェクトの取得とカウントをする
+ ==============================================================================================*/
+
 public class MapCreator : CsvReader
 {
     [SerializeField] TextAsset mapCsv;
     [SerializeField] GameObject objectSpace;
     [SerializeField] GameObject[] mapObjects;
     List<List<MapData>> mapDatas = new List<List<MapData>>();
+    public List<List<MapData>> MapDatas { get { return mapDatas; } }
     public struct MapData//自身と隣接するブロックの情報を格納するstruct　自身と隣接するブロックに対応するフラグがtrue
     {
         public int objectID;
         public int positionID;
-        public List<int> aroundTrashCansID;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +30,7 @@ public class MapCreator : CsvReader
         
     }
 
-    void MapCreate(List<string[]> data)
+    void MapCreate(List<string[]> data)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
     {
       
         for (int i = 0; i < data.Count; i++)
@@ -35,15 +39,13 @@ public class MapCreator : CsvReader
             for (int j = 0; j < data[i].Length; j++)
             {
                 MapData md = new MapData();
-                md.objectID = short.Parse(data[i][j]);
+                md.objectID = int.Parse(data[i][j]);
                 md.positionID = i*data[i].Length+j;
                 mapDatas[i].Add(md);
                 GameObject obj = Instantiate(objectSpace,new Vector3(0+j,0-i,0),Quaternion.identity,transform);
                 GameObject instObj = mapObjects[(int.Parse(data[i][j]))];
                 Instantiate(instObj,obj.transform.position,Quaternion.identity,obj.transform);
-
             }
         }
-
     }
 }
