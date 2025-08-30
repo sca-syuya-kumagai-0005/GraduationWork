@@ -37,7 +37,7 @@ public class Sinner : MonoBehaviour
     protected int damege;
     virtual protected void AbnormalPhenomenon()
     {
-        
+        Debug.Log("ˆÙí”­¶");
     }
     protected void Damage(int damege)
     {
