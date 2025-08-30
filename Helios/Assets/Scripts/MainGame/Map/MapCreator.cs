@@ -23,13 +23,6 @@ public class MapCreator : CsvReader
         List<string[]> data=Read(mapCsv);
         MapCreate(data);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Debug.Log(Input.mousePresent);
-    }
-
     void MapCreate(List<string[]> data)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
     {
       
