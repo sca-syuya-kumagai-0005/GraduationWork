@@ -1,17 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 /*memo=========================================================================================
  * 配達する側のScriptで、通った道の隣接するオブジェクトの取得とカウントをする
  ==============================================================================================*/
 
-public class MapCreator : CsvReader
+public class Map : CsvReader
 {
     [SerializeField] TextAsset mapCsv;
     [SerializeField] GameObject objectSpace;
     [SerializeField] GameObject[] mapObjects;
-    List<List<MapData>> mapDatas = new List<List<MapData>>();
-    public List<List<MapData>> MapDatas { get { return mapDatas; } }
+    private List<List<MapData>> mapDatas = new List<List<MapData>>();
+    public List<List<MapData>> MapDatas { get { return mapDatas;} }
     public struct MapData//自身と隣接するブロックの情報を格納するstruct　自身と隣接するブロックに対応するフラグがtrue
     {
         public int objectID;
