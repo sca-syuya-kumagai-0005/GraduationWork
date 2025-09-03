@@ -26,6 +26,7 @@ public class EventSet : MonoBehaviour//‚±‚ÌƒNƒ‰ƒX‚Íƒ}ƒEƒX‘Î‰‚ÌÛ‚É•K—v‚ÈŠî’êƒNƒ
 
     public virtual void SetEventType(string eventID, SetEvent e)
     {
+        gameObject.AddComponent<EventTrigger>();
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
 
