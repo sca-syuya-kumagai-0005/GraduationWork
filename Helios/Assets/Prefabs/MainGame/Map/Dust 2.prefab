@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3276622507814639545}
   - component: {fileID: 8236353533365951588}
-  - component: {fileID: -3351980479909831591}
   - component: {fileID: 489323076502824467}
   m_Layer: 0
   m_Name: Dust 2
@@ -89,18 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-3351980479909831591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8511989374376127958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f435f0bb923278541b4bcaa1fc9f93ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &489323076502824467
 MonoBehaviour:
   m_ObjectHideFlags: 0
