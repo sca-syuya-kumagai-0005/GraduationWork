@@ -30,6 +30,14 @@ public class Sinner : MonoBehaviour
         Trust,
         Max
     }
+    protected enum EmergencyPhase
+    {
+        First,
+        Second,
+        Third,
+        Death
+    }
+    protected EmergencyPhase phase;
     protected int[] probabilitys = new int[(int)Moods.Max];
     protected Moods mood;
     protected SecureClass secureClass;
@@ -41,16 +49,20 @@ public class Sinner : MonoBehaviour
     }
     protected void Damage(int damege)
     {
-        Debug.Log("Damage");
-        AbnormalPhenomenon();
+        Debug.Log(damege+"Damage");
     }
 
-    protected void Lottery()
+    protected EmergencyPhase Lottery()
     {
+        EmergencyPhase phase;
         if (probabilitys[(int)mood] < 100)
         {
             int rand = Random.Range(0, 100);
-            if (rand < probabilitys[(int)mood]) Damage(damege);
+            if (rand < probabilitys[(int)mood])
+            {
+                phase = EmergencyPhase.First;
+                return phase;
+            }
         }
         int min = 100;
         int max = 150;
@@ -60,12 +72,13 @@ public class Sinner : MonoBehaviour
         {
             if (min <= probabilitys[(int)mood] && probabilitys[(int)mood] < max)
             {
-                Damage(damege);
-                return;
+                phase= EmergencyPhase.Second;
+                return phase;
             }
             min = max;
             max += add;
         }
-        Damage(damege);
+        phase = EmergencyPhase.Death;
+        return phase;
     }
 }
