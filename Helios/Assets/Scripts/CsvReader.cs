@@ -7,7 +7,6 @@ public class CsvReader : MonoBehaviour
     {
         List<string[]> datas = new List<string[]>();
         StringReader reader = new StringReader(csvData.text);
-
         while (reader.Peek() != -1)
         {
             string line = reader.ReadLine();
