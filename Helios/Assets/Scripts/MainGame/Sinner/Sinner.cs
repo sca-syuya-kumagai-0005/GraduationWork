@@ -38,47 +38,63 @@ public class Sinner : MonoBehaviour
         Death
     }
     protected EmergencyPhase phase;
-    protected int[] probabilitys = new int[(int)Moods.Max];
     protected Moods mood;
+    protected float[] probabilitys = new float[(int)Moods.Max];
     protected SecureClass secureClass;
     protected LiskClass liskClass;
+    protected string ItemName;
+    protected int deliveryCount;
     protected int damege;
-    virtual protected void AbnormalPhenomenon()
+    virtual protected void AbnormalPhenomenon(string objectName)
     {
-        Debug.Log("àŸèÌî≠ê∂");
+        Debug.Log(objectName + "àŸèÌî≠ê∂");
     }
     protected void Damage(int damege)
     {
-        Debug.Log(damege+"Damage");
+        Debug.Log(damege + "Damage");
     }
 
     protected EmergencyPhase Lottery()
     {
-        EmergencyPhase phase;
+        EmergencyPhase phase = EmergencyPhase.First;
         if (probabilitys[(int)mood] < 100)
         {
             int rand = Random.Range(0, 100);
             if (rand < probabilitys[(int)mood])
             {
                 phase = EmergencyPhase.First;
-                return phase;
             }
         }
-        int min = 100;
-        int max = 150;
-        const int add = 50;
-        const int death = 350;
-        while (max >= death)
+        else if (100 < probabilitys[(int)mood] || probabilitys[(int)mood] < 200)
         {
-            if (min <= probabilitys[(int)mood] && probabilitys[(int)mood] < max)
-            {
-                phase= EmergencyPhase.Second;
-                return phase;
-            }
-            min = max;
-            max += add;
+            phase = EmergencyPhase.First;
         }
-        phase = EmergencyPhase.Death;
+        else if (200 < probabilitys[(int)mood] || probabilitys[(int)mood] < 300)
+        {
+            phase = EmergencyPhase.Second;
+        }
+        else if (300 < probabilitys[(int)mood] || probabilitys[(int)mood] < 350)
+        {
+            phase = EmergencyPhase.Third;
+        }
+        else
+        {
+            phase = EmergencyPhase.Death;
+        }
+        //int min = 100;
+        //int max = 150;
+        //const int add = 50;
+        //const int death = 350;
+        //while (max >= death)
+        //{
+        //    if (min <= probabilitys[(int)mood] && probabilitys[(int)mood] < max)
+        //    {
+        //        phase= EmergencyPhase.Second;
+        //        return phase;
+        //    }
+        //    min = max;
+        //    max += add;
+        //}
         return phase;
     }
 }
