@@ -28,7 +28,6 @@ public class Map : CsvReader
     }
     void MapCreate(List<string[]> data)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
     {
-        string angle;
         for (int i = 0; i < data.Count; i++)
         {
             mapDatas.Add(new List<MapData>());
