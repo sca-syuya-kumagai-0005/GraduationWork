@@ -8,7 +8,9 @@ public class ItemID_001 : Sinner
         secureClass = SecureClass.Catra;
         liskClass = LiskClass.Oblivara;
         probabilitys = new float[] { 0.0f, 0.0f, 25.0f, 50.0f, 100.0f, 80.0f, 50.0f, 0.0f };
+        ItemName = "‘‚µ‚İ‚Ì‘Â¯";
         AbnormalPhenomenon(ItemName);
+        gameObject.name = ItemName;
     }
 
     // Update is called once per frame
