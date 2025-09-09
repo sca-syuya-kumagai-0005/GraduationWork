@@ -2,14 +2,32 @@ using UnityEngine;
 
 public class MapObjectReturnName : EventSet
 {
+    string[] objectInfo;
     private void Start()
     {
-        SetEventType(down,DebugName);
-        SetEventType(enter,DebugName);
+        objectInfo = this.gameObject.name.Split(underbar);
+
+        switch ()
+        SetEventType(enter,PointerDown);
     }
 
-    void DebugName()
-    {
-        Debug.Log(this.gameObject.name);
+    protected override void PointerDown()
+    { 
+       
+        int objectID = int.Parse(objectInfo[0]);
+        switch(objectID)
+        { 
+            case 0:
+                {
+                    Debug.Log("配達ルートの指定を開始します");
+                }
+                break;
+
+                default:
+                {
+
+                }
+                break;
+        }
     }
 }
