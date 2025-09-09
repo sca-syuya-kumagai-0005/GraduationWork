@@ -9,22 +9,23 @@ public class EventSet : MonoBehaviour//‚±‚ÌƒNƒ‰ƒX‚Íƒ}ƒEƒX‘Î‰‚ÌÛ‚É•K—v‚ÈŠî’êƒNƒ
     public const string exit = "Exit";
     public const string down = "Down";
     public const string up = "Up";
-    public virtual void PointerEnter()
+    public const string underbar = "_";
+    protected virtual void PointerEnter()
     {
         Debug.Log("Šî’êƒNƒ‰ƒX‘¤‚ÌŠÖ”‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·\nŒp³æ‚ÌŠÖ”‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ä‚­‚¾‚³‚¢");//Šî’êƒNƒ‰ƒX‘¤‚ÌŠÖ”‚ªŒÄ‚Ño‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğ’m‚ç‚¹‚é
     }
 
-    public virtual void PointerDown()
+    protected virtual void PointerDown()
     {
         Debug.Log("Šî’êƒNƒ‰ƒX‘¤‚ÌŠÖ”‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·\\nŒp³æ‚ÌŠÖ”‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ä‚­‚¾‚³‚¢\"");
     }
 
-    public virtual void PointerExit()
+    protected virtual void PointerExit()
     {
         Debug.Log("Šî’êƒNƒ‰ƒX‘¤‚ÌŠÖ”‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·\\nŒp³æ‚ÌŠÖ”‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ä‚­‚¾‚³‚¢\"");
     }
 
-    public virtual void SetEventType(string eventID, SetEvent e)
+    protected virtual void SetEventType(string eventID, SetEvent e)
     {
         gameObject.AddComponent<EventTrigger>();
         EventTrigger trigger = GetComponent<EventTrigger>();
