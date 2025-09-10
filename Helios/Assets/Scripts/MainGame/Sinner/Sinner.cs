@@ -1,6 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Sinner : MonoBehaviour
+public class Sinner : EventSet
 {
     protected enum SecureClass
     {
@@ -43,8 +45,10 @@ public class Sinner : MonoBehaviour
     protected SecureClass secureClass;
     protected LiskClass liskClass;
     protected string ItemName;
+    protected Sprite sinnerSprite;
     protected int deliveryCount;
     protected int damege;
+    protected ResidenceCertificate residenceCertificate;
     virtual protected void AbnormalPhenomenon(string objectName)
     {
         Debug.Log(objectName + ":ˆÙí”­¶");
@@ -81,20 +85,11 @@ public class Sinner : MonoBehaviour
         {
             phase = EmergencyPhase.Death;
         }
-        //int min = 100;
-        //int max = 150;
-        //const int add = 50;
-        //const int death = 350;
-        //while (max >= death)
-        //{
-        //    if (min <= probabilitys[(int)mood] && probabilitys[(int)mood] < max)
-        //    {
-        //        phase= EmergencyPhase.Second;
-        //        return phase;
-        //    }
-        //    min = max;
-        //    max += add;
-        //}
         return phase;
+    }
+
+    private void Awake()
+    {
+        residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
     }
 }
