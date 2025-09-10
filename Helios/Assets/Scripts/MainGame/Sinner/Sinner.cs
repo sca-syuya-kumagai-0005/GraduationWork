@@ -1,6 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Sinner : MonoBehaviour
+public class Sinner : EventSet
 {
     protected enum SecureClass
     {
@@ -30,42 +32,64 @@ public class Sinner : MonoBehaviour
         Trust,
         Max
     }
-    protected int[] probabilitys = new int[(int)Moods.Max];
+    protected enum EmergencyPhase
+    {
+        First,
+        Second,
+        Third,
+        Death
+    }
+    protected EmergencyPhase phase;
     protected Moods mood;
+    protected float[] probabilitys = new float[(int)Moods.Max];
     protected SecureClass secureClass;
     protected LiskClass liskClass;
+    protected string ItemName;
+    protected Sprite sinnerSprite;
+    protected int deliveryCount;
     protected int damege;
-    virtual protected void AbnormalPhenomenon()
+    protected ResidenceCertificate residenceCertificate;
+    virtual protected void AbnormalPhenomenon(string objectName)
     {
-        Debug.Log("àŸèÌî≠ê∂");
+        Debug.Log(objectName + ":àŸèÌî≠ê∂");
     }
     protected void Damage(int damege)
     {
-        Debug.Log("Damage");
-        AbnormalPhenomenon();
+        Debug.Log(damege + "Damage");
     }
 
-    protected void Lottery()
+    protected EmergencyPhase Lottery()
     {
+        EmergencyPhase phase = EmergencyPhase.First;
         if (probabilitys[(int)mood] < 100)
         {
             int rand = Random.Range(0, 100);
-            if (rand < probabilitys[(int)mood]) Damage(damege);
-        }
-        int min = 100;
-        int max = 150;
-        const int add = 50;
-        const int death = 350;
-        while (max >= death)
-        {
-            if (min <= probabilitys[(int)mood] && probabilitys[(int)mood] < max)
+            if (rand < probabilitys[(int)mood])
             {
-                Damage(damege);
-                return;
+                phase = EmergencyPhase.First;
             }
-            min = max;
-            max += add;
         }
-        Damage(damege);
+        else if (100 < probabilitys[(int)mood] || probabilitys[(int)mood] < 200)
+        {
+            phase = EmergencyPhase.First;
+        }
+        else if (200 < probabilitys[(int)mood] || probabilitys[(int)mood] < 300)
+        {
+            phase = EmergencyPhase.Second;
+        }
+        else if (300 < probabilitys[(int)mood] || probabilitys[(int)mood] < 350)
+        {
+            phase = EmergencyPhase.Third;
+        }
+        else
+        {
+            phase = EmergencyPhase.Death;
+        }
+        return phase;
+    }
+
+    private void Awake()
+    {
+        residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
     }
 }
