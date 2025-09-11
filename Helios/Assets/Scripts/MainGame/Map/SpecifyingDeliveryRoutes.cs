@@ -45,13 +45,14 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         {
             Vector3 dir = (routesPosition[i] - driver.transform.position).normalized;
             float dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
-            while (dist>0.1f)
+            while (dist>0.01f)
             {
                 Vector2 vec = driver.transform.position+dir*Time.deltaTime;
                 dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
                 driver.transform.position = vec;
                 yield return null;
             }
+            driver.transform.position = routesPosition[i];
             
             
             
