@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,11 +45,17 @@ public class Sinner : EventSet
     protected float[] probabilitys = new float[(int)Moods.Max];
     protected SecureClass secureClass;
     protected LiskClass liskClass;
-    protected string ItemName;
+    protected string sinnerID;
+    protected string sinnerName;
     protected Sprite sinnerSprite;
     protected int deliveryCount;
     protected int damege;
     protected ResidenceCertificate residenceCertificate;
+    protected Moods[] deliveryItems = new Moods[8]; 
+    private void Awake()
+    {
+        residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
+    }
     virtual protected void AbnormalPhenomenon(string objectName)
     {
         Debug.Log(objectName + ":àŸèÌî≠ê∂");
@@ -57,13 +64,23 @@ public class Sinner : EventSet
     {
         Debug.Log(damege + "Damage");
     }
+    protected void SetInformation()
+    {
+        residenceCertificate.SetSinnerName = sinnerName;
+        residenceCertificate.SetSinnerID = sinnerID;
+        residenceCertificate.SetSinnerImage = sinnerSprite;
+        residenceCertificate.SetSecureClass = secureClass.ToString();
+        residenceCertificate.SetLiskClass = liskClass.ToString();
+        residenceCertificate.SetDeliveryItems = (int[])deliveryItems.Clone();
+        Debug.Log("SECURE:" + secureClass + "\nLISK:" + liskClass);
+    }
 
     protected EmergencyPhase Lottery()
     {
         EmergencyPhase phase = EmergencyPhase.First;
         if (probabilitys[(int)mood] < 100)
         {
-            int rand = Random.Range(0, 100);
+            int rand = UnityEngine.Random.Range(0, 100);
             if (rand < probabilitys[(int)mood])
             {
                 phase = EmergencyPhase.First;
@@ -88,8 +105,4 @@ public class Sinner : EventSet
         return phase;
     }
 
-    private void Awake()
-    {
-        residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
-    }
 }
