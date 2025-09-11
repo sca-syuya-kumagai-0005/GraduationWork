@@ -3,17 +3,16 @@ using UnityEngine.UI;
 
 public class ItemID_001 : Sinner
 {
-    private Image image;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         secureClass = SecureClass.Catra;
         liskClass = LiskClass.Oblivara;
-        probabilitys = new float[] { 0.0f, 0.0f, 25.0f, 50.0f, 100.0f, 80.0f, 50.0f, 0.0f };
-        ItemName = "憎しみの堕星";
+        probabilitys = new float[8] { 0.0f, 0.0f, 25.0f, 50.0f, 100.0f, 80.0f, 50.0f, 0.0f };
+        sinnerID = "ItemID_001";
+        sinnerName = "憎しみの堕星";
         sinnerSprite = Resources.Load<Sprite>("");//ここに画像名
-        //AbnormalPhenomenon(ItemName);
-        gameObject.name = ItemName;
+        deliveryItems = new Moods[8] { Moods.Joy, Moods.Anticipation, Moods.Anger, Moods.Disgust, Moods.Sadness, Moods.Surprise, Moods.Fear, Moods.Trust, };
         SetEventType(down, OnClick);
     }
     // Update is called once per frame
@@ -24,8 +23,8 @@ public class ItemID_001 : Sinner
 
     private void OnClick()
     {
-        Debug.Log(ItemName+":クリックされた");
-        residenceCertificate.SetSinnerImage=sinnerSprite;
+        Debug.Log(sinnerName + ":クリックされた");
+        SetInformation();
     }
     protected override void AbnormalPhenomenon(string objectName)
     {
