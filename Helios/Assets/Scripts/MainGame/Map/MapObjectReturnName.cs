@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class MapObjectReturnName : EventSet
+public class MapObjectRequest : EventSet
 {
+    SpecifyingDeliveryRoutes sDR;
     string[] objectInfo;
     private void Start()
     {
         objectInfo = this.gameObject.name.Split(underbar);
-
-        switch ()
+        sDR = GameObject.Find("Map").GetComponent<SpecifyingDeliveryRoutes>();
+        Debug.Log(sDR);
+        //switch ()
         SetEventType(enter,PointerDown);
     }
 
