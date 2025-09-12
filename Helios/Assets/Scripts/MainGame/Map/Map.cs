@@ -18,7 +18,8 @@ public class Map : CsvReader
     public struct MapData//自身と隣接するブロックの情報を格納するstruct　自身と隣接するブロックに対応するフラグがtrue
     {
         public int objectID;
-        public int positionID;
+        public int widthPositionID;
+        public int heightPositionID;    
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,13 +37,14 @@ public class Map : CsvReader
                 string[] strs = data[i][j].Split(underbar);
                 MapData md = new MapData();
                 md.objectID = int.Parse(strs[0]);
-                md.positionID = i*data[i].Length+j;
+                md.widthPositionID = j;
+                md.heightPositionID = i;
                 mapDatas[i].Add(md);
                 GameObject obj = Instantiate(objectSpace,new Vector3(0+j,0-i,0),Quaternion.identity,transform);
                 GameObject instObj = mapObjects[(int.Parse(strs[0]))];
                 instObj = Instantiate(instObj,obj.transform.position,Quaternion.identity,obj.transform);
                 if(strs.Length>1) instObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, float.Parse(strs[1])));
-                instObj.transform.parent.name = md.objectID.ToString()+underbar+md.positionID;
+                instObj.transform.parent.name = md.objectID.ToString()+underbar+md.widthPositionID.ToString()+underbar+md.heightPositionID.ToString();
             }
         }
     }

@@ -4,13 +4,15 @@ public class MapObjectReturnName : EventSet
 {
     string[] objectInfo;
     int objectID;
-    int objectPositionID;
+    int widthPositionID;
+    int heightPositionID;
     [SerializeField]SpecifyingDeliveryRoutes sDR;
     private void Start()
     {
         objectInfo = this.gameObject.name.Split(underbar);
         objectID = int.Parse(objectInfo[0]);
-        objectPositionID = int.Parse(objectInfo[1]);
+        widthPositionID = int.Parse(objectInfo[1]);
+        heightPositionID = int.Parse(objectInfo[2]);
         sDR = GameObject.Find("Map").GetComponent<SpecifyingDeliveryRoutes>();
         //switch ()
         SetEventType(down,PointerDown);
@@ -29,6 +31,7 @@ public class MapObjectReturnName : EventSet
                     {
                         Debug.Log("配達ルートの指定を開始します");
                         sDR.MemoryStart();
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, objectID,this.gameObject, this.gameObject.transform.position);
                     }
                    
                 }
@@ -37,8 +40,7 @@ public class MapObjectReturnName : EventSet
                 {
                     if(sDR.Memorying)
                     {
-                        Debug.Log("配達ルートの指定を終了しました");
-                        sDR.MemoryEnd();
+                        sDR.MemoryEnd(widthPositionID, heightPositionID, objectID);
                     }
                    
                 }
@@ -54,9 +56,19 @@ public class MapObjectReturnName : EventSet
 
     protected override void PointerEnter()
     {
-        if(objectID == 1)
-        {
-            sDR.MemoryRoute(objectPositionID,this.gameObject.transform.position);
+        switch(objectID)
+        { 
+            case 0:
+                {
+                   
+                }
+                break;
+            case 1:
+                {
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject,this.gameObject.transform.position);
+                }
+                break;
+          
         }
     }
 }
