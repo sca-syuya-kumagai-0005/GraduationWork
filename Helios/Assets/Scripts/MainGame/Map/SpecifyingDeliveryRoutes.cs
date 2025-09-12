@@ -11,20 +11,28 @@ public class SpecifyingDeliveryRoutes : Map
     bool memorying = false;
     public bool Memorying { get { return memorying; } }
     GameObject driver;
-    
+    LineRenderer line;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         driver = this.gameObject;
+        line = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(memorying&&Input.GetMouseButtonDown(1))
+        {
+            routes.Clear();
+            routesPosition.Clear();
+            passedObjects.Clear();
+            memorying = false;
+            line.positionCount=0;
+        }
     }
 
-    public void MemoryRoute(int widthPositionID,int heightPositionID,int objectID,GameObject obj,Vector2 position)
+    public void MemoryRoute(int widthPositionID,int heightPositionID,int objectID,GameObject obj,Vector3 position)
     {
         
         if(!memorying)return;
@@ -36,12 +44,16 @@ public class SpecifyingDeliveryRoutes : Map
             routes.Add(positionID);
             routesPosition.Add(position);
             passedObjects.Add(obj);
+            line.positionCount++;
+            line.SetPosition(line.positionCount-1,position);
         }
         if (NearCheck(routes,positionID))//なぞったオブジェクトが前のオブジェクトと隣接しているなら
         {
             routes.Add(positionID);
             routesPosition.Add(position);
             passedObjects.Add(obj);
+            line.positionCount++;
+            line.SetPosition(line.positionCount - 1, position);
         }
        
     }
@@ -101,8 +113,11 @@ public class SpecifyingDeliveryRoutes : Map
         }
         routes = new List<int[]>();
         routesPosition = new List<Vector3>();
+        line.positionCount=0;
         yield return null;
 
     }
+
+  
 
 }
