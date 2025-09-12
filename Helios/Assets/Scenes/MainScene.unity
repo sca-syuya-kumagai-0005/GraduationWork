@@ -443,7 +443,6 @@ GameObject:
   m_Component:
   - component: {fileID: 478194909}
   - component: {fileID: 478194908}
-  - component: {fileID: 478194910}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -485,21 +484,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1287625516}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &478194910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478194907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a83bf7a12342d5247afbcd4f30911542, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  routes: 
-  routesPosition: []
-  driver: {fileID: 809797921}
 --- !u!1 &551135881
 GameObject:
   m_ObjectHideFlags: 0
@@ -725,6 +709,23 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8511989374376127958, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
   m_PrefabInstance: {fileID: 1467366772}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &809797924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809797921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83bf7a12342d5247afbcd4f30911542, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapCsv: {fileID: 0}
+  objectSpace: {fileID: 0}
+  mapObjects: []
+  routesPosition: []
+  passedObjects: []
 --- !u!1 &822925924
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,7 +1652,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8511989374376127958, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 809797924}
   m_SourcePrefab: {fileID: 100100000, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
 --- !u!1 &1527614018
 GameObject:
