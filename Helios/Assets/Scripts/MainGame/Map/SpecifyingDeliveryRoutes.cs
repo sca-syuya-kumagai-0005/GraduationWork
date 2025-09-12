@@ -10,11 +10,12 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField]List<GameObject> passedObjects = new List<GameObject>();
     bool memorying = false;
     public bool Memorying { get { return memorying; } }
-    [SerializeField]GameObject driver;
+    GameObject driver;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        driver = this.gameObject;
     }
 
     // Update is called once per frame
