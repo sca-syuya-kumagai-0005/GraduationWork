@@ -22,7 +22,7 @@ public class SinnerDistribute : MonoBehaviour
     {
         const string map = "Map";
         GameObject mapObject = GameObject.Find(map);
-        List<GameObject> houseList=new List<GameObject>();
+        List<GameObject> houseList = new List<GameObject>();
         for (int i = 0; i < mapObject.transform.childCount; i++)
         {
             GameObject go = mapObject.transform.GetChild(i).gameObject;
@@ -34,19 +34,15 @@ public class SinnerDistribute : MonoBehaviour
     private void Distribute()
     {
         List<GameObject> houseList = GetHouse();
-        int max;
-        for (int i=0;i<days;i++)
+        for (int i = 0; i < days; i++)
         {
-            max = houseList.Count + 1;
-            int rand = Random.Range(0, max);
+            int rand = Random.Range(0, houseList.Count);
             GameObject go = houseList[rand];
 
-            max = components.Count + 1;
-            rand=Random.Range(0, rand);
+            rand = Random.Range(0, components.Count);
             go.AddComponent(components[rand].GetType());
             Debug.Log(components[rand].GetType() + "oŒ»F" + go.name);
             components.Remove(components[rand]);
         }
-        Debug.Log(components.Count);
     }
 }
