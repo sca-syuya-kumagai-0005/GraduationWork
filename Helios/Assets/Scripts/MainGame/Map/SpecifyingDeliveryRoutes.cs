@@ -5,14 +5,18 @@ using System.Collections;
 //Ç±ÇÍÇÕîzíBé“Ç…Ç¬ÇØÇÈscriptÇ≈Ç∑ÅB
 public class SpecifyingDeliveryRoutes : Map
 {
-    [SerializeField] List<int[]> routes=new List<int[]>();
-    [SerializeField]List<Vector3> routesPosition = new List<Vector3>();
-    [SerializeField]List<GameObject> passedObjects = new List<GameObject>();
+    [SerializeField] List<int[]> routes = new List<int[]>();
+    [SerializeField] List<Vector3> routesPosition = new List<Vector3>();
+    [SerializeField] List<GameObject> passedObjects = new List<GameObject>();
+    [SerializeField] GameObject move;
     bool memorying = false;
     public bool Memorying { get { return memorying; } }
+    GameObject deliveryItem;
+    public GameObject DeliveryItem{set{ deliveryItem = value; }}
     GameObject driver;
     [SerializeField]float speed;
     LineRenderer line;
+    [SerializeField] float distance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -62,6 +66,7 @@ public class SpecifyingDeliveryRoutes : Map
     public void MemoryStart()
     {
         memorying = true;
+        StartCoroutine(DirectionsCreate());
     }
 
     public void MemoryEnd(int widthPositionID, int heightPositionID, int objectID)
@@ -120,6 +125,50 @@ public class SpecifyingDeliveryRoutes : Map
 
     }
 
-  
+
+    IEnumerator Directions()
+    {
+        GameObject obj = Instantiate(move, gameObject.transform.position, Quaternion.identity);
+        for (int i = 0; i < routesPosition.Count; i++)
+        {
+            float dist = Mathf.Abs(routesPosition[i].magnitude - obj.transform.position.magnitude);
+            while (dist > 0.005f)
+            {
+                Vector3 dir = (routesPosition[i] - obj.transform.position).normalized;
+                if(dir.x==1)
+                {
+                    obj.transform.rotation=Quaternion.Euler(new Vector3(0,0,90)) ;
+                }
+                if(dir.x==-1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0,-90));
+                }
+                if(dir.y==1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                }
+                if(dir.y==-1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                }
+                Vector2 vec = obj.transform.position + dir * Time.deltaTime;
+                dist = Mathf.Abs(routesPosition[i].magnitude - obj.transform.position.magnitude);
+                obj.transform.position = vec * speed;
+                yield return null;
+            }
+            obj.transform.position = routesPosition[i];
+        }
+        Destroy( obj );
+    }
+
+    IEnumerator DirectionsCreate()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(distance);
+            StartCoroutine(Directions());
+        }
+    }
+
 
 }
