@@ -9,10 +9,11 @@ public class SinnerDistribute : MonoBehaviour
     private int days;
     private const string tileID_House = "3";
     private const string underBar = "_";
-    private List<Object> components = new List<Object>
-    {
+    private List<Object> components = new List<Object>() 
+    { 
         new ItemID_001(),
     };
+    
     private void Start()
     {
         days = 1;
@@ -20,6 +21,7 @@ public class SinnerDistribute : MonoBehaviour
     }
     private List<GameObject> GetHouse()
     {
+        //ここに各マップ
         const string map = "Map";
         GameObject mapObject = GameObject.Find(map);
         List<GameObject> houseList = new List<GameObject>();
