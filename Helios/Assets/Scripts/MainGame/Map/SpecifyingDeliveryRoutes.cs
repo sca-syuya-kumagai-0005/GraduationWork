@@ -11,6 +11,7 @@ public class SpecifyingDeliveryRoutes : Map
     bool memorying = false;
     public bool Memorying { get { return memorying; } }
     GameObject driver;
+    [SerializeField]float speed;
     LineRenderer line;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -72,7 +73,6 @@ public class SpecifyingDeliveryRoutes : Map
         {
             return;
         }
-        Debug.Log("配達ルートの指定を終了しました");
         memorying = false;
         StartCoroutine(DriverMove());
     }
@@ -86,13 +86,14 @@ public class SpecifyingDeliveryRoutes : Map
     {
         for(int i=0;i<routesPosition.Count;i++)
         {
-            Vector3 dir = (routesPosition[i] - driver.transform.position).normalized;
+          
             float dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
-            while (dist>0.01f)
+            while (dist>0.05f)
             {
+                Vector3 dir = (routesPosition[i] - driver.transform.position).normalized;
                 Vector2 vec = driver.transform.position+dir*Time.deltaTime;
                 dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
-                driver.transform.position = vec;
+                driver.transform.position = vec*speed;
                 yield return null;
             }
             driver.transform.position = routesPosition[i];
@@ -100,13 +101,14 @@ public class SpecifyingDeliveryRoutes : Map
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition.Count-1; i >=0; i--)
         {
-            Vector3 dir = (routesPosition[i] - driver.transform.position).normalized;
+           
             float dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
-            while (dist > 0.01f)
+            while (dist > 0.05f)
             {
+                Vector3 dir = (routesPosition[i] - driver.transform.position).normalized;
                 Vector2 vec = driver.transform.position + dir * Time.deltaTime;
                 dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
-                driver.transform.position = vec;
+                driver.transform.position = vec*speed;
                 yield return null;
             }
             driver.transform.position = routesPosition[i];
