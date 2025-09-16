@@ -73,6 +73,7 @@ public class Sinner : EventSet
         residenceCertificate.SetLiskClass = liskClass.ToString();
         residenceCertificate.SetDeliveryItems = (int[])deliveryItems.Clone();
         Debug.Log("SECURE:" + secureClass + "\nLISK:" + liskClass);
+        residenceCertificate.gameObject.SetActive(true);
     }
 
     protected EmergencyPhase Lottery()

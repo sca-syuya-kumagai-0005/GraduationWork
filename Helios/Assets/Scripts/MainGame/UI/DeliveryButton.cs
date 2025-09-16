@@ -4,6 +4,13 @@ public class DeliveryButton : EventSet
 {
     private int myButtonID;
     public int SetButtonID { set { myButtonID = value; } }
+    public enum ButtonType
+    {
+        Item,
+        Process
+    }
+    private ButtonType myButtonType;
+    public ButtonType SetButtonType { set {  myButtonType = value; } }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +25,6 @@ public class DeliveryButton : EventSet
 
     private void OnClick()
     {
-        Debug.Log("Button" + myButtonID + ":クリック");
+        Debug.Log(myButtonType+"Button" + myButtonID + ":クリック");
     }
 }
