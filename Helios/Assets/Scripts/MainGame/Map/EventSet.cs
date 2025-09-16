@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventSet : MonoBehaviour//‚±‚ÌƒNƒ‰ƒX‚Íƒ}ƒEƒX‘Î‰‚ÌÛ‚É•K—v‚ÈŠî’êƒNƒ‰ƒX‚Å‚·
+public class EventSet:MonoBehaviour//‚±‚ÌƒNƒ‰ƒX‚Íƒ}ƒEƒX‘Î‰‚ÌÛ‚É•K—v‚ÈŠî’êƒNƒ‰ƒX‚Å‚·
 {
     public delegate void SetEvent();
     private string corectEventID;
@@ -17,7 +17,7 @@ public class EventSet : MonoBehaviour//‚±‚ÌƒNƒ‰ƒX‚Íƒ}ƒEƒX‘Î‰‚ÌÛ‚É•K—v‚ÈŠî’êƒNƒ
 
     protected virtual void PointerDown()
     {
-        Debug.Log("Šî’êƒNƒ‰ƒX‘¤‚ÌŠÖ”‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·\\nŒp³æ‚ÌŠÖ”‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ä‚­‚¾‚³‚¢\"");
+        Debug.Log("Šî’êƒNƒ‰ƒX‘¤‚ÌŠÖ”‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·\nŒp³æ‚ÌŠÖ”‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ä‚­‚¾‚³‚¢");
     }
 
     protected virtual void PointerExit()
@@ -27,8 +27,11 @@ public class EventSet : MonoBehaviour//‚±‚ÌƒNƒ‰ƒX‚Íƒ}ƒEƒX‘Î‰‚ÌÛ‚É•K—v‚ÈŠî’êƒNƒ
 
     protected virtual void SetEventType(string eventID, SetEvent e)
     {
-        gameObject.AddComponent<EventTrigger>();
-        EventTrigger trigger = GetComponent<EventTrigger>();
+        if(gameObject.GetComponent<EventTrigger>()==null)
+        {
+            gameObject.AddComponent<EventTrigger>();
+        }
+        EventTrigger trigger = gameObject.GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
 
         switch (eventID)
