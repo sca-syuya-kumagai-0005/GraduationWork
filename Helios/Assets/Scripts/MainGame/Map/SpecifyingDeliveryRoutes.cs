@@ -17,9 +17,11 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField]float speed;
     LineRenderer line;
     [SerializeField] float distance;
+    IEnumerator coroutine;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        coroutine = DirectionsCreate();
         driver = this.gameObject;
         line = GetComponent<LineRenderer>();
     }
@@ -66,7 +68,7 @@ public class SpecifyingDeliveryRoutes : Map
     public void MemoryStart()
     {
         memorying = true;
-        StartCoroutine(DirectionsCreate());
+        StartCoroutine(coroutine);
     }
 
     public void MemoryEnd(int widthPositionID, int heightPositionID, int objectID)
@@ -118,6 +120,13 @@ public class SpecifyingDeliveryRoutes : Map
             }
             driver.transform.position = routesPosition[i];
         }
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
+        foreach(GameObject obj in objs)
+        {
+            StopCoroutine(coroutine);
+            Destroy(obj);
+        }
+
         routes = new List<int[]>();
         routesPosition = new List<Vector3>();
         line.positionCount=0;
@@ -128,37 +137,45 @@ public class SpecifyingDeliveryRoutes : Map
 
     IEnumerator Directions()
     {
-        GameObject obj = Instantiate(move, gameObject.transform.position, Quaternion.identity);
-        for (int i = 0; i < routesPosition.Count; i++)
+        if(routesPosition.Count>0)
         {
-            float dist = Mathf.Abs(routesPosition[i].magnitude - obj.transform.position.magnitude);
-            while (dist > 0.005f)
+            GameObject obj = Instantiate(move, routesPosition[0], Quaternion.identity);
+            for (int i = 0; i < routesPosition.Count; i++)
             {
-                Vector3 dir = (routesPosition[i] - obj.transform.position).normalized;
-                if(dir.x==1)
+                float dist = Mathf.Abs(routesPosition[i].magnitude - obj.transform.position.magnitude);
+                while (dist > 0.005f)
                 {
-                    obj.transform.rotation=Quaternion.Euler(new Vector3(0,0,90)) ;
+                    if(routesPosition.Count==0)
+                    {
+                        break;
+                    }
+                    Vector3 dir = (routesPosition[i] - obj.transform.position).normalized;
+                    if (dir.x == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    }
+                    if (dir.x == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    }
+                    if (dir.y == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    }
+                    if (dir.y == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+                    Vector2 vec = obj.transform.position + dir * Time.deltaTime;
+                    dist = Mathf.Abs(routesPosition[i].magnitude - obj.transform.position.magnitude);
+                    obj.transform.position = vec * speed;
+                    yield return null;
                 }
-                if(dir.x==-1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0,-90));
-                }
-                if(dir.y==1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
-                }
-                if(dir.y==-1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                }
-                Vector2 vec = obj.transform.position + dir * Time.deltaTime;
-                dist = Mathf.Abs(routesPosition[i].magnitude - obj.transform.position.magnitude);
-                obj.transform.position = vec * speed;
-                yield return null;
+                if (routesPosition.Count>i) obj.transform.position = routesPosition[i];
             }
-            obj.transform.position = routesPosition[i];
+            if(obj!=null)Destroy(obj);
         }
-        Destroy( obj );
+        
     }
 
     IEnumerator DirectionsCreate()
@@ -166,7 +183,7 @@ public class SpecifyingDeliveryRoutes : Map
         while(true)
         {
             yield return new WaitForSeconds(distance);
-            StartCoroutine(Directions());
+            if(routesPosition.Count>0)StartCoroutine(Directions());
         }
     }
 

@@ -575,8 +575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698448d5877ecd741baf1ec9b4779b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  components:
-  - {fileID: 11500000, guid: 5eb3e3fd2ed54da4ba6fb3756ca2b436, type: 3}
 --- !u!1 &551135881
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,6 +822,9 @@ MonoBehaviour:
   mapObjects: []
   routesPosition: []
   passedObjects: []
+  move: {fileID: 2582001399943237785, guid: 2f73aa1d9ec41ab499fa87909c308cf8, type: 3}
+  speed: 1
+  distance: 0.5
 --- !u!120 &809797927
 LineRenderer:
   serializedVersion: 2
