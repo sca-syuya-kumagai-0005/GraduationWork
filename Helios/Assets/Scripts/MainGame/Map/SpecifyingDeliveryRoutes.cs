@@ -17,11 +17,14 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField]float speed;
     LineRenderer line;
     [SerializeField] float distance;
-    IEnumerator coroutine;
+    [SerializeField]int coroutineNumber;
+    int lastRoutesPositionCount;
+    [SerializeField]int frame = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        coroutine = DirectionsCreate();
+        coroutineNumber = 0;
+        lastRoutesPositionCount = 0;
         driver = this.gameObject;
         line = GetComponent<LineRenderer>();
     }
@@ -29,6 +32,14 @@ public class SpecifyingDeliveryRoutes : Map
     // Update is called once per frame
     void Update()
     {
+        frame++;
+        if (lastRoutesPositionCount != routesPosition.Count&&routesPosition.Count>1)
+        {
+            Debug.Log("’Ç‰Á‚ÅŒÄ‚Ñ‚Ü‚·");
+            coroutineNumber++;
+            StartCoroutine(Move(routesPosition[routesPosition.Count-2], routesPosition[routesPosition.Count - 1], coroutineNumber, frame));
+        }
+        lastRoutesPositionCount = routesPosition.Count; 
         if(memorying&&Input.GetMouseButtonDown(1))
         {
             routes.Clear();
@@ -68,7 +79,7 @@ public class SpecifyingDeliveryRoutes : Map
     public void MemoryStart()
     {
         memorying = true;
-        StartCoroutine(coroutine);
+        StartCoroutine(Directions());
     }
 
     public void MemoryEnd(int widthPositionID, int heightPositionID, int objectID)
@@ -123,7 +134,6 @@ public class SpecifyingDeliveryRoutes : Map
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
         foreach(GameObject obj in objs)
         {
-            StopCoroutine(coroutine);
             Destroy(obj);
         }
 
@@ -137,54 +147,81 @@ public class SpecifyingDeliveryRoutes : Map
 
     IEnumerator Directions()
     {
-        if(routesPosition.Count>0)
+        yield return null;
+        Debug.Log("Function(Directions)‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·");
+        if (routesPosition.Count > 1)
         {
-            GameObject obj = Instantiate(move, routesPosition[0], Quaternion.identity);
-            for (int i = 0; i < routesPosition.Count; i++)
+            Debug.Log("Count"+routesPosition.Count);
+            for (int i = 0; i<routesPosition.Count - 1; i++)
             {
-                float dist = Mathf.Abs(routesPosition[i].magnitude - obj.transform.position.magnitude);
-                while (dist > 0.005f)
-                {
-                    if(routesPosition.Count==0)
-                    {
-                        break;
-                    }
-                    Vector3 dir = (routesPosition[i] - obj.transform.position).normalized;
-                    if (dir.x == 1)
-                    {
-                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
-                    }
-                    if (dir.x == -1)
-                    {
-                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
-                    }
-                    if (dir.y == 1)
-                    {
-                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
-                    }
-                    if (dir.y == -1)
-                    {
-                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                    }
-                    Vector2 vec = obj.transform.position + dir * Time.deltaTime;
-                    dist = Mathf.Abs(routesPosition[i].magnitude - obj.transform.position.magnitude);
-                    obj.transform.position = vec * speed;
-                    yield return null;
-                }
-                if (routesPosition.Count>i) obj.transform.position = routesPosition[i];
+                Debug.Log("Debug");
+                coroutineNumber++;
+                frame=0;
+                StartCoroutine(Move(routesPosition[i], routesPosition[i + 1],coroutineNumber,frame));
+                Debug.Log(frame);
             }
-            if(obj!=null)Destroy(obj);
         }
-        
+        else
+        {
+            StartCoroutine(Directions());
+        }
+       
     }
 
-    IEnumerator DirectionsCreate()
+    IEnumerator Move(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount)
     {
-        while(true)
+        
+        Debug.Log("Move‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·");
+        GameObject obj = Instantiate(move, startPosition, Quaternion.identity);
+        float dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
+        for (int i = 0; i < frameCount; i++)
         {
-            yield return new WaitForSeconds(distance);
-            if(routesPosition.Count>0)StartCoroutine(Directions());
+            Vector3 dir = (endPosition - obj.transform.position).normalized;
+            Vector2 vec = obj.transform.position + dir * Time.deltaTime;
+            dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
+            obj.transform.position = vec * speed;
         }
+        while (dist > 0.05f)
+        {
+                if (routesPosition.Count == 0||obj==null)
+                {
+                    break;
+                }
+                Vector3 dir = (endPosition - obj.transform.position).normalized;
+                if (dir.x == 1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                }
+                if (dir.x == -1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                }
+                if (dir.y == 1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                }
+                if (dir.y == -1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                }
+                Vector2 vec = obj.transform.position + dir * Time.deltaTime;
+                dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
+                obj.transform.position = vec * speed;
+                yield return null;
+        }
+        Destroy(obj);
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
+        if (coroutineID == 1)
+        {
+            coroutineNumber = 0;
+            StartCoroutine(Directions());
+        }
+        foreach (GameObject arrow in objs)
+        {
+            Destroy(arrow);
+        }
+        if (obj != null) Destroy(obj);
+        
     }
 
 
