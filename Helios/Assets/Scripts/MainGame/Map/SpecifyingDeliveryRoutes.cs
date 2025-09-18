@@ -148,17 +148,13 @@ public class SpecifyingDeliveryRoutes : Map
     IEnumerator Directions()
     {
         yield return null;
-        Debug.Log("Function(Directions)‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·");
         if (routesPosition.Count > 1)
         {
-            Debug.Log("Count"+routesPosition.Count);
             for (int i = 0; i<routesPosition.Count - 1; i++)
             {
-                Debug.Log("Debug");
                 coroutineNumber++;
                 frame=0;
                 StartCoroutine(Move(routesPosition[i], routesPosition[i + 1],coroutineNumber,frame));
-                Debug.Log(frame);
             }
         }
         else
@@ -167,11 +163,10 @@ public class SpecifyingDeliveryRoutes : Map
         }
        
     }
-
+    
     IEnumerator Move(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount)
     {
-        
-        Debug.Log("Move‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·");
+        float lastDist = 0;
         GameObject obj = Instantiate(move, startPosition, Quaternion.identity);
         float dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
         for (int i = 0; i < frameCount; i++)
@@ -181,30 +176,41 @@ public class SpecifyingDeliveryRoutes : Map
             dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
             obj.transform.position = vec * speed;
         }
-        while (dist > 0.05f)
+        int lastX=0;
+        int lastY=0;
+        while (dist>0.001f)
         {
-                if (routesPosition.Count == 0||obj==null)
+            if (routesPosition.Count == 0||obj==null)
                 {
                     break;
                 }
                 Vector3 dir = (endPosition - obj.transform.position).normalized;
                 if (dir.x == 1)
                 {
+                    if(lastX==-1)break;
+                    lastX = 1;
                     obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                 }
                 if (dir.x == -1)
                 {
+                    if(lastX==1)break;
+                    lastX=-1;
                     obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
                 }
                 if (dir.y == 1)
                 {
+                    if(lastY==-1)break;
+                    lastY=1;
                     obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
                 }
                 if (dir.y == -1)
                 {
+                    if(lastY==1)break;
+                    lastY=-1;
                     obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 }
                 Vector2 vec = obj.transform.position + dir * Time.deltaTime;
+                lastDist=dist;
                 dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
                 obj.transform.position = vec * speed;
                 yield return null;
