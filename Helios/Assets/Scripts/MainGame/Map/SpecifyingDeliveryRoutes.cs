@@ -57,6 +57,7 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void MemoryRoute(int widthPositionID,int heightPositionID,int objectID,GameObject obj,Vector3 position)
     {
+        if (!Input.GetMouseButton(0)) return;
         if(!memorying||!writing)return;
         int[] positionID = new int[2];
         positionID[0] = widthPositionID;
@@ -88,16 +89,16 @@ public class SpecifyingDeliveryRoutes : Map
         StartCoroutine(Directions());
     }
 
-    public void MemoryEnd(int widthPositionID, int heightPositionID, int objectID)
+    public void MemoryEnd()
     {
         
-        int[] positionID = new int[2];
-        positionID[0] = widthPositionID;
-        positionID[1] = heightPositionID;
-        if (!NearCheck(routes,positionID))
-        {
-            return;
-        }
+        //int[] positionID = new int[2];
+        //positionID[0] = widthPositionID;
+        //positionID[1] = heightPositionID;
+        //if (!NearCheck(routes,positionID))
+        //{
+        //    return;
+        //}
         memorying = false;
         StartCoroutine(DriverMove());
     }
