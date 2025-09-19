@@ -40,7 +40,7 @@ public class MapObjectReturnName : EventSet
                 {
                     if(sDR.Memorying)
                     {
-                        sDR.MemoryEnd(widthPositionID, heightPositionID, objectID);
+                       // sDR.MemoryEnd(widthPositionID, heightPositionID, objectID);
                     }
                    
                 }
