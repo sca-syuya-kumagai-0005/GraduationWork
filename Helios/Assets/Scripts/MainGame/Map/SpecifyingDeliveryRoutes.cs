@@ -9,7 +9,7 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] List<Vector3> routesPosition = new List<Vector3>();
     [SerializeField] List<GameObject> passedObjects = new List<GameObject>();
     [SerializeField] GameObject move;
-    bool memorying = false;
+    [SerializeField] bool memorying = false;
     public bool Memorying { get { return memorying; } }
     GameObject deliveryItem;
     public GameObject DeliveryItem{set{ deliveryItem = value; }}
@@ -20,12 +20,17 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField]int coroutineNumber;
     int lastRoutesPositionCount;
     [SerializeField]int frame = 0;
+    [SerializeField]bool writing;
+    [SerializeField] bool dliverSet = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         coroutineNumber = 0;
         lastRoutesPositionCount = 0;
         driver = this.gameObject;
+        writing = false;
+        memorying = false;
+        dliverSet = false;
         line = GetComponent<LineRenderer>();
     }
 
@@ -52,13 +57,13 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void MemoryRoute(int widthPositionID,int heightPositionID,int objectID,GameObject obj,Vector3 position)
     {
-        
-        if(!memorying)return;
+        if(!memorying||!writing)return;
         int[] positionID = new int[2];
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
         if (objectID == 0&&routes.Count==0)
         {
+            Debug.Log("routes.Count="+routes.Count);
             routes.Add(positionID);
             routesPosition.Add(position);
             passedObjects.Add(obj);
@@ -78,12 +83,14 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void MemoryStart()
     {
+        if(!writing||!dliverSet) { return;}
         memorying = true;
         StartCoroutine(Directions());
     }
 
     public void MemoryEnd(int widthPositionID, int heightPositionID, int objectID)
     {
+        
         int[] positionID = new int[2];
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
@@ -97,14 +104,15 @@ public class SpecifyingDeliveryRoutes : Map
 
     private bool NearCheck(List<int[]> list, int[] positionID)
     {
-        return Mathf.Abs(routes[routes.Count - 1][0] - positionID[0]) <= 1 && Mathf.Abs(routes[routes.Count - 1][1] - positionID[1]) <= 1 && Mathf.Abs(routes[routes.Count - 1][1] - positionID[1])!= Mathf.Abs(routes[routes.Count - 1][0] - positionID[0]);
+        Debug.Log(positionID.Length);
+        Debug.Log(list.Count);
+        return Mathf.Abs(list[list.Count - 1][0] - positionID[0]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1])!= Mathf.Abs(list[list.Count - 1][0] - positionID[0]);
     }
 
     private IEnumerator DriverMove()
     {
         for(int i=0;i<routesPosition.Count;i++)
         {
-          
             float dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
             while (dist>0.05f)
             {
@@ -229,6 +237,20 @@ public class SpecifyingDeliveryRoutes : Map
         if (obj != null) Destroy(obj);
         
     }
+    public void Writing()
+    {
+        writing = !writing;
+    }
 
+
+    public void DliverSeting()
+    {
+        if (!writing)
+        {
+            dliverSet = false;
+            return;
+        }
+        dliverSet = !dliverSet;
+    }
 
 }
