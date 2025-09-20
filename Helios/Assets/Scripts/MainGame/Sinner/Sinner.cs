@@ -51,7 +51,8 @@ public class Sinner : EventSet
     protected int deliveryCount;
     protected int damege;
     protected ResidenceCertificate residenceCertificate;
-    protected Moods[] deliveryItems = new Moods[8]; 
+    protected Moods[] deliveryItems = new Moods[8];
+    public int GiveDeliveryItem { set { mood = (Moods)value; } }
     private void Awake()
     {
         residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
@@ -75,7 +76,6 @@ public class Sinner : EventSet
         Debug.Log("SECURE:" + secureClass + "\nLISK:" + liskClass);
         residenceCertificate.gameObject.SetActive(true);
     }
-
     protected EmergencyPhase Lottery()
     {
         EmergencyPhase phase = EmergencyPhase.First;
@@ -105,5 +105,4 @@ public class Sinner : EventSet
         }
         return phase;
     }
-
 }

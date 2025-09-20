@@ -26,5 +26,21 @@ public class DeliveryButton : EventSet
     private void OnClick()
     {
         Debug.Log(myButtonType+"Button" + myButtonID + ":クリック");
+        switch (myButtonType)
+        {
+            case ButtonType.Item:
+                {
+                    //配達物を渡すSetter呼び出し
+                }
+                break;
+
+            case ButtonType.Process:
+                {
+                    //対応するトラックを起動
+                }
+                break;
+        }
     }
+
+
 }
