@@ -5,56 +5,77 @@ using System.Collections;
 //これは配達者につけるscriptです。
 public class SpecifyingDeliveryRoutes : Map
 {
-    [SerializeField] List<int[]> routes = new List<int[]>();
-    [SerializeField] List<Vector3> routesPosition = new List<Vector3>();
-    [SerializeField] List<GameObject> passedObjects = new List<GameObject>();
+    List<int[]>[] routes = new List<int[]>[3];
+    List<Vector3>[] routesPosition = new List<Vector3>[3];
+    List<GameObject>[] passedObjects = new List<GameObject>[3];
     [SerializeField] GameObject move;
     [SerializeField] bool memorying = false;
     public bool Memorying { get { return memorying; } }
     int deliveryItem;
     public int DeliveryItem{set{ deliveryItem = value; }}
-    GameObject driver;
+    [SerializeField]GameObject[] driver;
     [SerializeField]float speed;
-    LineRenderer line;
+    LineRenderer[] line = new LineRenderer[3];
     [SerializeField] float distance;
     [SerializeField]int coroutineNumber;
     int lastRoutesPositionCount;
     [SerializeField] int frame = 0;
     [SerializeField] bool writing;
     [SerializeField] bool driverSet = false;
-    int driverType;
+    [SerializeField]int driverType;
+    [SerializeField]int lastdriverType;
     public int DriverType { set { driverType = value;} }
+    [SerializeField]bool[] delivering = new bool[3];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        for(int i=0;i<3;i++)
+        {
+            routes[i]=new List<int[]>();
+            routesPosition[i] = new List<Vector3>();
+            passedObjects[i] = new List<GameObject>();
+        }
         coroutineNumber = 0;
         lastRoutesPositionCount = 0;
-        driver = this.gameObject;
         writing = false;
         memorying = false;
         driverSet = false;
-        line = GetComponent<LineRenderer>();
+        for(int i=0;i<driver.Length;i++)
+        {
+            line[i] = driver[i].GetComponent<LineRenderer>();
+        }
+      
+        for(int i = 0;i<delivering.Length;i++)
+        {
+            delivering[i] = false;  
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(lastdriverType!=driverType)
+        {
+            lastRoutesPositionCount = 0;
+            memorying=false;
+        }
+        lastdriverType = driverType;
         frame++;
-        if (lastRoutesPositionCount != routesPosition.Count&&routesPosition.Count>1)
+        //Debug.Log(routesPosition[driverType][routesPosition[driverType].Count]);
+        if (lastRoutesPositionCount != routesPosition[driverType].Count&&routesPosition[driverType].Count>1)
         {
-            Debug.Log("追加で呼びます");
             coroutineNumber++;
-            StartCoroutine(Move(routesPosition[routesPosition.Count-2], routesPosition[routesPosition.Count - 1], coroutineNumber, frame));
+            StartCoroutine(Move(routesPosition[driverType][routesPosition[driverType].Count - 2], routesPosition[driverType][routesPosition[driverType].Count - 1], coroutineNumber, frame));
         }
-        lastRoutesPositionCount = routesPosition.Count; 
-        if(memorying&&Input.GetMouseButtonDown(1))
-        {
-            routes.Clear();
-            routesPosition.Clear();
-            passedObjects.Clear();
-            memorying = false;
-            line.positionCount=0;
-        }
+        lastRoutesPositionCount = routesPosition[driverType].Count; 
+        //if(memorying&&Input.GetMouseButtonDown(1))
+        //{
+        //    routes.Clear();
+        //    routesPosition.Clear();
+        //    passedObjects.Clear();
+        //    memorying = false;
+        //    line.positionCount=0;
+        //}
     }
 
     public void MemoryRoute(int widthPositionID,int heightPositionID,int objectID,GameObject obj,Vector3 position)
@@ -64,22 +85,21 @@ public class SpecifyingDeliveryRoutes : Map
         int[] positionID = new int[2];
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
-        if (objectID == 0&&routes.Count==0)
+        if (objectID == 0 && routes[driverType].Count==0)
         {
-            Debug.Log("routes.Count="+routes.Count);
-            routes.Add(positionID);
-            routesPosition.Add(position);
-            passedObjects.Add(obj);
-            line.positionCount++;
-            line.SetPosition(line.positionCount-1,position);
+            routes[driverType].Add(positionID);
+            routesPosition[driverType].Add(position);
+            passedObjects[driverType].Add(obj);
+            line[driverType].positionCount++;
+            line[driverType].SetPosition(line[driverType].positionCount-1,position);
         }
-        if (NearCheck(routes,positionID))//なぞったオブジェクトが前のオブジェクトと隣接しているなら
+        if (NearCheck(routes[driverType],positionID))//なぞったオブジェクトが前のオブジェクトと隣接しているなら
         {
-            routes.Add(positionID);
-            routesPosition.Add(position);
-            passedObjects.Add(obj);
-            line.positionCount++;
-            line.SetPosition(line.positionCount - 1, position);
+            routes[driverType].Add(positionID);
+            routesPosition[driverType].Add(position);
+            passedObjects[driverType].Add(obj);
+            line[driverType].positionCount++;
+            line[driverType].SetPosition(line[driverType].positionCount - 1, position);
         }
        
     }
@@ -102,7 +122,12 @@ public class SpecifyingDeliveryRoutes : Map
         //    return;
         //}
         memorying = false;
-        StartCoroutine(DriverMove());
+        writing = false;    
+    }
+
+    public void StartDriver()
+    {
+        StartCoroutine(DriverMove(1));//後でdriverTypeを引き数として渡す
     }
 
     private bool NearCheck(List<int[]> list, int[] positionID)
@@ -112,45 +137,46 @@ public class SpecifyingDeliveryRoutes : Map
         return Mathf.Abs(list[list.Count - 1][0] - positionID[0]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1])!= Mathf.Abs(list[list.Count - 1][0] - positionID[0]);
     }
 
-    private IEnumerator DriverMove()
+    private IEnumerator DriverMove(int objID)
     {
-        for(int i=0;i<routesPosition.Count;i++)
+        GameObject obj = driver[objID];
+        for (int i=0;i<routesPosition[driverType].Count;i++)
         {
-            float dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
+            float dist = Mathf.Abs(routesPosition[i][driverType].magnitude - obj.transform.position.magnitude);
             while (dist>0.05f)
             {
-                Vector3 dir = (routesPosition[i] - driver.transform.position).normalized;
-                Vector2 vec = driver.transform.position+dir*Time.deltaTime;
-                dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
-                driver.transform.position = vec*speed;
+                Vector3 dir = (routesPosition[i][driverType] - obj.transform.position).normalized;
+                Vector2 vec = obj.transform.position+dir*Time.deltaTime;
+                dist = Mathf.Abs(routesPosition[i][driverType].magnitude - obj.transform.position.magnitude);
+                obj.transform.position = vec*speed;
                 yield return null;
             }
-            driver.transform.position = routesPosition[i];
+            obj.transform.position = routesPosition[i][driverType];
         }
         yield return new WaitForSeconds(2f);
-        for (int i = routesPosition.Count-1; i >=0; i--)
+        for (int i = routesPosition[driverType].Count-1; i >=0; i--)
         {
            
-            float dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
+            float dist = Mathf.Abs(routesPosition[i][driverType].magnitude - obj.transform.position.magnitude);
             while (dist > 0.05f)
             {
-                Vector3 dir = (routesPosition[i] - driver.transform.position).normalized;
-                Vector2 vec = driver.transform.position + dir * Time.deltaTime;
-                dist = Mathf.Abs(routesPosition[i].magnitude - driver.transform.position.magnitude);
-                driver.transform.position = vec*speed;
+                Vector3 dir = (routesPosition[i][driverType] - obj.transform.position).normalized;
+                Vector2 vec = obj.transform.position + dir * Time.deltaTime;
+                dist = Mathf.Abs(routesPosition[i][driverType].magnitude - obj.transform.position.magnitude);
+                obj.transform.position = vec*speed;
                 yield return null;
             }
-            driver.transform.position = routesPosition[i];
+            obj.transform.position = routesPosition[i][driverType];
         }
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
-        foreach(GameObject obj in objs)
+        foreach(GameObject o in objs)
         {
-            Destroy(obj);
+            Destroy(o);
         }
 
-        routes = new List<int[]>();
-        routesPosition = new List<Vector3>();
-        line.positionCount=0;
+        routes[driverType] = new List<int[]>();
+        routesPosition[driverType] = new List<Vector3>();
+        line[driverType].positionCount=0;
         yield return null;
 
     }
@@ -159,13 +185,13 @@ public class SpecifyingDeliveryRoutes : Map
     IEnumerator Directions()
     {
         yield return null;
-        if (routesPosition.Count > 1)
+        if (routesPosition[driverType].Count > 1)
         {
-            for (int i = 0; i<routesPosition.Count - 1; i++)
+            for (int i = 0; i<routesPosition[driverType].Count - 1; i++)
             {
                 coroutineNumber++;
                 frame=0;
-                StartCoroutine(Move(routesPosition[i], routesPosition[i + 1],coroutineNumber,frame));
+                StartCoroutine(Move(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber,frame));
             }
         }
         else
@@ -178,7 +204,7 @@ public class SpecifyingDeliveryRoutes : Map
     IEnumerator Move(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount)
     {
         float lastDist = 0;
-        GameObject obj = Instantiate(move, startPosition, Quaternion.identity);
+        GameObject obj = Instantiate(move, startPosition,Quaternion.identity);
         float dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
         for (int i = 0; i < frameCount; i++)
         {
@@ -191,7 +217,7 @@ public class SpecifyingDeliveryRoutes : Map
         int lastY=0;
         while (dist>0.001f)
         {
-            if (routesPosition.Count == 0||obj==null)
+            if (routesPosition[driverType].Count == 0||obj==null)
                 {
                     break;
                 }
