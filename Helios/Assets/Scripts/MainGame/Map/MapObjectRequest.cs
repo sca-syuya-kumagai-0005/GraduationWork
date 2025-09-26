@@ -13,7 +13,7 @@ public class MapObjectReturnName : EventSet
         objectID = int.Parse(objectInfo[0]);
         widthPositionID = int.Parse(objectInfo[1]);
         heightPositionID = int.Parse(objectInfo[2]);
-        sDR = GameObject.Find("DeliveryDriver").GetComponent<SpecifyingDeliveryRoutes>();
+        sDR = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
         //switch ()
         SetEventType(down,PointerDown);
         SetEventType(enter,PointerEnter);
