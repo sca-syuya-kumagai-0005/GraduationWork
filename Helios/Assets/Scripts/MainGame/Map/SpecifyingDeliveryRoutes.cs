@@ -11,17 +11,19 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] GameObject move;
     [SerializeField] bool memorying = false;
     public bool Memorying { get { return memorying; } }
-    GameObject deliveryItem;
-    public GameObject DeliveryItem{set{ deliveryItem = value; }}
+    int deliveryItem;
+    public int DeliveryItem{set{ deliveryItem = value; }}
     GameObject driver;
     [SerializeField]float speed;
     LineRenderer line;
     [SerializeField] float distance;
     [SerializeField]int coroutineNumber;
     int lastRoutesPositionCount;
-    [SerializeField]int frame = 0;
-    [SerializeField]bool writing;
-    [SerializeField] bool dliverSet = false;
+    [SerializeField] int frame = 0;
+    [SerializeField] bool writing;
+    [SerializeField] bool driverSet = false;
+    int driverType:
+    public int DriverType { set { driverType = value;} }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,7 +32,7 @@ public class SpecifyingDeliveryRoutes : Map
         driver = this.gameObject;
         writing = false;
         memorying = false;
-        dliverSet = false;
+        driverSet = false;
         line = GetComponent<LineRenderer>();
     }
 
@@ -84,7 +86,7 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void MemoryStart()
     {
-        if(!writing||!dliverSet) { return;}
+        if(!writing||!driverSet) { return;}
         memorying = true;
         StartCoroutine(Directions());
     }
@@ -248,10 +250,10 @@ public class SpecifyingDeliveryRoutes : Map
     {
         if (!writing)
         {
-            dliverSet = false;
+            driverSet = false;
             return;
         }
-        dliverSet = !dliverSet;
+        driverSet = !driverSet;
     }
 
 }
