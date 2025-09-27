@@ -127,7 +127,8 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void StartDriver()
     {
-        StartCoroutine(DriverMove(1));//Œã‚ÅdriverType‚ğˆø‚«”‚Æ‚µ‚Ä“n‚·
+        Debug.Log("start");
+        StartCoroutine(DriverMove(driverType));//Œã‚ÅdriverType‚ğˆø‚«”‚Æ‚µ‚Ä“n‚·
     }
 
     private bool NearCheck(List<int[]> list, int[] positionID)
@@ -142,31 +143,31 @@ public class SpecifyingDeliveryRoutes : Map
         GameObject obj = driver[objID];
         for (int i=0;i<routesPosition[driverType].Count;i++)
         {
-            float dist = Mathf.Abs(routesPosition[i][driverType].magnitude - obj.transform.position.magnitude);
+            float dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
             while (dist>0.05f)
             {
-                Vector3 dir = (routesPosition[i][driverType] - obj.transform.position).normalized;
+                Vector3 dir = (routesPosition[driverType][i] - obj.transform.position).normalized;
                 Vector2 vec = obj.transform.position+dir*Time.deltaTime;
-                dist = Mathf.Abs(routesPosition[i][driverType].magnitude - obj.transform.position.magnitude);
+                dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
                 obj.transform.position = vec*speed;
                 yield return null;
             }
-            obj.transform.position = routesPosition[i][driverType];
+            obj.transform.position = routesPosition[driverType][i];
         }
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverType].Count-1; i >=0; i--)
         {
            
-            float dist = Mathf.Abs(routesPosition[i][driverType].magnitude - obj.transform.position.magnitude);
+            float dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
             while (dist > 0.05f)
             {
-                Vector3 dir = (routesPosition[i][driverType] - obj.transform.position).normalized;
+                Vector3 dir = (routesPosition[driverType][i]- obj.transform.position).normalized;
                 Vector2 vec = obj.transform.position + dir * Time.deltaTime;
-                dist = Mathf.Abs(routesPosition[i][driverType].magnitude - obj.transform.position.magnitude);
+                dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
                 obj.transform.position = vec*speed;
                 yield return null;
             }
-            obj.transform.position = routesPosition[i][driverType];
+            obj.transform.position = routesPosition[driverType][i];
         }
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
         foreach(GameObject o in objs)
