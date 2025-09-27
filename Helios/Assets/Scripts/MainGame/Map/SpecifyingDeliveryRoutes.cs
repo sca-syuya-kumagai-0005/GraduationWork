@@ -66,17 +66,29 @@ public class SpecifyingDeliveryRoutes : Map
         if (lastRoutesPositionCount != routesPosition[driverType].Count&&routesPosition[driverType].Count>1)
         {
             coroutineNumber++;
-            StartCoroutine(Move(routesPosition[driverType][routesPosition[driverType].Count - 2], routesPosition[driverType][routesPosition[driverType].Count - 1], coroutineNumber, frame));
+            StartCoroutine(ArrowMove(routesPosition[driverType][routesPosition[driverType].Count - 2], routesPosition[driverType][routesPosition[driverType].Count - 1], coroutineNumber, frame));
         }
-        lastRoutesPositionCount = routesPosition[driverType].Count; 
-        //if(memorying&&Input.GetMouseButtonDown(1))
-        //{
-        //    routes.Clear();
-        //    routesPosition.Clear();
-        //    passedObjects.Clear();
-        //    memorying = false;
-        //    line.positionCount=0;
-        //}
+        lastRoutesPositionCount = routesPosition[driverType].Count;
+        if (Input.GetMouseButtonDown(1) && routes[driverType].Count>0)
+        {
+            routes[driverType].RemoveAt(routes[driverType].Count-1);
+            routesPosition[driverType].RemoveAt(routes[driverType].Count - 1);
+            passedObjects[driverType].RemoveAt(routes[driverType].Count - 1);
+            GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
+            line[driverType].positionCount--;
+            coroutineNumber = 0;
+            foreach (GameObject o in objs)
+            {
+                Destroy(o);
+            }
+            for (int i = 0; i < routesPosition[driverType].Count - 1; i++)
+            {
+                coroutineNumber++;
+                StartCoroutine(ArrowMove(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber, frame));
+                
+            }
+          
+        }
     }
 
     public void MemoryRoute(int widthPositionID,int heightPositionID,int objectID,GameObject obj,Vector3 position)
@@ -197,7 +209,7 @@ public class SpecifyingDeliveryRoutes : Map
             {
                 coroutineNumber++;
                 frame=0;
-                StartCoroutine(Move(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber,frame));
+                StartCoroutine(ArrowMove(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber,frame));
             }
         }
         else
@@ -207,7 +219,7 @@ public class SpecifyingDeliveryRoutes : Map
        
     }
     
-    IEnumerator Move(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount)
+    IEnumerator ArrowMove(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount)
     {
         float lastDist = 0;
         GameObject obj = Instantiate(move, startPosition,Quaternion.identity);
