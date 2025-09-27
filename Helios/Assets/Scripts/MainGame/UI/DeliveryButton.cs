@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+//　9/27 熊谷追加
 public class DeliveryButton : EventSet
 {
     private int myButtonID;
@@ -9,12 +11,21 @@ public class DeliveryButton : EventSet
         Item,
         Process
     }
+    SpecifyingDeliveryRoutes sDR;
+    const string driverTag = "Drivers";
     private ButtonType myButtonType;
     public ButtonType SetButtonType { set {  myButtonType = value; } }
+
+    void Awake()
+    {
+        GameObject obj = GameObject.Find(driverTag).gameObject;
+        sDR = obj.GetComponent<SpecifyingDeliveryRoutes>();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         SetEventType(down, OnClick);
+
     }
 
     // Update is called once per frame
@@ -36,14 +47,7 @@ public class DeliveryButton : EventSet
 
             case ButtonType.Process:
                 {
-                    switch(myButtonID)
-                    {
-                        case 0:
-                            {
-
-                            }
-                            break;
-                    }
+                    sDR.DriverSetting(myButtonID);
                     //対応するトラックを起動
                 }
                 break;

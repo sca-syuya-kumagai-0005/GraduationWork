@@ -5,9 +5,10 @@ using System.Collections;
 //Ç±ÇÍÇÕîzíBé“Ç…Ç¬ÇØÇÈscriptÇ≈Ç∑ÅB
 public class SpecifyingDeliveryRoutes : Map
 {
-    List<int[]>[] routes = new List<int[]>[3];
-    List<Vector3>[] routesPosition = new List<Vector3>[3];
-    List<GameObject>[] passedObjects = new List<GameObject>[3];
+    const int driverCount = 3;
+    List<int[]>[] routes = new List<int[]>[driverCount];
+    List<Vector3>[] routesPosition = new List<Vector3>[driverCount];
+    List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
     [SerializeField] GameObject move;
     [SerializeField] bool memorying = false;
     public bool Memorying { get { return memorying; } }
@@ -15,21 +16,21 @@ public class SpecifyingDeliveryRoutes : Map
     public int DeliveryItem{set{ deliveryItem = value; }}
     [SerializeField]GameObject[] driver;
     [SerializeField]float speed;
-    LineRenderer[] line = new LineRenderer[3];
+    LineRenderer[] line = new LineRenderer[driverCount];
     [SerializeField] float distance;
     [SerializeField]int coroutineNumber;
     int lastRoutesPositionCount;
     [SerializeField] int frame = 0;
     [SerializeField] bool writing;
     [SerializeField] bool driverSet = false;
-    [SerializeField]int driverType;
-    [SerializeField]int lastdriverType;
+    [SerializeField] int driverType;
+    [SerializeField] int lastdriverType;
     public int DriverType { set { driverType = value;} }
-    [SerializeField]bool[] delivering = new bool[3];
+    [SerializeField]bool[] delivering = new bool[driverCount];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for(int i=0;i<3;i++)
+        for(int i=0;i<driverCount;i++)
         {
             routes[i]=new List<int[]>();
             routesPosition[i] = new List<Vector3>();
@@ -82,9 +83,11 @@ public class SpecifyingDeliveryRoutes : Map
     {
         if (!Input.GetMouseButton(0)) return;
         if(!memorying||!writing)return;
-        int[] positionID = new int[2];
+        int[] positionID = new int[2];//xÇ∆zÇ≈ìÒÇ¬
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
+        Debug.Log(objectID);
+        Debug.Log(routes[driverType].Count);
         if (objectID == 0 && routes[driverType].Count==0)
         {
             routes[driverType].Add(positionID);
@@ -121,8 +124,7 @@ public class SpecifyingDeliveryRoutes : Map
         //{
         //    return;
         //}
-        memorying = false;
-        writing = false;    
+          
     }
 
     public void StartDriver()
@@ -178,6 +180,9 @@ public class SpecifyingDeliveryRoutes : Map
         routes[driverType] = new List<int[]>();
         routesPosition[driverType] = new List<Vector3>();
         line[driverType].positionCount=0;
+        memorying = false;
+        writing = false;
+        driverSet = false;
         yield return null;
 
     }
@@ -273,7 +278,7 @@ public class SpecifyingDeliveryRoutes : Map
     }
 
 
-    public void DliverSeting()
+    public void DriverSetting(int driverType)
     {
         if (!writing)
         {
