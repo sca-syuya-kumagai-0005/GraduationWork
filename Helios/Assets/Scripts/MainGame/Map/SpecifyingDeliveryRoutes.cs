@@ -22,8 +22,8 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] int frame = 0;
     [SerializeField] bool writing;
     [SerializeField] bool driverSet = false;
-    [SerializeField]int driverType;
-    [SerializeField]int lastdriverType;
+    [SerializeField] int driverType;
+    [SerializeField] int lastdriverType;
     public int DriverType { set { driverType = value;} }
     [SerializeField]bool[] delivering = new bool[3];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -273,7 +273,7 @@ public class SpecifyingDeliveryRoutes : Map
     }
 
 
-    public void DliverSeting()
+    public void DriverSetting(int driverType)
     {
         if (!writing)
         {
