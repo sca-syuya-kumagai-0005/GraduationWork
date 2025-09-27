@@ -36,6 +36,14 @@ public class DeliveryButton : EventSet
 
             case ButtonType.Process:
                 {
+                    switch(myButtonID)
+                    {
+                        case 0:
+                            {
+
+                            }
+                            break;
+                    }
                     //対応するトラックを起動
                 }
                 break;
