@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+//ã€€9/27 ç†Šè°·è¿½åŠ 
 public class DeliveryButton : EventSet
 {
     private int myButtonID;
@@ -9,16 +11,24 @@ public class DeliveryButton : EventSet
         Item,
         Process
     }
+    SpecifyingDeliveryRoutes sDR;
+    const string driverTag = "Drivers";
     private ButtonType myButtonType;
     public ButtonType SetButtonType { set {  myButtonType = value; } }
 
     [SerializeField] GameObject drivers;
     private SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
+    void Awake()
+    {
+        GameObject obj = GameObject.Find(driverTag).gameObject;
+        sDR = obj.GetComponent<SpecifyingDeliveryRoutes>();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         specifyingDeliveryRoutes = GameObject.Find(drivers.name).GetComponent<SpecifyingDeliveryRoutes>();
         SetEventType(down, OnClick);
+
     }
 
     // Update is called once per frame
@@ -29,20 +39,21 @@ public class DeliveryButton : EventSet
 
     private void OnClick()
     {
-        Debug.Log(myButtonType+"Button" + myButtonID + ":ƒNƒŠƒbƒN");
+        Debug.Log(myButtonType+"Button" + myButtonID + ":ã‚¯ãƒªãƒƒã‚¯");
         switch (myButtonType)
         {
             case ButtonType.Item:
                 {
-                    //‘I‘ğ‚³‚ê‚½”z’B•¨‚ğSet
+                    //é¸æŠã•ã‚ŒãŸé…é”ç‰©ã‚’Set
                     specifyingDeliveryRoutes.DeliveryItem = myButtonID;
                 }
                 break;
 
             case ButtonType.Process:
                 {
-                    //‘Î‰‚·‚éƒŒ[ƒ“‚ğ‹N“®A”z’B•û–@‚ğSet
-                    specifyingDeliveryRoutes.DriverType = (int)myButtonType;
+                    //å¯¾å¿œã™ã‚‹ãƒ¬ãƒ¼ãƒ³ã‚’èµ·å‹•ã€é…é”æ–¹æ³•ã‚’Set
+                    sDR.DriverSetting(myButtonID);
+                    //å¯¾å¿œã™ã‚‹ãƒˆãƒ©ãƒƒã‚¯ã‚’èµ·å‹•
                 }
                 break;
         }
