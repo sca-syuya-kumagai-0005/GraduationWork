@@ -11,9 +11,13 @@ public class DeliveryButton : EventSet
     }
     private ButtonType myButtonType;
     public ButtonType SetButtonType { set {  myButtonType = value; } }
+
+    [SerializeField] GameObject drivers;
+    private SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        specifyingDeliveryRoutes = GameObject.Find(drivers.name).GetComponent<SpecifyingDeliveryRoutes>();
         SetEventType(down, OnClick);
     }
 
@@ -30,13 +34,15 @@ public class DeliveryButton : EventSet
         {
             case ButtonType.Item:
                 {
-                    //配達物を渡すSetter呼び出し
+                    //選択された配達物をSet
+                    specifyingDeliveryRoutes.DeliveryItem = myButtonID;
                 }
                 break;
 
             case ButtonType.Process:
                 {
-                    //対応するトラックを起動
+                    //対応するレーンを起動、配達方法をSet
+                    specifyingDeliveryRoutes.DriverType = (int)myButtonType;
                 }
                 break;
         }

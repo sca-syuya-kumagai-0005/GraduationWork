@@ -52,6 +52,10 @@ public class Sinner : EventSet
     protected int damege;
     protected ResidenceCertificate residenceCertificate;
     protected Moods[] deliveryItems = new Moods[8];
+
+    /// <summary>
+    /// ”z’Bˆõ‚ªŒš•¨‚É“ž’…‚µ‚½Žž‚ÉŒÄ‚Ô
+    /// </summary>
     public int GiveDeliveryItem { set { mood = (Moods)value; } }
     private void Awake()
     {
