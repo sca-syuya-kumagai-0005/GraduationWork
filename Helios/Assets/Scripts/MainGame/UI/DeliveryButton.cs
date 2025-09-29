@@ -11,24 +11,20 @@ public class DeliveryButton : EventSet
         Item,
         Process
     }
-    SpecifyingDeliveryRoutes sDR;
     const string driverTag = "Drivers";
+    private SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     private ButtonType myButtonType;
     public ButtonType SetButtonType { set {  myButtonType = value; } }
 
-    [SerializeField] GameObject drivers;
-    private SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     void Awake()
     {
-        GameObject obj = GameObject.Find(driverTag).gameObject;
-        sDR = obj.GetComponent<SpecifyingDeliveryRoutes>();
+        specifyingDeliveryRoutes = 
+            GameObject.Find(driverTag).GetComponent<SpecifyingDeliveryRoutes>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        specifyingDeliveryRoutes = GameObject.Find(drivers.name).GetComponent<SpecifyingDeliveryRoutes>();
         SetEventType(down, OnClick);
-
     }
 
     // Update is called once per frame
@@ -52,7 +48,7 @@ public class DeliveryButton : EventSet
             case ButtonType.Process:
                 {
                     //対応するレーンを起動、配達方法をSet
-                    sDR.DriverSetting(myButtonID);
+                    specifyingDeliveryRoutes.DriverSetting(myButtonID);
                     //対応するトラックを起動
                 }
                 break;
