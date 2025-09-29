@@ -46,6 +46,6 @@ public class AnnounceManager : EasingMethods
                 StartCoroutine(announceList[i].GetComponent<Announce>().PushUp());
             }
         }
-        else Debug.Log("通知1つもねーよバーカ");
+        else Debug.Log("通知がありません");
     }
 }
