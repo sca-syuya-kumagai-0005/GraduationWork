@@ -5,15 +5,13 @@ using UnityEngine.UI;
 
 public class Announce : EasingMethods
 {
-    private float positionY;
-    private Vector3 inPosition = new Vector3(0, 0, 0);
-    private Vector3 outPosition = new Vector3(-500.0f,0,0);
+    private const float inPositionX = 0.0f;
+    private const float outPositionX = -500.0f;
     Vector3 defaultPosition;
     bool isPushing = false;
     private void Start()
     {
         defaultPosition = transform.localPosition;
-        positionY = defaultPosition.y;
         StartCoroutine(FadeIn());
     }
 
@@ -29,26 +27,26 @@ public class Announce : EasingMethods
     {
         bool isEnd = false;
         float t = 0.0f;
-        float motionLate = 0.5f;
+        const float motionLate = 0.5f;
         while (!isEnd)
         {
-            float posX = inPosition.x - outPosition.x * EaseOutCirc(t);
+            float posX = inPositionX - outPositionX * EaseOutCirc(t);
             transform.localPosition = defaultPosition + new Vector3(posX, 0, 0);
             if (t > 1.0f) isEnd = true;
             t += (Time.deltaTime / motionLate);
             yield return null;
         }
-        //transform.localPosition = defaultPosition - outPosition;
+        defaultPosition.x = transform.localPosition.x;
     }
     public IEnumerator FadeOut()
     {
         bool isEnd = false;
         float t = 0.0f;
-        float motionLate = 0.25f;
+        const float motionLate = 0.25f;
         while (!isEnd)
         {
-            float posX = outPosition.x * t;
-            transform.localPosition = new Vector3(posX, transform.localPosition.y, 0);
+            float posX = outPositionX * t;
+            transform.localPosition = defaultPosition + new Vector3(posX, 0, 0);
             if (t >= 1.0f) isEnd = true;
             t += Time.deltaTime / motionLate;
             yield return null;
@@ -60,16 +58,18 @@ public class Announce : EasingMethods
         isPushing = true;
         bool isEnd = false;
         float t = 0.0f;
-        float motionLate = 0.5f;
-        float beforePosY = transform.localPosition.y;
+        const float motionLate = 0.5f;
+        const float announceSize = 190.0f;
+        float posY = 0.0f;
         while (!isEnd)
         {
-            float posY = beforePosY + 190.0f * EaseOutCirc(t);
-            transform.localPosition = new Vector3(transform.localPosition.x, posY, 0);
+            posY = announceSize * EaseOutCirc(t);
+            transform.localPosition = defaultPosition + new Vector3(0, posY, 0);
             if (t >= 1.0f) isEnd = true;
             t += Time.deltaTime / motionLate;
             yield return null;
         }
+        defaultPosition.y = defaultPosition.y + posY;
         isPushing = false;
     }
 }
