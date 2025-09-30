@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 
 //Ç±ÇÍÇÕîzíBé“Ç…Ç¬ÇØÇÈscriptÇ≈Ç∑ÅB
 public class SpecifyingDeliveryRoutes : Map
@@ -25,11 +26,16 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] bool driverSet = false;
     [SerializeField] int driverType;
     [SerializeField] int lastdriverType;
+    IEnumerator ienum ;
+    List<Coroutine> coroutine=new List<Coroutine>();
+    bool arrowDelete;
     public int DriverType { set { driverType = value;} }
     [SerializeField]bool[] delivering = new bool[driverCount];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        arrowDelete = false;
+        ienum = Directions();
         for(int i=0;i<driverCount;i++)
         {
             routes[i]=new List<int[]>();
@@ -66,14 +72,18 @@ public class SpecifyingDeliveryRoutes : Map
         if (lastRoutesPositionCount != routesPosition[driverType].Count&&routesPosition[driverType].Count>1)
         {
             coroutineNumber++;
-            StartCoroutine(ArrowMove(routesPosition[driverType][routesPosition[driverType].Count - 2], routesPosition[driverType][routesPosition[driverType].Count - 1], coroutineNumber, frame));
+            coroutine.Clear();
+            coroutine.Add(StartCoroutine(ArrowMove(routesPosition[driverType][routesPosition[driverType].Count - 2], routesPosition[driverType][routesPosition[driverType].Count - 1], coroutineNumber, frame)));
+
         }
         lastRoutesPositionCount = routesPosition[driverType].Count;
         if (Input.GetMouseButtonDown(1) && routes[driverType].Count>0)
         {
+            Debug.Log("count" + routesPosition[driverType][routesPosition[driverType].Count-1]);
+            arrowDelete = true;
             routes[driverType].RemoveAt(routes[driverType].Count-1);
-            routesPosition[driverType].RemoveAt(routes[driverType].Count - 1);
-            passedObjects[driverType].RemoveAt(routes[driverType].Count - 1);
+            routesPosition[driverType].RemoveAt(routesPosition[driverType].Count - 1);
+            passedObjects[driverType].RemoveAt(passedObjects[driverType].Count - 1);
             GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
             line[driverType].positionCount--;
             coroutineNumber = 0;
@@ -84,7 +94,8 @@ public class SpecifyingDeliveryRoutes : Map
             for (int i = 0; i < routesPosition[driverType].Count - 1; i++)
             {
                 coroutineNumber++;
-                StartCoroutine(ArrowMove(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber, frame));
+                coroutine.Clear();
+                coroutine.Add(StartCoroutine(ArrowMove(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber, frame)));
                 
             }
           
@@ -98,8 +109,6 @@ public class SpecifyingDeliveryRoutes : Map
         int[] positionID = new int[2];//xÇ∆zÇ≈ìÒÇ¬
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
-        Debug.Log(objectID);
-        Debug.Log(routes[driverType].Count);
         if (objectID == 0 && routes[driverType].Count==0)
         {
             routes[driverType].Add(positionID);
@@ -147,8 +156,6 @@ public class SpecifyingDeliveryRoutes : Map
 
     private bool NearCheck(List<int[]> list, int[] positionID)
     {
-        Debug.Log(positionID.Length);
-        Debug.Log(list.Count);
         return Mathf.Abs(list[list.Count - 1][0] - positionID[0]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1])!= Mathf.Abs(list[list.Count - 1][0] - positionID[0]);
     }
 
@@ -209,7 +216,8 @@ public class SpecifyingDeliveryRoutes : Map
             {
                 coroutineNumber++;
                 frame=0;
-                StartCoroutine(ArrowMove(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber,frame));
+                coroutine.Clear();
+                coroutine.Add(StartCoroutine(ArrowMove(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber,frame)));
             }
         }
         else
@@ -221,7 +229,6 @@ public class SpecifyingDeliveryRoutes : Map
     
     IEnumerator ArrowMove(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount)
     {
-        float lastDist = 0;
         GameObject obj = Instantiate(move, startPosition,Quaternion.identity);
         float dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
         for (int i = 0; i < frameCount; i++)
@@ -235,8 +242,13 @@ public class SpecifyingDeliveryRoutes : Map
         int lastY=0;
         while (dist>0.001f)
         {
-            if (routesPosition[driverType].Count == 0||obj==null)
+                if (routesPosition[driverType].Count == 0||obj==null)
                 {
+                    break;
+                }
+                if (arrowDelete)
+                {
+                    arrowDelete = false;    
                     break;
                 }
                 Vector3 dir = (endPosition - obj.transform.position).normalized;
@@ -265,9 +277,9 @@ public class SpecifyingDeliveryRoutes : Map
                     obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 }
                 Vector2 vec = obj.transform.position + dir * Time.deltaTime;
-                lastDist=dist;
                 dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
                 obj.transform.position = vec * speed;
+
                 yield return null;
         }
         Destroy(obj);
