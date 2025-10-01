@@ -17,7 +17,7 @@ public class ItemID_001 : Sinner
     // Update is called once per frame
     void Update()
     {
-
+        Debug.Log(KumagaiLibrary.String.ColorChanger(mood.ToString(),"yellow"));
     }
 
     private void OnClick()

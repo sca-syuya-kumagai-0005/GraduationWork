@@ -2016,6 +2016,10 @@ MonoBehaviour:
   driverSet: 0
   driverType: 0
   delivering: 000000
+  destination:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!120 &954427875
 LineRenderer:
   serializedVersion: 2
@@ -3434,7 +3438,7 @@ MonoBehaviour:
         - m_Target: {fileID: 954427874}
           m_TargetAssemblyTypeName: SpecifyingDeliveryRoutes, Assembly-CSharp
           m_MethodName: StartDriver
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

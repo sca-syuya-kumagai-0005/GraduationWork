@@ -40,7 +40,9 @@ public class MapObjectReturnName : MonoBehaviour
                 {
                     if (!sDR.DriverSet && !sDR.Writing)
                     {
-                       // sDR.MemoryEnd(widthPositionID, heightPositionID, objectID);
+                       
+                        //sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.position);
+                        // オブジェクトを返す
                     }
                    
                 }
@@ -66,6 +68,12 @@ public class MapObjectReturnName : MonoBehaviour
             case 1:
                 {
                     sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject,this.gameObject.transform.position);
+                }
+                break;
+            case 3:
+                {
+                    sDR.DestinationSetting(this.gameObject);
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.position);
                 }
                 break;
           

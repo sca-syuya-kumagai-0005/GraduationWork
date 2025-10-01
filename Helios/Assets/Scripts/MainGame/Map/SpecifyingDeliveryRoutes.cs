@@ -29,6 +29,7 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField]bool[] delivering = new bool[driverCount];
     private int[] deliveryProcess=new int[driverCount];
     private bool[] canStart=new bool[driverCount];
+    [SerializeField]private GameObject[] destination=new GameObject[driverCount];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -140,16 +141,14 @@ public class SpecifyingDeliveryRoutes : Map
        
     }
 
-    public void MemoryEnd()
-    {
-
-
-    }
-
-    public void StartDriver()
+    public void StartDriver(int driverID)
     {
         Debug.Log(ColorChanger("‰^“]‚ğŠJn‚µ‚Ü‚·","red"));
-        StartCoroutine(DriverMove(driverType));//Œã‚ÅdriverType‚ğˆø‚«”‚Æ‚µ‚Ä“n‚·
+        if (canStart[driverID])
+        {
+
+        }
+        StartCoroutine(DriverMove(driverID));//Œã‚ÅdriverType‚ğˆø‚«”‚Æ‚µ‚Ä“n‚·
     }
 
     private bool NearCheck(List<int[]> list, int[] positionID)
@@ -157,9 +156,9 @@ public class SpecifyingDeliveryRoutes : Map
         return Mathf.Abs(list[list.Count - 1][0] - positionID[0]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1])!= Mathf.Abs(list[list.Count - 1][0] - positionID[0]);
     }
 
-    private IEnumerator DriverMove(int objID)
+    private IEnumerator DriverMove(int driverID)
     {
-        GameObject obj = driver[objID];
+        GameObject obj = driver[driverID];
         for (int i=0;i<routesPosition[driverType].Count;i++)
         {
             float dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
@@ -173,6 +172,7 @@ public class SpecifyingDeliveryRoutes : Map
             }
             obj.transform.position = routesPosition[driverType][i];
         }
+        DeliveryCompleted(destination[driverID],driverID);
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverType].Count-1; i >=0; i--)
         {
@@ -310,4 +310,17 @@ public class SpecifyingDeliveryRoutes : Map
     {
         deliveryProcess[driverType]=deliveryProcessID;
     }
+
+    private void DeliveryCompleted(GameObject obj,int driverID)
+    {
+        Debug.Log(obj);
+        obj.GetComponent<Sinner>().GiveDeliveryItem = deliveryItems[driverID];
+    }
+
+    public void DestinationSetting(GameObject obj)
+    {
+        destination[driverType]=obj;
+    }
+
+
 }
