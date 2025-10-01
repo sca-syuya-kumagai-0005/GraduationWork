@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 //　9/27 熊谷追加
-public class DeliveryButton : EventSet
+public class DeliveryButton : EventSetter
 {
     private int myButtonID;
     public int SetButtonID { set { myButtonID = value; } }

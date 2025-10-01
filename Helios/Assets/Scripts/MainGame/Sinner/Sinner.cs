@@ -1,9 +1,6 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Sinner : EventSet
+public class Sinner : MonoBehaviour
 {
     protected enum SecureClass
     {

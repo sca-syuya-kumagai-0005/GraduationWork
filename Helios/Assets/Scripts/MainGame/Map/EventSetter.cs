@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventSet:MonoBehaviour//このクラスはマウス対応の際に必要な基底クラスです
+public class EventSetter:MonoBehaviour//このクラスはマウス対応の際に必要な基底クラスです
 {
     public delegate void SetEvent();
     private string corectEventID;
