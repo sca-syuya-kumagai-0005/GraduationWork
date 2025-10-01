@@ -17,6 +17,7 @@ public class AnnounceManager : EasingMethods
         END
     }
     [SerializeField]
+    private List<float>times;
     private List<RequestType> requestList = new List<RequestType>();
     private enum State
     {
@@ -48,7 +49,15 @@ public class AnnounceManager : EasingMethods
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) MakeAnnounce();
+        times = new List<float>();
+        for (int i = 0; i < timerList.Count; i++)
+        {
+            times.Add(timerList[i].timer);
+            float late = 1.0f - times[i] / viewDuration;
+            announceList[i].GetComponent<Announce>()
+                .SetTimerFrame = late;
+        }
+            if (Input.GetMouseButtonDown(0)) MakeAnnounce();
 
         for (int i = 0; i < timerList.Count; i++)
         {
