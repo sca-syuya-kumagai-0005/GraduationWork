@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 102730044}
   - component: {fileID: 102730043}
   - component: {fileID: 102730045}
+  - component: {fileID: 102730046}
   m_Layer: 0
   m_Name: Dliver2
   m_TagString: Untagged
@@ -407,6 +408,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &102730046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102730042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4455692a51df6fd43838eb0ff58b2904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  driverID: 1
+  Drivers: {fileID: 954427872}
 --- !u!1 &134097331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,6 +1068,7 @@ GameObject:
   - component: {fileID: 582146019}
   - component: {fileID: 582146018}
   - component: {fileID: 582146020}
+  - component: {fileID: 582146021}
   m_Layer: 0
   m_Name: Dliver3
   m_TagString: Untagged
@@ -1151,6 +1167,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &582146021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582146017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4455692a51df6fd43838eb0ff58b2904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  driverID: 2
+  Drivers: {fileID: 954427872}
 --- !u!1 &745477510 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8511989374376127958, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
@@ -1976,6 +2006,7 @@ MonoBehaviour:
   objectSpace: {fileID: 0}
   mapObjects: []
   move: {fileID: 2582001399943237785, guid: 2f73aa1d9ec41ab499fa87909c308cf8, type: 3}
+  deliveryItems: 000000000000000000000000
   driver:
   - {fileID: 809797921}
   - {fileID: 745477510}
@@ -2177,6 +2208,7 @@ GameObject:
   - component: {fileID: 1000396926}
   - component: {fileID: 1000396928}
   - component: {fileID: 1000396929}
+  - component: {fileID: 1000396930}
   m_Layer: 0
   m_Name: Dliver1
   m_TagString: Untagged
@@ -2304,6 +2336,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1000396930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000396925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4455692a51df6fd43838eb0ff58b2904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  driverID: 0
+  Drivers: {fileID: 954427872}
 --- !u!1 &1038132958
 GameObject:
   m_ObjectHideFlags: 0
@@ -3468,7 +3514,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   announcePrefab: {fileID: 452470467927283283, guid: d11171bf86d55624284581efde2256c2, type: 3}
   requestList: 
-  duration: 0
+  viewDuration: 0
+  viewLimit: 0
 --- !u!1 &1920196956
 GameObject:
   m_ObjectHideFlags: 0
