@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Announce : EasingMethods
 {
     private const float inPositionX = 0.0f;
     private const float outPositionX = -500.0f;
     private Vector3 defaultPosition;
-    private bool isCancel = false;
+    [SerializeField] private Image timerFrame;
+    public float SetTimerFrame { set { timerFrame.fillAmount = value; } }
     private void Start()
     {
         defaultPosition = transform.localPosition;
