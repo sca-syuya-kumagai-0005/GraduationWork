@@ -41,14 +41,14 @@ public class DeliveryButton : EventSetter
             case ButtonType.Item:
                 {
                     //選択された配達物をSet
-                    specifyingDeliveryRoutes.DeliveryItem = myButtonID;
+                    specifyingDeliveryRoutes.DeliveryItemSetting(myButtonID);
                 }
                 break;
 
             case ButtonType.Process:
                 {
                     //対応するレーンを起動、配達方法をSet
-                    specifyingDeliveryRoutes.DriverSetting(myButtonID);
+                    specifyingDeliveryRoutes.DeliveryProcessSetting(myButtonID);
                     //対応するトラックを起動
                 }
                 break;
