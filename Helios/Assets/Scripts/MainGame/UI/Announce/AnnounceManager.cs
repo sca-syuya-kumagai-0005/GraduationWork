@@ -13,7 +13,6 @@ public class AnnounceManager : EasingMethods
     private Vector3 localPosition = new Vector3(-1920 / 2, 1080 / 2, 925);
     private enum RequestType
     {
-        MAKE, 
         DELETE,
         END
     }
@@ -29,7 +28,9 @@ public class AnnounceManager : EasingMethods
     private State state;
 
     [SerializeField]
-    private float duration;
+    private float viewDuration;
+    [SerializeField]
+    private int viewLimit;
     private struct AnnounceTimer
     {
         public float timer { get; set; }
@@ -47,14 +48,20 @@ public class AnnounceManager : EasingMethods
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) requestList.Add(RequestType.MAKE);
+        if (Input.GetMouseButtonDown(0)) MakeAnnounce();
 
         for (int i = 0; i < timerList.Count; i++)
         {
             AnnounceTimer announceTimer = timerList[i];
             announceTimer.timer += Time.deltaTime;
             timerList[i] = announceTimer;
-            if(timerList[i].timer >= duration && !timerList[i].requested)
+            if (announceList.Count > viewLimit)
+            {
+                AnnounceTimer at = timerList[listTop];
+                at.timer += viewDuration;
+                timerList[listTop] = at;
+            }
+            if(timerList[i].timer >= viewDuration && !timerList[i].requested)
             {
                 announceTimer.requested = true;
                 timerList[i] = announceTimer;
@@ -71,11 +78,6 @@ public class AnnounceManager : EasingMethods
             case State.DO:
                 switch (requestList[listTop])
                 {
-                    case RequestType.MAKE:
-                        MakeAnnounce();
-                        state = State.CHACK;
-                    break;
-
                     case RequestType.DELETE:
                         DeleteAnnounce();
                         state = State.PUSH;
@@ -89,7 +91,8 @@ public class AnnounceManager : EasingMethods
             break;
 
             case State.PUSH:
-                StartCoroutine(PushUp());
+                for (int i = 0; i < announceList.Count; i++)
+                    StartCoroutine(PushUp(announceList[i]));
             break;
 
             case State.WAIT:
@@ -109,7 +112,6 @@ public class AnnounceManager : EasingMethods
         AnnounceTimer annouceTimer = new AnnounceTimer(0.0f,false);
         timerList.Add(annouceTimer);
         announceList.Add(announce);
-        requestList.RemoveAt(listTop);
     }
 
     private void DeleteAnnounce()
@@ -122,30 +124,26 @@ public class AnnounceManager : EasingMethods
         }
         else Debug.Log("’Ê’m‚ª‚ ‚è‚Ü‚¹‚ñ");
     }
-    private IEnumerator PushUp()
+    private IEnumerator PushUp(GameObject annouceObject)
     {
         state = State.WAIT;
         bool isEnd = false;
         float t = 0.0f;
         const float motionLate = 0.5f;
         float addPosY = 0.0f;
-        Vector3[] defaultPosition = new Vector3[announceList.Count];
-        for (int i = 0; i < defaultPosition.Length; i++) 
-            defaultPosition[i] = announceList[i].transform.localPosition;
+        Vector3 defaultPosition = annouceObject.transform.localPosition;
 
         while (!isEnd)
         {
-            for (int i = 0; i < announceList.Count; i++)
-            {
-                addPosY = announceSizeY * EaseOutCirc(t);
-                announceList[i].transform.localPosition = defaultPosition[i] + new Vector3(0, addPosY, 0);
-            }
+            defaultPosition.x = annouceObject.transform.position.x;
+            addPosY = announceSizeY * EaseOutCirc(t);
+            annouceObject.transform.localPosition = defaultPosition + new Vector3(0, addPosY, 0);
             if (t >= 1.0f) isEnd = true;
             t += Time.deltaTime / motionLate;
             yield return null;
         }
         //yield return new WaitForSeconds(0.5f);
-        requestList[0] = RequestType.END;
+        requestList[listTop] = RequestType.END;
     }
 }
 

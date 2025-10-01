@@ -5,7 +5,9 @@ public class Announce : EasingMethods
 {
     private const float inPositionX = 0.0f;
     private const float outPositionX = -500.0f;
-    Vector3 defaultPosition;
+    private Vector3 defaultPosition;
+    private float height;
+    public float SetHeight { set { height = value; } }
     private void Start()
     {
         defaultPosition = transform.localPosition;
@@ -19,8 +21,9 @@ public class Announce : EasingMethods
         const float motionLate = 0.5f;
         while (!isEnd)
         {
-            float posX = inPositionX - outPositionX * EaseOutCirc(t);
-            transform.localPosition = defaultPosition + new Vector3(posX, 0, 0);
+            float addPosX = inPositionX - outPositionX * EaseOutCirc(t);
+            defaultPosition.y=transform.localPosition.y;
+            transform.localPosition = defaultPosition + new Vector3(addPosX, 0, 0);
             if (t > 1.0f) isEnd = true;
             t += (Time.deltaTime / motionLate);
             yield return null;
