@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 
 //Ç±ÇÍÇÕîzíBé“Ç…Ç¬ÇØÇÈscriptÇ≈Ç∑ÅB
 public class SpecifyingDeliveryRoutes : Map
@@ -19,30 +18,27 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField]float speed;
     LineRenderer[] line = new LineRenderer[driverCount];
     [SerializeField] float distance;
-    [SerializeField]int coroutineNumber;
+    int[] coroutineNumber=new int[driverCount];
     int lastRoutesPositionCount;
     [SerializeField] int frame = 0;
     [SerializeField] bool writing;
     [SerializeField] bool driverSet = false;
     [SerializeField] int driverType;
     [SerializeField] int lastdriverType;
-    IEnumerator ienum ;
-    List<Coroutine> coroutine=new List<Coroutine>();
-    bool arrowDelete;
     public int DriverType { set { driverType = value;} }
     [SerializeField]bool[] delivering = new bool[driverCount];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        arrowDelete = false;
-        ienum = Directions();
         for(int i=0;i<driverCount;i++)
         {
             routes[i]=new List<int[]>();
             routesPosition[i] = new List<Vector3>();
             passedObjects[i] = new List<GameObject>();
+            coroutineNumber[i] = 0;
+            Directions(i);
         }
-        coroutineNumber = 0;
+        
         lastRoutesPositionCount = 0;
         writing = false;
         memorying = false;
@@ -69,35 +65,34 @@ public class SpecifyingDeliveryRoutes : Map
         lastdriverType = driverType;
         frame++;
         //Debug.Log(routesPosition[driverType][routesPosition[driverType].Count]);
-        if (lastRoutesPositionCount != routesPosition[driverType].Count&&routesPosition[driverType].Count>1)
-        {
-            coroutineNumber++;
-            coroutine.Clear();
-            coroutine.Add(StartCoroutine(ArrowMove(routesPosition[driverType][routesPosition[driverType].Count - 2], routesPosition[driverType][routesPosition[driverType].Count - 1], coroutineNumber, frame)));
-
-        }
+       
         lastRoutesPositionCount = routesPosition[driverType].Count;
         if (Input.GetMouseButtonDown(1) && routes[driverType].Count>0)
         {
-            Debug.Log("count" + routesPosition[driverType][routesPosition[driverType].Count-1]);
-            arrowDelete = true;
             routes[driverType].RemoveAt(routes[driverType].Count-1);
             routesPosition[driverType].RemoveAt(routesPosition[driverType].Count - 1);
             passedObjects[driverType].RemoveAt(passedObjects[driverType].Count - 1);
             GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
             line[driverType].positionCount--;
-            coroutineNumber = 0;
+            coroutineNumber[driverType] = 0;
             foreach (GameObject o in objs)
             {
                 Destroy(o);
             }
-            for (int i = 0; i < routesPosition[driverType].Count - 1; i++)
+            for(int d=0;d<driverType;d++)
             {
-                coroutineNumber++;
-                coroutine.Clear();
-                coroutine.Add(StartCoroutine(ArrowMove(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber, frame)));
-                
+                for (int i = 0; i < routesPosition[d].Count - 1; i++)
+                {
+                    coroutineNumber[driverType]++;
+                    StartCoroutine(ArrowMove(routesPosition[d][i], routesPosition[d][i + 1], coroutineNumber[d], frame, d));
+                }
+                if (lastRoutesPositionCount != routesPosition[d].Count && routesPosition[d].Count > 1)
+                {
+                    coroutineNumber[driverType]++;
+                    StartCoroutine(ArrowMove(routesPosition[d][routesPosition[d].Count - 2], routesPosition[d][routesPosition[d].Count - 1], coroutineNumber[d], frame,d));
+                }
             }
+            
           
         }
     }
@@ -132,7 +127,8 @@ public class SpecifyingDeliveryRoutes : Map
     {
         if(!writing||!driverSet) { return;}
         memorying = true;
-        StartCoroutine(Directions());
+        StartCoroutine(Directions(driverType)); 
+       
     }
 
     public void MemoryEnd()
@@ -178,7 +174,6 @@ public class SpecifyingDeliveryRoutes : Map
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverType].Count-1; i >=0; i--)
         {
-           
             float dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
             while (dist > 0.05f)
             {
@@ -195,7 +190,6 @@ public class SpecifyingDeliveryRoutes : Map
         {
             Destroy(o);
         }
-
         routes[driverType] = new List<int[]>();
         routesPosition[driverType] = new List<Vector3>();
         line[driverType].positionCount=0;
@@ -207,27 +201,25 @@ public class SpecifyingDeliveryRoutes : Map
     }
 
 
-    IEnumerator Directions()
+    IEnumerator Directions(int driver)
     {
         yield return null;
-        if (routesPosition[driverType].Count > 1)
+        if (routesPosition[driver].Count > 1)
         {
-            for (int i = 0; i<routesPosition[driverType].Count - 1; i++)
+            for (int i = 0; i<routesPosition[driver].Count - 1; i++)
             {
-                coroutineNumber++;
+                coroutineNumber[driver]++;
                 frame=0;
-                coroutine.Clear();
-                coroutine.Add(StartCoroutine(ArrowMove(routesPosition[driverType][i], routesPosition[driverType][i + 1], coroutineNumber,frame)));
+                StartCoroutine(ArrowMove(routesPosition[driver][i], routesPosition[driver][i + 1], coroutineNumber[driver], frame, driver));
             }
         }
         else
         {
-            StartCoroutine(Directions());
+            StartCoroutine(Directions(driver));
         }
-       
     }
     
-    IEnumerator ArrowMove(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount)
+    IEnumerator ArrowMove(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount,int driver)
     {
         GameObject obj = Instantiate(move, startPosition,Quaternion.identity);
         float dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
@@ -242,13 +234,8 @@ public class SpecifyingDeliveryRoutes : Map
         int lastY=0;
         while (dist>0.001f)
         {
-                if (routesPosition[driverType].Count == 0||obj==null)
+                if (routesPosition[driver].Count == 0||obj==null)
                 {
-                    break;
-                }
-                if (arrowDelete)
-                {
-                    arrowDelete = false;    
                     break;
                 }
                 Vector3 dir = (endPosition - obj.transform.position).normalized;
@@ -279,15 +266,14 @@ public class SpecifyingDeliveryRoutes : Map
                 Vector2 vec = obj.transform.position + dir * Time.deltaTime;
                 dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
                 obj.transform.position = vec * speed;
-
                 yield return null;
         }
         Destroy(obj);
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
         if (coroutineID == 1)
         {
-            coroutineNumber = 0;
-            StartCoroutine(Directions());
+            coroutineNumber[driver] = 0;
+            StartCoroutine(Directions(driver));
         }
         foreach (GameObject arrow in objs)
         {
