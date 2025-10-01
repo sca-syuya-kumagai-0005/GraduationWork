@@ -11,8 +11,7 @@ public class SpecifyingDeliveryRoutes : Map
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
     [SerializeField] GameObject move;
-    int deliveryItem;
-    public int DeliveryItem{set{ deliveryItem = value; }}
+    [SerializeField]int[] deliveryItems;
     [SerializeField]GameObject[] driver;
     [SerializeField]float speed;
     LineRenderer[] line = new LineRenderer[driverCount];
@@ -28,9 +27,12 @@ public class SpecifyingDeliveryRoutes : Map
     int lastdriverType;
     public int DriverType { set { driverType = value;} }
     [SerializeField]bool[] delivering = new bool[driverCount];
+    private int[] deliveryProcess=new int[driverCount];
+    private bool[] canStart=new bool[driverCount];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+     
         for(int i=0;i<driverCount;i++)
         {
             routes[i]=new List<int[]>();
@@ -38,6 +40,7 @@ public class SpecifyingDeliveryRoutes : Map
             passedObjects[i] = new List<GameObject>();
             coroutineNumber[i] = 0;
             lastRoutesPositionCount[i] = 0;
+            canStart[i] = false;
             Directions(i);
         }
 
@@ -139,15 +142,8 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void MemoryEnd()
     {
-        
-        //int[] positionID = new int[2];
-        //positionID[0] = widthPositionID;
-        //positionID[1] = heightPositionID;
-        //if (!NearCheck(routes,positionID))
-        //{
-        //    return;
-        //}
-          
+
+
     }
 
     public void StartDriver()
@@ -294,14 +290,24 @@ public class SpecifyingDeliveryRoutes : Map
     }
 
 
-    public void DriverSetting(int driverType)
+    public void DriverSetting(int driver)
     {
         if (!writing)
         {
             driverSet = false;
             return;
         }
+        driverType =driver;
         driverSet = !driverSet;
     }
 
+    public void DeliveryItemSetting(int deliveryItem) 
+    {
+        deliveryItems[driverType]=deliveryItem;
+    }
+
+    public void DeliveryProcessSetting(int deliveryProcessID)
+    {
+        deliveryProcess[driverType]=deliveryProcessID;
+    }
 }
