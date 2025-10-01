@@ -1976,18 +1976,14 @@ MonoBehaviour:
   objectSpace: {fileID: 0}
   mapObjects: []
   move: {fileID: 2582001399943237785, guid: 2f73aa1d9ec41ab499fa87909c308cf8, type: 3}
-  memorying: 0
   driver:
   - {fileID: 809797921}
   - {fileID: 745477510}
   speed: 1
   distance: 0.5
-  coroutineNumber: 0
-  frame: 0
   writing: 0
   driverSet: 0
   driverType: 0
-  lastdriverType: 0
   delivering: 000000
 --- !u!120 &954427875
 LineRenderer:
@@ -2984,7 +2980,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 954427874}
           m_TargetAssemblyTypeName: SpecifyingDeliveryRoutes, Assembly-CSharp
-          m_MethodName: Writing
+          m_MethodName: WritingSwitch
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3471,6 +3467,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   announcePrefab: {fileID: 452470467927283283, guid: d11171bf86d55624284581efde2256c2, type: 3}
+  requestList: 
+  duration: 0
 --- !u!1 &1920196956
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using UnityEngine;
-
-public class MapObjectReturnName : EventSet
+using static KumagaiLibrary.Unity.EventSet;
+using static KumagaiLibrary.String;
+public class MapObjectReturnName : MonoBehaviour
 {
     string[] objectInfo;
     int objectID;
@@ -14,22 +15,21 @@ public class MapObjectReturnName : EventSet
         widthPositionID = int.Parse(objectInfo[1]);
         heightPositionID = int.Parse(objectInfo[2]);
         sDR = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
-        //switch ()
-        SetEventType(down,PointerDown);
-        SetEventType(enter,PointerEnter);
+        SetEventType(down,PointerDown,this.gameObject);
+        SetEventType(enter,PointerEnter, this.gameObject);
     }
 
-    protected override void PointerDown()
-    { 
-       
+    void PointerDown()
+    {
+        Debug.Log(ColorChanger("関数PointerDownが呼ばれています。オブジェクトIDは"+objectID+"です。","red"));
         
         switch(objectID)
         { 
             case 0:
                 {
-                    if(!sDR.Memorying)
+                    if(sDR.DriverSet&&sDR.Writing)
                     {
-                        Debug.Log("配達ルートの指定を開始します");
+                        Debug.Log(ColorChanger("配達ルートの指定を開始します", "red"));
                         sDR.MemoryStart();
                         sDR.MemoryRoute(widthPositionID, heightPositionID, objectID,this.gameObject, this.gameObject.transform.position);
                     }
@@ -38,7 +38,7 @@ public class MapObjectReturnName : EventSet
                 break;
             case 3:
                 {
-                    if(sDR.Memorying)
+                    if (!sDR.DriverSet && !sDR.Writing)
                     {
                        // sDR.MemoryEnd(widthPositionID, heightPositionID, objectID);
                     }
@@ -54,7 +54,7 @@ public class MapObjectReturnName : EventSet
         }
     }
 
-    protected override void PointerEnter()
+    void PointerEnter()
     {
         switch(objectID)
         { 

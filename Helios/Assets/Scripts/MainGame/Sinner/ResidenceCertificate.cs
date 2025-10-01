@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [DefaultExecutionOrder(2)]
-public class ResidenceCertificate : EventSet
+public class ResidenceCertificate : MonoBehaviour
 {
     [SerializeField]
     private Text sinnerNameText;

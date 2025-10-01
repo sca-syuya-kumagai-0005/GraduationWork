@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using static KumagaiLibrary.String;
 
 //これは配達者につけるscriptです。
 public class SpecifyingDeliveryRoutes : Map
@@ -10,8 +11,6 @@ public class SpecifyingDeliveryRoutes : Map
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
     [SerializeField] GameObject move;
-    [SerializeField] bool memorying = false;
-    public bool Memorying { get { return memorying; } }
     int deliveryItem;
     public int DeliveryItem{set{ deliveryItem = value; }}
     [SerializeField]GameObject[] driver;
@@ -19,12 +18,14 @@ public class SpecifyingDeliveryRoutes : Map
     LineRenderer[] line = new LineRenderer[driverCount];
     [SerializeField] float distance;
     int[] coroutineNumber=new int[driverCount];
-    int lastRoutesPositionCount;
-    [SerializeField] int frame = 0;
+    int[] lastRoutesPositionCount = new int[driverCount];
+    int frame = 0;
     [SerializeField] bool writing;
-    [SerializeField] bool driverSet = false;
+    public bool Writing { get {  return writing; }  }
+    [SerializeField]bool driverSet = false;
+    public bool DriverSet {  get { return driverSet; } }
     [SerializeField] int driverType;
-    [SerializeField] int lastdriverType;
+    int lastdriverType;
     public int DriverType { set { driverType = value;} }
     [SerializeField]bool[] delivering = new bool[driverCount];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -36,12 +37,12 @@ public class SpecifyingDeliveryRoutes : Map
             routesPosition[i] = new List<Vector3>();
             passedObjects[i] = new List<GameObject>();
             coroutineNumber[i] = 0;
+            lastRoutesPositionCount[i] = 0;
             Directions(i);
         }
-        
-        lastRoutesPositionCount = 0;
+
+
         writing = false;
-        memorying = false;
         driverSet = false;
         for(int i=0;i<driver.Length;i++)
         {
@@ -59,14 +60,23 @@ public class SpecifyingDeliveryRoutes : Map
     {
         if(lastdriverType!=driverType)
         {
-            lastRoutesPositionCount = 0;
-            memorying=false;
+            writing = false;
+            driverSet=false;
         }
         lastdriverType = driverType;
         frame++;
         //Debug.Log(routesPosition[driverType][routesPosition[driverType].Count]);
+
+        for (int i = 0; i < driverCount; i++)
+        {
+            if (lastRoutesPositionCount[i] != routesPosition[i].Count && routesPosition[i].Count > 1)
+            {
+                coroutineNumber[i]++;
+                StartCoroutine(ArrowMove(routesPosition[i][routesPosition[i].Count - 2], routesPosition[i][routesPosition[i].Count - 1], coroutineNumber[i], frame, i));
+            }
+            lastRoutesPositionCount[i] = routesPosition[i].Count;
+        }
        
-        lastRoutesPositionCount = routesPosition[driverType].Count;
         if (Input.GetMouseButtonDown(1) && routes[driverType].Count>0)
         {
             routes[driverType].RemoveAt(routes[driverType].Count-1);
@@ -79,33 +89,30 @@ public class SpecifyingDeliveryRoutes : Map
             {
                 Destroy(o);
             }
-            for(int d=0;d<driverType;d++)
+            for(int d=0;d<driverCount;d++)
             {
                 for (int i = 0; i < routesPosition[d].Count - 1; i++)
                 {
-                    coroutineNumber[driverType]++;
+                    coroutineNumber[d]++;
                     StartCoroutine(ArrowMove(routesPosition[d][i], routesPosition[d][i + 1], coroutineNumber[d], frame, d));
                 }
-                if (lastRoutesPositionCount != routesPosition[d].Count && routesPosition[d].Count > 1)
-                {
-                    coroutineNumber[driverType]++;
-                    StartCoroutine(ArrowMove(routesPosition[d][routesPosition[d].Count - 2], routesPosition[d][routesPosition[d].Count - 1], coroutineNumber[d], frame,d));
-                }
+               
             }
-            
-          
         }
+
     }
 
     public void MemoryRoute(int widthPositionID,int heightPositionID,int objectID,GameObject obj,Vector3 position)
     {
         if (!Input.GetMouseButton(0)) return;
-        if(!memorying||!writing)return;
+        if(!writing||!driverSet)return;
         int[] positionID = new int[2];//xとzで二つ
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
+        Debug.Log(ColorChanger("関数MemoryRouteが呼び出されました", "red"));
         if (objectID == 0 && routes[driverType].Count==0)
         {
+            Debug.Log(ColorChanger("開始地点を追加しました","red"));
             routes[driverType].Add(positionID);
             routesPosition[driverType].Add(position);
             passedObjects[driverType].Add(obj);
@@ -126,7 +133,6 @@ public class SpecifyingDeliveryRoutes : Map
     public void MemoryStart()
     {
         if(!writing||!driverSet) { return;}
-        memorying = true;
         StartCoroutine(Directions(driverType)); 
        
     }
@@ -146,7 +152,7 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void StartDriver()
     {
-        Debug.Log("start");
+        Debug.Log(ColorChanger("運転を開始します","red"));
         StartCoroutine(DriverMove(driverType));//後でdriverTypeを引き数として渡す
     }
 
@@ -193,7 +199,6 @@ public class SpecifyingDeliveryRoutes : Map
         routes[driverType] = new List<int[]>();
         routesPosition[driverType] = new List<Vector3>();
         line[driverType].positionCount=0;
-        memorying = false;
         writing = false;
         driverSet = false;
         yield return null;
@@ -282,9 +287,10 @@ public class SpecifyingDeliveryRoutes : Map
         if (obj != null) Destroy(obj);
         
     }
-    public void Writing()
+    public void WritingSwitch()
     {
         writing = !writing;
+        Debug.Log(ColorChanger("関数WritingSwitchが呼ばれました。writingは" + writing + "です。", "red"));
     }
 
 

@@ -1,6 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
-
+using static KumagaiLibrary.Unity.EventSet;
 public class ItemID_001 : Sinner
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -13,7 +12,7 @@ public class ItemID_001 : Sinner
         sinnerName = "ëûÇµÇ›ÇÃë¬êØ";
         sinnerSprite = Resources.Load<Sprite>("");//Ç±Ç±Ç…âÊëúñº
         deliveryItems = new Moods[8] { Moods.Joy, Moods.Anticipation, Moods.Anger, Moods.Disgust, Moods.Sadness, Moods.Surprise, Moods.Fear, Moods.Trust, };
-        SetEventType(down, OnClick);
+        SetEventType(down, OnClick,this.gameObject);
     }
     // Update is called once per frame
     void Update()
