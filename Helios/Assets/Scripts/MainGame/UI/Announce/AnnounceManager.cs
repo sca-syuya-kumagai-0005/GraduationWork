@@ -35,10 +35,10 @@ public class AnnounceManager : EasingMethods
     {
         public float timer { get; set; }
         public bool requested { get; set; }
-        public AnnounceTimer(float _timer, bool _requested) 
+        public AnnounceTimer(float _timer) 
         {
             timer = _timer;
-            requested = _requested;
+            requested = false;
         }
     }
     [SerializeField]
@@ -90,13 +90,25 @@ public class AnnounceManager : EasingMethods
                 }
             break;
 
-            case State.PUSH:
-                for (int i = 0; i < announceList.Count; i++)
-                    StartCoroutine(PushUp(announceList[i]));
-            break;
-
             case State.WAIT:
                 if (requestList[listTop] == RequestType.END) state = State.CHACK;
+                break;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        switch (state)
+        {
+            case State.PUSH:
+                if (announceList.Count != 0)
+                    for (int i = 0; i < announceList.Count; i++)
+                        StartCoroutine(PushUp(announceList[i]));
+                else
+                {
+                    requestList[listTop] = RequestType.END;
+                    state = State.CHACK;
+                }
                 break;
         }
     }
@@ -109,7 +121,7 @@ public class AnnounceManager : EasingMethods
         GameObject announce = Instantiate(announcePrefab,instantPosition,Quaternion.identity,transform);
         Image iconImage = announce.GetComponent<Image>();
         Text text = announce.GetComponent<Text>();
-        AnnounceTimer annouceTimer = new AnnounceTimer(0.0f,false);
+        AnnounceTimer annouceTimer = new AnnounceTimer(0.0f);
         timerList.Add(annouceTimer);
         announceList.Add(announce);
     }
@@ -142,7 +154,6 @@ public class AnnounceManager : EasingMethods
             t += Time.deltaTime / motionLate;
             yield return null;
         }
-        //yield return new WaitForSeconds(0.5f);
         requestList[listTop] = RequestType.END;
     }
 }
