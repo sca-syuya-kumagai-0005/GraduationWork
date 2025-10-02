@@ -32,10 +32,10 @@ Material:
     - _BlurSize: 0.1
     - _EdgeIntensity: 0.1
     - _EdgeWidth: 0.05
-    - _RippleStrength: 0.05
+    - _RippleStrength: 0.1
     - _TimeScale: 0.5
     - _WaveDecay: 2
-    - _WaveFrequency: 20
+    - _WaveFrequency: 40
     m_Colors:
     - _EdgeColor: {r: 0.19999996, g: 0.6, b: 1, a: 1}
   m_BuildTextureStacks: []
