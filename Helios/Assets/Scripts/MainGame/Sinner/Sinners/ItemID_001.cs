@@ -1,5 +1,4 @@
 using UnityEngine;
-using static KumagaiLibrary.Unity.EventSet;
 public class ItemID_001 : Sinner
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -10,25 +9,17 @@ public class ItemID_001 : Sinner
         probabilitys = new float[8] { 0.0f, 0.0f, 25.0f, 50.0f, 100.0f, 80.0f, 50.0f, 0.0f };
         sinnerID = "ItemID_001";
         sinnerName = "憎しみの堕星";
-        sinnerSprite = Resources.Load<Sprite>("");//ここに画像名
-        deliveryItems = new Moods[8] { Moods.Joy, Moods.Anticipation, Moods.Anger, Moods.Disgust, Moods.Sadness, Moods.Surprise, Moods.Fear, Moods.Trust, };
-        SetEventType(down, OnClick,this.gameObject);
+        sinnerSprite = Resources.Load<Sprite>("");//そのうちアドレスブル使って代入
     }
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(KumagaiLibrary.String.ColorChanger(mood.ToString(),"yellow"));
-    }
 
-    private void OnClick()
-    {
-        Debug.Log(sinnerName + ":クリックされた");
-        SetInformation();
     }
-    protected override void AbnormalPhenomenon(string objectName)
+    protected override void AbnormalPhenomenon()
     {
         //全ての異常において共通で起きる事があれば↓を変更
-        base.AbnormalPhenomenon(objectName);
+        base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
 

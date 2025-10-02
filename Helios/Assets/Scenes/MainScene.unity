@@ -3517,9 +3517,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   announcePrefab: {fileID: 452470467927283283, guid: d11171bf86d55624284581efde2256c2, type: 3}
-  requestList: 
-  viewDuration: 0
-  viewLimit: 0
+  times: []
+  viewDuration: 5
+  viewLimit: 4
 --- !u!1 &1920196956
 GameObject:
   m_ObjectHideFlags: 0
