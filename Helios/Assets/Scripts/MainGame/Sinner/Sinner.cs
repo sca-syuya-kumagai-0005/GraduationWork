@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using static KumagaiLibrary.Unity.EventSet;
 
 public class Sinner : MonoBehaviour
 {
@@ -18,54 +20,122 @@ public class Sinner : MonoBehaviour
         Zerath,
         Oblivara
     }
-    protected enum Moods
+    protected enum Mood
     {
+        /// <summary>
+        /// 喜び
+        /// </summary>
         Joy = 0,
+        /// <summary>
+        /// 期待
+        /// </summary>
         Anticipation,
+        /// <summary>
+        /// 怒り
+        /// </summary>
         Anger,
+        /// <summary>
+        /// 嫌悪
+        /// </summary>
         Disgust,
+        /// <summary>
+        /// 悲しみ
+        /// </summary>
         Sadness,
+        /// <summary>
+        /// 驚き
+        /// </summary>
         Surprise,
+        /// <summary>
+        /// 恐れ
+        /// </summary>
         Fear,
+        /// <summary>
+        /// 信頼
+        /// </summary>
         Trust,
-        Max
+        /// <summary>
+        /// 特殊荷物
+        /// </summary>
+        Exception
     }
-    protected enum EmergencyPhase
+    protected enum DamageLevel
     {
-        First,
-        Second,
-        Third,
-        Death
+        None = 0,
+        Minor = 10,
+        Moderate = 20,
+        Enormous = 30,
+        Death = 100
     }
-    protected EmergencyPhase phase;
-    protected Moods mood;
-    protected float[] probabilitys = new float[(int)Moods.Max];
-    protected SecureClass secureClass;
-    protected LiskClass liskClass;
-    protected string sinnerID;
-    protected string sinnerName;
-    protected Sprite sinnerSprite;
-    protected int deliveryCount;
-    protected int damege;
+    private const int moods = 8;//感情の数
+    protected int ReceivedItemID;//受け取る荷物のアイテム番号
+    protected float[] probabilitys = new float[moods];//それぞれの確率
+    protected SecureClass secureClass;//収容クラス
+    protected LiskClass liskClass;//リスククラス
+    protected string sinnerID;//シナー番号
+    protected string sinnerName;//シナー名
+    protected Sprite sinnerSprite;//画像
+    protected int deliveryCount;//配達された回数
     protected ResidenceCertificate residenceCertificate;
-    protected Moods[] deliveryItems = new Moods[8];
+    protected Mood[] deliveryItems = new Mood[moods];//自身が配達されうる荷物
+
+    private void Awake()
+    {
+        residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
+        SetEventType(down, OnClick, gameObject);
+        SetDeliveryItems();
+    }
+
+    /// <summary>
+    /// 配達されうる荷物の初期化
+    /// </summary>
+    protected void SetDeliveryItems()
+    {
+        deliveryItems = new Mood[8] 
+        {
+            Mood.Joy, 
+            Mood.Anticipation, 
+            Mood.Anger, 
+            Mood.Disgust, 
+            Mood.Sadness, 
+            Mood.Surprise, 
+            Mood.Fear, 
+            Mood.Trust, 
+        };
+    }
 
     /// <summary>
     /// 配達員が建物に到着した時に呼ぶ
     /// </summary>
-    public int GiveDeliveryItem { set { mood = (Moods)value; } }
-    private void Awake()
+    virtual public void ReceiveDeliveryItem(int itemID)
     {
-        residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
+        ReceivedItemID = itemID;
+        int damage = Lottery();
+        if (damage != 0)
+        {
+            AbnormalPhenomenon();
+            Damage(damage);
+        }
     }
-    virtual protected void AbnormalPhenomenon(string objectName)
+    /// <summary>
+    /// 異常発生時に呼ぶ仮想関数
+    /// </summary>
+    virtual protected void AbnormalPhenomenon()
     {
-        Debug.Log(objectName + ":異常発生");
+        string str = sinnerID + "[" + sinnerName + "]:" + KumagaiLibrary.String.ColorChanger("異常発生", "purple");
+        Debug.Log(str);
     }
+    /// <summary>
+    /// 何らかの原因でダメージが発生する場合呼ぶ関数
+    /// </summary>
+    /// <param name="damege"></param>
     protected void Damage(int damege)
     {
-        Debug.Log(damege + "Damage");
+        Debug.Log(KumagaiLibrary.String.ColorChanger(damege.ToString(), "purple") + "ダメージ");
     }
+    /// <summary>
+    /// 配達表に自身の情報を渡す時に呼ぶ関数
+    /// </summary>
     protected void SetInformation()
     {
         residenceCertificate.SetSinnerName = sinnerName;
@@ -74,36 +144,47 @@ public class Sinner : MonoBehaviour
         residenceCertificate.SetSecureClass = secureClass.ToString();
         residenceCertificate.SetLiskClass = liskClass.ToString();
         residenceCertificate.SetDeliveryItems = (int[])deliveryItems.Clone();
-        Debug.Log("SECURE:" + secureClass + "\nLISK:" + liskClass);
         residenceCertificate.gameObject.SetActive(true);
     }
-    protected EmergencyPhase Lottery()
+    /// <summary>
+    /// 配達完了時、抽選を行う時に呼ぶ関数
+    /// </summary>
+    /// <returns></returns>
+    protected int Lottery()
     {
-        EmergencyPhase phase = EmergencyPhase.First;
-        if (probabilitys[(int)mood] < 100)
+        DamageLevel damageLevel = DamageLevel.None;
+        if (probabilitys[ReceivedItemID] < 100)
         {
-            int rand = UnityEngine.Random.Range(0, 100);
-            if (rand < probabilitys[(int)mood])
+            int rand = Random.Range(0, 100);
+            if (rand < probabilitys[ReceivedItemID])
             {
-                phase = EmergencyPhase.First;
+                damageLevel = DamageLevel.Minor;
             }
         }
-        else if (100 < probabilitys[(int)mood] || probabilitys[(int)mood] < 200)
+        else if (100 <= probabilitys[ReceivedItemID] && probabilitys[ReceivedItemID] < 200)
         {
-            phase = EmergencyPhase.First;
+            damageLevel = DamageLevel.Minor;
         }
-        else if (200 < probabilitys[(int)mood] || probabilitys[(int)mood] < 300)
+        else if (200 <= probabilitys[ReceivedItemID] && probabilitys[ReceivedItemID] < 300)
         {
-            phase = EmergencyPhase.Second;
+            damageLevel = DamageLevel.Moderate;
         }
-        else if (300 < probabilitys[(int)mood] || probabilitys[(int)mood] < 350)
+        else if (300 <= probabilitys[ReceivedItemID] && probabilitys[ReceivedItemID] < 350)
         {
-            phase = EmergencyPhase.Third;
+            damageLevel = DamageLevel.Enormous;
         }
         else
         {
-            phase = EmergencyPhase.Death;
+            damageLevel = DamageLevel.Death;
         }
-        return phase;
+        return (int)damageLevel;
+    }
+    /// <summary>
+    /// 自身がクリックされた時にイベントとして呼ばれる関数
+    /// </summary>
+    private void OnClick()
+    {
+        Debug.Log(sinnerName + ":クリックされた");
+        SetInformation();
     }
 }

@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using static KumagaiLibrary.String;
 
-//‚±‚ê‚Í”z’BÒ‚É‚Â‚¯‚éscript‚Å‚·B
+//ã“ã‚Œã¯é…é”è€…ã«ã¤ã‘ã‚‹scriptã§ã™ã€‚
 public class SpecifyingDeliveryRoutes : Map
 {
     const int driverCount = 3;
@@ -110,20 +110,20 @@ public class SpecifyingDeliveryRoutes : Map
     {
         if (!Input.GetMouseButton(0)) return;
         if(!writing||!driverSet)return;
-        int[] positionID = new int[2];//x‚Æz‚Å“ñ‚Â
+        int[] positionID = new int[2];//xã¨zã§äºŒã¤
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
-        Debug.Log(ColorChanger("ŠÖ”MemoryRoute‚ªŒÄ‚Ño‚³‚ê‚Ü‚µ‚½", "red"));
+        Debug.Log(ColorChanger("é–¢æ•°MemoryRouteãŒå‘¼ã³å‡ºã•ã‚Œã¾ã—ãŸ", "red"));
         if (objectID == 0 && routes[driverType].Count==0)
         {
-            Debug.Log(ColorChanger("ŠJn’n“_‚ğ’Ç‰Á‚µ‚Ü‚µ‚½","red"));
+            Debug.Log(ColorChanger("é–‹å§‹åœ°ç‚¹ã‚’è¿½åŠ ã—ã¾ã—ãŸ","red"));
             routes[driverType].Add(positionID);
             routesPosition[driverType].Add(position);
             passedObjects[driverType].Add(obj);
             line[driverType].positionCount++;
             line[driverType].SetPosition(line[driverType].positionCount-1,position);
         }
-        if (NearCheck(routes[driverType],positionID))//‚È‚¼‚Á‚½ƒIƒuƒWƒFƒNƒg‚ª‘O‚ÌƒIƒuƒWƒFƒNƒg‚Æ—×Ú‚µ‚Ä‚¢‚é‚È‚ç
+        if (NearCheck(routes[driverType],positionID))//ãªãã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨éš£æ¥ã—ã¦ã„ã‚‹ãªã‚‰
         {
             routes[driverType].Add(positionID);
             routesPosition[driverType].Add(position);
@@ -143,12 +143,12 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void StartDriver(int driverID)
     {
-        Debug.Log(ColorChanger("‰^“]‚ğŠJn‚µ‚Ü‚·","red"));
+        Debug.Log(ColorChanger("é‹è»¢ã‚’é–‹å§‹ã—ã¾ã™","red"));
         if (canStart[driverID])
         {
 
         }
-        StartCoroutine(DriverMove(driverID));//Œã‚ÅdriverType‚ğˆø‚«”‚Æ‚µ‚Ä“n‚·
+        StartCoroutine(DriverMove(driverID));//å¾Œã§driverTypeã‚’å¼•ãæ•°ã¨ã—ã¦æ¸¡ã™
     }
 
     private bool NearCheck(List<int[]> list, int[] positionID)
@@ -286,7 +286,7 @@ public class SpecifyingDeliveryRoutes : Map
     public void WritingSwitch()
     {
         writing = !writing;
-        Debug.Log(ColorChanger("ŠÖ”WritingSwitch‚ªŒÄ‚Î‚ê‚Ü‚µ‚½Bwriting‚Í" + writing + "‚Å‚·B", "red"));
+        Debug.Log(ColorChanger("é–¢æ•°WritingSwitchãŒå‘¼ã°ã‚Œã¾ã—ãŸã€‚writingã¯" + writing + "ã§ã™ã€‚", "red"));
     }
 
 
@@ -314,9 +314,10 @@ public class SpecifyingDeliveryRoutes : Map
     private void DeliveryCompleted(GameObject obj,int driverID)
     {
         Debug.Log(obj);
-        obj.GetComponent<Sinner>().GiveDeliveryItem = deliveryItems[driverID];
+        obj.GetComponent<Sinner>().ReceiveDeliveryItem(deliveryItems[driverID]);
+        //â†‘è¨­è¨ˆã®éƒ½åˆä¸ŠSetterã‹ã‚‰é–¢æ•°ã«å¤‰ãˆãŸã®ã§å‹æ‰‹ã«å¤‰æ›´ã—ã¾ã—ãŸ
+        //è¡çªã—ã¦ãŸã‚‰è¨±ã—ã¦â™¥ã€€byã¯ãŸã‘
     }
-
     public void DestinationSetting(GameObject obj)
     {
         destination[driverType]=obj;
