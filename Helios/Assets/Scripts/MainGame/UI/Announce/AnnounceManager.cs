@@ -49,6 +49,7 @@ public class AnnounceManager : EasingMethods
     // Update is called once per frame
     void Update()
     {
+        //if (Input.GetMouseButton(0)) MakeAnnounce("a");
         times = new List<float>();
         for (int i = 0; i < timerList.Count; i++)
         {

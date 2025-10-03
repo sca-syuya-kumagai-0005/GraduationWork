@@ -113,6 +113,8 @@ public class Sinner : MonoBehaviour
     virtual public void ReceiveDeliveryItem(int itemID)
     {
         ReceivedItemID = itemID;
+        string str = sinnerID + "に「" + deliveryItems[itemID] + "」の配達が完了しました。";
+        announceManager.MakeAnnounce(str);
         int damage = Lottery();
         if (damage != 0)
         {
