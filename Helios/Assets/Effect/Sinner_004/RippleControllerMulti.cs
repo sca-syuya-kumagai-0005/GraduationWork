@@ -24,7 +24,8 @@ public class RippleControllerMulti : MonoBehaviour
         waveCount = new Vector4[maxWaves];
         waveStartTimes = new float[maxWaves];
         activeCount = 0;
-
+        rippleMaterial.SetFloat("_RippleStrength", 0.1f);
+        rippleMaterial.SetFloat("_TimeScale", 0.5f);
         // 背景透明化してスタート
         if (backGroundSprite != null)
         {
@@ -88,7 +89,7 @@ public class RippleControllerMulti : MonoBehaviour
         int count = 0;
 
         // ランダムな位置に波紋
-        while (count < maxWaves - 1)
+        while (count < maxWaves - 3)
         {
             Vector2 randomPos = new Vector2(
                 Random.Range(0f, Screen.width),
@@ -97,15 +98,17 @@ public class RippleControllerMulti : MonoBehaviour
 
             AddRipple(randomPos);
             count++;
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.15f);
         }
 
         // 最後に中央に波紋
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(1f);
+        rippleMaterial.SetFloat("_RippleStrength", 0.5f);
+        rippleMaterial.SetFloat("_TimeScale", 0.6f);
         Vector2 center = new Vector2(Screen.width / 2, Screen.height / 2);
         AddRipple(center);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.25f);
 
         // フェードアウト処理
         Color baseColor = backGroundSprite.color;
