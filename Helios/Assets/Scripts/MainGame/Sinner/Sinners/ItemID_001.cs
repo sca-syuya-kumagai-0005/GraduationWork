@@ -10,6 +10,7 @@ public class ItemID_001 : Sinner
         sinnerID = "ItemID_001";
         sinnerName = "憎しみの堕星";
         sinnerSprite = Resources.Load<Sprite>("");//そのうちアドレスブル使って代入
+        effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
     }
     // Update is called once per frame
     void Update()
@@ -22,6 +23,6 @@ public class ItemID_001 : Sinner
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
-
+        effect.SetActive(true);
     }
 }

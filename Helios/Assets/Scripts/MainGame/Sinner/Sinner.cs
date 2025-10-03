@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 using static KumagaiLibrary.Unity.EventSet;
 
 public class Sinner : MonoBehaviour
@@ -79,9 +78,13 @@ public class Sinner : MonoBehaviour
     protected ResidenceCertificate residenceCertificate;
     protected Mood[] deliveryItems = new Mood[moods];//自身が配達されうる荷物
 
+    private AnnounceManager announceManager;
+    protected GameObject effect;
+
     private void Awake()
     {
         residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
+        announceManager = GameObject.Find("AnnounceCenter").GetComponent<AnnounceManager>();
         SetEventType(down, OnClick, gameObject);
         SetDeliveryItems();
     }
@@ -122,8 +125,8 @@ public class Sinner : MonoBehaviour
     /// </summary>
     virtual protected void AbnormalPhenomenon()
     {
-        string str = sinnerID + "[" + sinnerName + "]:" + KumagaiLibrary.String.ColorChanger("異常発生", "purple");
-        Debug.Log(str);
+        string str = sinnerID + "[" + sinnerName + "]:異常発生。\n早急な鎮圧を推奨。";
+        announceManager.MakeAnnounce(str);
     }
     /// <summary>
     /// 何らかの原因でダメージが発生する場合呼ぶ関数
