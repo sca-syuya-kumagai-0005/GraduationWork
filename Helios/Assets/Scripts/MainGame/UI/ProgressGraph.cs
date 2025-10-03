@@ -4,9 +4,10 @@ using UnityEngine.UI;
 public class ProgressGraph : MonoBehaviour
 {
     Image image;
-    float progress = 0;
-    int days = 1;
-    int norm;
+    private float progress = 0;
+    public float GetProgres { get {  return progress; } }
+    private int days = 1;
+    private int norm;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
