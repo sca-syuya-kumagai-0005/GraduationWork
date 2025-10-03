@@ -4,11 +4,14 @@ using UnityEngine.UI;
 
 public class Announce : EasingMethods
 {
+    [SerializeField]
+    private Text text;
     private const float inPositionX = 0.0f;
     private const float outPositionX = -500.0f;
     private Vector3 defaultPosition;
     [SerializeField] private Image timerFrame;
     public float SetTimerFrame { set { timerFrame.fillAmount = value; } }
+    public string SetViewText { set { text.text = value; } }
     private void Start()
     {
         defaultPosition = transform.localPosition;

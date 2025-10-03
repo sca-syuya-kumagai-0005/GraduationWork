@@ -57,7 +57,6 @@ public class AnnounceManager : EasingMethods
             announceList[i].GetComponent<Announce>()
                 .SetTimerFrame = late;
         }
-            if (Input.GetMouseButtonDown(0)) MakeAnnounce();
 
         for (int i = 0; i < timerList.Count; i++)
         {
@@ -122,14 +121,14 @@ public class AnnounceManager : EasingMethods
         }
     }
 
-    public void MakeAnnounce()
+    public void MakeAnnounce(string viewText)
     {
         Vector3 instantPosition = localPosition;
         instantPosition.x -= announceSizeX;
         instantPosition.y -= announceSizeY * announceList.Count;
         GameObject announce = Instantiate(announcePrefab,instantPosition,Quaternion.identity,transform);
         Image iconImage = announce.GetComponent<Image>();
-        Text text = announce.GetComponent<Text>();
+        announce.GetComponent<Announce>().SetViewText = viewText;
         AnnounceTimer annouceTimer = new AnnounceTimer(0.0f);
         timerList.Add(annouceTimer);
         announceList.Add(announce);
