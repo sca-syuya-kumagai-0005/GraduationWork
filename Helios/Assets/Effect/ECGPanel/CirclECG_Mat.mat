@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CirclECG_Mat
+  m_Shader: {fileID: 4800000, guid: b149fe28304eab041ae6bc21f11a7606, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _Alpha: 1
+    - _BackgroundVisible: 0
+    - _BaseRadius: 0.25
+    - _CenterLineAlpha: 1
+    - _CenterLineNoiseSpeed: 0
+    - _CenterLineNoiseStrength: 0
+    - _CenterLineWidth: 2
+    - _GlowStrength: 0
+    - _GlowWidth: 1
+    - _HeartBeatSpeed: 10
+    - _HeartBeatStrength: 0
+    - _LineWidth: 1.9113159
+    - _RandomRange: 0.5
+    - _Speed: 0.1
+    - _WaveCount: 15
+    - _WaveHeight: 0.01
+    - _WaveHeightRandomMax: 0.05
+    - _WaveWidth: 1
+    m_Colors:
+    - _BackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    - _CenterLineColor: {r: 0, g: 1, b: 0, a: 1}
+    - _LineColor: {r: 0, g: 1, b: 0, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
