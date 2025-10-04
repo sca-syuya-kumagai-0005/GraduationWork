@@ -26,10 +26,13 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] int driverType;
     int lastdriverType;
     public int DriverType { set { driverType = value;} }
-    [SerializeField]bool[] delivering = new bool[driverCount];
+    [SerializeField]bool[] isDriving = new bool[driverCount];
     private int[] deliveryProcess=new int[driverCount];
     private bool[] canStart=new bool[driverCount];
     [SerializeField]private GameObject[] destination=new GameObject[driverCount];
+    bool[] isProcessSetting = new bool[driverCount];
+    bool[] isItemSetting = new bool[driverCount];
+    bool[] isDestinationSetting = new bool[driverCount];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -53,9 +56,9 @@ public class SpecifyingDeliveryRoutes : Map
             line[i] = driver[i].GetComponent<LineRenderer>();
         }
       
-        for(int i = 0;i<delivering.Length;i++)
+        for(int i = 0;i<isDriving.Length;i++)
         {
-            delivering[i] = false;  
+            isDriving[i] = false;  
         }
     }
 
@@ -73,6 +76,7 @@ public class SpecifyingDeliveryRoutes : Map
 
         for (int i = 0; i < driverCount; i++)
         {
+            canStart[i] = isItemSetting[i]&&isProcessSetting[i]&&isDestinationSetting[i];
             if (lastRoutesPositionCount[i] != routesPosition[i].Count && routesPosition[i].Count > 1)
             {
                 coroutineNumber[i]++;
@@ -83,25 +87,29 @@ public class SpecifyingDeliveryRoutes : Map
        
         if (Input.GetMouseButtonDown(1) && routes[driverType].Count>0)
         {
-            routes[driverType].RemoveAt(routes[driverType].Count-1);
-            routesPosition[driverType].RemoveAt(routesPosition[driverType].Count - 1);
-            passedObjects[driverType].RemoveAt(passedObjects[driverType].Count - 1);
-            GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
-            line[driverType].positionCount--;
-            coroutineNumber[driverType] = 0;
-            foreach (GameObject o in objs)
+            if (!isDriving[driverType])
             {
-                Destroy(o);
-            }
-            for(int d=0;d<driverCount;d++)
-            {
-                for (int i = 0; i < routesPosition[d].Count - 1; i++)
+                routes[driverType].RemoveAt(routes[driverType].Count - 1);
+                routesPosition[driverType].RemoveAt(routesPosition[driverType].Count - 1);
+                passedObjects[driverType].RemoveAt(passedObjects[driverType].Count - 1);
+                GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
+                line[driverType].positionCount--;
+                coroutineNumber[driverType] = 0;
+                foreach (GameObject o in objs)
                 {
-                    coroutineNumber[d]++;
-                    StartCoroutine(ArrowMove(routesPosition[d][i], routesPosition[d][i + 1], coroutineNumber[d], frame, d));
+                    Destroy(o);
                 }
-               
+                for (int d = 0; d < driverCount; d++)
+                {
+                    for (int i = 0; i < routesPosition[d].Count - 1; i++)
+                    {
+                        coroutineNumber[d]++;
+                        StartCoroutine(ArrowMove(routesPosition[d][i], routesPosition[d][i + 1], coroutineNumber[d], frame, d));
+                    }
+
+                }
             }
+            
         }
 
     }
@@ -143,12 +151,16 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void StartDriver(int driverID)
     {
+        isItemSetting[driverID] = false;
+        isProcessSetting[driverID] = false;
+        isDestinationSetting[driverID] = false; 
         Debug.Log(ColorChanger("運転を開始します","red"));
         if (canStart[driverID])
         {
-
+            isDriving[driverID] = true;
+            StartCoroutine(DriverMove(driverID));
         }
-        StartCoroutine(DriverMove(driverID));//後でdriverTypeを引き数として渡す
+        
     }
 
     private bool NearCheck(List<int[]> list, int[] positionID)
@@ -304,11 +316,13 @@ public class SpecifyingDeliveryRoutes : Map
     public void DeliveryItemSetting(int deliveryItem) 
     {
         deliveryItems[driverType]=deliveryItem;
+        isItemSetting[driverType] = true; 
     }
 
     public void DeliveryProcessSetting(int deliveryProcessID)
     {
         deliveryProcess[driverType]=deliveryProcessID;
+        isProcessSetting[driverType]=true;
     }
 
     private void DeliveryCompleted(GameObject obj,int driverID)
@@ -316,12 +330,10 @@ public class SpecifyingDeliveryRoutes : Map
         Debug.Log(obj);
         obj.GetComponent<Sinner>().ReceiveDeliveryItem(deliveryItems[driverID]);
         //↑設計の都合上Setterから関数に変えたので勝手に変更しました
-        //衝突してたら許して♥　byはたけ
     }
     public void DestinationSetting(GameObject obj)
     {
         destination[driverType]=obj;
+        isDestinationSetting[driverType] = true;
     }
-
-
 }
