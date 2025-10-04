@@ -14,6 +14,7 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField]int[] deliveryItems;
     [SerializeField]GameObject[] driver;
     [SerializeField]float speed;
+    public float Speed { set {  speed = value; } }
     LineRenderer[] line = new LineRenderer[driverCount];
     [SerializeField] float distance;
     int[] coroutineNumber=new int[driverCount];
@@ -139,7 +140,10 @@ public class SpecifyingDeliveryRoutes : Map
             line[driverType].positionCount++;
             line[driverType].SetPosition(line[driverType].positionCount - 1, position);
         }
-       
+        if(objectID==3)
+        {
+            writing = false;
+        }
     }
 
     public void MemoryStart()
@@ -151,16 +155,17 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void StartDriver(int driverID)
     {
-        isItemSetting[driverID] = false;
-        isProcessSetting[driverID] = false;
-        isDestinationSetting[driverID] = false; 
-        Debug.Log(ColorChanger("運転を開始します","red"));
+       
+      
         if (canStart[driverID])
         {
+            Debug.Log(ColorChanger("運転を開始します", "red"));
             isDriving[driverID] = true;
             StartCoroutine(DriverMove(driverID));
         }
-        
+        isItemSetting[driverID] = false;
+        isProcessSetting[driverID] = false;
+        isDestinationSetting[driverID] = false;
     }
 
     private bool NearCheck(List<int[]> list, int[] positionID)
@@ -171,30 +176,36 @@ public class SpecifyingDeliveryRoutes : Map
     private IEnumerator DriverMove(int driverID)
     {
         GameObject obj = driver[driverID];
-        for (int i=0;i<routesPosition[driverType].Count;i++)
+        for (int i=1;i<routesPosition[driverType].Count;i++)
         {
-            float dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
-            while (dist>0.05f)
+           
+            Vector3 dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+            Vector3 lastDirction = dirction;
+            while (lastDirction==dirction)
             {
-                Vector3 dir = (routesPosition[driverType][i] - obj.transform.position).normalized;
-                Vector2 vec = obj.transform.position+dir*Time.deltaTime;
-                dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
-                obj.transform.position = vec*speed;
+                lastDirction = dirction;
+                Vector3 vec = lastDirction*Time.deltaTime;
+                Debug.Log(ColorChanger("加算値は" + vec*speed + "です", "red"));
+                obj.transform.position += vec*speed;
+                dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
                 yield return null;
             }
             obj.transform.position = routesPosition[driverType][i];
         }
         DeliveryCompleted(destination[driverID],driverID);
         yield return new WaitForSeconds(2f);
-        for (int i = routesPosition[driverType].Count-1; i >=0; i--)
+        for (int i = routesPosition[driverType].Count-2; i >=0; i--)
         {
-            float dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
-            while (dist > 0.05f)
+            Vector3 dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+            Vector3 lastDirction = dirction;
+            while (lastDirction==dirction)
             {
-                Vector3 dir = (routesPosition[driverType][i]- obj.transform.position).normalized;
-                Vector2 vec = obj.transform.position + dir * Time.deltaTime;
-                dist = Mathf.Abs(routesPosition[driverType][i].magnitude - obj.transform.position.magnitude);
-                obj.transform.position = vec*speed;
+                Debug.Log(ColorChanger("移動しています", "red"));
+                lastDirction = dirction;
+                Vector3 vec = lastDirction*Time.deltaTime;
+                Debug.Log(ColorChanger("加算値は" + vec*speed + "です", "red"));
+                obj.transform.position += vec * speed;
+                dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
                 yield return null;
             }
             obj.transform.position = routesPosition[driverType][i];
@@ -241,7 +252,7 @@ public class SpecifyingDeliveryRoutes : Map
             Vector3 dir = (endPosition - obj.transform.position).normalized;
             Vector2 vec = obj.transform.position + dir * Time.deltaTime;
             dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
-            obj.transform.position = vec * speed;
+            obj.transform.position = vec;
         }
         int lastX=0;
         int lastY=0;
@@ -278,7 +289,7 @@ public class SpecifyingDeliveryRoutes : Map
                 }
                 Vector2 vec = obj.transform.position + dir * Time.deltaTime;
                 dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
-                obj.transform.position = vec * speed;
+                obj.transform.position = vec;
                 yield return null;
         }
         Destroy(obj);

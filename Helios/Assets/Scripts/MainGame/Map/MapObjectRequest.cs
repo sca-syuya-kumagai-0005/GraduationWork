@@ -1,7 +1,8 @@
 using UnityEngine;
 using static KumagaiLibrary.Unity.EventSet;
 using static KumagaiLibrary.String;
-public class MapObjectReturnName : MonoBehaviour
+using UnityEngine.InputSystem;
+public class MapObjectReturnName : MonoBehaviour 
 {
     string[] objectInfo;
     int objectID;

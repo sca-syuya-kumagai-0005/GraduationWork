@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 namespace KumagaiLibrary
@@ -10,7 +12,7 @@ namespace KumagaiLibrary
         /// <param name="text">色を変えたい文字列</param>
         /// <param name="color">変えたい色</param>
         /// <returns></returns>
-        public static string ColorChanger(string text,string color)
+        public static string ColorChanger(string text, string color)
         {
             string output = null;
             for (int i = 0; i < text.Length; i++)
@@ -30,7 +32,7 @@ namespace KumagaiLibrary
             public const string down = "Down";
             public const string up = "Up";
             public const string underbar = "_";
-           
+
             public static void PointerEnter()
             {
                 Debug.Log("基底クラス側の関数が呼ばれています\n継承先の関数をオーバーライドしてください");//基底クラス側の関数が呼び出されていることを知らせる
@@ -46,7 +48,7 @@ namespace KumagaiLibrary
                 Debug.Log("基底クラス側の関数が呼ばれています\\n継承先の関数をオーバーライドしてください\"");
             }
 
-            public static void SetEventType(string eventID, SetEvent e,GameObject obj)
+            public static void SetEventType(string eventID, SetEvent e, GameObject obj)
             {
                 if (obj.gameObject.GetComponent<EventTrigger>() == null)
                 {
@@ -83,8 +85,23 @@ namespace KumagaiLibrary
                 trigger.triggers.Add(entry);
             }
         }
+        public class CsvManager
+        {
+            public static List<string[]> Read(TextAsset csvData) //引数に入力したCSVファイルをリストに変換する関数
+            {
+                List<string[]> datas = new List<string[]>();
+                StringReader reader = new StringReader(csvData.text);
+                while (reader.Peek() != -1)
+                {
+                    string line = reader.ReadLine();
+                    datas.Add(line.Split(','));
+                }
+                return datas;
+            }
+        }
     }
 
-    
+
+
 }
 
