@@ -14,7 +14,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
   m_GUID: 6c90194fc46db6b4bbeec683c7ead823
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 197b509d9eac4334b80b5ac23566021e
+    m_Address: Assets/Sprits/UI/Baggage image/Disgust.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28e29fd4495055e418dc8b1119dd65f7
+    m_Address: Assets/Sprits/UI/Baggage image/Surprise.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f7b067f367a5c3479615220011b726b
+    m_Address: Assets/Sprits/UI/Baggage image/Expectation.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1036c667f9ebc641a38383f4312a4af
+    m_Address: Assets/Sprits/UI/Baggage image/Anger.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5e1319121f410648b7d528202ebce67
+    m_Address: Assets/Sprits/UI/Baggage image/Sadness.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6bbd94f120832d4f9586a24fa4bf552
+    m_Address: Assets/Sprits/UI/Baggage image/Joy.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1023f95143b0a948b0f5f64c1ab02f5
+    m_Address: Assets/Sprits/UI/Baggage image/Trust.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f20433d7866fe0c449da15f6c69d83a3
+    m_Address: Assets/Sprits/UI/Baggage image/Fear.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8d036b9a2e2600b448c9e65330f83576, type: 2}
   m_SchemaSet:

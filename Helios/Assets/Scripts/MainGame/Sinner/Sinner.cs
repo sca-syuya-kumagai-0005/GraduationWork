@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using static KumagaiLibrary.Unity.EventSet;
 
 public class Sinner : MonoBehaviour
@@ -193,5 +195,21 @@ public class Sinner : MonoBehaviour
     {
         Debug.Log(sinnerName + ":ƒNƒŠƒbƒN‚³‚ê‚½");
         SetInformation();
+    }
+
+    protected void LoadSprite(string path)
+    {
+        Addressables.LoadAssetAsync<Sprite>(path).Completed += handle =>
+        {
+            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            {
+                sinnerSprite = handle.Result;
+                Debug.Log(sinnerSprite.name);
+            }
+            else
+            {
+                Debug.LogError($"Failed to load sprite at path: {path}");
+            }
+        };
     }
 }

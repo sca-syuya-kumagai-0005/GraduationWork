@@ -11,7 +11,7 @@ public class TimeLine : MonoBehaviour
     private float[] times = new float[3];
     private float[] totalTimes = new float[3];
     private bool[] announced = new bool[3];
-    private AnnounceManager announceManager;
+    [SerializeField]private AnnounceManager announceManager;
     private int dayCount = 0;
     Player player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

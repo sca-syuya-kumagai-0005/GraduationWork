@@ -42,7 +42,6 @@ public class ResidenceCertificate : MonoBehaviour
             button.SetButtonID = i;
             button.SetButtonType=DeliveryButton.ButtonType.Item;
         }
-        sinnerImage = transform.GetComponent<Image>();
 
         for(int i = 0; i < deliveryProcessButton.Length; i++)
         {
