@@ -2,16 +2,22 @@ using UnityEngine;
 
 public class TimeLine : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject clock;
+    [SerializeField]
+    private Sprite[] clockSprites;
     private float timeLine;
     public float GetTimeLine {  get { return timeLine; } }
     private float[] times = new float[3];
     private float[] totalTimes = new float[3];
     private bool[] announced = new bool[3];
     private AnnounceManager announceManager;
-
+    private int dayCount = 0;
+    Player player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        player = GameObject.Find("Player").GetComponent<Player>();
         announceManager = GameObject.Find("AnnounceCenter").GetComponent<AnnounceManager>();
         times = new float[3]
         {
@@ -46,8 +52,10 @@ public class TimeLine : MonoBehaviour
         }
     }
 
-    protected void timerReset()
+    protected void NextDay()
     {
+        dayCount++;
         timeLine = 0.0f;
+        player.formatting();
     }
 }

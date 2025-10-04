@@ -1,17 +1,16 @@
 using UnityEngine;
-public class ItemID_001 : Sinner
+public class ItemID_002 : Sinner
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        secureClass = SecureClass.Catra;
-        liskClass = LiskClass.Oblivara;
-        probabilitys = new float[8] { 0.0f, 0.0f, 25.0f, 50.0f, 100.0f, 80.0f, 50.0f, 0.0f };
-        sinnerID = "ItemID_001";
-        sinnerName = "憎しみの堕星";
+        secureClass = SecureClass.Secra;
+        liskClass = LiskClass.Velgra;
+        probabilitys = new float[8] { 0.0f, 0.0f, 200.0f, 200.0f, 100.0f, 0.0f, 350.0f, 25.0f };
+        sinnerID = "ItemID_002";
+        sinnerName = "紅い糸";
         sinnerSprite = Resources.Load<Sprite>("");//そのうちアドレスブル使って代入
         effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
-        effectTimer = 6.5f;
     }
     // Update is called once per frame
     void Update()

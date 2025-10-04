@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using static KumagaiLibrary.Unity.EventSet;
 
 public class Sinner : MonoBehaviour
 {
+    private Player player;
     protected enum SecureClass
     {
         Secra,
@@ -80,12 +82,14 @@ public class Sinner : MonoBehaviour
 
     private AnnounceManager announceManager;
     protected GameObject effect;
+    protected float effectTimer;
 
     private void Awake()
     {
         residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
         announceManager = GameObject.Find("AnnounceCenter").GetComponent<AnnounceManager>();
         SetEventType(down, OnClick, gameObject);
+        player = GameObject.Find("Player").GetComponent<Player>();
         SetDeliveryItems();
     }
 
@@ -106,7 +110,11 @@ public class Sinner : MonoBehaviour
             Mood.Trust, 
         };
     }
-
+    private IEnumerator EffectStop(float time)
+    {
+        yield return new WaitForSeconds(time);
+        effect.SetActive(false);
+    }
     /// <summary>
     /// 配達員が建物に到着した時に呼ぶ
     /// </summary>
@@ -119,7 +127,7 @@ public class Sinner : MonoBehaviour
         if (damage != 0)
         {
             AbnormalPhenomenon();
-            Damage(damage);
+            player.fluctuationHealth(-damage);
         }
     }
     /// <summary>
@@ -129,14 +137,8 @@ public class Sinner : MonoBehaviour
     {
         string str = sinnerID + "[" + sinnerName + "]:異常発生。\n早急な鎮圧を推奨。";
         announceManager.MakeAnnounce(str);
-    }
-    /// <summary>
-    /// 何らかの原因でダメージが発生する場合呼ぶ関数
-    /// </summary>
-    /// <param name="damege"></param>
-    protected void Damage(int damege)
-    {
-        Debug.Log(KumagaiLibrary.String.ColorChanger(damege.ToString(), "purple") + "ダメージ");
+        effect.SetActive(true);
+        StartCoroutine(EffectStop(effectTimer));
     }
     /// <summary>
     /// 配達表に自身の情報を渡す時に呼ぶ関数

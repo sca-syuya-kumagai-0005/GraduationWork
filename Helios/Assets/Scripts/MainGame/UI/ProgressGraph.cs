@@ -7,7 +7,7 @@ public class ProgressGraph : MonoBehaviour
     private float progress = 0;
     public float GetProgres { get {  return progress; } }
     private int days = 1;
-    private int norm;
+    private int norm;//ƒmƒ‹ƒ}A‚»‚Ì‚¤‚¿‘‚¦•û•Ï‚¦‚é
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,10 +19,6 @@ public class ProgressGraph : MonoBehaviour
     void Update()
     {
         image.fillAmount = progress;
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            AddProgress();
-        }
     }
     private void AddProgress()
     {
