@@ -15,24 +15,18 @@ public class DeliveryButton : EventSetter
     private SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     private ButtonType myButtonType;
     public ButtonType SetButtonType { set {  myButtonType = value; } }
-
+    private GameStateSystem gameState;
     void Awake()
     {
         specifyingDeliveryRoutes = 
             GameObject.Find(driverTag).GetComponent<SpecifyingDeliveryRoutes>();
+        gameState=GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         SetEventType(down, OnClick);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnClick()
     {
         Debug.Log(myButtonType+"Button" + myButtonID + ":クリック");
@@ -49,6 +43,7 @@ public class DeliveryButton : EventSetter
                 {
                     //対応するレーンを起動、配達方法をSet
                     specifyingDeliveryRoutes.DeliveryProcessSetting(myButtonID);
+                    gameState.GameState = GameStateSystem.State.Wait;
                     //対応するトラックを起動
                 }
                 break;

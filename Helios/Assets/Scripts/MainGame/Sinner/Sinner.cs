@@ -87,6 +87,7 @@ public class Sinner : MonoBehaviour
     protected float effectTimer;
     private ProgressGraph progressGraph;
 
+    private GameStateSystem gameState;
     private void Awake()
     {
         residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
@@ -96,6 +97,7 @@ public class Sinner : MonoBehaviour
         SetDeliveryItems();
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.4f, 0, 1);
         progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
+        gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }
 
     /// <summary>
@@ -197,7 +199,7 @@ public class Sinner : MonoBehaviour
     /// </summary>
     private void OnClick()
     {
-        Debug.Log(sinnerName + ":ƒNƒŠƒbƒN‚³‚ê‚½");
+        gameState.GameState = GameStateSystem.State.DeliveryPreparation;
         SetInformation();
     }
 

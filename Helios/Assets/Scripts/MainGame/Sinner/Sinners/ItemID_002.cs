@@ -10,7 +10,7 @@ public class ItemID_002 : Sinner
         sinnerID = "ItemID_002";
         sinnerName = "çgÇ¢éÖ";
         LoadSprite("atokaraireru");
-        effect = GameObject.Find("Effect").transform.Find("").gameObject;
+        effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
     }
     // Update is called once per frame
     void Update()

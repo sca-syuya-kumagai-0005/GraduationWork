@@ -34,6 +34,7 @@ public class ResidenceCertificate : MonoBehaviour
     [SerializeField]
     private GameObject[] deliveryProcessButton;
 
+    private GameStateSystem gameState;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -51,17 +52,21 @@ public class ResidenceCertificate : MonoBehaviour
             button.SetButtonID = i;
             button.SetButtonType = DeliveryButton.ButtonType.Process;
         }
-        gameObject.SetActive(false);
+        gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        gameObject.SetActive(!Input.GetMouseButtonDown(1));
-        sinnerNameText.text = sinnerName;
-        for (int i = 0; i < deliveryItemButtons.Length; i++)
+        if (gameState.GameState == GameStateSystem.State.DeliveryPreparation)
         {
-            deliveryItemButtons[i].GetComponent<Image>().sprite = DeliveryItemSprites[deliveryItems[i]];
+            gameObject.SetActive(true);
+            sinnerNameText.text = sinnerName;
+            for (int i = 0; i < deliveryItemButtons.Length; i++)
+            {
+                deliveryItemButtons[i].GetComponent<Image>().sprite = DeliveryItemSprites[deliveryItems[i]];
+            }
         }
+        else gameObject.SetActive(false);
     }
 }
