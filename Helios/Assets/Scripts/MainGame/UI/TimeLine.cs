@@ -50,9 +50,10 @@ public class TimeLine : MonoBehaviour
             announceManager.MakeAnnounce("「夜」終了の1分30秒前です。");
             announced[2] = true;
         }
+        if (timeLine > totalTimes[2]) timeLine = 0.0f;
     }
 
-    protected void NextDay()
+    public void NextDay()
     {
         dayCount++;
         timeLine = 0.0f;

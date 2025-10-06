@@ -85,6 +85,7 @@ public class Sinner : MonoBehaviour
     private AnnounceManager announceManager;
     protected GameObject effect;
     protected float effectTimer;
+    private ProgressGraph progressGraph;
 
     private void Awake()
     {
@@ -93,6 +94,8 @@ public class Sinner : MonoBehaviour
         SetEventType(down, OnClick, gameObject);
         player = GameObject.Find("Player").GetComponent<Player>();
         SetDeliveryItems();
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.4f, 0, 1);
+        progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
     }
 
     /// <summary>
@@ -131,6 +134,7 @@ public class Sinner : MonoBehaviour
             AbnormalPhenomenon();
             player.fluctuationHealth(-damage);
         }
+        progressGraph.AddProgress();
     }
     /// <summary>
     /// àŸèÌî≠ê∂éûÇ…åƒÇ‘âºëzä÷êî
@@ -204,7 +208,6 @@ public class Sinner : MonoBehaviour
             if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
             {
                 sinnerSprite = handle.Result;
-                Debug.Log(sinnerSprite.name);
             }
             else
             {

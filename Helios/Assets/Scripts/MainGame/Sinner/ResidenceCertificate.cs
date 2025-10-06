@@ -1,3 +1,4 @@
+using UnityEditor.Build.Pipeline.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +18,11 @@ public class ResidenceCertificate : MonoBehaviour
     public Sprite SetSinnerImage { set { sinnerImage.sprite = value; } }
 
     [SerializeField]
-    private GameObject[] deliveryItemButton;
+    private GameObject[] deliveryItemButtons;
     private int[] deliveryItems;
     public int[] SetDeliveryItems { set { deliveryItems = value; } }
-
+    [SerializeField]
+    private Sprite[] DeliveryItemSprites;
 
     private string secureClass;
     public string SetSecureClass {  set { secureClass = value; } }
@@ -35,12 +37,12 @@ public class ResidenceCertificate : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        deliveryItems = new int[deliveryItemButton.Length];
+        deliveryItems = new int[deliveryItemButtons.Length];
         for(int i = 0; i < deliveryItems.Length; i++)
         {
-            DeliveryButton button = deliveryItemButton[i].AddComponent<DeliveryButton>();
+            DeliveryButton button = deliveryItemButtons[i].AddComponent<DeliveryButton>();
             button.SetButtonID = i;
-            button.SetButtonType=DeliveryButton.ButtonType.Item;
+            button.SetButtonType = DeliveryButton.ButtonType.Item;
         }
 
         for(int i = 0; i < deliveryProcessButton.Length; i++)
@@ -56,5 +58,10 @@ public class ResidenceCertificate : MonoBehaviour
     void Update()
     {
         gameObject.SetActive(!Input.GetMouseButtonDown(1));
+        sinnerNameText.text = sinnerName;
+        for (int i = 0; i < deliveryItemButtons.Length; i++)
+        {
+            deliveryItemButtons[i].GetComponent<Image>().sprite = DeliveryItemSprites[deliveryItems[i]];
+        }
     }
 }

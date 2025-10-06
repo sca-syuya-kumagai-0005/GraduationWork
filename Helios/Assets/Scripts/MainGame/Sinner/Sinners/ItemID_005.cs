@@ -1,14 +1,14 @@
 using UnityEngine;
-public class ItemID_002 : Sinner
+public class ItemID_005 : Sinner
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         secureClass = SecureClass.Secra;
-        liskClass = LiskClass.Velgra;
-        probabilitys = new float[8] { 0.0f, 0.0f, 200.0f, 200.0f, 100.0f, 0.0f, 350.0f, 25.0f };
-        sinnerID = "ItemID_002";
-        sinnerName = "çgÇ¢éÖ";
+        liskClass = LiskClass.Lumenis;
+        probabilitys = new float[8] { 0.0f, 100.0f, 125.0f, 100.0f, 75.0f, 0.0f, 25.0f, 100.0f };
+        sinnerID = "ItemID_005";
+        sinnerName = "Ç†Ç»ÇΩÇÃà◊ÇÃìVè€ãV";
         LoadSprite("atokaraireru");
         effect = GameObject.Find("Effect").transform.Find("").gameObject;
     }
