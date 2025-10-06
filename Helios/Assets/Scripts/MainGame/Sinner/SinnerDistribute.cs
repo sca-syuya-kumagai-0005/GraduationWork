@@ -9,7 +9,10 @@ public class SinnerDistribute : MonoBehaviour
     private const string underBar = "_";
     private List<Object> components = new List<Object>() 
     { 
-        new ItemID_001(),
+        //new ItemID_001(),
+        new ItemID_002(),
+        new ItemID_004(),
+        new ItemID_005(),
     };
     
     private void Start()

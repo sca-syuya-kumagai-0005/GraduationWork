@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TimeLine : MonoBehaviour
@@ -12,8 +13,8 @@ public class TimeLine : MonoBehaviour
     private float[] totalTimes = new float[3];
     private bool[] announced = new bool[3];
     [SerializeField]private AnnounceManager announceManager;
-    private int dayCount = 0;
     Player player;
+    private GameStateSystem gameState;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,12 +30,21 @@ public class TimeLine : MonoBehaviour
             times[0]+times[1],
             times[0]+times[1]+times[2]
         };
+        gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }
-
     // Update is called once per frame
     void Update()
     {
         timeLine += Time.deltaTime;
+        if (gameState.GameState == GameStateSystem.State.Start)
+        {
+            if (timeLine > 1.5f)
+            {
+                announceManager.MakeAnnounce("それでは本日の業務を開始します。");
+                gameState.GameState= GameStateSystem.State.Wait;
+                timeLine = 0.0f;
+            }
+        }
         if (timeLine > totalTimes[0] - 90.0f && !announced[0])
         {
             announceManager.MakeAnnounce("「朝」終了の1分30秒前です。");
@@ -50,12 +60,14 @@ public class TimeLine : MonoBehaviour
             announceManager.MakeAnnounce("「夜」終了の1分30秒前です。");
             announced[2] = true;
         }
+        if (timeLine > totalTimes[2]) timeLine = 0.0f;
     }
 
-    protected void NextDay()
+    public void NextDay()
     {
-        dayCount++;
+        gameState.GameState = GameStateSystem.State.End;
         timeLine = 0.0f;
         player.formatting();
+        announceManager.MakeAnnounce("本日の業務は以上となります。\nお疲れ様でした。");
     }
 }
