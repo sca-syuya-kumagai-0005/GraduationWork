@@ -1082,6 +1082,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698448d5877ecd741baf1ec9b4779b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  components:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &536244164
 GameObject:
   m_ObjectHideFlags: 0
@@ -2619,7 +2623,7 @@ MonoBehaviour:
   driver:
   - {fileID: 809797921}
   - {fileID: 745477510}
-  speed: 1.1
+  speed: []
   distance: 0.5
   writing: 0
   driverSet: 0
@@ -3725,6 +3729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1340570517}
   - component: {fileID: 1340570516}
+  - component: {fileID: 1340570518}
   m_Layer: 0
   m_Name: GameState
   m_TagString: Untagged
@@ -3759,6 +3764,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1340570518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340570515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec3936ed6e34cd4f971482356bc8d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1360928148
 GameObject:
   m_ObjectHideFlags: 0
