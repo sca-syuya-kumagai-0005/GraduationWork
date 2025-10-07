@@ -9,11 +9,10 @@ public class MapObjectReturnName : MonoBehaviour
     int widthPositionID;
     int heightPositionID;
     [SerializeField]SpecifyingDeliveryRoutes sDR;
-    bool haveSinner;//このオブジェクトにシナーが配置されているかのフラグ
+    bool haveSinner = false;//このオブジェクトにシナーが配置されているかのフラグ
     public bool HaveSinner { set{haveSinner=value; } }
     private void Start()
     {
-        haveSinner=true;//後でしゅんすけにシナーの抽選をしている場所からTrueにしてもらう
         objectInfo = this.gameObject.name.Split(underbar);
         objectID = int.Parse(objectInfo[0]);
         widthPositionID = int.Parse(objectInfo[1]);

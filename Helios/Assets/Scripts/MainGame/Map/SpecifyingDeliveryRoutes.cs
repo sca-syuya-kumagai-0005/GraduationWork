@@ -14,8 +14,9 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] GameObject move;
     [SerializeField]int[] deliveryItems;
     [SerializeField]GameObject[] driver;
-    [SerializeField]float speed;
-    public float Speed { set {  speed = value; } }
+    [SerializeField]float[] speed;
+    private float interfersenceSpeed;
+    public float InterfersenceSpeed { set {  interfersenceSpeed = value; } }
     LineRenderer[] line = new LineRenderer[driverCount];
     [SerializeField] float distance;
     int[] coroutineNumber=new int[driverCount];
@@ -197,8 +198,8 @@ public class SpecifyingDeliveryRoutes : Map
             {
                 lastDirction = dirction;
                 Vector3 vec = lastDirction*Time.deltaTime;
-                Debug.Log(ColorChanger("加算値は" + vec*speed + "です", "red"));
-                obj.transform.position += vec*speed;
+                Debug.Log(ColorChanger("加算値は" + vec / speed[driverID] + "です", "red"));
+                obj.transform.position += vec/speed[driverID];
                 dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
                 yield return null;
             }
@@ -215,8 +216,8 @@ public class SpecifyingDeliveryRoutes : Map
                 Debug.Log(ColorChanger("移動しています", "red"));
                 lastDirction = dirction;
                 Vector3 vec = lastDirction*Time.deltaTime;
-                Debug.Log(ColorChanger("加算値は" + vec*speed + "です", "red"));
-                obj.transform.position += vec * speed;
+                Debug.Log(ColorChanger("加算値は" + vec/speed[driverID] + "です", "red"));
+                obj.transform.position += vec / speed[driverID];
                 dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
                 yield return null;
             }
