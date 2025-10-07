@@ -18,10 +18,10 @@ public class ECGWaveCircleController : MonoBehaviour
     float calmSpeed = 0.1f;
     float calmHeight = 0.01f;
     float calmRandomRange = 0.5f;
-    float calmWaveWidth = 1.0f;
+    float calmWaveWidth = 1.2f;
     float calmWaveCount = 15f;
-    float calmLineWidthMin = 1.0f;
-    float calmLineWidthMax = 3.0f;
+    float calmLineWidthMin = 3.0f;
+    float calmLineWidthMax = 5.0f;
     float calmLineWidthPeriod = 1.0f;
 
     [Header("Slight Stress ê›íË")]
@@ -30,10 +30,10 @@ public class ECGWaveCircleController : MonoBehaviour
     float slightStressSpeed = 1.3f;
     float slightStressHeight = 0.1f;
     float slightStressRandomRange = 0.5f;
-    float slightStressWaveWidth = 1.0f;
+    float slightStressWaveWidth = 1.2f;
     float slightStressWaveCount = 15f;
-    float slightStressLineWidthMin = 1.0f;
-    float slightStressLineWidthMax = 3.0f;
+    float slightStressLineWidthMin = 3.0f;
+    float slightStressLineWidthMax = 5.0f;
     float slightStressLineWidthPeriod = 1.0f;
 
     [Header("Stress ê›íË")]

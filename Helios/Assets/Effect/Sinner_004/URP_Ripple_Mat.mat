@@ -32,8 +32,8 @@ Material:
     - _BlurSize: 0.1
     - _EdgeIntensity: 0.1
     - _EdgeWidth: 0.05
-    - _RippleStrength: 0.5
-    - _TimeScale: 0.6
+    - _RippleStrength: 0.1
+    - _TimeScale: 0.5
     - _WaveDecay: 2
     - _WaveFrequency: 40
     m_Colors:
