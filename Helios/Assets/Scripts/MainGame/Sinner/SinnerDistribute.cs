@@ -44,6 +44,7 @@ public class SinnerDistribute : MonoBehaviour
 
             rand = Random.Range(0, components.Count);
             go.AddComponent(components[rand].GetType());
+            go.GetComponent<MapObjectReturnName>().HaveSinner = true;
             Debug.Log(components[rand].GetType() + "èoåªÅF" + go.name);
             components.Remove(components[rand]);
         }
