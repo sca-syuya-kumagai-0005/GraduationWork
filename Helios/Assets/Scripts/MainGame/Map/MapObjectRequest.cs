@@ -5,12 +5,15 @@ using UnityEngine.InputSystem;
 public class MapObjectReturnName : MonoBehaviour 
 {
     string[] objectInfo;
-    int objectID;
+    [SerializeField]int objectID;
     int widthPositionID;
     int heightPositionID;
     [SerializeField]SpecifyingDeliveryRoutes sDR;
+    bool haveSinner;//このオブジェクトにシナーが配置されているかのフラグ
+    public bool HaveSinner { set{haveSinner=value; } }
     private void Start()
     {
+        haveSinner=true;//後でしゅんすけにシナーの抽選をしている場所からTrueにしてもらう
         objectInfo = this.gameObject.name.Split(underbar);
         objectID = int.Parse(objectInfo[0]);
         widthPositionID = int.Parse(objectInfo[1]);
@@ -39,12 +42,7 @@ public class MapObjectReturnName : MonoBehaviour
                 break;
             case 3:
                 {
-                    if (!sDR.DriverSet && !sDR.Writing)
-                    {
-                       
-                        //sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.position);
-                        // オブジェクトを返す
-                    }
+                        sDR.DestinationSetting(this.gameObject);
                    
                 }
                 break;
@@ -73,8 +71,12 @@ public class MapObjectReturnName : MonoBehaviour
                 break;
             case 3:
                 {
-                    sDR.DestinationSetting(this.gameObject);
-                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.position);
+                    if (haveSinner)
+                    {
+                        
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.position);
+                    }
+                    
                 }
                 break;
           
