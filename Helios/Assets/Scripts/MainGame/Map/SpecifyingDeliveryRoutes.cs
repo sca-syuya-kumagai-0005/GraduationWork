@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Collections;
 using static KumagaiLibrary.String;
 
-//これは配達者につけるscriptです。
+//これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : Map
 {
     const int driverCount = 3;
+    List<int>[] routeObjectsID=new List<int>[driverCount];
     List<int[]>[] routes = new List<int[]>[driverCount];
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
@@ -42,6 +43,7 @@ public class SpecifyingDeliveryRoutes : Map
         {
             routes[i]=new List<int[]>();
             routesPosition[i] = new List<Vector3>();
+            routeObjectsID[i] = new List<int>();
             passedObjects[i] = new List<GameObject>();
             coroutineNumber[i] = 0;
             lastRoutesPositionCount[i] = 0;
@@ -93,6 +95,7 @@ public class SpecifyingDeliveryRoutes : Map
                 routes[driverType].RemoveAt(routes[driverType].Count - 1);
                 routesPosition[driverType].RemoveAt(routesPosition[driverType].Count - 1);
                 passedObjects[driverType].RemoveAt(passedObjects[driverType].Count - 1);
+                routeObjectsID[driverType].RemoveAt(routeObjectsID[driverType].Count-1);
                 GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
                 line[driverType].positionCount--;
                 coroutineNumber[driverType] = 0;
@@ -119,6 +122,13 @@ public class SpecifyingDeliveryRoutes : Map
     {
         if (!Input.GetMouseButton(0)) return;
         if(!writing||!driverSet)return;
+        int routeObjectsIDCount= routeObjectsID[driverType].Count;
+        Debug.Log(ColorChanger(routeObjectsIDCount.ToString(),"red"));
+        if(routeObjectsIDCount > 0)
+        {
+            if (routeObjectsID[driverType][routeObjectsIDCount - 1] == 3) return;
+        }
+       
         int[] positionID = new int[2];//xとzで二つ
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
@@ -127,6 +137,7 @@ public class SpecifyingDeliveryRoutes : Map
         {
             Debug.Log(ColorChanger("開始地点を追加しました","red"));
             routes[driverType].Add(positionID);
+            routeObjectsID[driverType].Add(objectID);
             routesPosition[driverType].Add(position);
             passedObjects[driverType].Add(obj);
             line[driverType].positionCount++;
@@ -135,6 +146,7 @@ public class SpecifyingDeliveryRoutes : Map
         if (NearCheck(routes[driverType],positionID))//なぞったオブジェクトが前のオブジェクトと隣接しているなら
         {
             routes[driverType].Add(positionID);
+            routeObjectsID[driverType].Add(objectID);
             routesPosition[driverType].Add(position);
             passedObjects[driverType].Add(obj);
             line[driverType].positionCount++;
@@ -155,8 +167,8 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void StartDriver(int driverID)
     {
-       
-      
+
+        if (routeObjectsID[driverID][routeObjectsID[driverID].Count-1]!=3)return;
         if (canStart[driverID])
         {
             Debug.Log(ColorChanger("運転を開始します", "red"));
@@ -176,10 +188,10 @@ public class SpecifyingDeliveryRoutes : Map
     private IEnumerator DriverMove(int driverID)
     {
         GameObject obj = driver[driverID];
-        for (int i=1;i<routesPosition[driverType].Count;i++)
+        for (int i=1;i<routesPosition[driverID].Count;i++)
         {
            
-            Vector3 dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+            Vector3 dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
@@ -187,16 +199,16 @@ public class SpecifyingDeliveryRoutes : Map
                 Vector3 vec = lastDirction*Time.deltaTime;
                 Debug.Log(ColorChanger("加算値は" + vec*speed + "です", "red"));
                 obj.transform.position += vec*speed;
-                dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+                dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
                 yield return null;
             }
-            obj.transform.position = routesPosition[driverType][i];
+            obj.transform.position = routesPosition[driverID][i];
         }
         DeliveryCompleted(destination[driverID],driverID);
         yield return new WaitForSeconds(2f);
-        for (int i = routesPosition[driverType].Count-2; i >=0; i--)
+        for (int i = routesPosition[driverID].Count-2; i >=0; i--)
         {
-            Vector3 dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+            Vector3 dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
@@ -205,19 +217,20 @@ public class SpecifyingDeliveryRoutes : Map
                 Vector3 vec = lastDirction*Time.deltaTime;
                 Debug.Log(ColorChanger("加算値は" + vec*speed + "です", "red"));
                 obj.transform.position += vec * speed;
-                dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+                dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
                 yield return null;
             }
-            obj.transform.position = routesPosition[driverType][i];
+            obj.transform.position = routesPosition[driverID][i];
         }
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
         foreach(GameObject o in objs)
         {
             Destroy(o);
         }
-        routes[driverType] = new List<int[]>();
-        routesPosition[driverType] = new List<Vector3>();
-        line[driverType].positionCount=0;
+        routes[driverID] = new List<int[]>();
+        routesPosition[driverID] = new List<Vector3>();
+        line[driverID].positionCount=0;
+        routeObjectsID[driverID]=new List<int>();
         writing = false;
         driverSet = false;
         yield return null;
