@@ -14,6 +14,7 @@ public class SpecifyingDeliveryRoutes : Map
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
     [SerializeField] GameObject move;
     [SerializeField]int[] deliveryItems;
+    int tmpDeliveryItem;
     [SerializeField]GameObject[] driver;
     [SerializeField]float[] speed;
     private float interfersenceSpeed;
@@ -32,18 +33,24 @@ public class SpecifyingDeliveryRoutes : Map
     public int DriverType { set { driverType = value;} }
     [SerializeField]bool[] isDriving = new bool[driverCount];
     private int[] deliveryProcess=new int[driverCount];
+    private int tmpDeliveryProcess;
    
     [SerializeField]private GameObject[] destination=new GameObject[driverCount];
+    private GameObject tmpDestination;
     [SerializeField] private bool[] canStart = new bool[driverCount];
     [SerializeField]bool[] isProcessSetting = new bool[driverCount];
+    bool tmpProcessSetting;
     [SerializeField]bool[] isItemSetting = new bool[driverCount];
+    bool tmpItemSetting;
     [SerializeField] bool[] isDestinationSetting = new bool[driverCount];
+    bool tmpDestinationSetting;
 
     [SerializeField] GameObject writeButton;
     SpriteRenderer writeButtonRenderer;
     [SerializeField] Sprite[] writeSprite;
     [SerializeField] GameObject[] driverSetButton;
     SpriteRenderer[] driverSetButtonRenderer = new SpriteRenderer[driverCount];
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -74,7 +81,6 @@ public class SpecifyingDeliveryRoutes : Map
             isDriving[i] = false;  
         }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -86,8 +92,10 @@ public class SpecifyingDeliveryRoutes : Map
             if (!driverSet) break;
             if(i==driverType)driverSetButtonRenderer[i].color = Color.green;
             else driverSetButtonRenderer[i].color = Color.white;
+            canStart[i] = isDestinationSetting[i] && isItemSetting[i]&& isItemSetting[i];
+
         }
-       
+        
 
         lastdriverType = driverType;
         frame++;
@@ -95,7 +103,6 @@ public class SpecifyingDeliveryRoutes : Map
 
         for (int i = 0; i < driverCount; i++)
         {
-            canStart[i] = isItemSetting[i]&&isProcessSetting[i]&&isDestinationSetting[i];
             if (lastRoutesPositionCount[i] != routesPosition[i].Count && routesPosition[i].Count > 1)
             {
                 coroutineNumber[i]++;
@@ -183,18 +190,16 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void StartDriver(int driverID)
     {
-        Debug.Log("スタート" + canStart[driverID]);
-        if (!canStart[driverID]) return;
-        if (routeObjectsID[driverType][routeObjectsID[driverType].Count-1]!=3)return;
-        if (canStart[driverType])
-        {
+        Debug.Log(routeObjectsID[driverID].Count);
+        if (routeObjectsID[driverID].Count==0) return;
+        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == 3) { 
             Debug.Log(ColorChanger("運転を開始します", "red"));
-            isDriving[driverType] = true;
-            StartCoroutine(DriverMove(driverType));
+            isDriving[driverID] = true;
+            StartCoroutine(DriverMove(driverID));
         }
-        isItemSetting[driverType] = false;
-        isProcessSetting[driverType] = false;
-        isDestinationSetting[driverType] = false;
+        isItemSetting[driverID] = false;
+        isProcessSetting[driverID] = false;
+        isDestinationSetting[driverID] = false;
     }
 
     private bool NearCheck(List<int[]> list, int[] positionID)
@@ -345,25 +350,34 @@ public class SpecifyingDeliveryRoutes : Map
     public void DriverSetting(int driver)
     {
         Debug.Log("DriverSetting");
+        isDestinationSetting[driver] = tmpDestinationSetting;
+        destination[driver] = tmpDestination;
+        isItemSetting[driver] = tmpItemSetting;
+        isProcessSetting[driver] = tmpProcessSetting;
         //if (!writing)
         //{
         //    driverSet = false;
         //    return;
         //}
-        driverType =driver;
-        driverSet = true;
+
+            deliveryItems[driver] = tmpDeliveryItem;
+            deliveryProcess[driver] = tmpDeliveryProcess;
+            driverType = driver;
+            driverSet = true;
+      
     }
 
     public void DeliveryItemSetting(int deliveryItem) 
     {
-        deliveryItems[driverType]=deliveryItem;
-        isItemSetting[driverType] = true; 
+        tmpDeliveryItem=deliveryItem;
+
+        tmpItemSetting = true; 
     }
 
     public void DeliveryProcessSetting(int deliveryProcessID)
     {
-        deliveryProcess[driverType]=deliveryProcessID;
-        isProcessSetting[driverType]=true;
+        tmpDeliveryProcess=deliveryProcessID;
+        tmpProcessSetting = true;
     }
 
     private void DeliveryCompleted(GameObject obj,int driverType)
@@ -374,7 +388,7 @@ public class SpecifyingDeliveryRoutes : Map
     }
     public void DestinationSetting(GameObject obj)
     {
-        destination[driverType]=obj;
-        isDestinationSetting[driverType] = true;
+        tmpDestination=obj;
+        tmpDestinationSetting= true;
     }
 }
