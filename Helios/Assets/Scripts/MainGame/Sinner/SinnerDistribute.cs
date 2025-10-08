@@ -5,7 +5,6 @@ using UnityEngine;
 public class SinnerDistribute : MonoBehaviour
 {
     [SerializeField,Range(1,31)]
-    private int days;
     private const string tileID_House = "3";
     private const string underBar = "_";
     private List<Object> components = new List<Object>() 
@@ -18,9 +17,13 @@ public class SinnerDistribute : MonoBehaviour
     private const int maxSinners = 31;
     private List<GameObject> houseList = new List<GameObject>();
     private bool[] stayed = new bool[maxSinners];
+
+    private SaveDataManager saveDataManager;
     private void Start()
     {
-        int standbySinner = days;
+        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
+        int standbySinner = saveDataManager.Days;
+        stayed = saveDataManager.StayedSinner;
         houseList = GetHouse();
         for (int i = 0; i < stayed.Length; i++)
         {
@@ -35,6 +38,7 @@ public class SinnerDistribute : MonoBehaviour
             int rand = Random.Range(0, components.Count);
             Distribute(rand);
         }
+        saveDataManager.StayedSinner = stayed;
     }
     private List<GameObject> GetHouse()
     {

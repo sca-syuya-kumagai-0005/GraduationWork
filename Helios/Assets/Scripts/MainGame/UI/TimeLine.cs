@@ -15,9 +15,12 @@ public class TimeLine : MonoBehaviour
     [SerializeField]private AnnounceManager announceManager;
     Player player;
     private GameStateSystem gameState;
+
+    private SaveDataManager saveDataManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         player = GameObject.Find("Player").GetComponent<Player>();
         announceManager = GameObject.Find("AnnounceCenter").GetComponent<AnnounceManager>();
         times = new float[3]
@@ -65,6 +68,7 @@ public class TimeLine : MonoBehaviour
 
     public void NextDay()
     {
+        saveDataManager.Days++;
         gameState.GameState = GameStateSystem.State.End;
         timeLine = 0.0f;
         player.formatting();
