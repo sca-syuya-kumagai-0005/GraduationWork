@@ -61,6 +61,14 @@ public class Sinner : MonoBehaviour
         /// </summary>
         Exception
     }
+
+    protected enum SinnerType
+    {
+        Humanoid,
+        Abnormal,
+        Area,
+        Concept
+    }
     protected enum DamageLevel
     {
         None = 0,
@@ -76,10 +84,13 @@ public class Sinner : MonoBehaviour
     protected LiskClass liskClass;//リスククラス
     protected string sinnerID;//シナー番号
     protected string sinnerName;//シナー名
+    protected SinnerType sinnerType;//シナーの種類
     protected Sprite sinnerSprite;//画像
     protected int deliveryCount;//配達された回数
     protected ResidenceCertificate residenceCertificate;
     protected Mood[] deliveryItems = new Mood[moods];//自身が配達されうる荷物
+    protected int deliveryProcessID;
+    protected int deliveryLineID;
 
     private AnnounceManager announceManager;
     protected GameObject effect;
@@ -123,7 +134,7 @@ public class Sinner : MonoBehaviour
     /// <summary>
     /// 配達員が建物に到着した時に呼ぶ
     /// </summary>
-    virtual public void ReceiveDeliveryItem(int itemID)
+    virtual public void ReceiveDeliveryInformation(int itemID,int deliveryProcess,int deliveryLine)
     {
         ReceivedItemID = itemID;
         string str = sinnerID + "に「" + deliveryItems[itemID] + "」の配達が完了しました。";
