@@ -456,7 +456,7 @@ public class SpecifyingDeliveryRoutes : Map
     private void DeliveryCompleted(GameObject obj,int driverType)
     {
         Debug.Log(obj);
-        obj.GetComponent<Sinner>().ReceiveDeliveryItem(deliveryItems[driverType]);
+        obj.GetComponent<Sinner>().ReceiveDeliveryInformation(deliveryItems[driverType], deliveryProcess[driverType],driverType);
         //↑設計の都合上Setterから関数に変えたので勝手に変更しました
     }
     public void DestinationSetting(GameObject obj)
