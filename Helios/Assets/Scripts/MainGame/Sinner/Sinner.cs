@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using static KumagaiLibrary.Unity.EventSet;
@@ -95,7 +94,6 @@ public class Sinner : MonoBehaviour
         SetEventType(down, OnClick, gameObject);
         player = GameObject.Find("Player").GetComponent<Player>();
         SetDeliveryItems();
-        transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.4f, 0, 1);
         progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }

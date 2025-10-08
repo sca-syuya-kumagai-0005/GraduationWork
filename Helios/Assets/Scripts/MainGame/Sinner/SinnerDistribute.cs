@@ -4,21 +4,37 @@ using UnityEngine;
 [DefaultExecutionOrder(1)]
 public class SinnerDistribute : MonoBehaviour
 {
+    [SerializeField,Range(1,31)]
     private int days;
     private const string tileID_House = "3";
     private const string underBar = "_";
     private List<Object> components = new List<Object>() 
     { 
-        //new ItemID_001(),
+        new ItemID_001(),
         new ItemID_002(),
         new ItemID_004(),
         new ItemID_005(),
     };
-    
+    private const int maxSinners = 31;
+    private List<GameObject> houseList = new List<GameObject>();
+    private bool[] stayed = new bool[maxSinners];
     private void Start()
     {
-        days = 1;
-        Distribute();
+        int standbySinner = days;
+        houseList = GetHouse();
+        for (int i = 0; i < stayed.Length; i++)
+        {
+            if (stayed[i])
+            {
+                standbySinner--;
+                Distribute(i);
+            }
+        }
+        for (int i = 0; i < standbySinner; i++)
+        {
+            int rand = Random.Range(0, components.Count);
+            Distribute(rand);
+        }
     }
     private List<GameObject> GetHouse()
     {
@@ -30,23 +46,21 @@ public class SinnerDistribute : MonoBehaviour
         {
             GameObject go = mapObject.transform.GetChild(i).gameObject;
             string[] tileName = go.name.Split(underBar);
-            if (tileName[0] == tileID_House) houseList.Add(go);
+            const int arrayTop = 0;
+            if (tileName[arrayTop] == tileID_House) houseList.Add(go);
         }
         return houseList;
     }
-    private void Distribute()
+    private void Distribute(int SinnerID)
     {
-        List<GameObject> houseList = GetHouse();
-        for (int i = 0; i < days; i++)
-        {
-            int rand = Random.Range(0, houseList.Count);
-            GameObject go = houseList[rand];
+        int rand = Random.Range(0, houseList.Count);
+        GameObject go = houseList[rand];
+        houseList.RemoveAt(rand);
 
-            rand = Random.Range(0, components.Count);
-            go.AddComponent(components[rand].GetType());
-            go.GetComponent<MapObjectReturnName>().HaveSinner = true;
-            Debug.Log(components[rand].GetType() + "出現：" + go.name);
-            components.Remove(components[rand]);
-        }
+        go.AddComponent(components[SinnerID].GetType());
+        go.GetComponent<MapObjectReturnName>().HaveSinner = true;
+        Debug.Log(components[SinnerID].GetType() + "出現：" + go.name);
+        components.RemoveAt(SinnerID);
+        stayed[rand] = true;
     }
 }

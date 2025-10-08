@@ -25,6 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - <noninit>: 0
     - _Alpha: 1
     - _BackgroundVisible: 0
     - _BaseRadius: 0.25
@@ -36,14 +37,13 @@ Material:
     - _GlowWidth: 1
     - _HeartBeatSpeed: 10
     - _HeartBeatStrength: 0
-
-    - _LineWidth: 1.4800181
+    - _LineWidth: 4.7705593
     - _RandomRange: 0.5
     - _Speed: 0.1
     - _WaveCount: 15
     - _WaveHeight: 0.01
     - _WaveHeightRandomMax: 0.05
-    - _WaveWidth: 1
+    - _WaveWidth: 1.2
     m_Colors:
     - _BackgroundColor: {r: 0, g: 0, b: 0, a: 1}
     - _CenterLineColor: {r: 0, g: 1, b: 0, a: 1}
