@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-public class SeveData : MonoBehaviour
+public class SaveDataManager : MonoBehaviour
 {
     private enum DataAddress
     {
@@ -11,15 +11,11 @@ public class SeveData : MonoBehaviour
         MAX
     }
     private string[] data = new string[(int)DataAddress.MAX];
-    private int days;
-    public int GetToday {  get { return days; } }
+    private int days = 1;
+    public int Days {  get { return days; } set { days = value; } }
     private const int maxSinners = 31;
     private bool[] stayedSinners = new bool[maxSinners];
-    public bool[] GetStayedSinner { get { return stayedSinners; } }
-    private void Start()
-    {
-        Save();
-    }
+    public bool[] StayedSinner { get { return stayedSinners; }set { stayedSinners = value; } }
     public void Save()
     {
         StreamWriter streamWriter = new StreamWriter("./Assets/SaveData.txt", false);
