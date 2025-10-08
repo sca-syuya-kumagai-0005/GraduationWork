@@ -37,8 +37,7 @@ Material:
     - _GlowWidth: 1
     - _HeartBeatSpeed: 10
     - _HeartBeatStrength: 0
-
-    - _LineWidth: 4.06345
+    - _LineWidth: 3.3510437
     - _RandomRange: 0.5
     - _Speed: 0.1
     - _WaveCount: 15
