@@ -1,3 +1,4 @@
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,15 +8,16 @@ public class ProgressGraph : MonoBehaviour
     private Image image;
     private float progress = 0;
     public float GetProgres { get {  return progress; } }
-    private int days = 1;
     private int norm;//ƒmƒ‹ƒ}A‚»‚Ì‚¤‚¿‘‚¦•û•Ï‚¦‚é
     private TimeLine timeLine;
     private GameStateSystem gameState;
     private BlackScreen blackScreen;
+    private SaveDataManager saveData;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        norm = days + 1;
+        saveData = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
+        norm = saveData.Days + 1;
         timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
         blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
