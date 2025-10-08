@@ -57,6 +57,8 @@ public class SpecifyingDeliveryRoutes : Map
     SpriteRenderer[] driverSetButtonRenderer = new SpriteRenderer[driverCount];
     [SerializeField] GameObject[] startButtons;
 
+    [SerializeField] GameObject[] lineObject;
+
     [SerializeField]Texture2D cursor;
     [SerializeField] float cursorX;
     [SerializeField] float cursorY;
@@ -86,7 +88,7 @@ public class SpecifyingDeliveryRoutes : Map
         driverSet = false;
         for(int i=0;i<driver.Length;i++)
         {
-            line[i] = driver[i].GetComponent<LineRenderer>();
+            line[i] = lineObject[i].GetComponent<LineRenderer>();
         }
       
         for(int i = 0;i<isDriving.Length;i++)
@@ -147,32 +149,34 @@ public class SpecifyingDeliveryRoutes : Map
             lastRoutesPositionCount[i] = routesPosition[i].Count;
         }
        
-        if (Input.GetMouseButtonDown(1) && routes[driverType].Count>0)
+        if(driverType>=0)
         {
-            if (!isDriving[driverType])
+            if (Input.GetMouseButtonDown(1) && routes[driverType].Count > 0)
             {
-                routes[driverType].RemoveAt(routes[driverType].Count - 1);
-                routesPosition[driverType].RemoveAt(routesPosition[driverType].Count - 1);
-                passedObjects[driverType].RemoveAt(passedObjects[driverType].Count - 1);
-                routeObjectsID[driverType].RemoveAt(routeObjectsID[driverType].Count-1);
-                GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
-                line[driverType].positionCount--;
-                coroutineNumber[driverType] = 0;
-                foreach (GameObject o in objs)
+                if (!isDriving[driverType])
                 {
-                    Destroy(o);
-                }
-                for (int d = 0; d < driverCount; d++)
-                {
-                    for (int i = 0; i < routesPosition[d].Count - 1; i++)
+                    routes[driverType].RemoveAt(routes[driverType].Count - 1);
+                    routesPosition[driverType].RemoveAt(routesPosition[driverType].Count - 1);
+                    passedObjects[driverType].RemoveAt(passedObjects[driverType].Count - 1);
+                    routeObjectsID[driverType].RemoveAt(routeObjectsID[driverType].Count - 1);
+                    GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
+                    line[driverType].positionCount--;
+                    coroutineNumber[driverType] = 0;
+                    foreach (GameObject o in objs)
                     {
-                        coroutineNumber[d]++;
-                        StartCoroutine(ArrowMove(routesPosition[d][i], routesPosition[d][i + 1], coroutineNumber[d], frame, d));
+                        Destroy(o);
                     }
+                    for (int d = 0; d < driverCount; d++)
+                    {
+                        for (int i = 0; i < routesPosition[d].Count - 1; i++)
+                        {
+                            coroutineNumber[d]++;
+                            StartCoroutine(ArrowMove(routesPosition[d][i], routesPosition[d][i + 1], coroutineNumber[d], frame, d));
+                        }
 
+                    }
                 }
             }
-            
         }
 
     }
@@ -189,8 +193,6 @@ public class SpecifyingDeliveryRoutes : Map
         {
             if (routeObjectsID[driverType][routeObjectsIDCount - 1] == 3) return;
         }
-       
-        
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
         Debug.Log(ColorChanger("関数MemoryRouteが呼び出されました", "red"));
@@ -255,7 +257,7 @@ public class SpecifyingDeliveryRoutes : Map
         for (int i=1;i<routesPosition[driverID].Count;i++)
         {
            
-            Vector3 dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
+            Vector3 dirction = ((routesPosition[driverID][i]+map.transform.localPosition) - obj.transform.position).normalized;
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
@@ -280,16 +282,16 @@ public class SpecifyingDeliveryRoutes : Map
                         break;
                 }
                 obj.transform.position += vec/speed[driverID];
-                dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
+                dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position ).normalized;
                 yield return null;
             }
-            obj.transform.position = routesPosition[driverID][i];
+            obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
         }
         DeliveryCompleted(destination[driverID],driverID);
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverID].Count-2; i >=0; i--)
         {
-            Vector3 dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
+            Vector3 dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
@@ -298,10 +300,10 @@ public class SpecifyingDeliveryRoutes : Map
                 Vector3 vec = lastDirction*Time.deltaTime;
                 Debug.Log(ColorChanger("加算値は" + vec/speed[driverID] + "です", "red"));
                 obj.transform.position += vec / speed[driverID];
-                dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
+                dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                 yield return null;
             }
-            obj.transform.position = routesPosition[driverID][i];
+            obj.transform.position = routesPosition[driverID][i]+map.transform.localPosition;
         }
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
         foreach(GameObject o in objs)
@@ -340,7 +342,6 @@ public class SpecifyingDeliveryRoutes : Map
     
     IEnumerator ArrowMove(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount,int driver)
     {
-        Debug.Log(ColorChanger(map.transform.localPosition.ToString(), "yellow"));
         startPosition += map.transform.localPosition;
         
         GameObject obj = Instantiate(move, startPosition,Quaternion.identity);

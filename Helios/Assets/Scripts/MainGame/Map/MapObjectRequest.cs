@@ -2,6 +2,8 @@ using UnityEngine;
 using static KumagaiLibrary.Unity.EventSet;
 using static KumagaiLibrary.String;
 using UnityEngine.InputSystem;
+
+[DefaultExecutionOrder(2)] 
 public class MapObjectReturnName : MonoBehaviour 
 {
     string[] objectInfo;
@@ -20,6 +22,11 @@ public class MapObjectReturnName : MonoBehaviour
         sDR = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
         SetEventType(down,PointerDown,this.gameObject);
         SetEventType(enter,PointerEnter, this.gameObject);
+        if(haveSinner)
+        {
+            SpriteRenderer sr = this.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+            sr.color = new Color(1.0f, 0.4f, 0.0f);
+        }
     }
 
     void PointerDown()
