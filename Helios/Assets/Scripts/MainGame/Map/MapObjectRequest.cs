@@ -34,7 +34,7 @@ public class MapObjectReturnName : MonoBehaviour
                     {
                         Debug.Log(ColorChanger("配達ルートの指定を開始します", "red"));
                         sDR.MemoryStart();
-                        sDR.MemoryRoute(widthPositionID, heightPositionID, objectID,this.gameObject, this.gameObject.transform.position);
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, objectID,this.gameObject, this.gameObject.transform.localPosition);
                     }
                    
                 }
@@ -65,7 +65,7 @@ public class MapObjectReturnName : MonoBehaviour
                 break;
             case 1:
                 {
-                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject,this.gameObject.transform.position);
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject,this.gameObject.transform.localPosition);
                 }
                 break;
             case 3:
@@ -73,7 +73,7 @@ public class MapObjectReturnName : MonoBehaviour
                     if (haveSinner)
                     {
                         
-                        sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.position);
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.localPosition);
                     }
                     
                 }

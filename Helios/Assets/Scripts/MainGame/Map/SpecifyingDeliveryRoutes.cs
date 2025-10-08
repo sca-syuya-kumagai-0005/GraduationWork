@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using System;
 using static KumagaiLibrary.String;
 
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : Map
 {
-    const int driverCount = 3;
+    const int driverCount = 4;
+    [SerializeField] GameObject map;
     List<int>[] routeObjectsID=new List<int>[driverCount];
     List<int[]>[] routes = new List<int[]>[driverCount];
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
+
     [SerializeField] GameObject move;
-    [SerializeField]int[] deliveryItems;
-    int tmpDeliveryItem;
+    [SerializeField] GameObject arrows;
+
     [SerializeField]GameObject[] driver;
     [SerializeField]float[] speed;
     private float interfersenceSpeed;
@@ -31,25 +32,34 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] int driverType;
     int lastdriverType;
     public int DriverType { set { driverType = value;} }
-    [SerializeField]bool[] isDriving = new bool[driverCount];
+    bool[] isDriving = new bool[driverCount];
     private int[] deliveryProcess=new int[driverCount];
-    private int tmpDeliveryProcess;
+    [SerializeField]private int tmpDeliveryProcess;
    
-    [SerializeField]private GameObject[] destination=new GameObject[driverCount];
+    private GameObject[] destination=new GameObject[driverCount];
     private GameObject tmpDestination;
-    [SerializeField] private bool[] canStart = new bool[driverCount];
-    [SerializeField]bool[] isProcessSetting = new bool[driverCount];
+    bool[] canStart = new bool[driverCount];
+    bool[] isProcessSetting = new bool[driverCount];
     bool tmpProcessSetting;
-    [SerializeField]bool[] isItemSetting = new bool[driverCount];
+    int[] deliveryItems = new int[driverCount];
+    [SerializeField] int tmpDeliveryItem;
+    bool[] isItemSetting = new bool[driverCount];
     bool tmpItemSetting;
-    [SerializeField] bool[] isDestinationSetting = new bool[driverCount];
+    bool[] isDestinationSetting = new bool[driverCount];
     bool tmpDestinationSetting;
+
+    
 
     [SerializeField] GameObject writeButton;
     SpriteRenderer writeButtonRenderer;
     [SerializeField] Sprite[] writeSprite;
     [SerializeField] GameObject[] driverSetButton;
     SpriteRenderer[] driverSetButtonRenderer = new SpriteRenderer[driverCount];
+    [SerializeField] GameObject[] startButtons;
+
+    [SerializeField]Texture2D cursor;
+    [SerializeField] float cursorX;
+    [SerializeField] float cursorY;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -68,6 +78,9 @@ public class SpecifyingDeliveryRoutes : Map
             Directions(i);
         }
 
+        driverType = -1;
+        tmpDeliveryItem = -1;
+        tmpDeliveryProcess = -1;
 
         writing = false;
         driverSet = false;
@@ -89,13 +102,36 @@ public class SpecifyingDeliveryRoutes : Map
         if(lastdriverType!=driverType)writing = false;
         for(int i=0;i<driverCount;i++)
         {
-            if (!driverSet) break;
+            //if (!driverSet) break;
             if(i==driverType)driverSetButtonRenderer[i].color = Color.green;
             else driverSetButtonRenderer[i].color = Color.white;
             canStart[i] = isDestinationSetting[i] && isItemSetting[i]&& isItemSetting[i];
-
+            if (routeObjectsID[i].Count > 0)
+            {
+                if (routeObjectsID[i][routeObjectsID[i].Count - 1] == 3)
+                {
+                    startButtons[i].SetActive(true);
+                }
+                if (isDriving[i])
+                {
+                    startButtons[i].SetActive(false);
+                }
+            }
+            else
+            {
+                startButtons[i].SetActive(false);
+            }
+           
         }
-        
+
+        if (writing)
+        {
+            Cursor.SetCursor(cursor, new Vector2(cursorX,cursorY), CursorMode.Auto);
+        }
+        else
+        {
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
 
         lastdriverType = driverType;
         frame++;
@@ -145,6 +181,8 @@ public class SpecifyingDeliveryRoutes : Map
     {
         if (!Input.GetMouseButton(0)) return;
         if(!writing||!driverSet)return;
+        if (driverType == -1) return;
+        int[] positionID = new int[2];//xとzで二つ
         int routeObjectsIDCount= routeObjectsID[driverType].Count;
         Debug.Log(ColorChanger(routeObjectsIDCount.ToString(),"red"));
         if(routeObjectsIDCount > 0)
@@ -152,7 +190,7 @@ public class SpecifyingDeliveryRoutes : Map
             if (routeObjectsID[driverType][routeObjectsIDCount - 1] == 3) return;
         }
        
-        int[] positionID = new int[2];//xとzで二つ
+        
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
         Debug.Log(ColorChanger("関数MemoryRouteが呼び出されました", "red"));
@@ -174,11 +212,13 @@ public class SpecifyingDeliveryRoutes : Map
             passedObjects[driverType].Add(obj);
             line[driverType].positionCount++;
             line[driverType].SetPosition(line[driverType].positionCount - 1, position);
+            if (objectID == 3)
+            {
+                driverType = -1;
+                writing = false;
+            }
         }
-        if(objectID==3)
-        {
-            writing = false;
-        }
+        
     }
 
     public void MemoryStart()
@@ -190,16 +230,18 @@ public class SpecifyingDeliveryRoutes : Map
 
     public void StartDriver(int driverID)
     {
-        Debug.Log(routeObjectsID[driverID].Count);
+        Debug.Log("押せてはいる");
         if (routeObjectsID[driverID].Count==0) return;
-        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == 3) { 
+        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == 3) 
+        { 
             Debug.Log(ColorChanger("運転を開始します", "red"));
             isDriving[driverID] = true;
             StartCoroutine(DriverMove(driverID));
+            isItemSetting[driverID] = false;
+            isProcessSetting[driverID] = false;
+            isDestinationSetting[driverID] = false;
         }
-        isItemSetting[driverID] = false;
-        isProcessSetting[driverID] = false;
-        isDestinationSetting[driverID] = false;
+       
     }
 
     private bool NearCheck(List<int[]> list, int[] positionID)
@@ -207,53 +249,72 @@ public class SpecifyingDeliveryRoutes : Map
         return Mathf.Abs(list[list.Count - 1][0] - positionID[0]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1])!= Mathf.Abs(list[list.Count - 1][0] - positionID[0]);
     }
 
-    private IEnumerator DriverMove(int driverType)
+    private IEnumerator DriverMove(int driverID)
     {
-        GameObject obj = driver[driverType];
-        for (int i=1;i<routesPosition[driverType].Count;i++)
+        GameObject obj = driver[driverID];
+        for (int i=1;i<routesPosition[driverID].Count;i++)
         {
            
-            Vector3 dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+            Vector3 dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
                 lastDirction = dirction;
                 Vector3 vec = lastDirction*Time.deltaTime;
-                Debug.Log(ColorChanger("加算値は" + vec / speed[driverType] + "です", "red"));
-                obj.transform.position += vec/speed[driverType];
-                dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+                switch(deliveryProcess[driverID])
+                {
+                    case 0:
+                        {
+                            speed[driverID] = 0.5f;
+                        }
+                    break;
+                    case 1:
+                        {
+                            speed[driverID] = 1f;
+                        }
+                        break;
+                    case 2:
+                        {
+                            speed[driverID] = 2f;
+                        }
+                        break;
+                }
+                obj.transform.position += vec/speed[driverID];
+                dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
                 yield return null;
             }
-            obj.transform.position = routesPosition[driverType][i];
+            obj.transform.position = routesPosition[driverID][i];
         }
-        DeliveryCompleted(destination[driverType],driverType);
+        DeliveryCompleted(destination[driverID],driverID);
         yield return new WaitForSeconds(2f);
-        for (int i = routesPosition[driverType].Count-2; i >=0; i--)
+        for (int i = routesPosition[driverID].Count-2; i >=0; i--)
         {
-            Vector3 dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+            Vector3 dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
                 Debug.Log(ColorChanger("移動しています", "red"));
                 lastDirction = dirction;
                 Vector3 vec = lastDirction*Time.deltaTime;
-                Debug.Log(ColorChanger("加算値は" + vec/speed[driverType] + "です", "red"));
-                obj.transform.position += vec / speed[driverType];
-                dirction = (routesPosition[driverType][i] - obj.transform.position).normalized;
+                Debug.Log(ColorChanger("加算値は" + vec/speed[driverID] + "です", "red"));
+                obj.transform.position += vec / speed[driverID];
+                dirction = (routesPosition[driverID][i] - obj.transform.position).normalized;
                 yield return null;
             }
-            obj.transform.position = routesPosition[driverType][i];
+            obj.transform.position = routesPosition[driverID][i];
         }
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
         foreach(GameObject o in objs)
         {
             Destroy(o);
         }
-        routes[driverType] = new List<int[]>();
-        routesPosition[driverType] = new List<Vector3>();
-        line[driverType].positionCount=0;
-        routeObjectsID[driverType]=new List<int>();
-        writing = false;
+        routes[driverID] = new List<int[]>();
+        routesPosition[driverID] = new List<Vector3>();
+        line[driverID].positionCount=0;
+        routeObjectsID[driverID]=new List<int>();
+        isItemSetting[driverID] = false;
+        isProcessSetting[driverID] = false;
+        isDriving[driverID] = false;
         yield return null;
 
     }
@@ -279,24 +340,30 @@ public class SpecifyingDeliveryRoutes : Map
     
     IEnumerator ArrowMove(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount,int driver)
     {
+        Debug.Log(ColorChanger(map.transform.localPosition.ToString(), "yellow"));
+        startPosition += map.transform.localPosition;
+        
         GameObject obj = Instantiate(move, startPosition,Quaternion.identity);
+        obj.transform.parent = arrows.transform;
         float dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
         for (int i = 0; i < frameCount; i++)
         {
-            Vector3 dir = (endPosition - obj.transform.position).normalized;
+            Vector3 dir = (endPosition + map.transform.localPosition - obj.transform.position).normalized;
             Vector2 vec = obj.transform.position + dir * Time.deltaTime;
-            dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
+            dist = Mathf.Abs((endPosition+ map.transform.localPosition) .magnitude - obj.transform.position.magnitude);
             obj.transform.position = vec;
         }
         int lastX=0;
         int lastY=0;
+       
         while (dist>0.001f)
         {
+                
                 if (routesPosition[driver].Count == 0||obj==null)
                 {
                     break;
                 }
-                Vector3 dir = (endPosition - obj.transform.position).normalized;
+                Vector3 dir = (endPosition+ map.transform.localPosition - obj.transform.position).normalized;
                 if (dir.x == 1)
                 {
                     if(lastX==-1)break;
@@ -322,7 +389,7 @@ public class SpecifyingDeliveryRoutes : Map
                     obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 }
                 Vector2 vec = obj.transform.position + dir * Time.deltaTime;
-                dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
+                dist = Mathf.Abs((endPosition+ map.transform.localPosition ).magnitude - obj.transform.position.magnitude);
                 obj.transform.position = vec;
                 yield return null;
         }
@@ -342,28 +409,33 @@ public class SpecifyingDeliveryRoutes : Map
     }
     public void WritingSwitch()
     {
+        if (driverType == -1) return;
         writing = !writing;
         Debug.Log(ColorChanger("関数WritingSwitchが呼ばれました。writingは" + writing + "です。", "red"));
     }
 
 
-    public void DriverSetting(int driver)
+    public void DriverSetting(int driverID)
     {
+        if (tmpDeliveryItem == -1 || tmpDeliveryProcess == -1) return;
+        if (isDriving[driverID]) return;
         Debug.Log("DriverSetting");
-        isDestinationSetting[driver] = tmpDestinationSetting;
-        destination[driver] = tmpDestination;
-        isItemSetting[driver] = tmpItemSetting;
-        isProcessSetting[driver] = tmpProcessSetting;
+        isDestinationSetting[driverID] = tmpDestinationSetting;
+        destination[driverID] = tmpDestination;
+        isItemSetting[driverID] = tmpItemSetting;
+        isProcessSetting[driverID] = tmpProcessSetting;
         //if (!writing)
         //{
         //    driverSet = false;
         //    return;
         //}
-
-            deliveryItems[driver] = tmpDeliveryItem;
-            deliveryProcess[driver] = tmpDeliveryProcess;
-            driverType = driver;
-            driverSet = true;
+        Debug.Log(deliveryItems[driverID]);
+        deliveryItems[driverID] = tmpDeliveryItem;
+        deliveryProcess[driverID] = tmpDeliveryProcess;
+        driverType = driverID;
+        driverSet = true;
+        tmpDeliveryProcess = -1;
+        tmpDeliveryItem = -1;
       
     }
 
