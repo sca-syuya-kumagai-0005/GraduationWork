@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Collections;
 using static KumagaiLibrary.String;
+using static KumagaiLibrary.Dictionary.Support;
 
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : Map
 {
-    const int driverCount = 4;
-    [SerializeField] GameObject map;
-    List<int>[] routeObjectsID=new List<int>[driverCount];
-    List<int[]>[] routes = new List<int[]>[driverCount];
-    List<Vector3>[] routesPosition = new List<Vector3>[driverCount];
+    const int driverCount = 4;//トラックの数
+    [SerializeField] GameObject map;//マップを格納している親オブジェクト
+    List<int>[] routeObjectsID=new List<int>[driverCount];//それぞれのトラックが通るオブジェクトを順番通りに格納
+    List<int[]>[] routes = new List<int[]>[driverCount];//必要ないかも？
+    List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
 
     [SerializeField] GameObject move;
@@ -63,6 +64,12 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] float cursorX;
     [SerializeField] float cursorY;
 
+
+    [SerializeField]Dictionary<string, bool>[] sinnerDebuff=new Dictionary<string, bool>[driverCount];
+    Dictionary<string, bool>[] SinnerDebuff { get { return sinnerDebuff; }set { sinnerDebuff = value; } }
+
+    //[SerializeField] string[] str;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -74,12 +81,17 @@ public class SpecifyingDeliveryRoutes : Map
             routesPosition[i] = new List<Vector3>();
             routeObjectsID[i] = new List<int>();
             passedObjects[i] = new List<GameObject>();
+            sinnerDebuff[i] = new Dictionary<string, bool>();
             coroutineNumber[i] = 0;
             lastRoutesPositionCount[i] = 0;
             canStart[i] = false;
             Directions(i);
         }
-
+        //SinnerDebuff = AddArray(SinnerDebuff, str, false);
+        foreach(KeyValuePair<string, bool> kvp  in sinnerDebuff[0])
+        {
+            Debug.Log(ColorChanger(kvp.Key, "red") +"は"+ sinnerDebuff[0][kvp.Key]+"になっている");
+        }
         driverType = -1;
         tmpDeliveryItem = -1;
         tmpDeliveryProcess = -1;
@@ -188,7 +200,6 @@ public class SpecifyingDeliveryRoutes : Map
         if (driverType == -1) return;
         int[] positionID = new int[2];//xとzで二つ
         int routeObjectsIDCount= routeObjectsID[driverType].Count;
-        Debug.Log(ColorChanger(routeObjectsIDCount.ToString(),"red"));
         if(routeObjectsIDCount > 0)
         {
             if (routeObjectsID[driverType][routeObjectsIDCount - 1] == 3) return;
