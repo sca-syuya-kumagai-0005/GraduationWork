@@ -47,7 +47,12 @@ namespace KumagaiLibrary
             {
                 Debug.Log("基底クラス側の関数が呼ばれています\\n継承先の関数をオーバーライドしてください\"");
             }
-
+            /// <summary>
+            /// Unityのイベントを設定する関数です
+            /// </summary>
+            /// <param name="eventID">どのイベントを追加したいか(Enter,Down,UPなど)</param>
+            /// <param name="e">イベントの時に呼びたい関数(voidのみ)</param>
+            /// <param name="obj">イベントを追加したいゲームオブジェクト</param>
             public static void SetEventType(string eventID, SetEvent e, GameObject obj)
             {
                 if (obj.gameObject.GetComponent<EventTrigger>() == null)
@@ -87,6 +92,11 @@ namespace KumagaiLibrary
         }
         public class CsvManager
         {
+            /// <summary>
+            /// Csvの読み取りを行う関数
+            /// </summary>
+            /// <param name="csvData">読みたいCSVファイル</param>
+            /// <returns>List<string[]>で値が返されます</returns>
             public static List<string[]> Read(TextAsset csvData) //引数に入力したCSVファイルをリストに変換する関数
             {
                 List<string[]> datas = new List<string[]>();
@@ -101,7 +111,74 @@ namespace KumagaiLibrary
         }
     }
 
+    namespace Dictionary
+    {
+        public class Support
+        {
 
+            /// <summary>
+            /// Dictionaryの配列にKey,valueを要素として追加します
+            /// </summary>
+            /// <param name="dictionary">追加したいDictionary</param>
+            /// <param name="key">追加したい要素のKey</param>
+            /// <param name="value">追加したい要素のvalue</param>
+            /// <returns>Dictionary<string,bool>[] で値が返されます</returns>
+            public static Dictionary<string, bool>[] AddArray(Dictionary<string, bool>[] dictionary, string key, bool value)
+            {
+                bool duplication = false;
+                for (int i = 0; i < dictionary.Length; i++)
+                {
+                    foreach (KeyValuePair<string, bool> kvp in dictionary[i])
+                    {
+                        if (kvp.Key == key)
+                        {
+                            duplication = true;
+                            break;
+                        }
+                    }
+                    if (!duplication)
+                    {
+                        dictionary[i].Add(key, value);
+                    }
+                    duplication = false;
 
+                }
+
+                return dictionary;
+            }
+
+            public static Dictionary<string, bool>[] AddArray(Dictionary<string, bool>[] dictionary, string[] keys, bool value)
+            {
+                bool duplication = false;
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    for (int j = 0; j < dictionary.Length; j++)
+                    {
+                        foreach (KeyValuePair<string, bool> kvp in dictionary[j])
+                        {
+                            if (kvp.Key == keys[i])
+                            {
+                                duplication = true;
+                                break;
+                            }
+                        }
+                        if (!duplication)
+                        {
+                            dictionary[j].Add(keys[i], value);
+                        }
+                        duplication = false;
+
+                    }
+                }
+                
+
+                return dictionary;
+            }
+            public bool CheckDuplication(Dictionary<string, bool> dictionary, string key)
+            {
+                return true;
+            }
+
+        }
+    }
 }
-
