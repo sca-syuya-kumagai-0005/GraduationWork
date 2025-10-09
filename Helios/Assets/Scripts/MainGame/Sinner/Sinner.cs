@@ -5,7 +5,7 @@ using static KumagaiLibrary.Unity.EventSet;
 
 public class Sinner : MonoBehaviour
 {
-    private Player player;
+    protected Player player;
     protected enum SecureClass
     {
         Secra,
@@ -92,10 +92,10 @@ public class Sinner : MonoBehaviour
     protected int deliveryProcessID;
     protected int deliveryLineID;
 
-    private AnnounceManager announceManager;
+    protected AnnounceManager announceManager;
     protected GameObject effect;
     protected float effectTimer;
-    private ProgressGraph progressGraph;
+    protected ProgressGraph progressGraph;
 
     private GameStateSystem gameState;
     private void Awake()
@@ -134,9 +134,11 @@ public class Sinner : MonoBehaviour
     /// <summary>
     /// 配達員が建物に到着した時に呼ぶ
     /// </summary>
-    virtual public void ReceiveDeliveryInformation(int itemID,int deliveryProcess,int deliveryLine)
+    virtual public void ReceiveDeliveryInformation(int itemID,int deliveryProcessID,int deliveryLineID)
     {
         ReceivedItemID = itemID;
+        this.deliveryProcessID = deliveryProcessID;
+        this.deliveryLineID = deliveryLineID;
         string str = sinnerID + "に「" + deliveryItems[itemID] + "」の配達が完了しました。";
         announceManager.MakeAnnounce(str);
         int damage = Lottery();
@@ -152,7 +154,7 @@ public class Sinner : MonoBehaviour
     /// </summary>
     virtual protected void AbnormalPhenomenon()
     {
-        string str = sinnerID + "[" + sinnerName + "]:異常発生。\n早急な鎮圧を推奨。";
+        string str = sinnerID + "[" + sinnerName + "]:異常発生。\n直ちに周辺への損害を確認してください。";
         announceManager.MakeAnnounce(str);
         effect.SetActive(true);
         StartCoroutine(EffectStop(effectTimer));
@@ -211,7 +213,10 @@ public class Sinner : MonoBehaviour
         gameState.GameState = GameStateSystem.State.DeliveryPreparation;
         SetInformation();
     }
-
+    /// <summary>
+    /// Adressableで画像を読み込む関数
+    /// </summary>
+    /// <param name="path">ファイルパス</param>
     protected void LoadSprite(string path)
     {
         Addressables.LoadAssetAsync<Sprite>(path).Completed += handle =>
@@ -225,5 +230,16 @@ public class Sinner : MonoBehaviour
                 Debug.LogError($"Failed to load sprite at path: {path}");
             }
         };
+    }
+    /// <summary>
+    /// 異常発生確率を上昇させる時に呼ぶ関数
+    /// </summary>
+    /// <param name="Increase">上昇分の数値</param>
+    protected void IncreaseProbabilitys(float Increase)
+    {
+        for(int i=0;i<probabilitys.Length;i++)
+        {
+            probabilitys[i] += Increase;
+        }
     }
 }

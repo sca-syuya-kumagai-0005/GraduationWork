@@ -345,7 +345,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 254.79999}
     m_SelectedIDs: ea0d0100
     m_LastClickedID: 69098
-    m_ExpandedIDs: 00000000eabe0000
+    m_ExpandedIDs: 
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -374,7 +374,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000eabe0000
+    m_ExpandedIDs: 
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1348,30 +1348,26 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-
       width: 884.4
       height: 526.6
-    m_Scale: {x: 0.5757813, y: 0.5757813}
-    m_Translation: {x: 442.2, y: 263.3}
-
+    m_Scale: {x: 1, y: 1}
+    m_Translation: {x: 392.2, y: 213.29999}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-
-      x: -768
-      y: -457.2917
-      width: 1536
-      height: 914.5834
+      x: -392.2
+      y: -213.29999
+      width: 884.4
+      height: 526.6
     m_MinimalGUI: 1
   m_defaultScale: 0.5757813
   m_LastWindowPixelSize: {x: 884.4, y: 547.6}
-
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
-  m_LowResolutionForAspectRatios: 01000000000000000000
+  m_LowResolutionForAspectRatios: 00000000000000000000
   m_XRRenderMode: 0
   m_RenderTexture: {fileID: 0}
   m_showToolbar: 1

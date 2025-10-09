@@ -18,6 +18,17 @@ public class ItemID_002 : Sinner
     {
 
     }
+    public override void ReceiveDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    {
+        float increase;
+        const int processType_Truck = 0;
+        if (deliveryProcessID == processType_Truck)
+        {
+            increase = 25.0f;
+            IncreaseProbabilitys(increase);
+        }
+        base.ReceiveDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
+    }
     protected override void AbnormalPhenomenon()
     {
         //‘S‚Ä‚ÌˆÙí‚É‚¨‚¢‚Ä‹¤’Ê‚Å‹N‚«‚é–‚ª‚ ‚ê‚Î«‚ğ•ÏX
