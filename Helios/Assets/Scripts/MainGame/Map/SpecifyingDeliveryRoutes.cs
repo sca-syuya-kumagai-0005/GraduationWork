@@ -64,6 +64,8 @@ public class SpecifyingDeliveryRoutes : Map
     [SerializeField] float cursorX;
     [SerializeField] float cursorY;
 
+    bool memoring;
+
 
     [SerializeField]Dictionary<string, bool>[] sinnerDebuff=new Dictionary<string, bool>[driverCount];
     Dictionary<string, bool>[] SinnerDebuff { get { return sinnerDebuff; }set { sinnerDebuff = value; } }
@@ -73,6 +75,7 @@ public class SpecifyingDeliveryRoutes : Map
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        memoring = false;   
         writeButtonRenderer=writeButton.GetComponent<SpriteRenderer>();
         for(int i=0;i<driverCount;i++)
         {
@@ -122,7 +125,7 @@ public class SpecifyingDeliveryRoutes : Map
             canStart[i] = isDestinationSetting[i] && isItemSetting[i]&& isItemSetting[i];
             if (routeObjectsID[i].Count > 0)
             {
-                if (routeObjectsID[i][routeObjectsID[i].Count - 1] == 3)
+                if (routeObjectsID[i][routeObjectsID[i].Count - 1] == 9)
                 {
                     startButtons[i].SetActive(true);
                 }
@@ -196,18 +199,19 @@ public class SpecifyingDeliveryRoutes : Map
     public void MemoryRoute(int widthPositionID,int heightPositionID,int objectID,GameObject obj,Vector3 position)
     {
         if (!Input.GetMouseButton(0)) return;
+        if (!memoring) return;
         if(!writing||!driverSet)return;
         if (driverType == -1) return;
         int[] positionID = new int[2];//xとzで二つ
         int routeObjectsIDCount= routeObjectsID[driverType].Count;
         if(routeObjectsIDCount > 0)
         {
-            if (routeObjectsID[driverType][routeObjectsIDCount - 1] == 3) return;
+            if (routeObjectsID[driverType][routeObjectsIDCount - 1] == 9) return;
         }
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
         Debug.Log(ColorChanger("関数MemoryRouteが呼び出されました", "red"));
-        if (objectID == 0 && routes[driverType].Count==0)
+        if (objectID == 1 && routes[driverType].Count==0)
         {
             Debug.Log(ColorChanger("開始地点を追加しました","red"));
             routes[driverType].Add(positionID);
@@ -225,7 +229,7 @@ public class SpecifyingDeliveryRoutes : Map
             passedObjects[driverType].Add(obj);
             line[driverType].positionCount++;
             line[driverType].SetPosition(line[driverType].positionCount - 1, position);
-            if (objectID == 3)
+            if (objectID == 9)
             {
                 driverType = -1;
                 writing = false;
@@ -237,6 +241,7 @@ public class SpecifyingDeliveryRoutes : Map
     public void MemoryStart()
     {
         if(!writing||!driverSet) { return;}
+        memoring = true;    
         StartCoroutine(Directions(driverType)); 
        
     }
@@ -245,7 +250,7 @@ public class SpecifyingDeliveryRoutes : Map
     {
         Debug.Log("押せてはいる");
         if (routeObjectsID[driverID].Count==0) return;
-        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == 3) 
+        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == 9) 
         { 
             Debug.Log(ColorChanger("運転を開始します", "red"));
             isDriving[driverID] = true;
@@ -308,8 +313,8 @@ public class SpecifyingDeliveryRoutes : Map
             {
                 Debug.Log(ColorChanger("移動しています", "red"));
                 lastDirction = dirction;
-                Vector3 vec = lastDirction*Time.deltaTime;
-                Debug.Log(ColorChanger("加算値は" + vec/speed[driverID] + "です", "red"));
+                Vector3 vec = lastDirction * Time.deltaTime;
+                Debug.Log(ColorChanger("加算値は" + vec / speed[driverID] + "です", "red"));
                 obj.transform.position += vec / speed[driverID];
                 dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                 yield return null;
@@ -327,6 +332,7 @@ public class SpecifyingDeliveryRoutes : Map
         routeObjectsID[driverID]=new List<int>();
         isItemSetting[driverID] = false;
         isProcessSetting[driverID] = false;
+        memoring = false;
         isDriving[driverID] = false;
         yield return null;
 
@@ -351,7 +357,7 @@ public class SpecifyingDeliveryRoutes : Map
         }
     }
     
-    IEnumerator ArrowMove(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount,int driver)
+    IEnumerator ArrowMove(Vector3 startPosition,Vector3 endPosition, int coroutineID, int frameCount,int driverID)
     {
         startPosition += map.transform.localPosition;
         
@@ -360,22 +366,23 @@ public class SpecifyingDeliveryRoutes : Map
         float dist = Mathf.Abs(endPosition.magnitude - obj.transform.position.magnitude);
         for (int i = 0; i < frameCount; i++)
         {
-            Vector3 dir = (endPosition + map.transform.localPosition - obj.transform.position).normalized;
-            Vector2 vec = obj.transform.position + dir * Time.deltaTime;
+            Vector3 dirction = (endPosition + map.transform.localPosition - obj.transform.position).normalized;
+            Vector2 vec = obj.transform.position + dirction * Time.deltaTime;
             dist = Mathf.Abs((endPosition+ map.transform.localPosition) .magnitude - obj.transform.position.magnitude);
             obj.transform.position = vec;
         }
         int lastX=0;
         int lastY=0;
-       
-        while (dist>0.001f)
+        Vector3 dir = ((endPosition + map.transform.localPosition) - obj.transform.position).normalized;
+        Vector3 lastDirction = dir;
+        while (true)
         {
                 
-                if (routesPosition[driver].Count == 0||obj==null)
+                if (routesPosition[driverID].Count == 0||obj==null)
                 {
                     break;
                 }
-                Vector3 dir = (endPosition+ map.transform.localPosition - obj.transform.position).normalized;
+                dir = (endPosition+ map.transform.localPosition - obj.transform.position).normalized;
                 if (dir.x == 1)
                 {
                     if(lastX==-1)break;
@@ -400,17 +407,19 @@ public class SpecifyingDeliveryRoutes : Map
                     lastY=-1;
                     obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 }
-                Vector2 vec = obj.transform.position + dir * Time.deltaTime;
-                dist = Mathf.Abs((endPosition+ map.transform.localPosition ).magnitude - obj.transform.position.magnitude);
-                obj.transform.position = vec;
-                yield return null;
+            lastDirction = dir;
+            Vector3 vec = lastDirction * Time.deltaTime;
+            Debug.Log(ColorChanger("加算値は" + vec / speed[driverID] + "です", "red"));
+            obj.transform.position += vec / speed[driverID];
+            dir= ((endPosition + map.transform.localPosition) - obj.transform.position).normalized;
+            yield return null;
         }
         Destroy(obj);
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
         if (coroutineID == 1)
         {
-            coroutineNumber[driver] = 0;
-            StartCoroutine(Directions(driver));
+            coroutineNumber[driverID] = 0;
+            StartCoroutine(Directions(driverID));
         }
         foreach (GameObject arrow in objs)
         {

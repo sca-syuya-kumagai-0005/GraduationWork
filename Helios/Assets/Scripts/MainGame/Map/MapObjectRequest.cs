@@ -35,7 +35,7 @@ public class MapObjectReturnName : MonoBehaviour
         
         switch(objectID)
         { 
-            case 0:
+            case 1:
                 {
                     if(sDR.DriverSet&&sDR.Writing)
                     {
@@ -46,7 +46,7 @@ public class MapObjectReturnName : MonoBehaviour
                    
                 }
                 break;
-            case 3:
+            case 9:
                 {
                         sDR.DestinationSetting(this.gameObject);
                    
@@ -65,17 +65,32 @@ public class MapObjectReturnName : MonoBehaviour
     {
         switch(objectID)
         { 
-            case 0:
+            case 1:
                 {
                    
                 }
                 break;
-            case 1:
+            case 2:
                 {
                     sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject,this.gameObject.transform.localPosition);
                 }
                 break;
             case 3:
+                {
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.localPosition);
+                }
+                break;
+            case 4:
+                {
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.localPosition);
+                }
+                break;
+            case 5:
+                {
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.localPosition);
+                }
+                break;
+            case 9:
                 {
                     if (haveSinner)
                     {
