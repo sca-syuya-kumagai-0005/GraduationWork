@@ -12,6 +12,7 @@ public class ItemID_002 : Sinner
         sinnerType = SinnerType.Humanoid;
         LoadSprite("atokaraireru");
         effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
+        KumagaiLibrary.Dictionary.Support.AddArray(specifyingDeliveryRoutes.SinnerDebuff, sinnerName, false);
     }
     // Update is called once per frame
     void Update()
@@ -35,5 +36,6 @@ public class ItemID_002 : Sinner
         base.AbnormalPhenomenon();
 
         //ÇªÇÍÇºÇÍÇÃèàóùÇÕÇ±Ç±Ç…èëÇ≠
+        specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID][sinnerName] = true;
     }
 }

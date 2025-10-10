@@ -68,8 +68,9 @@ public class SpecifyingDeliveryRoutes : Map
 
 
     [SerializeField]Dictionary<string, bool>[] sinnerDebuff=new Dictionary<string, bool>[driverCount];
-    Dictionary<string, bool>[] SinnerDebuff { get { return sinnerDebuff; }set { sinnerDebuff = value; } }
+    public Dictionary<string, bool>[] SinnerDebuff { get { return sinnerDebuff; }set { sinnerDebuff = value; } }
 
+    [SerializeField] private GameObject destinationPin;
     //[SerializeField] string[] str;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -233,6 +234,7 @@ public class SpecifyingDeliveryRoutes : Map
             {
                 driverType = -1;
                 writing = false;
+                Instantiate(destinationPin, obj.transform.position,Quaternion.identity, obj.transform);
             }
         }
         
@@ -477,7 +479,6 @@ public class SpecifyingDeliveryRoutes : Map
     {
         Debug.Log(obj);
         obj.GetComponent<Sinner>().ReceiveDeliveryInformation(deliveryItems[driverType], deliveryProcess[driverType],driverType);
-        //↑設計の都合上Setterから関数に変えたので勝手に変更しました
     }
     public void DestinationSetting(GameObject obj)
     {
