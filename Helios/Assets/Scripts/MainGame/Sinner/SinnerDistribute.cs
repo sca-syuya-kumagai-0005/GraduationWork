@@ -5,7 +5,7 @@ using UnityEngine;
 public class SinnerDistribute : MonoBehaviour
 {
     [SerializeField,Range(1,31)]
-    private const string tileID_House = "3";
+    private const string tileID_House = "9";
     private const string underBar = "_";
     private List<Object> components = new List<Object>() 
     { 
