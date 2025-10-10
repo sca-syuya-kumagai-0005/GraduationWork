@@ -17,23 +17,16 @@ public class SinnerDistribute : MonoBehaviour
     private const int maxSinners = 31;
     private List<GameObject> houseList = new List<GameObject>();
     private bool[] stayed = new bool[maxSinners];
-
+    private int standbySinners;
     private SaveDataManager saveDataManager;
     private void Start()
     {
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        int standbySinner = saveDataManager.Days;
+        standbySinners = saveDataManager.Days;
         stayed = saveDataManager.StayedSinner;
         houseList = GetHouse();
-        for (int i = 0; i < stayed.Length; i++)
-        {
-            if (stayed[i])
-            {
-                standbySinner--;
-                Distribute(i);
-            }
-        }
-        for (int i = 0; i < standbySinner; i++)
+        Distribute(stayed);
+        for (int i = 0; i < standbySinners; i++)
         {
             int rand = Random.Range(0, components.Count);
             Distribute(rand);
@@ -55,16 +48,37 @@ public class SinnerDistribute : MonoBehaviour
         }
         return houseList;
     }
-    private void Distribute(int SinnerID)
+    private void Distribute(bool[] stayed)
+    {
+        List<int> sinnerIDList = new List<int>();
+        for(int i = 0; i < stayed.Length; i++)
+        {
+            if (stayed[i])
+            {
+                int rand = Random.Range(0, houseList.Count);
+                GameObject go = houseList[rand];
+                houseList.RemoveAt(rand);
+
+                go.AddComponent(components[i].GetType());
+                go.GetComponent<MapObjectReturnName>().HaveSinner = true;
+                Debug.Log(components[i].GetType() + "出現：" + go.name);
+                standbySinners--;
+                sinnerIDList.Add(i);
+                this.stayed[i] = true;
+            }
+        }
+        for(int i = 0; i < sinnerIDList.Count; i++) components.RemoveAt(i);
+    }
+    private void Distribute(int sinnerID)
     {
         int rand = Random.Range(0, houseList.Count);
         GameObject go = houseList[rand];
         houseList.RemoveAt(rand);
 
-        go.AddComponent(components[SinnerID].GetType());
+        go.AddComponent(components[sinnerID].GetType());
         go.GetComponent<MapObjectReturnName>().HaveSinner = true;
-        Debug.Log(components[SinnerID].GetType() + "出現：" + go.name);
-        components.RemoveAt(SinnerID);
+        Debug.Log(components[sinnerID].GetType() + "出現：" + go.name);
+        components.RemoveAt(sinnerID);
         stayed[rand] = true;
     }
 }
