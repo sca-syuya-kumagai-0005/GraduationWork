@@ -6,7 +6,7 @@ public class ProgressGraph : MonoBehaviour
 {
     [SerializeField]
     private Image image;
-    private float progress = 0;
+    private int progress;
     public float GetProgres { get {  return progress; } }
     private int norm;//ÉmÉãÉ}ÅAÇªÇÃÇ§ÇøëùÇ¶ï˚ïœÇ¶ÇÈ
     private TimeLine timeLine;
@@ -16,6 +16,8 @@ public class ProgressGraph : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        progress = 0;
+        image.fillAmount = 0;
         saveData = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         norm = saveData.Days + 1;
         timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
@@ -26,10 +28,9 @@ public class ProgressGraph : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameState.GameState != GameStateSystem.State.End)
+        if (progress >= norm)
         {
-            image.fillAmount = progress;
-            if (progress >= 1.0f)
+            if (gameState.GameState != GameStateSystem.State.End)
             {
                 timeLine.NextDay();
                 gameState.GameState = GameStateSystem.State.End;
@@ -39,6 +40,8 @@ public class ProgressGraph : MonoBehaviour
     }
     public void AddProgress()
     {
-        progress += 1.0f / norm;
+        progress++;
+        float late = (float)(progress * 10 / norm) / 10;
+        image.fillAmount = late;
     }
 }
