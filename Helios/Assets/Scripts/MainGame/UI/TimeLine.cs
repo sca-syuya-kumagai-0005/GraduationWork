@@ -13,7 +13,6 @@ public class TimeLine : MonoBehaviour
     private float[] totalTimes = new float[3];
     private bool[] announced = new bool[3];
     [SerializeField]private AnnounceManager announceManager;
-    Player player;
     private GameStateSystem gameState;
 
     private SaveDataManager saveDataManager;
@@ -21,7 +20,6 @@ public class TimeLine : MonoBehaviour
     void Start()
     {
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        player = GameObject.Find("Player").GetComponent<Player>();
         announceManager = GameObject.Find("AnnounceCenter").GetComponent<AnnounceManager>();
         times = new float[3]
         {
@@ -71,7 +69,6 @@ public class TimeLine : MonoBehaviour
         saveDataManager.Days++;
         gameState.GameState = GameStateSystem.State.End;
         timeLine = 0.0f;
-        player.formatting();
         announceManager.MakeAnnounce("本日の業務は以上となります。\nお疲れ様でした。");
     }
 }

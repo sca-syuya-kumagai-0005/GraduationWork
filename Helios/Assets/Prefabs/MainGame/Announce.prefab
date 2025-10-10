@@ -309,7 +309,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: f4eec857a4fdf2f43be0e9f3d1a984e7, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -321,4 +321,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u25A0\u25A0\u25A0\u25A0\u25A0\u25A0\u25A0\u25A0\u3001\u7570\u5E38\u767A\u751F\u3002\n\u65E9\u6025\u306A\u93AE\u5727\u3092\u63A8\u5968\u3002"
+  m_Text: "\u25A0\u25A0\u25A0\u25A0\u25A0\u25A0\u25A0\u25A0\u3001\u7570\u5E38\u767A\u751F\u3002\n\u88AB\u5BB3\u306E\u78BA\u8A8D\u3092\u63A8\u5968\u3002"
