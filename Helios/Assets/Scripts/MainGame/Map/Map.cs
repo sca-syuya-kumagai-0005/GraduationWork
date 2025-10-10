@@ -25,6 +25,7 @@ public class Map : CsvReader
     {
         List<string[]> data=Read(mapCsv);
         MapCreate(data);
+        this.gameObject.transform.position = new Vector3(-10, 10, 0);
     }
     void MapCreate(List<string[]> data)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
     {
