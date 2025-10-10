@@ -22,7 +22,7 @@ public class MapMobilityManager : MonoBehaviour
 
       
 
-        this.transform.position +=DirctionSet()*Time.deltaTime/speed;
+        this.transform.position +=DirctionSet()*Time.deltaTime*speed;
     }
 
     Vector3 DirctionSet()
