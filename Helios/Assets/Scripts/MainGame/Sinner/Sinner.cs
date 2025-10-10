@@ -151,7 +151,7 @@ public class Sinner : MonoBehaviour
             player.fluctuationHealth(-damage);
         }
         progressGraph.AddProgress();
-        Destroy(gameObject.transform.FindChild("DestinationPin(Clone)").gameObject);
+        Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
     }
     /// <summary>
     /// 異常発生時に呼ぶ仮想関数
