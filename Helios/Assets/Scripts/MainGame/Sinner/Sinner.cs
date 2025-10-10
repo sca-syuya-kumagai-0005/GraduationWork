@@ -25,39 +25,39 @@ public class Sinner : MonoBehaviour
     protected enum Mood
     {
         /// <summary>
-        /// Šì‚Ñ
+        /// å–œã³
         /// </summary>
         Joy = 0,
         /// <summary>
-        /// Šú‘Ò
+        /// æœŸå¾…
         /// </summary>
         Anticipation,
         /// <summary>
-        /// “{‚è
+        /// æ€’ã‚Š
         /// </summary>
         Anger,
         /// <summary>
-        /// Œ™ˆ«
+        /// å«Œæ‚ª
         /// </summary>
         Disgust,
         /// <summary>
-        /// ”ß‚µ‚İ
+        /// æ‚²ã—ã¿
         /// </summary>
         Sadness,
         /// <summary>
-        /// ‹Á‚«
+        /// é©šã
         /// </summary>
         Surprise,
         /// <summary>
-        /// ‹°‚ê
+        /// æã‚Œ
         /// </summary>
         Fear,
         /// <summary>
-        /// M—Š
+        /// ä¿¡é ¼
         /// </summary>
         Trust,
         /// <summary>
-        /// “Áê‰×•¨
+        /// ç‰¹æ®Šè·ç‰©
         /// </summary>
         Exception
     }
@@ -77,18 +77,18 @@ public class Sinner : MonoBehaviour
         Enormous = 30,
         Death = 100
     }
-    private const int moods = 8;//Š´î‚Ì”
-    protected int ReceivedItemID;//ó‚¯æ‚é‰×•¨‚ÌƒAƒCƒeƒ€”Ô†
-    protected float[] probabilitys = new float[moods];//‚»‚ê‚¼‚ê‚ÌŠm—¦
-    protected SecureClass secureClass;//û—eƒNƒ‰ƒX
-    protected LiskClass liskClass;//ƒŠƒXƒNƒNƒ‰ƒX
-    protected string sinnerID;//ƒVƒi[”Ô†
-    protected string sinnerName;//ƒVƒi[–¼
-    protected SinnerType sinnerType;//ƒVƒi[‚Ìí—Ş
-    protected Sprite sinnerSprite;//‰æ‘œ
-    protected int deliveryCount;//”z’B‚³‚ê‚½‰ñ”
+    private const int moods = 8;//æ„Ÿæƒ…ã®æ•°
+    protected int ReceivedItemID;//å—ã‘å–ã‚‹è·ç‰©ã®ã‚¢ã‚¤ãƒ†ãƒ ç•ªå·
+    protected float[] probabilitys = new float[moods];//ãã‚Œãã‚Œã®ç¢ºç‡
+    protected SecureClass secureClass;//åå®¹ã‚¯ãƒ©ã‚¹
+    protected LiskClass liskClass;//ãƒªã‚¹ã‚¯ã‚¯ãƒ©ã‚¹
+    protected string sinnerID;//ã‚·ãƒŠãƒ¼ç•ªå·
+    protected string sinnerName;//ã‚·ãƒŠãƒ¼å
+    protected SinnerType sinnerType;//ã‚·ãƒŠãƒ¼ã®ç¨®é¡
+    protected Sprite sinnerSprite;//ç”»åƒ
+    protected int deliveryCount;//é…é”ã•ã‚ŒãŸå›æ•°
     protected ResidenceCertificate residenceCertificate;
-    protected Mood[] deliveryItems = new Mood[moods];//©g‚ª”z’B‚³‚ê‚¤‚é‰×•¨
+    protected Mood[] deliveryItems = new Mood[moods];//è‡ªèº«ãŒé…é”ã•ã‚Œã†ã‚‹è·ç‰©
     protected int deliveryProcessID;
     protected int deliveryLineID;
 
@@ -98,6 +98,8 @@ public class Sinner : MonoBehaviour
     protected ProgressGraph progressGraph;
 
     private GameStateSystem gameState;
+
+    protected SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     private void Awake()
     {
         residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
@@ -107,23 +109,24 @@ public class Sinner : MonoBehaviour
         SetDeliveryItems();
         progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
+        specifyingDeliveryRoutes = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
     }
 
     /// <summary>
-    /// ”z’B‚³‚ê‚¤‚é‰×•¨‚Ì‰Šú‰»
+    /// é…é”ã•ã‚Œã†ã‚‹è·ç‰©ã®åˆæœŸåŒ–
     /// </summary>
     protected void SetDeliveryItems()
     {
-        deliveryItems = new Mood[8] 
+        deliveryItems = new Mood[8]
         {
-            Mood.Joy, 
-            Mood.Anticipation, 
-            Mood.Anger, 
-            Mood.Disgust, 
-            Mood.Sadness, 
-            Mood.Surprise, 
-            Mood.Fear, 
-            Mood.Trust, 
+            Mood.Joy,
+            Mood.Anticipation,
+            Mood.Anger,
+            Mood.Disgust,
+            Mood.Sadness,
+            Mood.Surprise,
+            Mood.Fear,
+            Mood.Trust,
         };
     }
     private IEnumerator EffectStop(float time)
@@ -132,35 +135,36 @@ public class Sinner : MonoBehaviour
         effect.SetActive(false);
     }
     /// <summary>
-    /// ”z’Bˆõ‚ªŒš•¨‚É“’…‚µ‚½‚ÉŒÄ‚Ô
+    /// é…é”å“¡ãŒå»ºç‰©ã«åˆ°ç€ã—ãŸæ™‚ã«å‘¼ã¶
     /// </summary>
-    virtual public void ReceiveDeliveryInformation(int itemID,int deliveryProcessID,int deliveryLineID)
+    virtual public void ReceiveDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
         ReceivedItemID = itemID;
         this.deliveryProcessID = deliveryProcessID;
         this.deliveryLineID = deliveryLineID;
-        string str = sinnerID + "‚Éu" + deliveryItems[itemID] + "v‚Ì”z’B‚ªŠ®—¹‚µ‚Ü‚µ‚½B";
+        string str = sinnerID + "ã«ã€Œ" + deliveryItems[itemID] + "ã€ã®é…é”ãŒå®Œäº†ã—ã¾ã—ãŸã€‚";
         announceManager.MakeAnnounce(str);
-        int damage = Lottery();
+        int damage = Lottery(deliveryLineID);
         if (damage != 0)
         {
             AbnormalPhenomenon();
             player.fluctuationHealth(-damage);
         }
         progressGraph.AddProgress();
+        Destroy(gameObject.transform.FindChild("DestinationPin(Clone)").gameObject);
     }
     /// <summary>
-    /// ˆÙí”­¶‚ÉŒÄ‚Ô‰¼‘zŠÖ”
+    /// ç•°å¸¸ç™ºç”Ÿæ™‚ã«å‘¼ã¶ä»®æƒ³é–¢æ•°
     /// </summary>
     virtual protected void AbnormalPhenomenon()
     {
-        string str = sinnerID + "[" + sinnerName + "]:ˆÙí”­¶B\n’¼‚¿‚Éü•Ó‚Ö‚Ì‘¹ŠQ‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B";
+        string str = sinnerName + ":ç•°å¸¸ç™ºç”Ÿã€‚\nç›´ã¡ã«æå®³ã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚";
         announceManager.MakeAnnounce(str);
         effect.SetActive(true);
         StartCoroutine(EffectStop(effectTimer));
     }
     /// <summary>
-    /// ”z’B•\‚É©g‚Ìî•ñ‚ğ“n‚·‚ÉŒÄ‚ÔŠÖ”
+    /// é…é”è¡¨ã«è‡ªèº«ã®æƒ…å ±ã‚’æ¸¡ã™æ™‚ã«å‘¼ã¶é–¢æ•°
     /// </summary>
     protected void SetInformation()
     {
@@ -173,13 +177,16 @@ public class Sinner : MonoBehaviour
         residenceCertificate.gameObject.SetActive(true);
     }
     /// <summary>
-    /// ”z’BŠ®—¹A’Š‘I‚ğs‚¤‚ÉŒÄ‚ÔŠÖ”
+    /// é…é”å®Œäº†æ™‚ã€æŠ½é¸ã‚’è¡Œã†æ™‚ã«å‘¼ã¶é–¢æ•°
     /// </summary>
     /// <returns></returns>
-    protected int Lottery()
+    protected int Lottery(int deliveryLineID)
     {
+        int debuff = 0;
+        if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("ç´…ã„ç³¸"))
+        if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["ç´…ã„ç³¸"]) debuff += 50;
         DamageLevel damageLevel = DamageLevel.None;
-        if (probabilitys[ReceivedItemID] < 100)
+        if (probabilitys[ReceivedItemID] + debuff < 100)
         {
             int rand = Random.Range(0, 100);
             if (rand < probabilitys[ReceivedItemID])
@@ -187,15 +194,15 @@ public class Sinner : MonoBehaviour
                 damageLevel = DamageLevel.Minor;
             }
         }
-        else if (100 <= probabilitys[ReceivedItemID] && probabilitys[ReceivedItemID] < 200)
+        else if (100 <= probabilitys[ReceivedItemID] + debuff && probabilitys[ReceivedItemID] + debuff < 200)
         {
             damageLevel = DamageLevel.Minor;
         }
-        else if (200 <= probabilitys[ReceivedItemID] && probabilitys[ReceivedItemID] < 300)
+        else if (200 <= probabilitys[ReceivedItemID] + debuff && probabilitys[ReceivedItemID] + debuff < 300)
         {
             damageLevel = DamageLevel.Moderate;
         }
-        else if (300 <= probabilitys[ReceivedItemID] && probabilitys[ReceivedItemID] < 350)
+        else if (300 <= probabilitys[ReceivedItemID] + debuff && probabilitys[ReceivedItemID] + debuff < 350)
         {
             damageLevel = DamageLevel.Enormous;
         }
@@ -206,7 +213,7 @@ public class Sinner : MonoBehaviour
         return (int)damageLevel;
     }
     /// <summary>
-    /// ©g‚ªƒNƒŠƒbƒN‚³‚ê‚½‚ÉƒCƒxƒ“ƒg‚Æ‚µ‚ÄŒÄ‚Î‚ê‚éŠÖ”
+    /// è‡ªèº«ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸæ™‚ã«ã‚¤ãƒ™ãƒ³ãƒˆã¨ã—ã¦å‘¼ã°ã‚Œã‚‹é–¢æ•°
     /// </summary>
     private void OnClick()
     {
@@ -214,9 +221,9 @@ public class Sinner : MonoBehaviour
         SetInformation();
     }
     /// <summary>
-    /// Adressable‚Å‰æ‘œ‚ğ“Ç‚İ‚ŞŠÖ”
+    /// Adressableã§ç”»åƒã‚’èª­ã¿è¾¼ã‚€é–¢æ•°
     /// </summary>
-    /// <param name="path">ƒtƒ@ƒCƒ‹ƒpƒX</param>
+    /// <param name="path">ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹</param>
     protected void LoadSprite(string path)
     {
         Addressables.LoadAssetAsync<Sprite>(path).Completed += handle =>
@@ -232,12 +239,12 @@ public class Sinner : MonoBehaviour
         };
     }
     /// <summary>
-    /// ˆÙí”­¶Šm—¦‚ğã¸‚³‚¹‚é‚ÉŒÄ‚ÔŠÖ”
+    /// ç•°å¸¸ç™ºç”Ÿç¢ºç‡ã‚’ä¸Šæ˜‡ã•ã›ã‚‹æ™‚ã«å‘¼ã¶é–¢æ•°
     /// </summary>
-    /// <param name="Increase">ã¸•ª‚Ì”’l</param>
+    /// <param name="Increase">ä¸Šæ˜‡åˆ†ã®æ•°å€¤</param>
     protected void IncreaseProbabilitys(float Increase)
     {
-        for(int i=0;i<probabilitys.Length;i++)
+        for (int i = 0; i < probabilitys.Length; i++)
         {
             probabilitys[i] += Increase;
         }

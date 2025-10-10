@@ -32,6 +32,7 @@ public class ProgressGraph : MonoBehaviour
         {
             if (gameState.GameState != GameStateSystem.State.End)
             {
+                saveData.Save();
                 timeLine.NextDay();
                 gameState.GameState = GameStateSystem.State.End;
                 StartCoroutine(blackScreen.FadeOut("MainScene"));

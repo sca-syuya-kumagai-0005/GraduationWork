@@ -4,7 +4,6 @@ using UnityEngine;
 [DefaultExecutionOrder(1)]
 public class SinnerDistribute : MonoBehaviour
 {
-    [SerializeField,Range(1,31)]
     private const string tileID_House = "9";
     private const string underBar = "_";
     private List<Object> components = new List<Object>() 
@@ -16,6 +15,7 @@ public class SinnerDistribute : MonoBehaviour
     };
     private const int maxSinners = 31;
     private List<GameObject> houseList = new List<GameObject>();
+    [SerializeField]
     private bool[] stayed = new bool[maxSinners];
     private int standbySinners;
     private SaveDataManager saveDataManager;
@@ -25,9 +25,10 @@ public class SinnerDistribute : MonoBehaviour
         standbySinners = saveDataManager.Days;
         stayed = saveDataManager.StayedSinner;
         houseList = GetHouse();
-        Distribute(stayed);
+        Distribute();
         for (int i = 0; i < standbySinners; i++)
         {
+            if (standbySinners > components.Count) break;
             int rand = Random.Range(0, components.Count);
             Distribute(rand);
         }
@@ -48,7 +49,7 @@ public class SinnerDistribute : MonoBehaviour
         }
         return houseList;
     }
-    private void Distribute(bool[] stayed)
+    private void Distribute()
     {
         List<int> sinnerIDList = new List<int>();
         for(int i = 0; i < stayed.Length; i++)
@@ -64,7 +65,6 @@ public class SinnerDistribute : MonoBehaviour
                 Debug.Log(components[i].GetType() + "出現：" + go.name);
                 standbySinners--;
                 sinnerIDList.Add(i);
-                this.stayed[i] = true;
             }
         }
         for(int i = 0; i < sinnerIDList.Count; i++) components.RemoveAt(i);
@@ -79,6 +79,6 @@ public class SinnerDistribute : MonoBehaviour
         go.GetComponent<MapObjectReturnName>().HaveSinner = true;
         Debug.Log(components[sinnerID].GetType() + "出現：" + go.name);
         components.RemoveAt(sinnerID);
-        stayed[rand] = true;
+        stayed[sinnerID] = true;
     }
 }
