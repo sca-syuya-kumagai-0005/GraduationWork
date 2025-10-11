@@ -105,6 +105,7 @@ public class SpecifyingDeliveryRoutes : Map
         for(int i=0;i<driver.Length;i++)
         {
             line[i] = lineObject[i].GetComponent<LineRenderer>();
+            driver[i].SetActive(false);
         }
       
         for(int i = 0;i<isDriving.Length;i++)
@@ -252,8 +253,9 @@ public class SpecifyingDeliveryRoutes : Map
     {
         Debug.Log("押せてはいる");
         if (routeObjectsID[driverID].Count==0) return;
-        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == 9) 
-        { 
+        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == 9)
+        {
+            driver[driverID].SetActive(true);   
             Debug.Log(ColorChanger("運転を開始します", "red"));
             isDriving[driverID] = true;
             StartCoroutine(DriverMove(driverID));
@@ -336,6 +338,7 @@ public class SpecifyingDeliveryRoutes : Map
         isProcessSetting[driverID] = false;
         memoring = false;
         isDriving[driverID] = false;
+        driver[driverID].SetActive(false);
         yield return null;
 
     }
@@ -411,8 +414,7 @@ public class SpecifyingDeliveryRoutes : Map
                 }
             lastDirction = dir;
             Vector3 vec = lastDirction * Time.deltaTime;
-            Debug.Log(ColorChanger("加算値は" + vec / speed[driverID] + "です", "red"));
-            obj.transform.position += vec / speed[driverID];
+            obj.transform.position += vec;
             dir= ((endPosition + map.transform.localPosition) - obj.transform.position).normalized;
             yield return null;
         }
