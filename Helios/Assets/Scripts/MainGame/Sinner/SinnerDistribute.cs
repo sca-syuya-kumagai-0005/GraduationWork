@@ -30,9 +30,12 @@ public class SinnerDistribute : MonoBehaviour
         {
             if (standbySinners > components.Count) break;
             int rand = Random.Range(0, components.Count);
-            if (!stayed[rand])i++;
-            stayed[rand] = true;
-            standbySinners--;
+            if (!stayed[rand])
+            {
+                i++;
+                stayed[rand] = true;
+                standbySinners--;
+            }
         }
         Distribute();
         saveDataManager.StayedSinner = stayed;
