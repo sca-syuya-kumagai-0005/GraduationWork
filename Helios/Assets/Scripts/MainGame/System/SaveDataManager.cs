@@ -18,6 +18,11 @@ public class SaveDataManager : MonoBehaviour
     public bool[] StayedSinner { get { return stayedSinners; }set { stayedSinners = value; } }
     public void Save()
     {
+        string path = @"\Assets/SaveData.txt";
+        if (File.Exists(Application.dataPath+ path))
+        {
+            using (File.Create(path)) { }
+        }
         StreamWriter streamWriter = new StreamWriter("./Assets/SaveData.txt", false);
         data[(int)DataAddress.DAY] = days.ToString();
         for (int i = 0; i < stayedSinners.Length; i++) 
