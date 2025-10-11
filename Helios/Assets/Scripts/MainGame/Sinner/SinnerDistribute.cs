@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [DefaultExecutionOrder(1)]
@@ -25,13 +26,15 @@ public class SinnerDistribute : MonoBehaviour
         standbySinners = saveDataManager.Days;
         stayed = saveDataManager.StayedSinner;
         houseList = GetHouse();
-        Distribute();
-        for (int i = 0; i < standbySinners; i++)
+        for (int i = 0; i < standbySinners;)
         {
             if (standbySinners > components.Count) break;
             int rand = Random.Range(0, components.Count);
-            Distribute(rand);
+            if (!stayed[rand])i++;
+            stayed[rand] = true;
+            standbySinners--;
         }
+        Distribute();
         saveDataManager.StayedSinner = stayed;
     }
     private List<GameObject> GetHouse()
@@ -51,7 +54,6 @@ public class SinnerDistribute : MonoBehaviour
     }
     private void Distribute()
     {
-        List<int> sinnerIDList = new List<int>();
         for(int i = 0; i < stayed.Length; i++)
         {
             if (stayed[i])
@@ -63,11 +65,8 @@ public class SinnerDistribute : MonoBehaviour
                 go.AddComponent(components[i].GetType());
                 go.GetComponent<MapObjectReturnName>().HaveSinner = true;
                 Debug.Log(components[i].GetType() + "èoåªÅF" + go.name);
-                standbySinners--;
-                sinnerIDList.Add(i);
             }
         }
-        for(int i = 0; i < sinnerIDList.Count; i++) components.RemoveAt(i);
     }
     private void Distribute(int sinnerID)
     {
