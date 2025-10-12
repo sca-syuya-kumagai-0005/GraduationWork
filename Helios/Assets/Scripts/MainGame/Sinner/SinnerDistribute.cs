@@ -23,19 +23,20 @@ public class SinnerDistribute : MonoBehaviour
     private void Start()
     {
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        standbySinners = saveDataManager.Days;
         stayed = saveDataManager.StayedSinner;
+        standbySinners = saveDataManager.Days + 1;
+        standbySinners -= stayed.Count(b => b);
         houseList = GetHouse();
-        for (int i = 0; i < standbySinners;)
+        int c = 0;
+        for (int i = 0; i < standbySinners; c++)
         {
-            if (standbySinners > components.Count) break;
             int rand = Random.Range(0, components.Count);
             if (!stayed[rand])
             {
                 i++;
                 stayed[rand] = true;
-                standbySinners--;
             }
+            if (stayed.Count(b => b) >= components.Count) break;
         }
         Distribute();
         saveDataManager.StayedSinner = stayed;
@@ -70,17 +71,5 @@ public class SinnerDistribute : MonoBehaviour
                 Debug.Log(components[i].GetType() + "出現：" + go.name);
             }
         }
-    }
-    private void Distribute(int sinnerID)
-    {
-        int rand = Random.Range(0, houseList.Count);
-        GameObject go = houseList[rand];
-        houseList.RemoveAt(rand);
-
-        go.AddComponent(components[sinnerID].GetType());
-        go.GetComponent<MapObjectReturnName>().HaveSinner = true;
-        Debug.Log(components[sinnerID].GetType() + "出現：" + go.name);
-        components.RemoveAt(sinnerID);
-        stayed[sinnerID] = true;
     }
 }
