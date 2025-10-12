@@ -16,6 +16,10 @@ public class SaveDataManager : MonoBehaviour
     private const int maxSinners = 31;
     private bool[] stayedSinners = new bool[maxSinners];
     public bool[] StayedSinner { get { return stayedSinners; }set { stayedSinners = value; } }
+    private void Start()
+    {
+        Save();
+    }
     public void Save()
     {
         string path = @"\Assets/SaveData.txt";
@@ -25,6 +29,7 @@ public class SaveDataManager : MonoBehaviour
         }
         StreamWriter streamWriter = new StreamWriter("./Assets/SaveData.txt", false);
         data[(int)DataAddress.DAY] = days.ToString();
+        data[(int)DataAddress.STAYSINNERS] = null;
         for (int i = 0; i < stayedSinners.Length; i++) 
             data[(int)DataAddress.STAYSINNERS] += Convert.ToInt32(stayedSinners[i]);
         string str = string.Join("\n", data);
