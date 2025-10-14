@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using static KumagaiLibrary.String;
@@ -52,7 +53,7 @@ public class SpecifyingDeliveryRoutes : Map
     
 
     [SerializeField] GameObject writeButton;
-    SpriteRenderer writeButtonRenderer;
+    Image writeButtonRenderer;
     [SerializeField] Sprite[] writeSprite;
     [SerializeField] GameObject[] driverSetButton;
     SpriteRenderer[] driverSetButtonRenderer = new SpriteRenderer[driverCount];
@@ -77,7 +78,7 @@ public class SpecifyingDeliveryRoutes : Map
     void Start()
     {
         memoring = false;   
-        writeButtonRenderer=writeButton.GetComponent<SpriteRenderer>();
+        writeButtonRenderer=writeButton.GetComponent<Image>();
         for(int i=0;i<driverCount;i++)
         {
             driverSetButtonRenderer[i] = driverSetButton[i].GetComponent<SpriteRenderer>();
@@ -457,10 +458,33 @@ public class SpecifyingDeliveryRoutes : Map
         Debug.Log(deliveryItems[driverID]);
         deliveryItems[driverID] = tmpDeliveryItem;
         deliveryProcess[driverID] = tmpDeliveryProcess;
+        if (driverType != -1)
+        {
+            if (routeObjectsID[driverType].Count > 0)
+            {
+                if (routeObjectsID[driverType][routeObjectsID[driverType].Count - 1] != 9)
+                {
+                    Debug.Log("通過している");
+                    routes[driverType] = new List<int[]>();
+                    routesPosition[driverType] = new List<Vector3>();
+                    line[driverType].positionCount = 0;
+                    routeObjectsID[driverType] = new List<int>();
+                    isItemSetting[driverType] = false;
+                    isProcessSetting[driverType] = false;
+                    memoring = false;
+                    isDriving[driverType] = false;
+                    driver[driverType].SetActive(false);
+                }
+            }
+        }
+        
         driverType = driverID;
         driverSet = true;
         tmpDeliveryProcess = -1;
         tmpDeliveryItem = -1;
+
+
+
       
     }
 
