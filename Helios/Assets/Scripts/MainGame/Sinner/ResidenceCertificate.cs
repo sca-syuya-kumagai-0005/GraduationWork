@@ -51,6 +51,7 @@ public class ResidenceCertificate : MonoBehaviour
             button.SetButtonID = i;
             button.SetButtonType = DeliveryButton.ButtonType.Process;
         }
+        sinnerNameText.gameObject.AddComponent<DeliveryButton>().SetButtonType = DeliveryButton.ButtonType.Documents;
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }
 

@@ -249,4 +249,11 @@ public class Sinner : MonoBehaviour
             probabilitys[i] += Increase;
         }
     }
+
+    public void GetSinnerInformation(int _secureClass,int _liskClass,string _sinnerID)
+    {
+        _secureClass = (int)secureClass;
+        _liskClass = (int)liskClass;
+        _sinnerID = sinnerID;
+    }
 }
