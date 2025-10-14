@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class Player : MonoBehaviour
     private ECGWaveCircleController waveCircleController;
     private int health;
     private const int maxHealth = 100;
+    [SerializeField]
+    private Image hpGage;
     public int Health { get { return health; }}
 
     private int[] phaseLine = new int[3] { 99, 66, 50 };
@@ -38,5 +41,6 @@ public class Player : MonoBehaviour
             if (phaseLine[i] >= health) phase++;
         }
         waveCircleController.targetState = (ECGWaveCircleController.WaveState)phase;
+        hpGage.fillAmount = (float)health / maxHealth;
     }
 }
