@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using static KumagaiLibrary.String;
 using static KumagaiLibrary.Dictionary.Support;
+using NUnit.Framework;
 
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : Map
@@ -14,6 +15,8 @@ public class SpecifyingDeliveryRoutes : Map
     List<int[]>[] routes = new List<int[]>[driverCount];//必要ないかも？
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
+
+    
 
     [SerializeField] GameObject move;
     [SerializeField] GameObject arrows;
@@ -234,8 +237,10 @@ public class SpecifyingDeliveryRoutes : Map
             line[driverType].SetPosition(line[driverType].positionCount - 1, position);
             if (objectID == 9)
             {
-                driverType = -1;
+             
                 writing = false;
+                destination[driverType] = obj;
+                driverType = -1;
                 Instantiate(destinationPin, obj.transform.position,Quaternion.identity, obj.transform);
             }
         }
@@ -278,13 +283,29 @@ public class SpecifyingDeliveryRoutes : Map
         for (int i=1;i<routesPosition[driverID].Count;i++)
         {
            
-            Vector3 dirction = ((routesPosition[driverID][i]+map.transform.localPosition) - obj.transform.position).normalized;
-            Vector3 lastDirction = dirction;
-            while (lastDirction==dirction)
+            Vector3 dir = ((routesPosition[driverID][i]+map.transform.localPosition) - obj.transform.position).normalized;
+            Vector3 lastDirction = dir;
+            while (lastDirction==dir)
             {
-                lastDirction = dirction;
+                lastDirction = dir;
                 Vector3 vec = lastDirction*Time.deltaTime;
-                switch(deliveryProcess[driverID])
+                if (dir.x == 1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                }
+                if (dir.x == -1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                }
+                if (dir.y == 1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                }
+                if (dir.y == -1)
+                { 
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                }
+                switch (deliveryProcess[driverID])
                 {
                     case 0:
                         {
@@ -303,7 +324,7 @@ public class SpecifyingDeliveryRoutes : Map
                         break;
                 }
                 obj.transform.position += vec/speed[driverID];
-                dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position ).normalized;
+                dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position ).normalized;
                 yield return null;
             }
             obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
@@ -503,7 +524,6 @@ public class SpecifyingDeliveryRoutes : Map
 
     private void DeliveryCompleted(GameObject obj,int driverType)
     {
-        Debug.Log(obj);
         obj.GetComponent<Sinner>().ReceiveDeliveryInformation(deliveryItems[driverType], deliveryProcess[driverType],driverType);
     }
     public void DestinationSetting(GameObject obj)
