@@ -9,18 +9,20 @@ public class DeliveryButton : EventSetter
     public enum ButtonType
     {
         Item,
-        Process
+        Process,
+        Documents
     }
     const string driverTag = "Drivers";
     private SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     private ButtonType myButtonType;
-    public ButtonType SetButtonType { set {  myButtonType = value; } }
+    public ButtonType SetButtonType { set { myButtonType = value; } }
     private GameStateSystem gameState;
+    private Sinner sinner;
     void Awake()
     {
-        specifyingDeliveryRoutes = 
+        specifyingDeliveryRoutes =
             GameObject.Find(driverTag).GetComponent<SpecifyingDeliveryRoutes>();
-        gameState=GameObject.Find("GameState").GetComponent<GameStateSystem>();
+        gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,7 +31,7 @@ public class DeliveryButton : EventSetter
     }
     private void OnClick()
     {
-        Debug.Log(myButtonType+"Button" + myButtonID + ":クリック");
+        Debug.Log(myButtonType + "Button" + myButtonID + ":クリック");
         switch (myButtonType)
         {
             case ButtonType.Item:
@@ -47,8 +49,12 @@ public class DeliveryButton : EventSetter
                     //対応するトラックを起動
                 }
                 break;
+            case ButtonType.Documents:
+                {
+                    //名前欄を押された時に資料にアクセスして関数を呼ぶ
+
+                }
+                break;
         }
     }
-
-
 }
