@@ -1,17 +1,25 @@
 using UnityEngine;
 using System.Collections.Generic;
 using static KumagaiLibrary.Unity.CsvManager;
+using Unity.VisualScripting;
 
 /*memo=========================================================================================
  * 配達する側のScriptで、通った道の隣接するオブジェクトの取得とカウントをする
  ==============================================================================================*/
 
-public class Map : CsvReader
+public class Map : MonoBehaviour
 {
     [SerializeField] TextAsset mapCsv;
     [SerializeField] GameObject objectSpace;
     [SerializeField] GameObject[] mapObjects;
     private char underbar = '_';
+    private int mapNumber;
+    private const int ADDRES_MAX = 9;
+    private int mapWidth;
+    private int mapHeight;
+    private GameObject[] plot = new GameObject[ADDRES_MAX];
+  
+
     private List<List<MapData>> mapDatas = new List<List<MapData>>();
     public List<List<MapData>> MapDatas { get { return mapDatas;} }
     public struct MapData//自身と隣接するブロックの情報を格納するstruct　自身と隣接するブロックに対応するフラグがtrue
@@ -23,12 +31,94 @@ public class Map : CsvReader
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         List<string[]> data=Read(mapCsv);
-        MapCreate(data);
+        mapWidth = data.Count;
+        mapHeight = data[0].Length;
+        
+        for(int i=0; i<ADDRES_MAX; i++)
+        {
+            GameObject address = new GameObject();
+            address.transform.parent = transform;
+            address.name = "Address" + underbar + i;
+            MapCreate(data, i,address);
+        }
         this.gameObject.transform.position = new Vector3(-10, 10, 0);//カメラ(マップ)の初期位置
     }
-    void MapCreate(List<string[]> data)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
+    void MapCreate(List<string[]> data,int mapNumber,GameObject address)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
     {
+        int width=0;
+        int height=0; 
+        switch(mapNumber)
+        {
+            case 0://真ん中
+                {
+                    width = 0;
+                    height = 0; 
+                    break;
+                }
+            case 1://上
+                {
+                    width = 0;
+                    height = mapHeight;
+                    break;
+                }
+
+            case 2://右
+                {
+                    width = mapWidth;
+                    height = 0;
+                    break;
+                }
+            case 3://下
+                {
+                    width = 0;
+                    height = -mapHeight;
+                    break;
+                }
+            case 4://左
+                {
+                    width = -mapWidth;
+                    height = 0;
+                    break;
+                }
+            case 5://右上
+                {
+                    width = mapWidth;
+                    height = mapHeight; 
+                    break;
+                }
+            case 6://右下
+                {
+                    width = mapWidth;
+                    height = -mapHeight;
+                    break;
+                }
+            case 7:
+                {
+                    width = -mapWidth;
+                    height =-mapHeight;
+                    break;
+                }
+            case 8:
+                {
+                    width = -mapWidth;
+                    height = mapHeight;
+                    break;
+                }
+            //case 9://左上
+            //    {
+            //        width = -mapWidth;
+            //        height = mapHeight;
+            //        break;
+            //    }
+
+            default:
+                {
+                    break;
+                }
+        }
+     
         for (int i = 0; i < data.Count; i++)
         {
             mapDatas.Add(new List<MapData>());
@@ -37,16 +127,17 @@ public class Map : CsvReader
                 string[] strs = data[i][j].Split(underbar);
                 MapData md = new MapData();
                 md.objectID = int.Parse(strs[0]);
-                md.widthPositionID = j;
-                md.heightPositionID = i;
+                md.widthPositionID = j+width;
+                md.heightPositionID = -i+height;
                 mapDatas[i].Add(md);
-                GameObject obj = Instantiate(objectSpace,new Vector3(0+j,0-i,0),Quaternion.identity,transform);
+                GameObject obj = Instantiate(objectSpace,new Vector3(j+width,-i+height,0),Quaternion.identity,address.transform);
                 GameObject instObj = mapObjects[(int.Parse(strs[0]))];
                 instObj = Instantiate(instObj,obj.transform.position,Quaternion.identity,obj.transform);
                 if(strs.Length>1) instObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, float.Parse(strs[1])));
                 instObj.transform.parent.name = md.objectID.ToString()+underbar+md.widthPositionID.ToString()+underbar+md.heightPositionID.ToString();
             }
         }
+
     }
 
 }
