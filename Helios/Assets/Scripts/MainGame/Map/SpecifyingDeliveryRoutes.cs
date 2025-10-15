@@ -404,7 +404,7 @@ public class SpecifyingDeliveryRoutes : Map
         Vector3 lastDirction = dir;
         while (true)
         {
-               
+                
                 if (routesPosition[driverID].Count == 0||obj==null)
                 {
                     break;
@@ -438,7 +438,6 @@ public class SpecifyingDeliveryRoutes : Map
             Vector3 vec = lastDirction * Time.deltaTime;
             obj.transform.position += vec;
             dir= ((endPosition + map.transform.localPosition) - obj.transform.position).normalized;
-            if (endPosition + map.transform.localPosition == obj.transform.position) break;
             yield return null;
         }
         Destroy(obj);
