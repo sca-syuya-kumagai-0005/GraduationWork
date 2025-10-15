@@ -250,10 +250,11 @@ public class Sinner : MonoBehaviour
         }
     }
 
-    public void GetSinnerInformation(int _secureClass,int _liskClass,string _sinnerID)
+    public void GetSinnerInformation(int _secureClass,int _liskClass,int _sinnerID)
     {
         _secureClass = (int)secureClass;
         _liskClass = (int)liskClass;
-        _sinnerID = sinnerID;
+        string str = sinnerID.Split(underbar)[1];
+        _sinnerID = int.Parse(str);
     }
 }
