@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ public class ProgressGraph : MonoBehaviour
         progress = 0;
         image.fillAmount = 0;
         saveData = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        norm = saveData.Days + 1;
+        norm = (int)Math.Ceiling(saveData.Days * 1.5);
         timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
         blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
