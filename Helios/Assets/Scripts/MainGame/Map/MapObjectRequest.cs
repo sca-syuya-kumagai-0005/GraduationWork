@@ -4,7 +4,7 @@ using static KumagaiLibrary.String;
 using UnityEngine.InputSystem;
 
 [DefaultExecutionOrder(2)] 
-public class MapObjectReturnName : MonoBehaviour 
+public class MapObjectRequest : MonoBehaviour 
 {
     string[] objectInfo;
     [SerializeField]int objectID;
@@ -15,6 +15,7 @@ public class MapObjectReturnName : MonoBehaviour
     public bool HaveSinner { set{haveSinner=value; } }
     private void Start()
     {
+        
         objectInfo = this.gameObject.name.Split(underbar);
         objectID = int.Parse(objectInfo[0]);
         widthPositionID = int.Parse(objectInfo[1]);

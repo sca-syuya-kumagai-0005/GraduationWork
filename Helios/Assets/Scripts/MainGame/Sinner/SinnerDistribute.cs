@@ -67,7 +67,7 @@ public class SinnerDistribute : MonoBehaviour
                 houseList.RemoveAt(rand);
 
                 go.AddComponent(components[i].GetType());
-                go.GetComponent<MapObjectReturnName>().HaveSinner = true;
+                go.GetComponent<MapObjectRequest>().HaveSinner = true;
                 Debug.Log(components[i].GetType() + "èoåªÅF" + go.name);
             }
         }
