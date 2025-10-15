@@ -9,9 +9,10 @@ public class ItemID_002 : Sinner
         probabilitys = new float[8] { 0.0f, 0.0f, 200.0f, 200.0f, 100.0f, 0.0f, 350.0f, 25.0f };
         sinnerID = "ItemID_002";
         sinnerName = "çgÇ¢éÖ";
-        sinnerType = SinnerType.Humanoid;
+        sinnerTypeList.Add(SinnerType.Humanoid);
         LoadSprite("atokaraireru");
-        effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
+        effect = GameObject.Find("Effect").transform.Find("").gameObject;
+        GetEffectObject();
         KumagaiLibrary.Dictionary.Support.AddArray(specifyingDeliveryRoutes.SinnerDebuff, sinnerName, false);
     }
     // Update is called once per frame
@@ -19,7 +20,7 @@ public class ItemID_002 : Sinner
     {
 
     }
-    public override void ReceiveDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
         float increase;
         const int processType_Truck = 0;
@@ -28,7 +29,7 @@ public class ItemID_002 : Sinner
             increase = 25.0f;
             IncreaseProbabilitys(increase);
         }
-        base.ReceiveDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
+        base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
     protected override void AbnormalPhenomenon()
     {

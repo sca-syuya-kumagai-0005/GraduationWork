@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private const int maxHealth = 100;
     [SerializeField]
     private Image hpGage;
-    public int Health { get { return health; }}
+    public int Health { get { return health; }set { health = value; } }
 
     private int[] phaseLine = new int[3] { 99, 66, 50 };
     private enum Phase

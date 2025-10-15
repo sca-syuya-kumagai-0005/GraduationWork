@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using static KumagaiLibrary.Unity.EventSet;
@@ -64,10 +65,10 @@ public class Sinner : MonoBehaviour
 
     protected enum SinnerType
     {
+        /// <summary>
+        /// 人型
+        /// </summary>
         Humanoid,
-        Abnormal,
-        Area,
-        Concept
     }
     protected enum DamageLevel
     {
@@ -84,7 +85,7 @@ public class Sinner : MonoBehaviour
     protected LiskClass liskClass;//リスククラス
     protected string sinnerID;//シナー番号
     protected string sinnerName;//シナー名
-    protected SinnerType sinnerType;//シナーの種類
+    protected List<SinnerType> sinnerTypeList;//シナーの種類
     protected Sprite sinnerSprite;//画像
     protected int deliveryCount;//配達された回数
     protected ResidenceCertificate residenceCertificate;
@@ -102,6 +103,7 @@ public class Sinner : MonoBehaviour
     protected SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     private void Awake()
     {
+        sinnerTypeList = new List<SinnerType>();
         residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
         announceManager = GameObject.Find("AnnounceCenter").GetComponent<AnnounceManager>();
         SetEventType(down, OnClick, gameObject);
@@ -137,7 +139,7 @@ public class Sinner : MonoBehaviour
     /// <summary>
     /// 配達員が建物に到着した時に呼ぶ
     /// </summary>
-    virtual public void ReceiveDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    virtual public void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
         ReceivedItemID = itemID;
         this.deliveryProcessID = deliveryProcessID;
@@ -148,7 +150,7 @@ public class Sinner : MonoBehaviour
         if (damage != 0)
         {
             AbnormalPhenomenon();
-            player.fluctuationHealth(-damage);
+            player.Health -= damage;
         }
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
@@ -256,5 +258,11 @@ public class Sinner : MonoBehaviour
         _liskClass = (int)liskClass;
         string str = sinnerID.Split(underbar)[1];
         _sinnerID = int.Parse(str);
+    }
+
+    protected void GetEffectObject()
+    {
+        effect.gameObject.transform.parent = gameObject.transform;
+        effect.transform.localPosition = Vector3.zero;
     }
 }

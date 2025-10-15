@@ -14,6 +14,7 @@ public class ItemID_005 : Sinner
         sinnerName = "Ç†Ç»ÇΩÇÃà◊ÇÃìVè€ãV";
         LoadSprite("atokaraireru");
         effect = GameObject.Find("Effect").transform.Find("").gameObject;
+        GetEffectObject();
 
         timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
         abnormalityDuration = 0.0f;
@@ -27,7 +28,7 @@ public class ItemID_005 : Sinner
 
         }
     }
-    public override void ReceiveDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
         float increase;//äeèåèÇ…ëŒÇ∑ÇÈämó¶ëùâ¡ó 
         if (itemID == (int)Mood.Anticipation || itemID == (int)Mood.Trust)
@@ -45,7 +46,7 @@ public class ItemID_005 : Sinner
             increase = 80.0f;
             IncreaseProbabilitys(increase);
         }
-        base.ReceiveDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
+        base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
     protected override void AbnormalPhenomenon()
     {
