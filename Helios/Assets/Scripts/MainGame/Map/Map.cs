@@ -9,7 +9,7 @@ using Unity.VisualScripting;
 
 public class Map : MonoBehaviour
 {
-    [SerializeField] TextAsset mapCsv;
+    [SerializeField] TextAsset[] mapCsv;
     [SerializeField] GameObject objectSpace;
     [SerializeField] GameObject[] mapObjects;
     private char underbar = '_';
@@ -32,19 +32,22 @@ public class Map : MonoBehaviour
     void Start()
     {
         
-        List<string[]> data=Read(mapCsv);
+        List<string[]> data = Read(mapCsv[0]);
         mapWidth = data.Count;
         mapHeight = data[0].Length;
+
+
         
         for(int i=0; i<ADDRES_MAX; i++)
         {
             GameObject address = new GameObject();
             address.transform.parent = transform;
             address.name = "Address" + underbar + i;
-            MapCreate(data, i,address);
+            if(i!=0)data = Read(mapCsv[1]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
+            MapCreate(data, i, address);
         }
-        this.gameObject.transform.position = new Vector3(-10, 10, 0);//カメラ(マップ)の初期位置
-
+            
+        this.gameObject.transform.position = new Vector3(-31, -11, 0);//カメラ(マップ)の初期位置
     }
     void MapCreate(List<string[]> data,int mapNumber,GameObject address)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
     {
