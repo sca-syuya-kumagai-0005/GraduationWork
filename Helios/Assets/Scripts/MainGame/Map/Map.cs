@@ -44,6 +44,7 @@ public class Map : MonoBehaviour
             MapCreate(data, i,address);
         }
         this.gameObject.transform.position = new Vector3(-10, 10, 0);//カメラ(マップ)の初期位置
+
     }
     void MapCreate(List<string[]> data,int mapNumber,GameObject address)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
     {
@@ -53,57 +54,57 @@ public class Map : MonoBehaviour
         {
             case 0://真ん中
                 {
-                    width = 0;
-                    height = 0; 
+                    width = mapWidth;
+                    height = mapHeight; 
                     break;
                 }
             case 1://上
                 {
-                    width = 0;
-                    height = mapHeight;
+                    width = mapWidth;
+                    height = 0;
                     break;
                 }
 
             case 2://右
                 {
-                    width = mapWidth;
-                    height = 0;
+                    width = mapWidth*2;
+                    height = mapHeight;
                     break;
                 }
             case 3://下
                 {
-                    width = 0;
-                    height = -mapHeight;
+                    width = mapWidth;
+                    height = mapHeight*2;
                     break;
                 }
             case 4://左
                 {
-                    width = -mapWidth;
-                    height = 0;
+                    width = 0;
+                    height = mapHeight;
                     break;
                 }
             case 5://右上
                 {
-                    width = mapWidth;
-                    height = mapHeight; 
+                    width = mapWidth*2;
+                    height = 0; 
                     break;
                 }
             case 6://右下
                 {
-                    width = mapWidth;
-                    height = -mapHeight;
+                    width = mapWidth * 2;
+                    height = mapHeight*2;
                     break;
                 }
-            case 7:
+            case 7://左下
                 {
-                    width = -mapWidth;
-                    height =-mapHeight;
+                    width = 0;
+                    height =mapHeight * 2;
                     break;
                 }
-            case 8:
+            case 8://左上
                 {
-                    width = -mapWidth;
-                    height = mapHeight;
+                    width = 0;
+                    height = 0;
                     break;
                 }
             //case 9://左上
@@ -128,7 +129,7 @@ public class Map : MonoBehaviour
                 MapData md = new MapData();
                 md.objectID = int.Parse(strs[0]);
                 md.widthPositionID = j+width;
-                md.heightPositionID = -i+height;
+                md.heightPositionID = i+height;
                 mapDatas[i].Add(md);
                 GameObject obj = Instantiate(objectSpace,new Vector3(j+width,-i+height,0),Quaternion.identity,address.transform);
                 GameObject instObj = mapObjects[(int.Parse(strs[0]))];
