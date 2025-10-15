@@ -37,16 +37,16 @@ Material:
     - _GlowWidth: 1
     - _HeartBeatSpeed: 10
     - _HeartBeatStrength: 0
-    - _LineWidth: 3.5270996
+    - _LineWidth: 4.9282913
     - _RandomRange: 0.5
-    - _Speed: 1.2999988
+    - _Speed: 0.10030451
     - _WaveCount: 15
-    - _WaveHeight: 0.09999993
+    - _WaveHeight: 0.010022837
     - _WaveHeightRandomMax: 0.05
     - _WaveWidth: 1.2
     m_Colors:
     - _BackgroundColor: {r: 0, g: 0, b: 0, a: 1}
-    - _CenterLineColor: {r: 0.9999994, g: 1, b: 0, a: 1}
-    - _LineColor: {r: 0.9999994, g: 1, b: 0, a: 1}
+    - _CenterLineColor: {r: 0.00025375708, g: 1, b: 0, a: 1}
+    - _LineColor: {r: 0.00025375708, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

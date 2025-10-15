@@ -53,10 +53,10 @@ public class ItemID_003 : Sinner
         {
             int heal = genesisPhase * 10;
             player.Health += heal;
+            string text = itemNames[genesisPhase] + genesisPhase + "“ú–ÚB";
+            announceManager.MakeAnnounce(text);
             genesisPhase++;
         }
-        string text = itemNames[genesisPhase] + genesisPhase + "“ú–ÚB";
-        announceManager.MakeAnnounce(text);
     }
     protected override void AbnormalPhenomenon()
     {

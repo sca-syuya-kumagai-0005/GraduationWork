@@ -11,7 +11,7 @@ public class SinnerDistribute : MonoBehaviour
     { 
         new ItemID_001(),
         new ItemID_002(),
-       // new ItemID_003(),
+        new ItemID_003(),
         new ItemID_004(),
         new ItemID_005(),
     };
@@ -45,7 +45,7 @@ public class SinnerDistribute : MonoBehaviour
     private List<GameObject> GetHouse()
     {
         //ここに各マップ
-        const string map = "Address_1";
+        const string map = "Address_0";
         GameObject mapObject = GameObject.Find(map);
         List<GameObject> houseList = new List<GameObject>();
         for (int i = 0; i < mapObject.transform.childCount; i++)
