@@ -11,6 +11,7 @@ public class ItemID_004 : Sinner
         sinnerName = "êÖñ Ç∆ñæãæ";
         LoadSprite("atokaraireru");
         effect = GameObject.Find("Effect").transform.Find("Ripple_004").gameObject;
+        GetEffectObject();
         effectTimer = 5.0f;
     }
     // Update is called once per frame

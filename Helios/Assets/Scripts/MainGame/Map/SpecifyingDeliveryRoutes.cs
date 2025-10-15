@@ -524,7 +524,7 @@ public class SpecifyingDeliveryRoutes : Map
 
     private void DeliveryCompleted(GameObject obj,int driverType)
     {
-        obj.GetComponent<Sinner>().ReceiveDeliveryInformation(deliveryItems[driverType], deliveryProcess[driverType],driverType);
+        obj.GetComponent<Sinner>().ReceiptDeliveryInformation(deliveryItems[driverType], deliveryProcess[driverType],driverType);
     }
     public void DestinationSetting(GameObject obj)
     {
