@@ -40,6 +40,7 @@ public class ItemID_003 : Sinner
         if (timer >= timeRimit)
         {
             AbnormalPhenomenon();
+            timer = 0.0f;
         }
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
@@ -51,27 +52,33 @@ public class ItemID_003 : Sinner
         }
         if (deliveryItems[itemID] == Mood.Exception)
         {
-            int heal = genesisPhase * 10;
+            int heal = 10 * genesisPhase;
             player.Health += heal;
-            string text = itemNames[genesisPhase] + genesisPhase + "日目。";
+            string text = genesisPhase + "日目。\n" + itemNames[genesisPhase];
             announceManager.MakeAnnounce(text);
             genesisPhase++;
         }
+        else
+        {
+            AbnormalPhenomenon();
+        }    
+        progressGraph.AddProgress();
+        Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
+        timer = 0.0f;
     }
     protected override void AbnormalPhenomenon()
     {
-        timer = 0.0f;
-        string text;
         int damage = 10 * genesisPhase;
         player.Health -= damage;
+        string text;
         if (timer >= timeRimit)
         {
-            text = "一定時間" + sinnerID + "へ配達がなかったため、代償が支払われました。";
+            text = "代償は既に支払われました。";
             announceManager.MakeAnnounce(text);
         }
         else
         {
-            text = sinnerID + "異常発生。";
+            text = sinnerID + "：異常発生。";
             announceManager.MakeAnnounce(text);
         }
     }
