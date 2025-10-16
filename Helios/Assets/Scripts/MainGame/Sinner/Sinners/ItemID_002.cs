@@ -22,6 +22,7 @@ public class ItemID_002 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
+        //ëùâ¡ó 
         float increase;
         const int processType_Truck = 0;
         if (deliveryProcessID == processType_Truck)

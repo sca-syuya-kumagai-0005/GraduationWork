@@ -68,7 +68,7 @@ public class ItemID_003 : Sinner
     }
     protected override void AbnormalPhenomenon()
     {
-        int damage = 10 * genesisPhase;
+        int damage = 5 * genesisPhase;
         player.Health -= damage;
         string text;
         if (timer >= timeRimit)
