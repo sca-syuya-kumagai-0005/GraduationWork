@@ -185,10 +185,14 @@ public class Sinner : MonoBehaviour
     protected int Lottery(int deliveryLineID)
     {
         int debuff = 0;
+        float probability = probabilitys[ReceivedItemID];
+
         if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("紅い糸"))
         if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["紅い糸"]) debuff += 50;
+
         DamageLevel damageLevel = DamageLevel.None;
-        if (probabilitys[ReceivedItemID] + debuff < 100)
+        probability += debuff;
+        if (probability < 100)
         {
             int rand = Random.Range(0, 100);
             if (rand < probabilitys[ReceivedItemID])
@@ -196,15 +200,54 @@ public class Sinner : MonoBehaviour
                 damageLevel = DamageLevel.Minor;
             }
         }
-        else if (100 <= probabilitys[ReceivedItemID] + debuff && probabilitys[ReceivedItemID] + debuff < 200)
+        else if (100 <= probability && probability < 200)
         {
             damageLevel = DamageLevel.Minor;
         }
-        else if (200 <= probabilitys[ReceivedItemID] + debuff && probabilitys[ReceivedItemID] + debuff < 300)
+        else if (200 <= probability && probability < 300)
         {
             damageLevel = DamageLevel.Moderate;
         }
-        else if (300 <= probabilitys[ReceivedItemID] + debuff && probabilitys[ReceivedItemID] + debuff < 350)
+        else if (300 <= probability && probability < 350)
+        {
+            damageLevel = DamageLevel.Enormous;
+        }
+        else
+        {
+            damageLevel = DamageLevel.Death;
+        }
+        return (int)damageLevel;
+    }
+    /// <summary>
+    /// 配達完了時、抽選を行う時に呼ぶ関数
+    /// </summary>
+    /// <returns></returns>
+    protected int Lottery(float probability)
+    {
+        int debuff = 0;
+
+        if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("紅い糸"))
+            if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["紅い糸"]) debuff += 50;
+
+        DamageLevel damageLevel = DamageLevel.None;
+        probability += debuff;
+        if (probability < 100)
+        {
+            int rand = Random.Range(0, 100);
+            if (rand < probabilitys[ReceivedItemID])
+            {
+                damageLevel = DamageLevel.Minor;
+            }
+        }
+        else if (100 <= probability && probability < 200)
+        {
+            damageLevel = DamageLevel.Minor;
+        }
+        else if (200 <= probability && probability < 300)
+        {
+            damageLevel = DamageLevel.Moderate;
+        }
+        else if (300 <= probability && probability < 350)
         {
             damageLevel = DamageLevel.Enormous;
         }

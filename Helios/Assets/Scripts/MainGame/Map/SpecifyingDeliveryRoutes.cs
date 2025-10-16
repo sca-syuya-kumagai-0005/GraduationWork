@@ -38,6 +38,7 @@ public class SpecifyingDeliveryRoutes : Map
     int lastdriverType;
     public int DriverType { set { driverType = value;} }
     bool[] isDriving = new bool[driverCount];
+    public bool[] IsDriving { get { return isDriving; } }
     private int[] deliveryProcess=new int[driverCount];
     [SerializeField]private int tmpDeliveryProcess;
    
