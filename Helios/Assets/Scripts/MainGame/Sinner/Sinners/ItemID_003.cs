@@ -29,7 +29,7 @@ public class ItemID_003 : Sinner
         sinnerName = "¢ŠE‚ÅÅ‰‚É‹ó‚¢‚½ŒŠ";
         LoadSprite("atokaraireru");
         effect = GameObject.Find("Effect").transform.Find("").gameObject;
-        GetEffectObject();
+        GetEffectObject(true);
         genesisPhase = 1;
         timer = 0.0f;
     }

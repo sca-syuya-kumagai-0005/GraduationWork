@@ -11,7 +11,7 @@ public class ItemID_001 : Sinner
         sinnerName = "‘‚µ‚İ‚Ì‘Â¯";
         LoadSprite("atokaraireru");
         effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
-        GetEffectObject();
+        GetEffectObject(true);
         effectTimer = 6.5f;
     }
     // Update is called once per frame
@@ -25,5 +25,6 @@ public class ItemID_001 : Sinner
         base.AbnormalPhenomenon();
 
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
+        //_Ğ‚ªÀ‘•‚³‚ê‚½‚ç‘‚­
     }
 }

@@ -14,7 +14,7 @@ public class ItemID_005 : Sinner
         sinnerName = "‚ ‚È‚½‚Ìˆ×‚Ì“VÛ‹V";
         LoadSprite("atokaraireru");
         effect = GameObject.Find("Effect").transform.Find("").gameObject;
-        GetEffectObject();
+        GetEffectObject(false);
 
         timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
         abnormalityDuration = 0.0f;
@@ -54,5 +54,6 @@ public class ItemID_005 : Sinner
         base.AbnormalPhenomenon();
 
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
+        //’‹‚ÉŒÅ’è‚·‚éˆ—‚ğ‘‚­
     }
 }

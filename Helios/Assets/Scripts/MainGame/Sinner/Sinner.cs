@@ -294,7 +294,12 @@ public class Sinner : MonoBehaviour
             probabilitys[i] += Increase;
         }
     }
-
+    /// <summary>
+    /// シナーの各クラスと番号を渡す関数
+    /// </summary>
+    /// <param name="_secureClass">管理クラスをここに参照渡しする</param>
+    /// <param name="_liskClass">被害クラスをここに参照渡しする</param>
+    /// <param name="_sinnerID">シナー番号をここに参照渡しする</param>
     public void GetSinnerInformation(int _secureClass,int _liskClass,int _sinnerID)
     {
         _secureClass = (int)secureClass;
@@ -302,10 +307,14 @@ public class Sinner : MonoBehaviour
         string str = sinnerID.Split(underbar)[1];
         _sinnerID = int.Parse(str);
     }
-
-    protected void GetEffectObject()
+    /// <summary>
+    /// 自分の子としてエフェクトを取得する
+    /// </summary>
+    /// <param name="centerOnself">自分の中心からエフェクトを出すか</param>
+    protected void GetEffectObject(bool centerOnself)
     {
         effect.gameObject.transform.parent = gameObject.transform;
+        if(centerOnself)
         effect.transform.localPosition = Vector3.zero;
     }
 }
