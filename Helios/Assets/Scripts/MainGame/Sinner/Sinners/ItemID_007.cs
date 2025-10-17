@@ -21,7 +21,7 @@ public class ItemID_007 : Sinner
         sinnerTypeList.Add(SinnerType.Humanoid);
         LoadSprite("atokaraireru");
         effect = GameObject.Find("Effect").transform.Find("").gameObject;
-        GetEffectObject();
+        GetEffectObject(false);
         KumagaiLibrary.Dictionary.Support.AddArray(specifyingDeliveryRoutes.SinnerDebuff, sinnerName, false);
     }
     // Update is called once per frame
@@ -65,6 +65,7 @@ public class ItemID_007 : Sinner
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
+        //配達員側でこのフラグ立ってたら混乱の処理を書く
         for(int i = 0; i < lines; i++)
         {
             if (specifyingDeliveryRoutes.IsDriving[i])
