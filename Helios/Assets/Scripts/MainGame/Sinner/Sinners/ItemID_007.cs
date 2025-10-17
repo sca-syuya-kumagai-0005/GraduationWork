@@ -65,7 +65,7 @@ public class ItemID_007 : Sinner
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
-        //配達員側でこのフラグ立ってたら混乱の処理を書く
+        //sDRでこのフラグ立ってたら混乱を判定
         for(int i = 0; i < lines; i++)
         {
             if (specifyingDeliveryRoutes.IsDriving[i])
