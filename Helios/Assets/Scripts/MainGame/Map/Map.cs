@@ -28,6 +28,32 @@ public class Map : MonoBehaviour
         public int widthPositionID;
         public int heightPositionID;    
     }
+
+    public  enum MapObjectID
+    {
+        NULL = 0,
+        COMPANY = 1,
+        STRAIGHT = 2,
+        CORNER = 3,
+        TJUNCTION = 4,
+        CROSS = 5,
+        TREE_1 = 6,
+        TREE_2S = 7,
+        TREE_3 = 8,
+        HOUSE_1 = 9,
+        HOUSE_2 = 10,
+        HOUSE_3 = 11,
+        HOUSE_4 = 12,
+        APARTMENT_1 = 13,
+        APARTMENT_2 = 14,
+        APARTMENT_3 = 15,
+        APAETMENT_4 = 16,
+        SHIRINE = 17,
+        SCHOOL = 18,
+        AQUARIUM = 19,
+    }
+
+    private MapObjectID id;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -2,12 +2,13 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using static Map;
 using static KumagaiLibrary.String;
-using static KumagaiLibrary.Dictionary.Support;
-using NUnit.Framework;
+
+
 
 //これは配達を管理するScriptです
-public class SpecifyingDeliveryRoutes : Map
+public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
     const int driverCount = 4;//トラックの数
     [SerializeField] GameObject map;//マップを格納している親オブジェクト
@@ -15,8 +16,6 @@ public class SpecifyingDeliveryRoutes : Map
     List<int[]>[] routes = new List<int[]>[driverCount];//必要ないかも？
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
-
-    
 
     [SerializeField] GameObject move;
     [SerializeField] GameObject arrows;
@@ -132,7 +131,7 @@ public class SpecifyingDeliveryRoutes : Map
             canStart[i] = isDestinationSetting[i] && isItemSetting[i]&& isItemSetting[i];
             if (routeObjectsID[i].Count > 0)
             {
-                if (routeObjectsID[i][routeObjectsID[i].Count - 1] == 9)
+                if (routeObjectsID[i][routeObjectsID[i].Count - 1] == (int)MapObjectID.HOUSE_1)
                 {
                     startButtons[i].SetActive(true);
                 }
@@ -213,7 +212,7 @@ public class SpecifyingDeliveryRoutes : Map
         int routeObjectsIDCount= routeObjectsID[driverType].Count;
         if(routeObjectsIDCount > 0)
         {
-            if (routeObjectsID[driverType][routeObjectsIDCount - 1] == 9) return;
+            if (routeObjectsID[driverType][routeObjectsIDCount - 1] == (int)MapObjectID.HOUSE_1) return;
         }
         positionID[0] = widthPositionID;
         positionID[1] = heightPositionID;
@@ -260,7 +259,7 @@ public class SpecifyingDeliveryRoutes : Map
     {
         Debug.Log("押せてはいる");
         if (routeObjectsID[driverID].Count==0) return;
-        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == 9)
+        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == (int)MapObjectID.HOUSE_1)
         {
             driver[driverID].SetActive(true);   
             Debug.Log(ColorChanger("運転を開始します", "red"));
@@ -485,7 +484,7 @@ public class SpecifyingDeliveryRoutes : Map
         {
             if (routeObjectsID[driverType].Count > 0)
             {
-                if (routeObjectsID[driverType][routeObjectsID[driverType].Count - 1] != 9)
+                if (routeObjectsID[driverType][routeObjectsID[driverType].Count - 1] != (int)MapObjectID.HOUSE_1)
                 {
                     Debug.Log("通過している");
                     routes[driverType] = new List<int[]>();

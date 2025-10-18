@@ -2,22 +2,23 @@ using UnityEngine;
 using static KumagaiLibrary.Unity.EventSet;
 using static KumagaiLibrary.String;
 using UnityEngine.InputSystem;
+using static Map;
 
 [DefaultExecutionOrder(2)] 
-public class MapObjectRequest : MonoBehaviour 
+public class MapObjectRequest : MonoBehaviour
 {
     string[] objectInfo;
-    [SerializeField]int objectID;
     int widthPositionID;
     int heightPositionID;
     [SerializeField]SpecifyingDeliveryRoutes sDR;
     bool haveSinner = false;//このオブジェクトにシナーが配置されているかのフラグ
     public bool HaveSinner { set{haveSinner=value; } }
+
+    MapObjectID id;
     private void Start()
     {
-        
         objectInfo = this.gameObject.name.Split(underbar);
-        objectID = int.Parse(objectInfo[0]);
+        id = (MapObjectID)int.Parse(objectInfo[0]);
         widthPositionID = int.Parse(objectInfo[1]);
         heightPositionID = int.Parse(objectInfo[2]);
         sDR = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
@@ -31,23 +32,21 @@ public class MapObjectRequest : MonoBehaviour
     }
 
     void PointerDown()
-    {
-        Debug.Log(ColorChanger("関数PointerDownが呼ばれています。オブジェクトIDは"+objectID+"です。","red"));
-        
-        switch(objectID)
+    {   
+        switch(id)
         { 
-            case 1:
+            case MapObjectID.COMPANY:
                 {
                     if(sDR.DriverSet&&sDR.Writing)
                     {
                         Debug.Log(ColorChanger("配達ルートの指定を開始します", "red"));
                         sDR.MemoryStart();
-                        sDR.MemoryRoute(widthPositionID, heightPositionID, objectID,this.gameObject, this.gameObject.transform.localPosition);
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id,this.gameObject, this.gameObject.transform.localPosition);
                     }
                    
                 }
                 break;
-            case 9:
+            case MapObjectID.HOUSE_1:
                 {
                         sDR.DestinationSetting(this.gameObject);
                    
@@ -64,39 +63,39 @@ public class MapObjectRequest : MonoBehaviour
 
     void PointerEnter()
     {
-        switch(objectID)
+        switch(id)
         { 
-            case 1:
+            case MapObjectID.COMPANY:
                 {
                    
                 }
                 break;
-            case 2:
+            case MapObjectID.STRAIGHT:
                 {
-                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject,this.gameObject.transform.localPosition);
+                    sDR.MemoryRoute(widthPositionID, heightPositionID,(int)id, this.gameObject,this.gameObject.transform.localPosition);
                 }
                 break;
-            case 3:
+            case MapObjectID.CORNER:
                 {
-                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.localPosition);
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
                 }
                 break;
-            case 4:
+            case MapObjectID.TJUNCTION:
                 {
-                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.localPosition);
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
                 }
                 break;
-            case 5:
+            case MapObjectID.CROSS:
                 {
-                    sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.localPosition);
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
                 }
                 break;
-            case 9:
+            case MapObjectID.HOUSE_1:
                 {
                     if (haveSinner)
                     {
                         
-                        sDR.MemoryRoute(widthPositionID, heightPositionID, objectID, this.gameObject, this.gameObject.transform.localPosition);
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
                     }
                     
                 }
