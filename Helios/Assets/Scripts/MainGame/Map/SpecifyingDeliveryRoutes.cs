@@ -85,6 +85,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        map=mapObject.GetComponent<Map>();
         memoring = false;   
         writeButtonRenderer=writeButton.GetComponent<Image>();
         for(int i=0;i<driverCount;i++)
@@ -286,9 +287,39 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     private IEnumerator DriverMove(int driverID)
     {
         GameObject obj = driver[driverID];
-        for (int i=1;i<routesPosition[driverID].Count;i++)
+        for (int i=0;i<routesPosition[driverID].Count;i++)
         {
-            deliveryData[driverType].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID);
+            if (deliveryData[driverID].Count==0)
+            {
+                Debug.Log(routes[driverID][i][1]+"ですよ");
+                Debug.Log(routes[driverID][i][0]+"ですよ");
+
+                
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i + 1][0]][routes[driverID][i][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i - 1][0]][routes[driverID][i][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i + 1][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i - 1][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+            }
+
+            else if (deliveryData[driverID].Count - 1 != map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
+            {
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i + 1][0]][routes[driverID][i][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i - 1][0]][routes[driverID][i][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i + 1][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i - 1][1]].objectID);
+                Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+            }
             Vector3 dir = ((routesPosition[driverID][i]+map.transform.localPosition) - obj.transform.position).normalized;
             Vector3 lastDirction = dir;
             while (lastDirction==dir)
@@ -339,14 +370,28 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverID].Count-2; i >=0; i--)
         {
+            if (deliveryData[driverID].Count > 0)
+            {
+                if (deliveryData[driverID].Count - 1 != map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
+                {
+                    deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID);
+                    Debug.Log(deliveryData[driverID].Count-1+("を追加しました"));
+                    deliveryData[driverID].Add(map.MapDatas[routes[driverID][i + 1][0]][routes[driverID][i][1]].objectID);
+                    Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    deliveryData[driverID].Add(map.MapDatas[routes[driverID][i - 1][0]][routes[driverID][i][1]].objectID);
+                    Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i + 1][1]].objectID);
+                    Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    deliveryData[driverID].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i - 1][1]].objectID);
+                    Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                }
+            }
             Vector3 dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
-                Debug.Log(ColorChanger("移動しています", "red"));
                 lastDirction = dirction;
                 Vector3 vec = lastDirction * Time.deltaTime;
-                Debug.Log(ColorChanger("加算値は" + vec / speed[driverID] + "です", "red"));
                 obj.transform.position += vec / speed[driverID];
                 dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                 yield return null;
