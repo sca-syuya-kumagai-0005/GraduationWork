@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [DefaultExecutionOrder(1)]
 public class SinnerDistribute : MonoBehaviour
 {
-    private const string tileID_House = "9";
-    private const string underBar = "_";
     private const int poolSize = 3;
     private List<Object> component = new List<Object>()
     {
@@ -20,9 +19,9 @@ public class SinnerDistribute : MonoBehaviour
         new ItemID_008(),
 
     };
-    private List<int>[] sinnerPools=new List<int>[poolSize];
+    private List<int>[] sinnerPools = new List<int>[poolSize];
     private const int maxSinners = 31;
-    private List<GameObject> houseList = new List<GameObject>();
+    private List<GameObject>[] houseList = new List<GameObject>[poolSize];
     [SerializeField]
     private bool[] stayed = new bool[maxSinners];
     private int standbySinners;
@@ -31,6 +30,9 @@ public class SinnerDistribute : MonoBehaviour
     {
         sinnerPools[0] = new List<int>
         {
+            1,3,6,7,
+
+
             2,
             4,
             5
@@ -50,80 +52,63 @@ public class SinnerDistribute : MonoBehaviour
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         stayed = saveDataManager.StayedSinner;
         standbySinners = saveDataManager.Days + 1;
-        standbySinners -= stayed.Count(b => b);
-        standbySinners = 1;
         int gamePhase = 0;
         if (0 <= saveDataManager.Days && saveDataManager.Days < 10)
         {
             gamePhase = 1;
         }
-        else if(10<=saveDataManager.Days && saveDataManager.Days < 20)
+        else if (10 <= saveDataManager.Days && saveDataManager.Days < 20)
         {
             gamePhase = 2;
         }
-        else if(20<=saveDataManager.Days&& saveDataManager.Days < 30)
+        else if (20 <= saveDataManager.Days && saveDataManager.Days < 30)
         {
             gamePhase = 3;
         }
         else gamePhase = 4;
 
-        for (int i = 0; i < gamePhase; i++)
-        {
-            houseList = GetHouse(i);
-
-            for (int j = 0; j < standbySinners; j++)
-            {
-                int rand = Random.Range(0, sinnerPools[i].Count);
-                int selectedSinnerID = sinnerPools[i][rand] - 1;
-                stayed[selectedSinnerID] = true;
-                sinnerPools[i].RemoveAt(rand);
-            }
-            Distribute();
-        }
-
+        Distribute(gamePhase);
         saveDataManager.StayedSinner = stayed;
     }
-    private List<GameObject> GetHouse(int gamePhase)
+
+    private void Distribute(int gamePhase)
     {
         //ここに各マップ
-        const string mapName = "Address_0";
-        int[] mapIDs = new int[2];
-        switch (gamePhase)
+        const string mapName = "Address_";
+        int[][] plotIDs = new int[4][]
         {
-            case 0: mapIDs = new int[] { 0, 0 }; break;
-            case 1: mapIDs = new int[] { 1, 4 }; break;
-            case 2: mapIDs = new int[] { 5, 8 }; break;
-            case 4: mapIDs = new int[] { 9, 9 }; break;
-        }
-        
-        GameObject mapObject = null;
-        List<GameObject> houseList = new List<GameObject>();
-        int iMax = mapIDs[1] - mapIDs[0];
-        for (int i = 0; i <= iMax; i++)
+            new int[2]{0,0},
+            new int[2]{1,4},
+            new int[2]{5,8},
+            new int[2]{9,9},
+        };
+        List<GameObject>[] houseList = new List<GameObject>[gamePhase];
+        for(int gp = 0; gp < gamePhase; gp++)
         {
-            int id = mapIDs[i];
-            mapObject = GameObject.Find(mapName + id);
-            Debug.Log(mapObject.name);
-            for (int j = 0; j < mapObject.transform.childCount; j++)
+            for (int i = plotIDs[gp][0]; i < plotIDs[gp][1]; i++)
             {
-                GameObject go = mapObject.transform.GetChild(j).gameObject;
-                string[] tileName = go.name.Split(underBar);
-                const int arrayTop = 0;
-                if (tileName[arrayTop] == tileID_House) houseList.Add(go);
+                GameObject go = GameObject.Find(mapName + i);
+                for (int j = 0; j < go.transform.childCount; j++)
+                { 
+                    const string tileID_House = "9";
+                    const string underBar = "_";
+                    if (go.transform.GetChild(j).name.Split(underBar)[0] == tileID_House)
+                        houseList[gp].Add(go.transform.GetChild(j).gameObject);
+                }
             }
+           //各建物リストにそれぞれの区画の建物を入れた
+           //リストから建物に振り分ける
         }
 
-        return houseList;
-    }
-    private void Distribute()
-    {
-        for(int i = 0; i < stayed.Length; i++)
+
+
+        for (int i = 0; i < stayed.Length; i++)
         {
             if (stayed[i])
             {
-                int rand = Random.Range(0, houseList.Count);
-                GameObject go = houseList[rand];
-                houseList.RemoveAt(rand);
+                int rand = Random.Range(0, houseList[gamePhase].Count);
+                GameObject go = houseList[gamePhase][rand];
+                houseList[gamePhase].RemoveAt(rand);
 
                 go.AddComponent(component[i].GetType());
                 go.GetComponent<MapObjectRequest>().HaveSinner = true;
