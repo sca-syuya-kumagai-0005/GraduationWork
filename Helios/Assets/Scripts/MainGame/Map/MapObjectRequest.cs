@@ -67,7 +67,7 @@ public class MapObjectRequest : MonoBehaviour
         { 
             case MapObjectID.COMPANY:
                 {
-                   
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
                 }
                 break;
             case MapObjectID.STRAIGHT:

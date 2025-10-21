@@ -10,8 +10,11 @@ using static KumagaiLibrary.String;
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
+
+
     const int driverCount = 4;//トラックの数
-    [SerializeField] GameObject map;//マップを格納している親オブジェクト
+    [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
+    Map map;
     List<int>[] routeObjectsID=new List<int>[driverCount];//それぞれのトラックが通るオブジェクトを順番通りに格納
     List<int[]>[] routes = new List<int[]>[driverCount];//必要ないかも？
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
@@ -70,6 +73,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
     bool memoring;
 
+    List<int>[] deliveryData=new List<int>[driverCount];
+
 
     [SerializeField]Dictionary<string, bool>[] sinnerDebuff=new Dictionary<string, bool>[driverCount];
     public Dictionary<string, bool>[] SinnerDebuff { get { return sinnerDebuff; }set { sinnerDebuff = value; } }
@@ -93,6 +98,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             coroutineNumber[i] = 0;
             lastRoutesPositionCount[i] = 0;
             canStart[i] = false;
+            deliveryData[i] = new List<int>();
             Directions(i);
         }
         //SinnerDebuff = AddArray(SinnerDebuff, str, false);
@@ -282,7 +288,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         GameObject obj = driver[driverID];
         for (int i=1;i<routesPosition[driverID].Count;i++)
         {
-           
+            deliveryData[driverType].Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID);
             Vector3 dir = ((routesPosition[driverID][i]+map.transform.localPosition) - obj.transform.position).normalized;
             Vector3 lastDirction = dir;
             while (lastDirction==dir)

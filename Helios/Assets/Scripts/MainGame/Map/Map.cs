@@ -15,6 +15,7 @@ public class Map : MonoBehaviour
     private char underbar = '_';
     private int mapNumber;
     private const int ADDRES_MAX = 9;
+    private const int OUTER = 20;
     private int mapWidth;
     private int mapHeight;
     private GameObject[] plot = new GameObject[ADDRES_MAX];
@@ -52,19 +53,18 @@ public class Map : MonoBehaviour
         SCHOOL = 18,
         AQUARIUM = 19,
     }
-
-    private MapObjectID id;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
         List<string[]> data = Read(mapCsv[0]);
         mapWidth = data.Count;
+        
         mapHeight = data[0].Length;
 
 
         
-        for(int i=0; i<ADDRES_MAX; i++)
+        for(int i=0; i<ADDRES_MAX+20; i++)
         {
             GameObject address = new GameObject();
             address.transform.parent = transform;
@@ -79,6 +79,7 @@ public class Map : MonoBehaviour
     {
         int width=0;
         int height=0; 
+        
         switch(mapNumber)
         {
             case 0://^‚ñ’†
