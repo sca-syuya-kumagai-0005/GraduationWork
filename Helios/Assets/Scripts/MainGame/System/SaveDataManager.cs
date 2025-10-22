@@ -14,8 +14,8 @@ public class SaveDataManager : MonoBehaviour
     private int days = 1;
     public int Days {  get { return days; } set { days = value; } }
     private const int maxSinners = 31;
-    private bool[] stayedSinners = new bool[maxSinners];
-    public bool[] StayedSinner { get { return stayedSinners; }set { stayedSinners = value; } }
+    private bool[] housedSinners = new bool[maxSinners];
+    public bool[] HousedSinner { get { return housedSinners; }set { housedSinners = value; } }
     private void Start()
     {
         Save();
@@ -30,8 +30,8 @@ public class SaveDataManager : MonoBehaviour
         StreamWriter streamWriter = new StreamWriter("./Assets/SaveData.txt", false);
         data[(int)DataAddress.DAY] = days.ToString();
         data[(int)DataAddress.STAYSINNERS] = null;
-        for (int i = 0; i < stayedSinners.Length; i++) 
-            data[(int)DataAddress.STAYSINNERS] += Convert.ToInt32(stayedSinners[i]);
+        for (int i = 0; i < housedSinners.Length; i++) 
+            data[(int)DataAddress.STAYSINNERS] += Convert.ToInt32(housedSinners[i]);
         string str = string.Join("\n", data);
         streamWriter.WriteLine(str);
         streamWriter.Flush();
@@ -46,6 +46,6 @@ public class SaveDataManager : MonoBehaviour
         streamReader.Close();
         days = int.Parse(data[(int)DataAddress.DAY]);
         for (int i = 0; i < data[(int)DataAddress.STAYSINNERS].Length; i++)
-            stayedSinners[i] = Convert.ToBoolean(data[i]);
+            housedSinners[i] = Convert.ToBoolean(data[i]);
     }
 }

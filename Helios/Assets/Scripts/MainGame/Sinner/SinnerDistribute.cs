@@ -1,13 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [DefaultExecutionOrder(1)]
 public class SinnerDistribute : MonoBehaviour
 {
     private const int poolSize = 3;
-    private List<Object> component = new List<Object>()
+    private List<Object> sinnerComponents = new List<Object>()
     {
         new ItemID_001(),
         new ItemID_002(),
@@ -19,56 +17,45 @@ public class SinnerDistribute : MonoBehaviour
         new ItemID_008(),
 
     };
-    private List<int>[] sinnerPools = new List<int>[poolSize];
+    private List<int>[] sinnerPools = new List<int>[poolSize]
+    {
+        new List<int> { 2,4,5 },
+        new List<int> { 3,6,7 },
+        new List<int> { 1,8 },
+    };
     private const int maxSinners = 31;
-    private List<GameObject>[] houseList = new List<GameObject>[poolSize];
+    private List<GameObject>[] houseList = new List<GameObject>[poolSize]
+    {
+        new List<GameObject>(),
+        new List<GameObject>(),
+        new List<GameObject>(),
+    };
     [SerializeField]
-    private bool[] stayed = new bool[maxSinners];
+    private bool[] housed = new bool[maxSinners];
     private int standbySinners;
     private SaveDataManager saveDataManager;
     private void Start()
     {
-        sinnerPools[0] = new List<int>
-        {
-            1,3,6,7,
-
-
-            2,
-            4,
-            5
-        };
-        sinnerPools[1] = new List<int>
-        {
-            3,
-            6,
-            7
-        };
-        sinnerPools[2] = new List<int>
-        {
-            1,
-            8
-        };
-
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        stayed = saveDataManager.StayedSinner;
+        housed = saveDataManager.HousedSinner;
         standbySinners = saveDataManager.Days + 1;
         int gamePhase = 0;
         if (0 <= saveDataManager.Days && saveDataManager.Days < 10)
         {
-            gamePhase = 1;
+            gamePhase = 0;
         }
         else if (10 <= saveDataManager.Days && saveDataManager.Days < 20)
         {
-            gamePhase = 2;
+            gamePhase = 1;
         }
         else if (20 <= saveDataManager.Days && saveDataManager.Days < 30)
         {
-            gamePhase = 3;
+            gamePhase = 2;
         }
-        else gamePhase = 4;
+        else gamePhase = 3;
 
         Distribute(gamePhase);
-        saveDataManager.StayedSinner = stayed;
+        saveDataManager.HousedSinner = housed;
     }
 
     private void Distribute(int gamePhase)
@@ -82,10 +69,9 @@ public class SinnerDistribute : MonoBehaviour
             new int[2]{5,8},
             new int[2]{9,9},
         };
-        List<GameObject>[] houseList = new List<GameObject>[gamePhase];
-        for(int gp = 0; gp < gamePhase; gp++)
+        for(int gp = 0; gp <= gamePhase; gp++)
         {
-            for (int i = plotIDs[gp][0]; i < plotIDs[gp][1]; i++)
+            for (int i = plotIDs[gp][0]; i <= plotIDs[gp][1]; i++)
             {
                 GameObject go = GameObject.Find(mapName + i);
                 for (int j = 0; j < go.transform.childCount; j++)
@@ -96,24 +82,39 @@ public class SinnerDistribute : MonoBehaviour
                         houseList[gp].Add(go.transform.GetChild(j).gameObject);
                 }
             }
-           //各建物リストにそれぞれの区画の建物を入れた
-           //リストから建物に振り分ける
-        }
 
-
-
-        for (int i = 0; i < stayed.Length; i++)
-        {
-            if (stayed[i])
+            for(int i = 0; i < housed.Length; i++)
             {
-                int rand = Random.Range(0, houseList[gamePhase].Count);
-                GameObject go = houseList[gamePhase][rand];
-                houseList[gamePhase].RemoveAt(rand);
-
-                go.AddComponent(component[i].GetType());
-                go.GetComponent<MapObjectRequest>().HaveSinner = true;
-                Debug.Log(component[i].GetType() + "出現：" + go.name);
+                if (sinnerPools[gp].Count == 0) break;
+                if (housed[i]) HousedNewSinner(gp,i);
             }
         }
+
+        for (int i = 0; i < standbySinners; i--)
+            HousedNewSinner(gamePhase);
+    }
+
+    private void HousedNewSinner(int phase)
+    {
+        if (sinnerPools[phase].Count == 0) return;
+        if (houseList[phase].Count == 0) return;
+        int rand_sinner = Random.Range(0, sinnerPools[phase].Count);
+        int rand_house = Random.Range(0, houseList[phase].Count);
+        int componentID = sinnerPools[phase][rand_sinner];
+        houseList[phase][rand_house].AddComponent(sinnerComponents[componentID].GetType());
+        houseList[phase].RemoveAt(rand_house);
+        sinnerPools[phase].RemoveAt(rand_sinner);
+        housed[rand_sinner] = true;
+    }
+    private void HousedNewSinner(int phase,int stayedSinnerID)
+    {
+        if (sinnerPools[phase].Count == 0) return;
+        if (houseList[phase].Count == 0) return;
+        int rand = Random.Range(0, houseList[phase].Count);
+        int componentID = sinnerPools[phase][stayedSinnerID];
+        houseList[phase][rand].AddComponent(sinnerComponents[componentID].GetType());
+        houseList[phase].RemoveAt(rand);
+        sinnerPools[phase].RemoveAt(stayedSinnerID);
+        standbySinners--;
     }
 }
