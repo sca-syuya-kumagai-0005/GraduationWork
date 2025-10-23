@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using static KumagaiLibrary.Unity.CsvManager;
-using Unity.VisualScripting;
 
 /*memo=========================================================================================
  * 配達する側のScriptで、通った道の隣接するオブジェクトの取得とカウントをする
@@ -15,12 +14,12 @@ public class Map : MonoBehaviour
     private char underbar = '_';
     private int mapNumber;
     private const int ADDRES_MAX = 9;
-    private const int OUTER = 20;
-    private int mapWidth;
-    private int mapHeight;
+    private const int OUTER = 2;
+    private const int mapWidth=21;
+    private const int mapHeight=21;
     private GameObject[] plot = new GameObject[ADDRES_MAX];
   
-
+   // private MapData[][] mapDatas = new MapDasta[mapWidth * 3][mapHeight*4];
     private List<List<MapData>> mapDatas = new List<List<MapData>>();
     public List<List<MapData>> MapDatas { get { return mapDatas;} }
     public struct MapData//自身と隣接するブロックの情報を格納するstruct　自身と隣接するブロックに対応するフラグがtrue
@@ -58,10 +57,15 @@ public class Map : MonoBehaviour
     {
         
         List<string[]> data = Read(mapCsv[0]);
-        mapWidth = data.Count;
         
-        mapHeight = data[0].Length;
-
+        for(int i=0;i<mapHeight*4;i++)
+        {
+            mapDatas.Add(new List<MapData>());
+            for(int j=0;j<mapWidth;j++)
+            {
+                mapDatas[i] = new List<MapData>();
+            }
+        }
 
         
         for(int i=0; i<ADDRES_MAX+20; i++)
@@ -72,7 +76,17 @@ public class Map : MonoBehaviour
             if(i!=0)data = Read(mapCsv[1]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
             MapCreate(data, i, address);
         }
-            
+
+      
+        for (int i = 0; i < mapDatas.Count; i++)
+        {
+            string str = "";
+            for (int j = 0; j < mapDatas[i].Count; j++)
+            {
+                str += mapDatas[i][j].objectID.ToString();
+            }
+            Debug.Log(str);
+        }
         this.gameObject.transform.position = new Vector3(-31, -11, 0);//カメラ(マップ)の初期位置
     }
     void MapCreate(List<string[]> data,int mapNumber,GameObject address)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
@@ -150,10 +164,9 @@ public class Map : MonoBehaviour
                 }
         }
      
-        for (int i = 0; i < data.Count; i++)
+        for (int i = 0;i<mapHeight;i++)
         {
-            mapDatas.Add(new List<MapData>());
-            for (int j = 0; j < data[i].Length; j++)
+            for (int j = 0; j < mapWidth; j++)
             {
                 string[] strs = data[i][j].Split(underbar);
                 MapData md = new MapData();
