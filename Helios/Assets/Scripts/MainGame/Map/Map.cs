@@ -91,9 +91,9 @@ public class Map : MonoBehaviour
     void MapCreate(List<string[]> data,int mapNumber,GameObject address)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
     {
         int width=0;
-        int height=0; 
+        int height=0;
         
-        switch(mapNumber)
+        switch (mapNumber)
         {
             case 0://真ん中
                 {
@@ -183,11 +183,11 @@ public class Map : MonoBehaviour
                 MapData md = new MapData();
                 md.objectID = int.Parse(strs[0]);
                 md.widthPositionID = j+width;
-                md.heightPositionID = i+height;
+                md.heightPositionID =i+height;
                 mapDatas[i+height][j+width]=md;
                 GameObject obj = Instantiate(objectSpace,new Vector3(j+width,-(i+height),0),Quaternion.identity,address.transform);
                 GameObject instObj = mapObjects[(int.Parse(strs[0]))];
-                instObj = Instantiate(instObj,obj.transform.position,Quaternion.identity,obj.transform);
+                instObj = Instantiate(instObj, obj.transform.position, Quaternion.identity, obj.transform);
                 if(strs.Length>1) instObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, float.Parse(strs[1])));
                 instObj.transform.parent.name = md.objectID.ToString()+underbar+md.widthPositionID.ToString()+underbar+md.heightPositionID.ToString();
             }
