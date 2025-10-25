@@ -2102,7 +2102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapCsv:
   - {fileID: 4900000, guid: dd939fe73c9c564498a67235b4c91328, type: 3}
-  - {fileID: 4900000, guid: 4fcb14d2e07aa2f48b78acb1d992816e, type: 3}
+  - {fileID: 4900000, guid: dd939fe73c9c564498a67235b4c91328, type: 3}
   objectSpace: {fileID: 2279231698715859660, guid: 8e28c5908d8c7394d8e718f6c45a727e, type: 3}
   mapObjects:
   - {fileID: 8511989374376127958, guid: daff199ee2d5dac4a9fa0b53e87c911d, type: 3}
@@ -2155,7 +2155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698448d5877ecd741baf1ec9b4779b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stayed: 00000000000000000000000000000000000000000000000000000000000000
+  housed: 00000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &478194911
 MonoBehaviour:
   m_ObjectHideFlags: 0

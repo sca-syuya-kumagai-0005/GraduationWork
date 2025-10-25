@@ -1,76 +1,128 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [DefaultExecutionOrder(1)]
 public class SinnerDistribute : MonoBehaviour
 {
-    private const string tileID_House = "9";
-    private const string underBar = "_";
-    private List<Object> components = new List<Object>() 
-    { 
-        //new ItemID_001(),
-        //new ItemID_002(),
+    private const int poolSize = 3;
+    private List<Object> sinnerComponents = new List<Object>()
+    {
+        new ItemID_001(),
+        new ItemID_002(),
         new ItemID_003(),
         new ItemID_004(),
-        //new ItemID_005(),
+        new ItemID_005(),
+        new ItemID_006(),
+        new ItemID_007(),
+        new ItemID_008(),
+
+    };
+    private List<int>[] sinnerPools = new List<int>[poolSize]
+    {
+        new List<int> { 2,4,5 },
+        new List<int> { 3,6,7 },
+        new List<int> { 1,8 },
     };
     private const int maxSinners = 31;
-    private List<GameObject> houseList = new List<GameObject>();
+    private List<GameObject>[] houseList = new List<GameObject>[poolSize]
+    {
+        new List<GameObject>(),
+        new List<GameObject>(),
+        new List<GameObject>(),
+    };
     [SerializeField]
-    private bool[] stayed = new bool[maxSinners];
+    private bool[] housed = new bool[maxSinners];
     private int standbySinners;
     private SaveDataManager saveDataManager;
     private void Start()
     {
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        stayed = saveDataManager.StayedSinner;
+        housed = saveDataManager.HousedSinner;
         standbySinners = saveDataManager.Days + 1;
-        standbySinners -= stayed.Count(b => b);
-        houseList = GetHouse();
-        int c = 0;
-        for (int i = 0; i < standbySinners; c++)
+        int gamePhase = 0;
+        if (0 <= saveDataManager.Days && saveDataManager.Days < 10)
         {
-            int rand = Random.Range(0, components.Count);
-            if (!stayed[rand])
-            {
-                i++;
-                stayed[rand] = true;
-            }
-            if (stayed.Count(b => b) >= components.Count) break;
+            gamePhase = 0;
         }
-        Distribute();
-        saveDataManager.StayedSinner = stayed;
+        else if (10 <= saveDataManager.Days && saveDataManager.Days < 20)
+        {
+            gamePhase = 1;
+        }
+        else if (20 <= saveDataManager.Days && saveDataManager.Days < 30)
+        {
+            gamePhase = 2;
+        }
+        else gamePhase = 3;
+
+        Distribute(gamePhase);
+        saveDataManager.HousedSinner = housed;
     }
-    private List<GameObject> GetHouse()
+
+    private void Distribute(int gamePhase)
     {
         //ここに各マップ
-        const string map = "Address_0";
-        GameObject mapObject = GameObject.Find(map);
-        List<GameObject> houseList = new List<GameObject>();
-        for (int i = 0; i < mapObject.transform.childCount; i++)
+        const string mapName = "Address_";
+        int[][] plotIDs = new int[4][]
         {
-            GameObject go = mapObject.transform.GetChild(i).gameObject;
-            string[] tileName = go.name.Split(underBar);
-            const int arrayTop = 0;
-            if (tileName[arrayTop] == tileID_House) houseList.Add(go);
-        }
-        return houseList;
-    }
-    private void Distribute()
-    {
-        for(int i = 0; i < stayed.Length; i++)
+            new int[2]{0,0},
+            new int[2]{1,4},
+            new int[2]{5,8},
+            new int[2]{9,9},
+        };
+        for (int gp = 0; gp <= gamePhase; gp++)
         {
-            if (stayed[i])
+            for (int i = plotIDs[gp][0]; i <= plotIDs[gp][1]; i++)
             {
-                int rand = Random.Range(0, houseList.Count);
-                GameObject go = houseList[rand];
-                houseList.RemoveAt(rand);
+                GameObject go = GameObject.Find(mapName + i);
+                for (int j = 0; j < go.transform.childCount; j++)
+                {
+                    const string tileID_House = "9";
+                    const string underBar = "_";
+                    if (go.transform.GetChild(j).name.Split(underBar)[0] == tileID_House)
+                        houseList[gp].Add(go.transform.GetChild(j).gameObject);
+                }
+            }
 
-                go.AddComponent(components[i].GetType());
-                go.GetComponent<MapObjectRequest>().HaveSinner = true;
-                Debug.Log(components[i].GetType() + "出現：" + go.name);
+            for (int i = 0; i < housed.Length; i++)
+            {
+                if (sinnerPools[gp].Count == 0) break;
+                if (housed[i])
+                {
+                    HousedNewSinner(gp, i, mapName + i);
+
+                }
             }
         }
+
+        for (int i = 0; i < standbySinners; i++)
+        {
+            HousedNewSinner(gamePhase, mapName + i);
+
+        }
+    }
+
+    private void HousedNewSinner(int phase, string map)
+    {
+        if (sinnerPools[phase].Count == 0) return;
+        if (houseList[phase].Count == 0) return;
+        int rand_sinner = Random.Range(0, sinnerPools[phase].Count);
+        int rand_house = Random.Range(0, houseList[phase].Count);
+        int componentID = sinnerPools[phase][rand_sinner];
+        houseList[phase][rand_house].AddComponent(sinnerComponents[componentID - 1].GetType());
+        houseList[phase].RemoveAt(rand_house);
+        sinnerPools[phase].RemoveAt(rand_sinner);
+        housed[rand_sinner] = true;
+        Debug.Log(map + "に" + componentID + "出現");
+    }
+    private void HousedNewSinner(int phase, int stayedSinnerID, string map)
+    {
+        if (sinnerPools[phase].Count <= stayedSinnerID) return;
+        if (houseList[phase].Count == 0) return;
+        int rand = Random.Range(0, houseList[phase].Count);
+        int componentID = sinnerPools[phase][stayedSinnerID];
+        houseList[phase][rand].AddComponent(sinnerComponents[componentID - 1].GetType());
+        houseList[phase].RemoveAt(rand);
+        standbySinners--;
+        Debug.Log(map + "に" + componentID + "出現");
     }
 }
