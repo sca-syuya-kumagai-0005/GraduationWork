@@ -94,7 +94,7 @@ public class MapObjectRequest : MonoBehaviour
                 {
                     if (haveSinner)
                     {
-                        
+                      
                         sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
                     }
                     
