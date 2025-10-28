@@ -32,7 +32,7 @@ public class SinnerDistribute : MonoBehaviour
     };
     [SerializeField]
     private bool[] housed = new bool[maxSinners];
-    private int standbySinners;
+    [SerializeField]private int standbySinners;
     private SaveDataManager saveDataManager;
     private void Start()
     {
@@ -97,7 +97,6 @@ public class SinnerDistribute : MonoBehaviour
         for (int i = 0; i < standbySinners; i++)
         {
             HousedNewSinner(gamePhase, mapName + i);
-
         }
     }
 

@@ -12,7 +12,7 @@ using Unity.VisualScripting;
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
-    [SerializeField]List<int> ints = new List<int>();
+    //[SerializeField]List<int> nowList = new List<int>();
 
 
     const int driverCount = 4;//トラックの数
@@ -76,7 +76,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
     bool memoring;
 
-    List<int>[] deliveryData=new List<int>[driverCount];
+    List<int>[] deliveryData=new List<int>[driverCount];//シナー側で使うデータ。配達の時に通ったオブジェクトとそれに隣接するオブジェクトのID
 
 
     [SerializeField]Dictionary<string, bool>[] sinnerDebuff=new Dictionary<string, bool>[driverCount];
@@ -224,8 +224,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         {
             if (routeObjectsID[driverType][routeObjectsIDCount - 1] == (int)MapObjectID.HOUSE_1) return;
         }
-        positionID[0] = widthPositionID;
-        positionID[1] = heightPositionID;
+        positionID[1] = widthPositionID;
+        positionID[0] = heightPositionID;
         if (objectID == 1 && routes[driverType].Count==0)
         {
             routes[driverType].Add(positionID);
@@ -299,16 +299,16 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
                 Debug.Log(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].widthPositionID);
                 Debug.Log(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].heightPositionID);
-                ints.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID);
-                ints.Add(map.MapDatas[routes[driverID][i + 1][0]][routes[driverID][i][1]].objectID);
-                ints.Add(map.MapDatas[routes[driverID][i - 1][0]][routes[driverID][i][1]].objectID);
-                ints.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i + 1][1]].objectID);
-                ints.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i - 1][1]].objectID);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID);
+                nowList.Add(map.MapDatas[routes[driverID][i + 1][0]][routes[driverID][i][1]].objectID);
+                nowList.Add(map.MapDatas[routes[driverID][i - 1][0]][routes[driverID][i][1]].objectID);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i + 1][1]].objectID);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i - 1][1]].objectID);
 
-                ints.RemoveAll(x => lastList.Contains(x));
+                nowList.RemoveAll(x => lastList.Contains(x));
                 deliveryData[driverID].AddRange(nowList);
-                //ints.AddRange(nowList);
                 lastList = nowList;
+                nowList = new List<int>();
                 //Debug.Log(ColorChanger(map.MapDatas))
             }
            

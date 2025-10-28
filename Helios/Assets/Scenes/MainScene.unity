@@ -5186,11 +5186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a83bf7a12342d5247afbcd4f30911542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapCsv:
-  - {fileID: 0}
-  objectSpace: {fileID: 0}
-  mapObjects: []
-  map: {fileID: 478194907}
+  mapObject: {fileID: 478194907}
   move: {fileID: 2582001399943237785, guid: 2f73aa1d9ec41ab499fa87909c308cf8, type: 3}
   arrows: {fileID: 79045306}
   driver:
@@ -7613,7 +7609,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1340570517}
   - component: {fileID: 1340570516}
-  - component: {fileID: 1340570518}
   m_Layer: 0
   m_Name: GameState
   m_TagString: Untagged
@@ -7648,18 +7643,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1340570518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1340570515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ec3936ed6e34cd4f971482356bc8d1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1360928148
 GameObject:
   m_ObjectHideFlags: 0

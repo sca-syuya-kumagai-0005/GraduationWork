@@ -12,6 +12,7 @@ public class SaveDataManager : MonoBehaviour
     }
     private string[] data = new string[(int)DataAddress.MAX];
     private int days = 21;
+    const int housei = 48;
     public int Days {  get { return days; } set { days = value; } }
     private const int maxSinners = 31;
     private bool[] housedSinners = new bool[maxSinners];
@@ -53,6 +54,9 @@ public class SaveDataManager : MonoBehaviour
         days = int.Parse(data[(int)DataAddress.DAY]);
         string housed = data[(int)DataAddress.HOUSEDSINNER];
         for (int i = 0; i < data[(int)DataAddress.HOUSEDSINNER].Length; i++)
-            housedSinners[i] = Convert.ToBoolean((int)housed[i]);
+        {
+            housedSinners[i] = Convert.ToBoolean((int)housed[i]-housei);
+        }
+          
     }
 }

@@ -112,6 +112,7 @@ public class Sinner : MonoBehaviour
         progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
         specifyingDeliveryRoutes = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
+        transform.GetComponent<MapObjectRequest>().HaveSinner=true;
 
         transform.GetChild(0).GetComponent<SpriteRenderer>().color=new Color(1.0f,0.5f,0.0f);
     }
