@@ -301,16 +301,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 
                
                 nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
-                //Debug.Log("Height"+ routes[driverID][i][0]);
-                //Debug.Log("Width" + routes[driverID][i][1]);
-                //Debug.Log("Height" + routes[driverID][i+1][0]);
-                //Debug.Log("Width" + routes[driverID][i][1]);
-                //Debug.Log("Height" + routes[driverID][i-1][0]);
-                //Debug.Log("Width" + routes[driverID][i][1]);
-                //Debug.Log("Height" + routes[driverID][i][0]);
-                //Debug.Log("Width" + routes[driverID][i+1][1]);
-                //Debug.Log("Height" + routes[driverID][i][0]);
-                //Debug.Log("Width" + routes[driverID][i-1][1]);
                 nowList.Add(map.MapDatas[routes[driverID][i][0]+1][routes[driverID][i][1]]);
                 nowList.Add(map.MapDatas[routes[driverID][i][0]-1][routes[driverID][i][1]]);
                 nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]+1]);
@@ -333,19 +323,19 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 vec = lastDirction*Time.deltaTime;
                 if (dir.x == 1)
                 {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
                 }
                 if (dir.x == -1)
                 {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 }
                 if (dir.y == 1)
                 {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
                 }
                 if (dir.y == -1)
                 { 
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                 }
                 switch (deliveryProcess[driverID])
                 {
