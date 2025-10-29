@@ -19,7 +19,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
     Map map;
     List<int>[] routeObjectsID=new List<int>[driverCount];//それぞれのトラックが通るオブジェクトを順番通りに格納
-    List<int[]>[] routes = new List<int[]>[driverCount];//必要ないかも？
+    List<int[]>[] routes = new List<int[]>[driverCount];
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
 
@@ -77,7 +77,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     bool memoring;
 
     List<int>[] deliveryData=new List<int>[driverCount];//シナー側で使うデータ。配達の時に通ったオブジェクトとそれに隣接するオブジェクトのID
-
+    [SerializeField] List<string> delivery = new List<string>();
 
     [SerializeField]Dictionary<string, bool>[] sinnerDebuff=new Dictionary<string, bool>[driverCount];
     public Dictionary<string, bool>[] SinnerDebuff { get { return sinnerDebuff; }set { sinnerDebuff = value; } }
@@ -224,8 +224,9 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         {
             if (routeObjectsID[driverType][routeObjectsIDCount - 1] == (int)MapObjectID.HOUSE_1) return;
         }
-        positionID[1] = widthPositionID;
         positionID[0] = heightPositionID;
+        positionID[1] = widthPositionID;
+        
         if (objectID == 1 && routes[driverType].Count==0)
         {
             routes[driverType].Add(positionID);
@@ -245,7 +246,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             line[driverType].SetPosition(line[driverType].positionCount - 1, position);
             if (objectID == 9)
             {
-             
                 writing = false;
                 destination[driverType] = obj;
                 driverType = -1;
@@ -288,8 +288,9 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     private IEnumerator DriverMove(int driverID)
     {
         GameObject obj = driver[driverID];
-        List<int> lastList = new List<int>();
-        List<int> nowList = new List<int>();
+        List<MapData> lastList = new List<MapData>();
+        List<MapData> nowList = new List<MapData>();
+        
         for (int i=1;i<routesPosition[driverID].Count;i++)
         {
             Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
@@ -297,18 +298,31 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             if(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID!=(int)MapObjectID.HOUSE_1)
             {
                 // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
-                Debug.Log(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].widthPositionID);
-                Debug.Log(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].heightPositionID);
-                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID);
-                nowList.Add(map.MapDatas[routes[driverID][i + 1][0]][routes[driverID][i][1]].objectID);
-                nowList.Add(map.MapDatas[routes[driverID][i - 1][0]][routes[driverID][i][1]].objectID);
-                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i + 1][1]].objectID);
-                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i - 1][1]].objectID);
-
+                
+               
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
+                //Debug.Log("Height"+ routes[driverID][i][0]);
+                //Debug.Log("Width" + routes[driverID][i][1]);
+                //Debug.Log("Height" + routes[driverID][i+1][0]);
+                //Debug.Log("Width" + routes[driverID][i][1]);
+                //Debug.Log("Height" + routes[driverID][i-1][0]);
+                //Debug.Log("Width" + routes[driverID][i][1]);
+                //Debug.Log("Height" + routes[driverID][i][0]);
+                //Debug.Log("Width" + routes[driverID][i+1][1]);
+                //Debug.Log("Height" + routes[driverID][i][0]);
+                //Debug.Log("Width" + routes[driverID][i-1][1]);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]+1][routes[driverID][i][1]]);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]-1][routes[driverID][i][1]]);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]+1]);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]-1]);
                 nowList.RemoveAll(x => lastList.Contains(x));
-                deliveryData[driverID].AddRange(nowList);
+                for(int c=0;c<nowList.Count;c++)
+                {
+                    deliveryData[driverID].Add(nowList[c].objectID);
+                    delivery.Add(nowList[c].name);  
+                }
                 lastList = nowList;
-                nowList = new List<int>();
+                nowList = new List<MapData>();
                 //Debug.Log(ColorChanger(map.MapDatas))
             }
            
@@ -506,7 +520,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         //    driverSet = false;
         //    return;
         //}
-        Debug.Log(deliveryItems[driverID]);
         deliveryItems[driverID] = tmpDeliveryItem;
         deliveryProcess[driverID] = tmpDeliveryProcess;
         if (driverType != -1)

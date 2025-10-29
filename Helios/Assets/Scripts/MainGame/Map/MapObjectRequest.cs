@@ -64,7 +64,12 @@ public class MapObjectRequest : MonoBehaviour
     void PointerEnter()
     {
         switch(id)
-        { 
+        {
+            case MapObjectID.NULL:
+                {
+                    sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
+                }
+                break;
             case MapObjectID.COMPANY:
                 {
                     sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);

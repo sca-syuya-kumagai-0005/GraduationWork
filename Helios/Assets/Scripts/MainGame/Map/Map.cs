@@ -29,7 +29,9 @@ public class Map : MonoBehaviour
     {
         public int objectID;
         public int widthPositionID;
-        public int heightPositionID;    
+        public int heightPositionID;
+        public string name;
+        public GameObject obj;
     }
 
     public  enum MapObjectID
@@ -84,7 +86,7 @@ public class Map : MonoBehaviour
             {
                 str += mapDatas[i][j].objectID.ToString();
             }
-
+            Debug.Log(str);
         }
         this.gameObject.transform.position = new Vector3(-30, 50, 0) ;//カメラ(マップ)の初期位置
     }
@@ -184,12 +186,16 @@ public class Map : MonoBehaviour
                 md.objectID = int.Parse(strs[0]);
                 md.widthPositionID = j+width;
                 md.heightPositionID =i+height;
-                mapDatas[i+height][j+width]=md;
+               
+              
                 GameObject obj = Instantiate(objectSpace,new Vector3(j+width,-(i+height),0),Quaternion.identity,address.transform);
                 GameObject instObj = mapObjects[(int.Parse(strs[0]))];
                 instObj = Instantiate(instObj, obj.transform.position, Quaternion.identity, obj.transform);
                 if(strs.Length>1) instObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, float.Parse(strs[1])));
                 instObj.transform.parent.name = md.objectID.ToString()+underbar+md.widthPositionID.ToString()+underbar+md.heightPositionID.ToString();
+                md.name = instObj.transform.parent.name;
+                mapDatas[i + height][j + width] = md;
+               
             }
         }
 
