@@ -21,7 +21,6 @@ public class Adventure : MonoBehaviour
     private List<string[]> csvText = new List<string[]>();
     private int lines;
     private int days;
-    private float timer;
     private bool isComplete;
 
     private struct Command
@@ -37,13 +36,13 @@ public class Adventure : MonoBehaviour
         Third,
     }
     private const byte column_command = 0;
+    private const byte column_Text = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         message = GameObject.Find("MessageBox").gameObject.GetComponent<Text>();
         days = saveDataManager.Days;
-        timer = 0.0f;
         isComplete = false;
         csvText = CsvManager.Read(storyCsvFiles[0]);
         lines = 0;
@@ -52,19 +51,48 @@ public class Adventure : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        string[] str = csvText[lines][column_command].Split("_");
-
-        string commanType = str[0];
-        string commandTarget = str[1];
-        switch (commanType)
+        string commanType;
+        string commandTarget;
         {
-            case Command.CharacterSet:
-                break;
-            case Command.CharacterRemove:
-                break;
-            case Command.CharacterSpeak:
-                break;
+            string[] data = csvText[lines][column_command].Split("_");
+            const int commandTypeAdress = 0;
+            const int commandTargetAdress = 1;
+            commanType = data[commandTypeAdress];
+            commandTarget = data[commandTargetAdress];
         }
+
+        if (isComplete)
+        {
+            isComplete = false;
+            switch (commanType)
+            {
+                case Command.CharacterSet:
+                    CharacterFadein();
+                    break;
+                case Command.CharacterRemove:
+                    break;
+                case Command.CharacterSpeak:
+                    break;
+            }
+        }
+    }
+    /// <summary>
+    /// CharacterSetが書かれていたら呼ぶ。
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator CharacterFadein()
+    {
+        bool isEnd = false;
+        float timer = 0.0f;
+        float timeLate = 1.0f;
+
+        while (!isEnd)
+        {
+            timer += Time.deltaTime / timeLate;
+            if (timer >= 1.0f) isEnd = true;
+            yield return null;
+        }
+        isComplete = true;
     }
 
     /// <summary>
@@ -78,6 +106,7 @@ public class Adventure : MonoBehaviour
         arrow.transform.localPosition = new Vector3
             (0, arrowDefaultPositionY + arrowAddPositionY * Mathf.Abs(Mathf.Sin(t * 2.0f)), 0);
     }
+
     /// <summary>
     /// テキストウィンドウの文字送り。
     /// </summary>
@@ -104,6 +133,12 @@ public class Adventure : MonoBehaviour
         else isComplete = false;
         yield return null;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sprite"></param>
+    /// <returns></returns>
     private IEnumerator ChangeBackGround(Sprite sprite)
     {
         //演出あるならどうぞ
