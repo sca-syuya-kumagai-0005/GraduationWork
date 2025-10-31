@@ -39,12 +39,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _DotAlpha: 0.2
-    - _DotSize: 0.8
+    - _DotSize: 0.05
     - _DotsNoiseScale: 100
     - _NoiseScale: 10
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _maskPower: 0.4
+    - _maskPower: 0.221
     m_Colors:
     - _DotColor: {r: 3.358491, g: 2.6498282, b: 0.4594163, a: 0.15686275}
     - _DotsTilling: {r: 8, g: 8, b: 0, a: 0}
