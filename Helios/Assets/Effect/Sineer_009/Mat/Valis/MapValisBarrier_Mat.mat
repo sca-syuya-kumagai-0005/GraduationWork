@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VDoorFlameMat
-  m_Shader: {fileID: -6465566751694194690, guid: 2996dd21ca1888f4dbf4e4cf5a53189a, type: 3}
+  m_Name: MapValisBarrier_Mat
+  m_Shader: {fileID: -6465566751694194690, guid: f7739ae9bbb8c804b96bc0ef686f649f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -38,16 +38,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NoiseScale: 10
+    - _DotAlpha: 0.2
+    - _DotSize: 0.05
+    - _DotsNoiseScale: 100
+    - _NoiseScale: 20
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _maskPower: 0.12
+    - _maskPower: 15
     m_Colors:
-    - _MainColor: {r: 5.962264, g: 5.430541, b: 1.546814, a: 0}
-    - _NoiseSpeed: {r: -0.05, g: 0, b: 0, a: 0}
+    - _DotColor: {r: 1.6792455, g: 1.3249141, b: 0.22970815, a: 0.09803922}
+    - _DotsTilling: {r: 8, g: 8, b: 0, a: 0}
+    - _NoiseSpeed: {r: 0, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &2658017304679393115
+--- !u!114 &3844163509642589578
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
