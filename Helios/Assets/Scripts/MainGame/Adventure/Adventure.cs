@@ -14,26 +14,33 @@ public class Adventure : MonoBehaviour
     [SerializeField]
     private Sprite characterSprites;
     private Image[] characters;
-    private Text message;
+    private string[] characterNames=new string[3];
+    private Text nameBox;
+    private Text messageBox;
     private const float textSpeed = 0.1f;
     private GameObject arrow;
 
-    private List<string[]> csvText = new List<string[]>();
+    private List<string[]> csvData = new List<string[]>();
     private int lines;
     private int days;
+    private float speakTiming;
     private bool isComplete;
 
-    private struct Command
+    private enum Command
     {
-        public const string CharacterSet = "CharacterSet";
-        public const string CharacterRemove = "CharacterRemove";
-        public const string CharacterSpeak = "CharacterSpeak";
+        SetCharacter = 0,
+        RemoveCharacter, 
+        SetSpeakTiming,
+        Speak,
+        End
     }
     private enum CharacterQuota
     {
-        First=0,
-        Second,
-        Third,
+        A=0,
+        B,
+        C,
+        Announce,
+        Else
     }
     private const byte column_command = 0;
     private const byte column_Text = 1;
@@ -41,60 +48,63 @@ public class Adventure : MonoBehaviour
     void Start()
     {
         SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        message = GameObject.Find("MessageBox").gameObject.GetComponent<Text>();
+        nameBox = GameObject.Find("NameBox").gameObject.GetComponent<Text>();
+        messageBox = GameObject.Find("MessageBox").gameObject.GetComponent<Text>();
         days = saveDataManager.Days;
-        isComplete = false;
-        csvText = CsvManager.Read(storyCsvFiles[0]);
+        isComplete = true;
+        csvData = CsvManager.Read(storyCsvFiles[0]);
         lines = 0;
+        speakTiming = 0;
+        nameBox.name = "";
+        messageBox.name = "";
     }
 
     // Update is called once per frame
     void Update()
     {
-        string commanType;
-        string commandTarget;
+        string commandType = null;
+        string commandTarget = null;
+        string[] data = csvData[lines][column_command].Split("_");
+        const int commandTypeAdress = 0;
+        const int commandTargetAdress = 1;
+        commandType = data[commandTypeAdress];
+        const int only = 1;
+        if (!(data.Length == only))
         {
-            string[] data = csvText[lines][column_command].Split("_");
-            const int commandTypeAdress = 0;
-            const int commandTargetAdress = 1;
-            commanType = data[commandTypeAdress];
             commandTarget = data[commandTargetAdress];
         }
-
+        //Debug.Log(commandType+":"+commandTarget);
+        if (csvData[lines][column_command] == nameof(Command.End)) Debug.Log("終了");
+        else
         if (isComplete)
         {
+            Debug.Log(lines + "行目読み込み：Command=" + commandType);
             isComplete = false;
-            switch (commanType)
+            switch (commandType)
             {
-                case Command.CharacterSet:
-                    CharacterFadein();
+                case nameof(Command.SetCharacter):
+                    StartCoroutine(CharacterFadein(commandTarget));
                     break;
-                case Command.CharacterRemove:
+
+                case nameof(Command.RemoveCharacter):
+                    StartCoroutine(CharacterFadeOut(commandTarget));
                     break;
-                case Command.CharacterSpeak:
+
+                case nameof(Command.SetSpeakTiming):
+                    SetWaitTime();
+                    break;
+
+                case nameof(Command.Speak):
+                    StartCoroutine(ViewText(data[commandTargetAdress], csvData[lines][column_Text]));
+                    break;
+
+                default:
+                    StartCoroutine(ViewText("システム", lines + "行目で例外、または未対応コマンドが確認されました。"));
                     break;
             }
+            lines++;
         }
     }
-    /// <summary>
-    /// CharacterSetが書かれていたら呼ぶ。
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator CharacterFadein()
-    {
-        bool isEnd = false;
-        float timer = 0.0f;
-        float timeLate = 1.0f;
-
-        while (!isEnd)
-        {
-            timer += Time.deltaTime / timeLate;
-            if (timer >= 1.0f) isEnd = true;
-            yield return null;
-        }
-        isComplete = true;
-    }
-
     /// <summary>
     /// 文字送りの矢印のモーション。
     /// </summary>
@@ -108,30 +118,116 @@ public class Adventure : MonoBehaviour
     }
 
     /// <summary>
-    /// テキストウィンドウの文字送り。
+    /// CharacterSetが書かれていたら呼ぶ。
     /// </summary>
-    /// <param name="t">時間軸。</param>
-    private IEnumerator ViewText(string sceanerio, float t)
+    /// <returns></returns>
+    private IEnumerator CharacterFadein(string quota)
     {
+        Debug.Log("SetCharacter呼び出し");
+        bool isEnd = false;
+        float timer = 0.0f;
+        float timeLate = 1.0f;
 
-        //テキストの合計文字数*一文字あたりの時間で合計時間を計算
-        float fullTextTimer = sceanerio.Length * textSpeed;
+        characterNames[(int)ConvertStringToQuota(quota)] = csvData[lines][column_Text];
+        while (!isEnd)
+        {
+            timer += Time.deltaTime / timeLate;
+            if (timer >= 1.0f) isEnd = true;
+            yield return null;
+        }
+        isComplete = true;
+        Debug.Log("SetCharacter完了:");
+    }
 
-        //時間軸が合計時間を超えたらこの関数内での時間軸は止める
-        if (fullTextTimer <= t) t = fullTextTimer;
+    private IEnumerator CharacterFadeOut(string quota)
+    {
+        Debug.Log("RemoveCharacter呼び出し");
+        bool isEnd = false;
+        float timer = 0.0f;
+        float timeLate = 1.0f;
 
-        //合計文字数に、時間軸が合計時間の何割なのかをかけ、今が何文字目なのかを計算
-        int nowChars = (int)(sceanerio.Length * (t / fullTextTimer));
+        while (!isEnd)
+        {
+            timer += Time.deltaTime / timeLate;
+            if (timer >= 1.0f) isEnd = true;
+            yield return null;
+        }
+        isComplete = true;
+        Debug.Log("RemoveCharacter完了:");
+    }
 
+    private void SetWaitTime()
+    {
+        if (float.TryParse(csvData[lines][column_Text], out var num))
+            speakTiming = num;
+        else Debug.Log("値が不適切です");
+        isComplete = true;
+    }
+    /// <summary>
+    /// テキストウィンドウの文字送りを行う関数。
+    /// </summary>
+    private IEnumerator ViewText(string quota,string text)
+    {
+        Debug.Log("Speak呼び出し");
+        string name = "";
+        switch (ConvertStringToQuota(quota))
+        {
+            case CharacterQuota.Announce:
+                name = nameof(CharacterQuota.Announce);
+                break;
+            case CharacterQuota.Else:
+                name = "SystemError";
+                break;
+            default:
+                name = characterNames[(int)ConvertStringToQuota(quota)];
+                break;
+        }
+        nameBox.text = name;
         //テキストボックスを初期化
-        message.text = "";
-        for (int i = 0; i < nowChars; i++)
-            message.text += sceanerio[i];//計算で出した現在の文字数分だけ一文字ずつtextに記述
+        messageBox.text = "";
+        yield return new WaitForSeconds(speakTiming);
 
-        //全ての文字を記述したら、モーションが終わってるフラグを立てる(textの方が長いため)
-        if (message.text == sceanerio) isComplete = true;
-        else isComplete = false;
-        yield return null;
+        for(int i = 0; i < text.Length; i++)
+        {
+            messageBox.text += text[i];
+            if (Input.GetMouseButtonDown(0))
+            {
+                i = text.Length;
+                messageBox.text = text;
+            }
+            yield return new WaitForSeconds(textSpeed);
+        }
+        Debug.Log("Speak完了:");
+
+        while (!isComplete)
+        {
+            yield return null;
+            Debug.Log("クリック待機中");
+            if (Input.GetMouseButtonDown(0)) isComplete = true;
+        }
+        nameBox.text = "";
+        messageBox.text = "";
+    }
+
+    private CharacterQuota ConvertStringToQuota(string quota)
+    {
+        CharacterQuota ret = CharacterQuota.Else;
+        switch (quota)
+        {
+            case nameof(CharacterQuota.A):
+                ret = CharacterQuota.A;
+                break;
+            case nameof(CharacterQuota.B):
+                ret = CharacterQuota.B;
+                break;
+            case nameof(CharacterQuota.C):
+                ret = CharacterQuota.C;
+                break;
+            case nameof(CharacterQuota.Announce):
+                ret = CharacterQuota.Announce;
+                break;
+        }
+        return ret;
     }
 
     /// <summary>

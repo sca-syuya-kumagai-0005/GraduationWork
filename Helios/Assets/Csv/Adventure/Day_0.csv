@@ -1,6 +1,11 @@
-﻿CharacterSet_A,Character1.png
-CharacterSpeak_A,あああああああああああああああああああああああああああああああ
-CharacterSet_B,Character2.png
-CharacterSpeak_B,おおおおおおおおおおおおおおおおおお
-CharacterRemove_A,
-CharacterRemove_B,
+﻿SetCharacter_A,上司.png
+SetSpeakTiming,0.5
+Speak_A,ああああああああああああああ
+SetCharacter_B,同僚A.png
+Speak_B,いいいいいいいいいいいいいい
+RemoveCharacter_A,
+SetCharacter_A,同僚B.png
+SetSpeakTiming,0.0
+Speak_A,うううううううううううううう
+Speak_Announce,〇日目を開始します。
+End,
