@@ -54,12 +54,12 @@ Material:
     - _DotAlpha: 0
     - _DotSize: 0.05
     - _DotsNoiseScale: 30
-    - _NoiseScale: 10
+    - _NoiseScale: 1000
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _maskPower: 4
+    - _maskPower: 0
     m_Colors:
-    - _DotColor: {r: 0.125, g: 0.032565087, b: 0, a: 1}
+    - _DotColor: {r: 0.5019608, g: 0.14990892, b: 0, a: 0.39215687}
     - _DotsTilling: {r: 8, g: 8, b: 0, a: 0}
     - _NoiseSpeed: {r: 0, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
