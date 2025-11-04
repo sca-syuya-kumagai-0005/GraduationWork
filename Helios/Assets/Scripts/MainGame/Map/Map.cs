@@ -64,9 +64,7 @@ public class Map : MonoBehaviour
         {
             mapDatas[i]=new MapData[MAPWIDTH_MAX];
         }
-     
 
-   
         List<string[]> data = Read(mapCsv[0]);
         for(int i=0; i<ADDRES_MAX+OUTER; i++)
         {
