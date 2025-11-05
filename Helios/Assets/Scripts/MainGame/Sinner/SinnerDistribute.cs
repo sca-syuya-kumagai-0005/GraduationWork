@@ -39,6 +39,7 @@ public class SinnerDistribute : MonoBehaviour
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         housed = saveDataManager.HousedSinner;
         standbySinners = saveDataManager.Days + 1;
+        Debug.Log(standbySinners);
         int gamePhase = 0;
         if (0 <= saveDataManager.Days && saveDataManager.Days < 10)
         {
@@ -96,6 +97,7 @@ public class SinnerDistribute : MonoBehaviour
 
         for (int i = 0; i < standbySinners; i++)
         {
+            //‚±‚±‚ªŒÄ‚Î‚ê‚È‚¢ƒoƒO‚ ‚è
             HousedNewSinner(gamePhase, mapName + i);
         }
     }

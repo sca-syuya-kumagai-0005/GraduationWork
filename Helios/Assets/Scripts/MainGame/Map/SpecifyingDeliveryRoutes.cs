@@ -77,7 +77,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     bool memoring;
 
     List<int>[] deliveryData=new List<int>[driverCount];//シナー側で使うデータ。配達の時に通ったオブジェクトとそれに隣接するオブジェクトのID
-    [SerializeField] List<string> delivery = new List<string>();
+    [SerializeField] List<int> delivery = new List<int>();
+    public List<int>[] GetDelevery {  get { return deliveryData; } }    
 
     [SerializeField]Dictionary<string, bool>[] sinnerDebuff=new Dictionary<string, bool>[driverCount];
     public Dictionary<string, bool>[] SinnerDebuff { get { return sinnerDebuff; }set { sinnerDebuff = value; } }
@@ -309,7 +310,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 for(int c=0;c<nowList.Count;c++)
                 {
                     deliveryData[driverID].Add(nowList[c].objectID);
-                    delivery.Add(nowList[c].name);  
+                    //delivery.Add(nowList[c].objectID);  
                 }
                 lastList = nowList;
                 nowList = new List<MapData>();

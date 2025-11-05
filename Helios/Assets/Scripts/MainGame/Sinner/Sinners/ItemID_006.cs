@@ -45,8 +45,9 @@ public class ItemID_006 : Sinner
         this.deliveryLineID = deliveryLineID;
         string str = sinnerID + "に「" + deliveryItems[itemID] + "」の配達が完了しました。";
         announceManager.MakeAnnounce(str);
+
         //水族館を通ってなかったら
-        //if (true)
+        if (specifyingDeliveryRoutes.GetDelevery[deliveryLineID].Contains((int)Map.MapObjectID.AQUARIUM))
         {
             float probability = Random.Range(0, 101);
             int damage = Lottery(probability + probabilitys[deliveryLineID]);
