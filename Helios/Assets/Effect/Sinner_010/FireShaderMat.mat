@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FireShaderMat 1
+  m_Name: FireShaderMat
   m_Shader: {fileID: -6465566751694194690, guid: 25392334fafd22647a48503bf8435aa6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -54,12 +54,12 @@ Material:
     - _DotAlpha: 0
     - _DotSize: 0.05
     - _DotsNoiseScale: 30
-    - _NoiseScale: 1000
+    - _NoiseScale: 10
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _maskPower: 0
+    - _maskPower: 5
     m_Colors:
-    - _DotColor: {r: 0.5019608, g: 0.14990892, b: 0, a: 0.39215687}
+    - _DotColor: {r: 0, g: 0, b: 0, a: 0}
     - _DotsTilling: {r: 8, g: 8, b: 0, a: 0}
     - _NoiseSpeed: {r: 0, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
