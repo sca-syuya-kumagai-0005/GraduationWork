@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using static Map;
 using static KumagaiLibrary.String;
+using static KumagaiLibrary.Unity.ObjectManager;
 
 
 
@@ -290,8 +291,9 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         
         for (int i=1;i<routesPosition[driverID].Count;i++)
         {
+          
             Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
-            Vector3 lastDirction = dir;
+            //Vector3 lastDirction = dir;
             if(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID!=(int)MapObjectID.HOUSE_1)
             {
                 // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
@@ -312,54 +314,74 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 nowList = new List<MapData>();
                 //Debug.Log(ColorChanger(map.MapDatas))
             }
-           
-
-            while (lastDirction==dir)
+            switch (deliveryProcess[driverID])
             {
-                lastDirction = dir;
-                Vector3 vec = lastDirction*Time.deltaTime;
-                if (dir.x == 1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
-                }
-                if (dir.x == -1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                }
-                if (dir.y == 1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
-                }
-                if (dir.y == -1)
-                { 
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
-                }
-                switch (deliveryProcess[driverID])
-                {
-                    case 0:
-                        {
-                            speed[driverID] = 0.5f;
-                        }
+                case 0:
+                    {
+                        speed[driverID] = 0.5f;
+                    }
                     break;
-                    case 1:
-                        {
-                            speed[driverID] = 1f;
-                        }
-                        break;
-                    case 2:
-                        {
-                            speed[driverID] = 2f;
-                        }
-                        break;
-                }
-                nowList.Clear();    
-                obj.transform.position += vec/speed[driverID];
-                dir = ((routesPosition[driverID][i] + mapObject.transform.localPosition) - obj.transform.position ).normalized;
-                yield return null;
+                case 1:
+                    {
+                        speed[driverID] = 1f;
+                    }
+                    break;
+                case 2:
+                    {
+                        speed[driverID] = 2f;
+                    }
+                    break;
             }
-            obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
+            Coroutine coroutine = StartCoroutine(Drive(obj, (routesPosition[driverID][i] + mapObject.transform.localPosition), speed[driverID]));
+            yield return coroutine;
+            
+            //    while (lastDirction==dir)
+            //    {
+            //        lastDirction = dir;
+            //        Vector3 vec = lastDirction*Time.deltaTime;
+            //        if (dir.x == 1)
+            //        {
+            //            obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+            //        }
+            //        if (dir.x == -1)
+            //        {
+            //            obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            //        }
+            //        if (dir.y == 1)
+            //        {
+            //            obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+            //        }
+            //        if (dir.y == -1)
+            //        { 
+            //            obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+            //        }
+            //        switch (deliveryProcess[driverID])
+            //        {
+            //            case 0:
+            //                {
+            //                    speed[driverID] = 0.5f;
+            //                }
+            //            break;
+            //            case 1:
+            //                {
+            //                    speed[driverID] = 1f;
+            //                }
+            //                break;
+            //            case 2:
+            //                {
+            //                    speed[driverID] = 2f;
+            //                }
+            //                break;
+            //        }
+            //        nowList.Clear();    
+            //        obj.transform.position += vec/speed[driverID];
+            //        dir = ((routesPosition[driverID][i] + mapObject.transform.localPosition) - obj.transform.position ).normalized;
+            //        yield return null;
+            //    }
+            //    obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
+            nowList.Clear();
         }
-        DeliveryCompleted(destination[driverID],driverID);
+            DeliveryCompleted(destination[driverID],driverID);
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverID].Count-2; i >=0; i--)
         {
@@ -367,10 +389,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
-                Debug.Log(ColorChanger("移動しています", "red"));
                 lastDirction = dirction;
                 Vector3 vec = lastDirction * Time.deltaTime;
-                Debug.Log(ColorChanger("加算値は" + vec / speed[driverID] + "です", "red"));
                 obj.transform.position += vec / speed[driverID];
                 dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                 yield return null;
