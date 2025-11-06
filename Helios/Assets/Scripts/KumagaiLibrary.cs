@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -85,7 +87,7 @@ namespace KumagaiLibrary
                         }
                         break;
                 }
-
+                Debug.Log("ƒCƒxƒ“ƒg‚ðÝ’è‚µ‚Ü‚µ‚½");
                 entry.callback.AddListener((data) => { e(); });
                 trigger.triggers.Add(entry);
             }
@@ -109,6 +111,46 @@ namespace KumagaiLibrary
                 return datas;
             }
         }
+
+        public class ObjectManager
+        {
+            public static IEnumerator Drive(GameObject moveObj, Vector3 endPosition, float time)
+            {
+                Vector3 dir = ((endPosition) - moveObj.transform.position).normalized;
+                Vector3 lastDirction = dir;
+                Debug.Log("ˆÚ“®‚µ‚Ä‚¢‚Ü‚·(KumagaiLibrary)");
+                while (lastDirction == dir)
+                {
+                    lastDirction = dir;
+                    Vector3 vec = lastDirction * Time.deltaTime;
+                    if (dir.x == 1)
+                    {
+                        moveObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    }
+                    if (dir.x == -1)
+                    {
+                        moveObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+                    if (dir.y == 1)
+                    {
+                        moveObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    }
+                    if (dir.y == -1)
+                    {
+                        moveObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    }
+
+                    moveObj.transform.position += vec / time;
+                    dir = ((endPosition) - moveObj.transform.position).normalized;
+                    yield return null;
+                }
+               
+                moveObj.transform.position = endPosition;
+            }
+         
+        }
+
+     
     }
 
     namespace Dictionary
