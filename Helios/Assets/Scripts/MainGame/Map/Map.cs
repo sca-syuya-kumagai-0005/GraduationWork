@@ -77,15 +77,15 @@ public class Map : MonoBehaviour
         }
 
       
-        for(int i=0;i<MAPHEIGHT_MAX;i++)
-        {
-            string str = "";
-            for (int j = 0; j<MAPWIDTH_MAX; j++)
-            {
-                str += mapDatas[i][j].objectID.ToString();
-            }
-            Debug.Log(str);
-        }
+        //for(int i=0;i<MAPHEIGHT_MAX;i++)
+        //{
+        //    string str = "";
+        //    for (int j = 0; j<MAPWIDTH_MAX; j++)
+        //    {
+        //        str += mapDatas[i][j].objectID.ToString();
+        //    }
+        //    Debug.Log(str);
+        //}
         this.gameObject.transform.position = new Vector3(-30, 50, 0) ;//カメラ(マップ)の初期位置
     }
     void MapCreate(List<string[]> data,int mapNumber,GameObject address)//マップの生成。mapDatasのobjectIDとpositionIDもここで設定
@@ -184,6 +184,7 @@ public class Map : MonoBehaviour
                 md.objectID = int.Parse(strs[0]);
                 md.widthPositionID = j+width;
                 md.heightPositionID =i+height;
+                
                
               
                 GameObject obj = Instantiate(objectSpace,new Vector3(j+width,-(i+height),0),Quaternion.identity,address.transform);
@@ -192,6 +193,7 @@ public class Map : MonoBehaviour
                 if(strs.Length>1) instObj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, float.Parse(strs[1])));
                 instObj.transform.parent.name = md.objectID.ToString()+underbar+md.widthPositionID.ToString()+underbar+md.heightPositionID.ToString();
                 md.name = instObj.transform.parent.name;
+                md.obj = instObj.transform.parent.gameObject;
                 mapDatas[i + height][j + width] = md;
                
             }
