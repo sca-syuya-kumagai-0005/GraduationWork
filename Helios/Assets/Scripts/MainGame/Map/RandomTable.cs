@@ -2,21 +2,22 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-[ExecuteAlways]
-public class RandomMover : MonoBehaviour
+public class RandomTable : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public static List<string> table{ get; private set; }//ランダム挙動のテーブル
+    private List<string> table=new List<string>();//ランダム挙動のテーブル
+    public List<string> Table { get { return table;} }
     [SerializeField]List<string> tableReadOnly = new List<string>();//テーブル確認用の変数
     enum Command
     {
-        STRAIGHT,
+        TOP,
         RIGHT,
         LEFT,
-        BACK,
+        //BOTTOM,
         SIZE,
     }
     const int TABLE_SIZE = 1000;
+   
 
     private void Start()
     {
