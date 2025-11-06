@@ -2,10 +2,8 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
 using static Map;
 using static KumagaiLibrary.String;
-using Unity.VisualScripting;
 
 
 
@@ -22,14 +20,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     List<int[]>[] routes = new List<int[]>[driverCount];
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
+    bool[] isConfison = new bool[driverCount];  
 
     [SerializeField] GameObject move;
     [SerializeField] GameObject arrows;
 
     [SerializeField]GameObject[] driver;
     [SerializeField]float[] speed;
-    private float interfersenceSpeed;
-    public float InterfersenceSpeed { set {  interfersenceSpeed = value; } }
     LineRenderer[] line = new LineRenderer[driverCount];
     [SerializeField] float distance;
     int[] coroutineNumber=new int[driverCount];
@@ -563,5 +560,9 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     {
         tmpDestination=obj;
         tmpDestinationSetting= true;
+    }
+
+    public void ConfisonSet()
+    {
     }
 }
