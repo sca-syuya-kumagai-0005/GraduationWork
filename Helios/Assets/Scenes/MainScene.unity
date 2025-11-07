@@ -2081,6 +2081,7 @@ GameObject:
   - component: {fileID: 478194908}
   - component: {fileID: 478194910}
   - component: {fileID: 478194911}
+  - component: {fileID: 478194912}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -2176,6 +2177,20 @@ MonoBehaviour:
   addPosition: {x: 0, y: 0, z: 0}
   horizontal: 0
   vertical: 0
+--- !u!114 &478194912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478194907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5783d3a5406996043985ecce7a47a357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 478194908}
+  shortestPathStrings: []
 --- !u!1 &483473866
 GameObject:
   m_ObjectHideFlags: 0
@@ -4259,7 +4274,7 @@ GameObject:
   - component: {fileID: 856304277}
   - component: {fileID: 856304276}
   m_Layer: 5
-  m_Name: SinnerList
+  m_Name: SinnerList1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5189,6 +5204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapObject: {fileID: 478194907}
+  isConfison: 00000000
   move: {fileID: 2582001399943237785, guid: 2f73aa1d9ec41ab499fa87909c308cf8, type: 3}
   arrows: {fileID: 79045306}
   driver:
@@ -7998,9 +8014,9 @@ RectTransform:
   - {fileID: 753695252}
   - {fileID: 776066149}
   - {fileID: 1703900309}
+  - {fileID: 1360928150}
   - {fileID: 1289744390}
   - {fileID: 1420060456}
-  - {fileID: 1360928150}
   - {fileID: 1273637501}
   m_Father: {fileID: 1287625516}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
