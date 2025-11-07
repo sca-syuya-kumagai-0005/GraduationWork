@@ -30,6 +30,8 @@ public class Map : MonoBehaviour
         public int objectID;
         public int widthPositionID;
         public int heightPositionID;
+        public int shortestPath;//Å’ZŒo˜H’Tõ‚É•K—v‚È•Ï”
+        public bool shortestPathSearched;//Å’ZŒo˜H’Tõ‚Å–K‚ê‚½‚©‚Ç‚¤‚©
         public string name;
         public GameObject obj;
     }
@@ -194,6 +196,8 @@ public class Map : MonoBehaviour
                 instObj.transform.parent.name = md.objectID.ToString()+underbar+md.widthPositionID.ToString()+underbar+md.heightPositionID.ToString();
                 md.name = instObj.transform.parent.name;
                 md.obj = instObj.transform.parent.gameObject;
+                md.shortestPath = int.MaxValue;
+                md.shortestPathSearched=false;
                 mapDatas[i + height][j + width] = md;
                
             }

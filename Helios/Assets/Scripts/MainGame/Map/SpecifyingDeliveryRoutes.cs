@@ -17,6 +17,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     const int driverCount = 4;//トラックの数
     [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
     Map map;
+    ShortestPathSearch shortestPathSearch;
     List<int>[] routeObjectsID=new List<int>[driverCount];//それぞれのトラックが通るオブジェクトを順番通りに格納
     List<int[]>[] routes = new List<int[]>[driverCount];
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
@@ -88,9 +89,11 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     void Start()
     {
         table = GameObject.Find("RandomTable").gameObject.GetComponent<RandomTable>();
+       
         memoring = false;
         map = mapObject.GetComponent<Map>();
-        writeButtonRenderer =writeButton.GetComponent<Image>();
+        shortestPathSearch = mapObject.GetComponent<ShortestPathSearch>();
+       writeButtonRenderer =writeButton.GetComponent<Image>();
         for(int i=0;i<driverCount;i++)
         {
             driverSetButtonRenderer[i] = driverSetButton[i].GetComponent<SpriteRenderer>();
@@ -285,13 +288,17 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         return Mathf.Abs(list[list.Count - 1][0] - positionID[0]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1])!= Mathf.Abs(list[list.Count - 1][0] - positionID[0]);
     }
 
+
+
     private IEnumerator DriverMove(int driverID)
     {
         GameObject obj = driver[driverID];
+        bool lastIsConfison=false;
         List<MapData> lastList = new List<MapData>();
         List<MapData> nowList = new List<MapData>();
         MapData md = map.MapDatas[routes[driverID][1][0]][routes[driverID][1][1]];
         int tableID=0;
+        bool confisonClear=false;
         for (int i=1;i<routesPosition[driverID].Count;i++)
         {
 
@@ -315,8 +322,22 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     }
                     break;
             }
-            
-            Coroutine coroutine=null;
+
+            if (lastIsConfison && !isConfison[driverID]&&!confisonClear)
+            {
+                // ランダム挙動の最後の位置から最短ルートを取得
+                //Vector3 currentPos = obj.transform.position - map.transform.localPosition;
+                int startWidth = md.widthPositionID;
+                int startHeight = md.heightPositionID;
+                int goalWidth = routes[driverID][routes[driverID].Count - 1][1];
+                int goalHeight = routes[driverID][routes[driverID].Count - 1][0];
+                line[driverID].positionCount=0;
+                List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight);
+                routesPosition[driverID]=shortestPositions;
+                StartCoroutine(DriverMove(driverID));
+                yield break;
+
+            }
             if (!isConfison[driverID])
             {
                 if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
@@ -328,7 +349,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1] + 1]);
                     nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1] - 1]);
                     nowList.RemoveAll(x => lastList.Contains(x));
-                    Debug.Log(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
                     for (int c = 0; c < nowList.Count; c++)
                     {
                         deliveryData[driverID].Add(nowList[c].objectID);
@@ -372,8 +392,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             {
                 bool dirSetted=false;
                 MapData randomMd=new MapData();
+                lastIsConfison = isConfison[driverID];
                 while(!dirSetted)
                 {
+                    
                     string[] randomData={"TOP","RIGHT","LEFT","BOTTOM" };
                     string dirction = randomData[Random.Range(0,randomData.Length)];
                     switch (dirction)
@@ -438,7 +460,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     lastList = nowList;
                     nowList = new List<MapData>();
                 }
-                float elapsed = 0f;
+                //float elapsed = 0f;
 
                 Vector3 dir = ((endPos+mapObject.transform.localPosition) - obj.transform.position).normalized;
                 Vector3 lastDirction = dir;
@@ -468,81 +490,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 }
                 obj.transform.position=endPos+mapObject.transform.localPosition;
                 i--;
-                //while (elapsed < speed[driverID])
-                //{
-                //    lastDirction = dir;
-                //    Vector3 vec = lastDirction * Time.deltaTime;
-                //    if (dir.x == 1)
-                //    {
-                //        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
-                //    }
-                //    if (dir.x == -1)
-                //    {
-                //        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                //    }
-                //    if (dir.y == 1)
-                //    {
-                //        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
-                //    }
-                //    if (dir.y == -1)
-                //    {
-                //        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
-                //    }
-                //    float t = elapsed / speed[driverID]; // 時間に応じて0→1へ
-                //    obj.transform.position = Vector3.Lerp(obj.transform.position,endPos+mapObject.transform.localPosition, t);
-                //    elapsed += Time.deltaTime;
-                //    yield return null;
-                //}
-                //Vector3 mapPos=mapObject.transform.localPosition;
-                //coroutine = StartCoroutine(Drive(obj, endPos + mapObject.transform.localPosition, speed[driverID]));
-                //Debug.Log("Coroutineを呼び終わりました");
-            }
-            
-            //    while (lastDirction==dir)
-            //    {
-            //        lastDirction = dir;
-            //        Vector3 vec = lastDirction*Time.deltaTime;
-            //        if (dir.x == 1)
-            //        {
-            //            obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
-            //        }
-            //        if (dir.x == -1)
-            //        {
-            //            obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-            //        }
-            //        if (dir.y == 1)
-            //        {
-            //            obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
-            //        }
-            //        if (dir.y == -1)
-            //        { 
-            //            obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
-            //        }
-            //        switch (deliveryProcess[driverID])
-            //        {
-            //            case 0:
-            //                {
-            //                    speed[driverID] = 0.5f;
-            //                }
-            //            break;
-            //            case 1:
-            //                {
-            //                    speed[driverID] = 1f;
-            //                }
-            //                break;
-            //            case 2:
-            //                {
-            //                    speed[driverID] = 2f;
-            //                }
-            //                break;
-            //        }
-            //        nowList.Clear();    
-            //        obj.transform.position += vec/speed[driverID];
-            //        dir = ((routesPosition[driverID][i] + mapObject.transform.localPosition) - obj.transform.position ).normalized;
-            //        yield return null;
-            //    }
-            //    obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
             nowList.Clear();
+            }
         }
             DeliveryCompleted(destination[driverID],driverID);
         yield return new WaitForSeconds(2f);
@@ -747,5 +696,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
     public void ConfisonSet()
     {
+
     }
 }
