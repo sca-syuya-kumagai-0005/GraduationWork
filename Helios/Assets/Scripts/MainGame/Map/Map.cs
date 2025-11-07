@@ -19,7 +19,7 @@ public class Map : MonoBehaviour
     private const int MAPHEIGHT_MIN=21;
     private const int MAPWIDTH_MAX = MAPWIDTH_MIN * 3;
     private const int MAPHEIGHT_MAX = MAPHEIGHT_MIN * 4;
-    private int[] plotNumber = new int[ADDRES_MAX + OUTER] { 10, 9, 11, 8, 1, 5, 4, 0, 2, 7, 3, 6 };
+    private int[] plotNumber = new int[ADDRES_MAX + OUTER] { 10, 9, 11, 8, 1, 5, 4, 0, 2, 7, 3, 6 };//左上から、右へ、その後左端からまた右へのマップ番号
     private GameObject[] plot = new GameObject[ADDRES_MAX];
    
 
@@ -58,6 +58,9 @@ public class Map : MonoBehaviour
         SHIRINE = 17,
         SCHOOL = 18,
         AQUARIUM = 19,
+        SEA = 20,
+        ZOO = 21,
+        PARK =22,
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -73,8 +76,8 @@ public class Map : MonoBehaviour
             GameObject address = new GameObject();
             address.transform.parent = transform;
             address.name = "Address" + underbar + plotNumber[i];
-            if(plotNumber[i]!=0)data = Read(mapCsv[1]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
-            else data = Read(mapCsv[0]);
+            if(plotNumber[i]<10)data = Read(mapCsv[plotNumber[i]]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
+            else data = Read(mapCsv[10]);
             MapCreate(data, plotNumber[i], address);
         }
 
@@ -186,9 +189,9 @@ public class Map : MonoBehaviour
                 md.objectID = int.Parse(strs[0]);
                 md.widthPositionID = j+width;
                 md.heightPositionID =i+height;
-                
-               
-              
+
+
+                Debug.Log("error" + data[i][j]);
                 GameObject obj = Instantiate(objectSpace,new Vector3(j+width,-(i+height),0),Quaternion.identity,address.transform);
                 GameObject instObj = mapObjects[(int.Parse(strs[0]))];
                 instObj = Instantiate(instObj, obj.transform.position, Quaternion.identity, obj.transform);
