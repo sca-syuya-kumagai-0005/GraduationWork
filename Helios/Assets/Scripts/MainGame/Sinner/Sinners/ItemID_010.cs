@@ -26,6 +26,5 @@ public class ItemID_010 : Sinner
         base.AbnormalPhenomenon();
 
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
-        //_Ğ‚ªÀ‘•‚³‚ê‚½‚ç‘‚­
     }
 }
