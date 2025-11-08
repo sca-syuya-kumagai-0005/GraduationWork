@@ -8,15 +8,19 @@ public class SaveDataManager : MonoBehaviour
     {
         DAY=0,
         HOUSEDSINNER,
+        MEMORY,
         MAX
     }
     private string[] data = new string[(int)DataAddress.MAX];
     private int days = 1;
-    const int housei = 48;
+    const int adjustment = 48;
     public int Days {  get { return days; } set { days = value; } }
     private const int maxSinners = 31;
     private bool[] housedSinners = new bool[maxSinners];
     public bool[] HousedSinner { get { return housedSinners; }set { housedSinners = value; } }
+
+    private bool[] sinnerMemory = new bool[maxSinners];
+    public bool[] Memory { get { return sinnerMemory; } set { sinnerMemory = value; } }
     private void Start()
     {
         Load();
@@ -37,8 +41,11 @@ public class SaveDataManager : MonoBehaviour
         StreamWriter streamWriter = new StreamWriter("./Assets/SaveData.txt", false);
         data[(int)DataAddress.DAY] = days.ToString();
         data[(int)DataAddress.HOUSEDSINNER] = null;
-        for (int i = 0; i < housedSinners.Length; i++) 
+        for (int i = 0; i < housedSinners.Length; i++)
+        {
             data[(int)DataAddress.HOUSEDSINNER] += Convert.ToInt32(housedSinners[i]);
+            data[(int)DataAddress.MEMORY] += Convert.ToInt32(sinnerMemory[i]);
+        }
         string str = string.Join("\n", data);
         streamWriter.WriteLine(str);
         streamWriter.Flush();
@@ -58,10 +65,11 @@ public class SaveDataManager : MonoBehaviour
         streamReader.Close();
         days = int.Parse(data[(int)DataAddress.DAY]);
         string housed = data[(int)DataAddress.HOUSEDSINNER];
+        string memory = data[(int)DataAddress.MEMORY];
         for (int i = 0; i < data[(int)DataAddress.HOUSEDSINNER].Length; i++)
         {
-            housedSinners[i] = Convert.ToBoolean((int)housed[i]-housei);
-        }
-          
+            housedSinners[i] = Convert.ToBoolean(housed[i] - adjustment);
+            sinnerMemory[i] = Convert.ToBoolean(memory[i] - adjustment);
+        }     
     }
 }
