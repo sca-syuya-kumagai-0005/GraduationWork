@@ -22,6 +22,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
     [SerializeField] bool[] isConfison = new bool[driverCount];
+    public bool[] IsConfison { get { return isConfison; } } 
 
     [SerializeField] GameObject move;
     [SerializeField] GameObject arrows;

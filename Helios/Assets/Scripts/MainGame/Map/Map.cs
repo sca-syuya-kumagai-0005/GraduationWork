@@ -75,7 +75,7 @@ public class Map : MonoBehaviour
             GameObject address = new GameObject();
             address.transform.parent = transform;
             address.name = "Address" + underbar + plotNumber[i];
-            if(plotNumber[i]<10)data = Read(mapCsv[plotNumber[i]]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
+            if(plotNumber[i]==0)data = Read(mapCsv[plotNumber[i]]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
             else data = Read(mapCsv[10]);
             MapCreate(data, plotNumber[i], address);
         }

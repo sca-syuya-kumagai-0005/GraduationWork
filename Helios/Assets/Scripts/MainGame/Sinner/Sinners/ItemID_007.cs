@@ -69,7 +69,12 @@ public class ItemID_007 : Sinner
         for(int i = 0; i < lines; i++)
         {
             if (specifyingDeliveryRoutes.IsDriving[i])
+            {
                 specifyingDeliveryRoutes.SinnerDebuff[i][sinnerName] = true;
+
+            }
+               
+                
         }
     }
 }
