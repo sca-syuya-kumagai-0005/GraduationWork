@@ -11,7 +11,7 @@ public class SaveDataManager : MonoBehaviour
         MAX
     }
     private string[] data = new string[(int)DataAddress.MAX];
-    private int days = 21;
+    private int days = 1;
     const int housei = 48;
     public int Days {  get { return days; } set { days = value; } }
     private const int maxSinners = 31;
@@ -19,8 +19,13 @@ public class SaveDataManager : MonoBehaviour
     public bool[] HousedSinner { get { return housedSinners; }set { housedSinners = value; } }
     private void Start()
     {
-        //Save();
         Load();
+    }
+
+    private void Update()
+    {
+        //if(Input.GetMouseButtonDown(2))
+        //Save();
     }
     public void Save()
     {

@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1536
     height: 772.8
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Project
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -326,7 +326,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Scripts/MainGame/Sinner/Sinners
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -336,16 +336,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 62
   m_LastFolders:
-  - Assets
+  - Assets/Scripts/MainGame/Sinner/Sinners
   m_LastFoldersGridSize: 62
-  m_LastProjectPath: "C:\\Users\\student\\Desktop\\\u65B0\u3057\u3044\u30D5\u30A9\u30EB\u30C0\u30FC\\Helios"
+  m_LastProjectPath: "C:\\Users\\shark\\OneDrive\\Desktop\\\u65B0\u3057\u3044\u30D5\u30A9\u30EB\u30C0\u30FC\\Helios"
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 44130100
-    m_LastClickedID: 70468
-    m_ExpandedIDs: 
+    scrollPos: {x: 0, y: 170.80002}
+    m_SelectedIDs: 781c0100
+    m_LastClickedID: 72824
+    m_ExpandedIDs: 00000000c0c70000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -374,7 +374,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 
+    m_ExpandedIDs: 00000000c0c70000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300003807010032bf000034bf0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -522,7 +522,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 4033d0ff008ed0ff9007ffff700ffffff4ffffff96140100
+      m_ExpandedIDs: 1acef6ffc605ffff460affff0c180100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1294,7 +1294,7 @@ MonoBehaviour:
     x: 281.6
     y: 79.200005
     width: 950.80005
-    height: 547.6
+    height: 479.6
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1349,22 +1349,22 @@ MonoBehaviour:
       x: 0
       y: 21
       width: 950.80005
-      height: 526.6
-    m_Scale: {x: 0.6094907, y: 0.6094907}
-    m_Translation: {x: 475.40002, y: 263.3}
+      height: 458.6
+    m_Scale: {x: 0.53078705, y: 0.53078705}
+    m_Translation: {x: 475.40002, y: 229.3}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -779.99554
+      x: -895.6511
       y: -432
-      width: 1559.9911
+      width: 1791.3022
       height: 864
     m_MinimalGUI: 1
-  m_defaultScale: 0.6094907
-  m_LastWindowPixelSize: {x: 950.80005, y: 547.6}
+  m_defaultScale: 0.53078705
+  m_LastWindowPixelSize: {x: 950.80005, y: 479.6}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 00000000000000000000
@@ -1393,9 +1393,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 652.8
+    y: 584.8
     width: 1233.4
-    height: 213.20001
+    height: 185.19998
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0

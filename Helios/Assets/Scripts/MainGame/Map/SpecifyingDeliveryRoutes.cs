@@ -76,7 +76,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     bool memoring;
 
     List<int>[] deliveryData=new List<int>[driverCount];//シナー側で使うデータ。配達の時に通ったオブジェクトとそれに隣接するオブジェクトのID
-    [SerializeField] List<string> delivery = new List<string>();
+    [SerializeField] List<int> delivery = new List<int>();
+    public List<int>[] GetDelevery {  get { return deliveryData; } }    
 
     [SerializeField]Dictionary<string, bool>[] sinnerDebuff=new Dictionary<string, bool>[driverCount];
     public Dictionary<string, bool>[] SinnerDebuff { get { return sinnerDebuff; }set { sinnerDebuff = value; } }
@@ -306,6 +307,23 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             //Vector3 lastDirction = dir;
             switch (deliveryProcess[driverID])
             {
+                // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                
+               
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]+1][routes[driverID][i][1]]);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]-1][routes[driverID][i][1]]);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]+1]);
+                nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]-1]);
+                nowList.RemoveAll(x => lastList.Contains(x));
+                for(int c=0;c<nowList.Count;c++)
+                {
+                    deliveryData[driverID].Add(nowList[c].objectID);
+                    //delivery.Add(nowList[c].objectID);  
+                }
+                lastList = nowList;
+                nowList = new List<MapData>();
+                //Debug.Log(ColorChanger(map.MapDatas))
                 case 0:
                     {
                         speed[driverID] = 0.5f;
