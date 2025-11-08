@@ -67,7 +67,7 @@ public class MapObjectRequest : MonoBehaviour
         {
             case MapObjectID.NULL:
                 {
-                    sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
+                    //sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
                 }
                 break;
             case MapObjectID.COMPANY:
@@ -99,7 +99,6 @@ public class MapObjectRequest : MonoBehaviour
                 {
                     if (haveSinner)
                     {
-                      
                         sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
                     }
                     

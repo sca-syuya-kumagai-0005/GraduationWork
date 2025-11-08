@@ -22,6 +22,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
     [SerializeField] bool[] isConfison = new bool[driverCount];
+    public bool[] IsConfison { get { return isConfison; } } 
 
     [SerializeField] GameObject move;
     [SerializeField] GameObject arrows;
@@ -393,11 +394,39 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 bool dirSetted = false;
                 MapData randomMd = new MapData();
                 lastIsConfison = isConfison[driverID];
+                string lastDir = "";
+                string dirction = "";
                 while (!dirSetted)
                 {
-
-                    string[] randomData = { "TOP", "RIGHT", "LEFT", "BOTTOM" };
-                    string dirction = randomData[Random.Range(0, randomData.Length)];
+                    string[] addDir = new string[3];
+                    if (lastDir == "TOP")
+                    {
+                        addDir[0] = "TOP";
+                        addDir[1] = "RIGHT";
+                        addDir[2] = "LEFT";
+                    }
+                    else if (lastDir == "RIGHT")
+                    {
+                        addDir[0] = "TOP";
+                        addDir[1] = "RIGHT";
+                        addDir[2] = "BOTTOM";
+                    }
+                    else if (lastDir == "LEFT")
+                    {
+                        addDir[0] = "TOP";
+                        addDir[1] = "LEFT";
+                        addDir[2] = "BOTTOM";
+                    }
+                    else
+                    {
+                        addDir[0] = "BOTTOM";
+                        addDir[1] = "RIGHT";
+                        addDir[2] = "LEFT";
+                    }
+                    string[] randomData = { "TOP","RIGHT","LEFT","BOTTOM",addDir[0], addDir[0], addDir[0], addDir[0], addDir[0], addDir[0], addDir[1], addDir[1], addDir[1], addDir[1], addDir[1], addDir[1],addDir[2], addDir[2], addDir[2], addDir[2], addDir[2], addDir[2] };
+                    
+                    
+                    dirction = randomData[Random.Range(0, randomData.Length)];
                     switch (dirction)
                     {
                         case "TOP":
@@ -438,8 +467,9 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                             }
 
                     }
-
+                    yield return null;
                 }
+                lastDir = dirction;
 
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
