@@ -2,10 +2,9 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
 using static Map;
 using static KumagaiLibrary.String;
-using Unity.VisualScripting;
+using static KumagaiLibrary.Unity.ObjectManager;
 
 
 
@@ -18,18 +17,18 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     const int driverCount = 4;//トラックの数
     [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
     Map map;
+    ShortestPathSearch shortestPathSearch;
     List<int>[] routeObjectsID=new List<int>[driverCount];//それぞれのトラックが通るオブジェクトを順番通りに格納
     List<int[]>[] routes = new List<int[]>[driverCount];
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
+    [SerializeField]bool[] isConfison = new bool[driverCount];  
 
     [SerializeField] GameObject move;
     [SerializeField] GameObject arrows;
 
     [SerializeField]GameObject[] driver;
     [SerializeField]float[] speed;
-    private float interfersenceSpeed;
-    public float InterfersenceSpeed { set {  interfersenceSpeed = value; } }
     LineRenderer[] line = new LineRenderer[driverCount];
     [SerializeField] float distance;
     int[] coroutineNumber=new int[driverCount];
@@ -85,13 +84,17 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
     [SerializeField] private GameObject destinationPin;
     //[SerializeField] string[] str;
+    RandomTable table;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        table = GameObject.Find("RandomTable").gameObject.GetComponent<RandomTable>();
+       
         memoring = false;
         map = mapObject.GetComponent<Map>();
-        writeButtonRenderer =writeButton.GetComponent<Image>();
+        shortestPathSearch = mapObject.GetComponent<ShortestPathSearch>();
+       writeButtonRenderer =writeButton.GetComponent<Image>();
         for(int i=0;i<driverCount;i++)
         {
             driverSetButtonRenderer[i] = driverSetButton[i].GetComponent<SpriteRenderer>();
@@ -286,17 +289,23 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         return Mathf.Abs(list[list.Count - 1][0] - positionID[0]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1]) <= 1 && Mathf.Abs(list[list.Count - 1][1] - positionID[1])!= Mathf.Abs(list[list.Count - 1][0] - positionID[0]);
     }
 
+
+
     private IEnumerator DriverMove(int driverID)
     {
         GameObject obj = driver[driverID];
+        bool lastIsConfison=false;
         List<MapData> lastList = new List<MapData>();
         List<MapData> nowList = new List<MapData>();
-        
+        MapData md = map.MapDatas[routes[driverID][1][0]][routes[driverID][1][1]];
+        int tableID=0;
+        bool confisonClear=false;
         for (int i=1;i<routesPosition[driverID].Count;i++)
         {
-            Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
-            Vector3 lastDirction = dir;
-            if(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID!=(int)MapObjectID.HOUSE_1)
+
+            // Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
+            //Vector3 lastDirction = dir;
+            switch (deliveryProcess[driverID])
             {
                 // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
                 
@@ -315,55 +324,195 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 lastList = nowList;
                 nowList = new List<MapData>();
                 //Debug.Log(ColorChanger(map.MapDatas))
-            }
-           
-
-            while (lastDirction==dir)
-            {
-                lastDirction = dir;
-                Vector3 vec = lastDirction*Time.deltaTime;
-                if (dir.x == 1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
-                }
-                if (dir.x == -1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                }
-                if (dir.y == 1)
-                {
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
-                }
-                if (dir.y == -1)
-                { 
-                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
-                }
-                switch (deliveryProcess[driverID])
-                {
-                    case 0:
-                        {
-                            speed[driverID] = 0.5f;
-                        }
+                case 0:
+                    {
+                        speed[driverID] = 0.5f;
+                    }
                     break;
-                    case 1:
-                        {
-                            speed[driverID] = 1f;
-                        }
-                        break;
-                    case 2:
-                        {
-                            speed[driverID] = 2f;
-                        }
-                        break;
-                }
-                nowList.Clear();    
-                obj.transform.position += vec/speed[driverID];
-                dir = ((routesPosition[driverID][i] + mapObject.transform.localPosition) - obj.transform.position ).normalized;
-                yield return null;
+                case 1:
+                    {
+                        speed[driverID] = 1f;
+                    }
+                    break;
+                case 2:
+                    {
+                        speed[driverID] = 2f;
+                    }
+                    break;
             }
-            obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
+
+            if (lastIsConfison && !isConfison[driverID]&&!confisonClear)
+            {
+                // ランダム挙動の最後の位置から最短ルートを取得
+                //Vector3 currentPos = obj.transform.position - map.transform.localPosition;
+                int startWidth = md.widthPositionID;
+                int startHeight = md.heightPositionID;
+                int goalWidth = routes[driverID][routes[driverID].Count - 1][1];
+                int goalHeight = routes[driverID][routes[driverID].Count - 1][0];
+                line[driverID].positionCount=0;
+                List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight);
+                routesPosition[driverID]=shortestPositions;
+                
+                StartCoroutine(DriverMove(driverID,shortestPositions));
+                yield break;
+
+            }
+            if (!isConfison[driverID])
+            {
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
+                {
+                    // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0] + 1][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0] - 1][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1] + 1]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1] - 1]);
+                    nowList.RemoveAll(x => lastList.Contains(x));
+                    for (int c = 0; c < nowList.Count; c++)
+                    {
+                        deliveryData[driverID].Add(nowList[c].objectID);
+                        delivery.Add(nowList[c].name);
+                    }
+                    lastList = nowList;
+                    nowList = new List<MapData>();
+                    //Debug.Log(ColorChanger(map.MapDatas))
+                }
+
+                Vector3 dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                Vector3 lastDirction = dir;
+                while (lastDirction == dir)
+                {
+                    lastDirction = dir;
+                    Vector3 vec = lastDirction * Time.deltaTime;
+                    if (dir.x == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    }
+                    if (dir.x == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+                    if (dir.y == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    }
+                    if (dir.y == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    }
+                    obj.transform.position += vec / speed[driverID];
+                    dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                    yield return null;
+                }
+                obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
+                md = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]];
+            }
+            else
+            {
+                bool dirSetted=false;
+                MapData randomMd=new MapData();
+                lastIsConfison = isConfison[driverID];
+                while(!dirSetted)
+                {
+                    
+                    string[] randomData={"TOP","RIGHT","LEFT","BOTTOM" };
+                    string dirction = randomData[Random.Range(0,randomData.Length)];
+                    switch (dirction)
+                    {
+                        case "TOP":
+                            {
+                                if (map.MapDatas[md.heightPositionID - 1][md.widthPositionID].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID - 1][md.widthPositionID].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID - 1][md.widthPositionID];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+                        case "RIGHT":
+                            {
+                                if (map.MapDatas[md.heightPositionID][md.widthPositionID+1].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID][md.widthPositionID+1].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID][md.widthPositionID+1];
+                                    dirSetted =true;
+                                }
+                                    break;
+                            }
+                            case"LEFT":
+                            {
+                                if (map.MapDatas[md.heightPositionID][md.widthPositionID-1].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID][md.widthPositionID-1].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID][md.widthPositionID - 1];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+                        case "BOTTOM":
+                            {
+                                if (map.MapDatas[md.heightPositionID + 1][md.widthPositionID].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID + 1][md.widthPositionID].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID+1][md.widthPositionID];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+
+                    }
+                   
+                }
+                
+                md = randomMd;
+                string[] objectInfo = md.name.Split("_");
+                Vector3 endPos = md.obj.transform.localPosition;
+                if(md.objectID!=(int)MapObjectID.HOUSE_1)
+                {
+                    nowList.Add(map.MapDatas[md.heightPositionID]  [md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID+1][md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID-1][md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID]  [md.widthPositionID+1]);
+                    nowList.Add(map.MapDatas[md.heightPositionID]  [md.widthPositionID-1]);
+                    nowList.RemoveAll(x=>lastList.Contains(x));
+                    for (int c = 0; c < nowList.Count; c++)
+                    {
+                        deliveryData[driverID].Add(nowList[c].objectID);
+                        delivery.Add(nowList[c].name);
+                    }
+                    lastList = nowList;
+                    nowList = new List<MapData>();
+                }
+                //float elapsed = 0f;
+
+                Vector3 dir = ((endPos+mapObject.transform.localPosition) - obj.transform.position).normalized;
+                Vector3 lastDirction = dir;
+                while (lastDirction == dir)
+                {
+                    lastDirction = dir;
+                    Vector3 vec = lastDirction * Time.deltaTime;
+                    if (dir.x == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    }
+                    if (dir.x == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+                    if (dir.y == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    }
+                    if (dir.y == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    }
+                    obj.transform.position += vec / speed[driverID];
+                    dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
+                    yield return null;
+                }
+                obj.transform.position=endPos+mapObject.transform.localPosition;
+                i--;
+            nowList.Clear();
+            }
         }
-        DeliveryCompleted(destination[driverID],driverID);
+            DeliveryCompleted(destination[driverID],driverID);
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverID].Count-2; i >=0; i--)
         {
@@ -371,10 +520,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             Vector3 lastDirction = dirction;
             while (lastDirction==dirction)
             {
-                Debug.Log(ColorChanger("移動しています", "red"));
                 lastDirction = dirction;
                 Vector3 vec = lastDirction * Time.deltaTime;
-                Debug.Log(ColorChanger("加算値は" + vec / speed[driverID] + "です", "red"));
                 obj.transform.position += vec / speed[driverID];
                 dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                 yield return null;
@@ -398,6 +545,422 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         yield return null;
 
     }
+
+    private IEnumerator DriverMove(int driverID,List<Vector3> positionID)
+    {
+        GameObject obj = driver[driverID];
+        bool lastIsConfison = false;
+        List<MapData> lastList = new List<MapData>();
+        List<MapData> nowList = new List<MapData>();
+        MapData md = map.MapDatas[routes[driverID][1][0]][routes[driverID][1][1]];
+        int tableID = 0;
+        bool confisonClear = false;
+        for (int i = 1; i < routesPosition[driverID].Count; i++)
+        {
+
+            // Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
+            //Vector3 lastDirction = dir;
+            switch (deliveryProcess[driverID])
+            {
+                case 0:
+                    {
+                        speed[driverID] = 0.5f;
+                    }
+                    break;
+                case 1:
+                    {
+                        speed[driverID] = 1f;
+                    }
+                    break;
+                case 2:
+                    {
+                        speed[driverID] = 2f;
+                    }
+                    break;
+            }
+
+            if (lastIsConfison && !isConfison[driverID] && !confisonClear)
+            {
+                // ランダム挙動の最後の位置から最短ルートを取得
+                //Vector3 currentPos = obj.transform.position - map.transform.localPosition;
+                int startWidth = md.widthPositionID;
+                int startHeight = md.heightPositionID;
+                int goalWidth = routes[driverID][routes[driverID].Count - 1][1];
+                int goalHeight = routes[driverID][routes[driverID].Count - 1][0];
+                line[driverID].positionCount = 0;
+                List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight);
+                routesPosition[driverID] = shortestPositions;
+                StartCoroutine(DriverMove(driverID));
+                yield break;
+
+            }
+            if (!isConfison[driverID])
+            {
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
+                {
+                    // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0] + 1][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0] - 1][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1] + 1]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1] - 1]);
+                    nowList.RemoveAll(x => lastList.Contains(x));
+                    for (int c = 0; c < nowList.Count; c++)
+                    {
+                        deliveryData[driverID].Add(nowList[c].objectID);
+                        delivery.Add(nowList[c].name);
+                    }
+                    lastList = nowList;
+                    nowList = new List<MapData>();
+                    //Debug.Log(ColorChanger(map.MapDatas))
+                }
+
+                Vector3 dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                Vector3 lastDirction = dir;
+                while (lastDirction == dir)
+                {
+                    lastDirction = dir;
+                    Vector3 vec = lastDirction * Time.deltaTime;
+                    if (dir.x == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    }
+                    if (dir.x == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+                    if (dir.y == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    }
+                    if (dir.y == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    }
+                    obj.transform.position += vec / speed[driverID];
+                    dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                    yield return null;
+                }
+                obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
+                md = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]];
+            }
+            else
+            {
+                bool dirSetted = false;
+                MapData randomMd = new MapData();
+                lastIsConfison = isConfison[driverID];
+                while (!dirSetted)
+                {
+
+                    string[] randomData = { "TOP", "RIGHT", "LEFT", "BOTTOM" };
+                    string dirction = randomData[Random.Range(0, randomData.Length)];
+                    switch (dirction)
+                    {
+                        case "TOP":
+                            {
+                                if (map.MapDatas[md.heightPositionID - 1][md.widthPositionID].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID - 1][md.widthPositionID].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID - 1][md.widthPositionID];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+                        case "RIGHT":
+                            {
+                                if (map.MapDatas[md.heightPositionID][md.widthPositionID + 1].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID][md.widthPositionID + 1].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID][md.widthPositionID + 1];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+                        case "LEFT":
+                            {
+                                if (map.MapDatas[md.heightPositionID][md.widthPositionID - 1].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID][md.widthPositionID - 1].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID][md.widthPositionID - 1];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+                        case "BOTTOM":
+                            {
+                                if (map.MapDatas[md.heightPositionID + 1][md.widthPositionID].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID + 1][md.widthPositionID].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID + 1][md.widthPositionID];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+
+                    }
+
+                }
+
+                md = randomMd;
+                string[] objectInfo = md.name.Split("_");
+                Vector3 endPos = md.obj.transform.localPosition;
+                if (md.objectID != (int)MapObjectID.HOUSE_1)
+                {
+                    nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID + 1][md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID - 1][md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID + 1]);
+                    nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID - 1]);
+                    nowList.RemoveAll(x => lastList.Contains(x));
+                    for (int c = 0; c < nowList.Count; c++)
+                    {
+                        deliveryData[driverID].Add(nowList[c].objectID);
+                        delivery.Add(nowList[c].name);
+                    }
+                    lastList = nowList;
+                    nowList = new List<MapData>();
+                }
+                //float elapsed = 0f;
+
+                Vector3 dir = ((endPos + mapObject.transform.localPosition) - obj.transform.position).normalized;
+                Vector3 lastDirction = dir;
+                while (lastDirction == dir)
+                {
+                    lastDirction = dir;
+                    Vector3 vec = lastDirction * Time.deltaTime;
+                    if (dir.x == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    }
+                    if (dir.x == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+                    if (dir.y == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    }
+                    if (dir.y == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    }
+                    obj.transform.position += vec / speed[driverID];
+                    dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
+                    yield return null;
+                }
+                obj.transform.position = endPos + mapObject.transform.localPosition;
+                i--;
+                nowList.Clear();
+            }
+        }
+        DeliveryCompleted(destination[driverID], driverID);
+        yield return new WaitForSeconds(2f);
+        for (int i = routesPosition[driverID].Count - 2; i >= 0; i--)
+        {// Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
+            //Vector3 lastDirction = dir;
+            switch (deliveryProcess[driverID])
+            {
+                case 0:
+                    {
+                        speed[driverID] = 0.5f;
+                    }
+                    break;
+                case 1:
+                    {
+                        speed[driverID] = 1f;
+                    }
+                    break;
+                case 2:
+                    {
+                        speed[driverID] = 2f;
+                    }
+                    break;
+            }
+
+            if (lastIsConfison && !isConfison[driverID] && !confisonClear)
+            {
+                // ランダム挙動の最後の位置から最短ルートを取得
+                //Vector3 currentPos = obj.transform.position - map.transform.localPosition;
+                int startWidth = md.widthPositionID;
+                int startHeight = md.heightPositionID;
+                int goalWidth = routes[driverID][routes[driverID].Count - 1][1];
+                int goalHeight = routes[driverID][routes[driverID].Count - 1][0];
+                line[driverID].positionCount = 0;
+                List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight);
+                routesPosition[driverID] = shortestPositions;
+                StartCoroutine(DriverMove(driverID));
+                yield break;
+
+            }
+            if (!isConfison[driverID])
+            {
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
+                {
+                    // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0] + 1][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0] - 1][routes[driverID][i][1]]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1] + 1]);
+                    nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1] - 1]);
+                    nowList.RemoveAll(x => lastList.Contains(x));
+                    for (int c = 0; c < nowList.Count; c++)
+                    {
+                        deliveryData[driverID].Add(nowList[c].objectID);
+                        delivery.Add(nowList[c].name);
+                    }
+                    lastList = nowList;
+                    nowList = new List<MapData>();
+                    //Debug.Log(ColorChanger(map.MapDatas))
+                }
+
+                Vector3 dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                Vector3 lastDirction = dir;
+                while (lastDirction == dir)
+                {
+                    lastDirction = dir;
+                    Vector3 vec = lastDirction * Time.deltaTime;
+                    if (dir.x == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    }
+                    if (dir.x == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+                    if (dir.y == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    }
+                    if (dir.y == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    }
+                    obj.transform.position += vec / speed[driverID];
+                    dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                    yield return null;
+                }
+                obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
+                md = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]];
+            }
+            else
+            {
+                bool dirSetted = false;
+                MapData randomMd = new MapData();
+                lastIsConfison = isConfison[driverID];
+                while (!dirSetted)
+                {
+
+                    string[] randomData = { "TOP", "RIGHT", "LEFT", "BOTTOM" };
+                    string dirction = randomData[Random.Range(0, randomData.Length)];
+                    switch (dirction)
+                    {
+                        case "TOP":
+                            {
+                                if (map.MapDatas[md.heightPositionID - 1][md.widthPositionID].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID - 1][md.widthPositionID].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID - 1][md.widthPositionID];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+                        case "RIGHT":
+                            {
+                                if (map.MapDatas[md.heightPositionID][md.widthPositionID + 1].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID][md.widthPositionID + 1].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID][md.widthPositionID + 1];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+                        case "LEFT":
+                            {
+                                if (map.MapDatas[md.heightPositionID][md.widthPositionID - 1].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID][md.widthPositionID - 1].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID][md.widthPositionID - 1];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+                        case "BOTTOM":
+                            {
+                                if (map.MapDatas[md.heightPositionID + 1][md.widthPositionID].objectID >= (int)MapObjectID.STRAIGHT && map.MapDatas[md.heightPositionID + 1][md.widthPositionID].objectID <= (int)Map.MapObjectID.CROSS)
+                                {
+                                    randomMd = map.MapDatas[md.heightPositionID + 1][md.widthPositionID];
+                                    dirSetted = true;
+                                }
+                                break;
+                            }
+
+                    }
+
+                }
+
+                md = randomMd;
+                string[] objectInfo = md.name.Split("_");
+                Vector3 endPos = md.obj.transform.localPosition;
+                if (md.objectID != (int)MapObjectID.HOUSE_1)
+                {
+                    nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID + 1][md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID - 1][md.widthPositionID]);
+                    nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID + 1]);
+                    nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID - 1]);
+                    nowList.RemoveAll(x => lastList.Contains(x));
+                    for (int c = 0; c < nowList.Count; c++)
+                    {
+                        deliveryData[driverID].Add(nowList[c].objectID);
+                        delivery.Add(nowList[c].name);
+                    }
+                    lastList = nowList;
+                    nowList = new List<MapData>();
+                }
+                //float elapsed = 0f;
+
+                Vector3 dir = ((endPos + mapObject.transform.localPosition) - obj.transform.position).normalized;
+                Vector3 lastDirction = dir;
+                while (lastDirction == dir)
+                {
+                    lastDirction = dir;
+                    Vector3 vec = lastDirction * Time.deltaTime;
+                    if (dir.x == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                    }
+                    if (dir.x == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+                    if (dir.y == 1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                    }
+                    if (dir.y == -1)
+                    {
+                        obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                    }
+                    obj.transform.position += vec / speed[driverID];
+                    dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
+                    yield return null;
+                }
+                obj.transform.position = endPos + mapObject.transform.localPosition;
+                i--;
+                nowList.Clear();
+            }
+        }
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
+        foreach (GameObject o in objs)
+        {
+            Destroy(o);
+        }
+        routes[driverID] = new List<int[]>();
+        routesPosition[driverID] = new List<Vector3>();
+        line[driverID].positionCount = 0;
+        routeObjectsID[driverID] = new List<int>();
+        isItemSetting[driverID] = false;
+        isProcessSetting[driverID] = false;
+        memoring = false;
+        isDriving[driverID] = false;
+        driver[driverID].SetActive(false);
+        yield return null;
+
+    }
+
 
 
     IEnumerator Directions(int driver)
@@ -564,5 +1127,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     {
         tmpDestination=obj;
         tmpDestinationSetting= true;
+    }
+
+    public void ConfisonSet()
+    {
+
     }
 }
