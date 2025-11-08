@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [DefaultExecutionOrder(1)]
@@ -15,13 +16,22 @@ public class SinnerDistribute : MonoBehaviour
         new ItemID_006(),
         new ItemID_007(),
         new ItemID_008(),
-
+        new ItemID_009(),
+        new ItemID_010(),
+        new ItemID_011(),
+        new ItemID_012(),
+        new ItemID_013(),
+        new ItemID_014(),
+        new ItemID_015(),
     };
     private List<int>[] sinnerPools = new List<int>[poolSize]
     {
-        new List<int> { 2,4,5 },
-        new List<int> { 3,6,7 },
-        new List<int> { 1,8 },
+        //new List<int> { 2,4,5 },
+        //new List<int> { 3,6,7 },
+        //new List<int> { 1,8 },
+        new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, },
+        new List<int> { 11,12,13,14,15 },
+        new List<int> { 100 },
     };
     private const int maxSinners = 31;
     private List<GameObject>[] houseList = new List<GameObject>[poolSize]
@@ -76,10 +86,13 @@ public class SinnerDistribute : MonoBehaviour
                 GameObject go = GameObject.Find(mapName + i);
                 for (int j = 0; j < go.transform.childCount; j++)
                 {
-                    const string tileID_House = "9";
+                    const int num = (int)Map.MapObjectID.HOUSE_1;
+                    string tileID_House = num.ToString();
                     const string underBar = "_";
                     if (go.transform.GetChild(j).name.Split(underBar)[0] == tileID_House)
+                    {
                         houseList[gp].Add(go.transform.GetChild(j).gameObject);
+                    }
                 }
             }
 
@@ -89,7 +102,6 @@ public class SinnerDistribute : MonoBehaviour
                 if (housed[i])
                 {
                     HousedNewSinner(gp, i, mapName + i);
-
                 }
             }
         }

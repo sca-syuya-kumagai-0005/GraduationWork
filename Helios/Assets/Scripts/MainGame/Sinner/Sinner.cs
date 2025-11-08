@@ -101,6 +101,7 @@ public class Sinner : MonoBehaviour
     private GameStateSystem gameState;
 
     protected SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
+    protected Map.MapObjectID mapObjectID;
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
