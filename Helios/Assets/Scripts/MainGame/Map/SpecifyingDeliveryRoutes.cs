@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections;
 using static Map;
 using static KumagaiLibrary.String;
-using static KumagaiLibrary.Unity.ObjectManager;
 
 
 
@@ -467,6 +466,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
+                    Debug.Log("帰ってるよ");
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -498,14 +498,30 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverID].Count-2; i >=0; i--)
         {
-            Vector3 dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
-            Vector3 lastDirction = dirction;
-            while (lastDirction==dirction)
+            Vector3 dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+            Vector3 lastDirction = dir;
+            while (lastDirction==dir)
             {
-                lastDirction = dirction;
+                if (dir.x == 1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
+                }
+                if (dir.x == -1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                }
+                if (dir.y == 1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+                }
+                if (dir.y == -1)
+                {
+                    obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+                }
+                lastDirction = dir;
                 Vector3 vec = lastDirction * Time.deltaTime;
                 obj.transform.position += vec / speed[driverID];
-                dirction = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                 yield return null;
             }
             obj.transform.position = routesPosition[driverID][i]+map.transform.localPosition;

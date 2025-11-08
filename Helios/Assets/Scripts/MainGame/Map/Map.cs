@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using static KumagaiLibrary.Unity.CsvManager;
-using Unity.VisualScripting;
 
 /*memo=========================================================================================
  * 配達する側のScriptで、通った道の隣接するオブジェクトの取得とカウントをする
