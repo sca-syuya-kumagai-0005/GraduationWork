@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 public class ItemID_010 : Sinner
 {
+
     const string onatherName = "オオマガトキ";
+    private TimeLine timeline;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,6 +17,7 @@ public class ItemID_010 : Sinner
         //effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
         //GetEffectObject(true);
         effectTimer = 6.5f;
+        timeline = GameObject.Find("Clock").GetComponent<TimeLine>();
     }
     // Update is called once per frame
     void Update()
@@ -26,5 +30,6 @@ public class ItemID_010 : Sinner
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
+        timeline.TimeState = TimeLine.TimeStates.Abnormal;
     }
 }
