@@ -113,7 +113,6 @@ public class AudioManager : MonoBehaviour
     {
         masterMixer.GetFloat(audioTypes[(int)_audio], out float value);
         value = Mathf.Clamp01(Mathf.Pow(10, value / 20f));
-        Debug.Log(value);
         return value;
     }
 
