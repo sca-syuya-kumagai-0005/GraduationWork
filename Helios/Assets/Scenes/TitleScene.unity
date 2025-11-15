@@ -447,7 +447,7 @@ GameObject:
   - component: {fileID: 280133983}
   - component: {fileID: 280133982}
   m_Layer: 5
-  m_Name: MouseSpeed_VolumeText
+  m_Name: MouseSpeed_SpeedText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -505,9 +505,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '100%
-
-'
+  m_Text: 10
 --- !u!222 &280133983
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -951,6 +949,7 @@ GameObject:
   - component: {fileID: 370404161}
   - component: {fileID: 370404160}
   - component: {fileID: 370404159}
+  - component: {fileID: 370404165}
   m_Layer: 5
   m_Name: OptionCanvas
   m_TagString: Untagged
@@ -987,8 +986,9 @@ MonoBehaviour:
   - {fileID: 507094422}
   - {fileID: 503622479}
   volumeSprites:
-  - {fileID: 21300000, guid: db7bca5a3d7b7da41bfb6767d26dd9cf, type: 3}
   - {fileID: 21300000, guid: 5f11f741f5aa2134583f0da516168db8, type: 3}
+  - {fileID: 21300000, guid: db7bca5a3d7b7da41bfb6767d26dd9cf, type: 3}
+  changeMouseSpeed: {fileID: 370404165}
   optionAnimetion: {fileID: 370404160}
 --- !u!114 &370404160
 MonoBehaviour:
@@ -1088,6 +1088,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &370404165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370404158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0212e89fac568a04a9086219b805d41c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currSpeed: 0
+  mouseSpeedSlider: {fileID: 421518599}
+  speedText: {fileID: 280133982}
 --- !u!1 &396284836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,6 +1267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 421518598}
   - component: {fileID: 421518599}
+  - component: {fileID: 421518600}
   m_Layer: 5
   m_Name: MouseSpeedSlider
   m_TagString: Untagged
@@ -1325,21 +1341,39 @@ MonoBehaviour:
   m_FillRect: {fileID: 1312355202}
   m_HandleRect: {fileID: 542478739}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 0.5
+  m_MinValue: 1
+  m_MaxValue: 20
+  m_WholeNumbers: 1
+  m_Value: 20
   m_OnValueChanged:
     m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &421518600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421518597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72a05c6bd111c69498504fa0df4811a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EventPointStart:
+    m_PersistentCalls:
+      m_Calls: []
+  EventPointEnd:
+    m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 370404159}
-        m_TargetAssemblyTypeName: VolumeSetting, Assembly-CSharp
-        m_MethodName: ChangeVolumeValue
-        m_Mode: 3
+      - m_Target: {fileID: 370404165}
+        m_TargetAssemblyTypeName: ChangeMouseSpeed, Assembly-CSharp
+        m_MethodName: Change
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3794,6 +3828,7 @@ MonoBehaviour:
   - {fileID: 1733973650}
   - {fileID: 507094419}
   - {fileID: 503622478}
+  - {fileID: 1426877004}
   alpha: 1
 --- !u!1 &927982551
 GameObject:
