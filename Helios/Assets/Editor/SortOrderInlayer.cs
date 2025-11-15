@@ -20,7 +20,6 @@ public class SortOrderInLayer : EditorWindow
     
     // 対象コンポーネントのリスト
     private List<SortingOrderInformation> componentList = new List<SortingOrderInformation>();
-    private List<SortingOrderInformation> tmpComponentList = new List<SortingOrderInformation>();
 
     // 並び替え可能なリスト なんかこれ使うとWindow内で[SerializeField]みたいに配列の順番を変更できる
     private ReorderableList reorderableList;
