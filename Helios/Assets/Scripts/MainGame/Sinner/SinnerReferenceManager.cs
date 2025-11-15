@@ -23,18 +23,39 @@ public class SinnerReferenceManager : MonoBehaviour
     const string downKey = "Down";
 
 
+    public struct SinnerInfomation
+    {
+        public string name;
+        public string type;
+        public string risk;
+        public string[] condition;
+        public int id;
+        public string appearance;
+        public string explanation;
+        public string Interview;
+        public string appendix;
+    }
+    SinnerInfomation[] sinnerInfomations;
+    List<SinnerInfomation> displaySinners;
+    List<string> readData;
+    List<SinnerInfomation> SinnerSort()
+    {
+        return new List<SinnerInfomation>();
+    }
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         SetEventType(downKey, SinnerReferencePointerDown, this.gameObject);
         SetEventType(downKey, BackButtonPointerDown, backButton);
         KumagaiLibrary.Unity.EventSet.SetEventType("PointerDown", NextPage, nextButton);
-        for(int i=0;i<scrollContent.transform.childCount;i++)
-        {
-            contents.Add(scrollContent.transform.GetChild(i).gameObject);
-            GameObject obj = contents[i];
-            obj.transform.localPosition= new Vector3(obj.transform.localPosition.x,-(i*100+100),0);
-        }
+        //for(int i=0;i<scrollContent.transform.childCount;i++)
+        //{
+        //    contents.Add(scrollContent.transform.GetChild(i).gameObject);
+        //    GameObject obj = contents[i];
+        //    //obj.transform.localPosition= new Vector3(obj.transform.localPosition.x,-(i*100+100),0);
+        //}
         //this.gameObject.SetActive(false);
         
     }
@@ -82,4 +103,6 @@ public class SinnerReferenceManager : MonoBehaviour
         pageCount++;
         //pageCount %= page.Length;
     }
+
+
 }
