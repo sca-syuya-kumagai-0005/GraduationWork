@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using static KumagaiLibrary.Unity.EventSet;
+using static KumagaiLibrary.Unity.CsvManager;
+
+using Unity.VisualScripting;
 
 public class SinnerReferenceManager : MonoBehaviour
 {
@@ -18,6 +21,7 @@ public class SinnerReferenceManager : MonoBehaviour
    // [SerializeField] GameObject[] page;
     [SerializeField] GameObject scrollContent;
     [SerializeField]List<GameObject> contents;
+    [SerializeField] TextAsset[] sinnerDatas;
     int pageCount = 0;
 
     const string downKey = "Down";
@@ -28,11 +32,12 @@ public class SinnerReferenceManager : MonoBehaviour
         public string name;
         public string type;
         public string risk;
+        public string abnormal;
         public string[] condition;
         public int id;
         public string appearance;
         public string explanation;
-        public string Interview;
+        public string interview;
         public string appendix;
     }
 
@@ -48,7 +53,8 @@ public class SinnerReferenceManager : MonoBehaviour
     const string DETENTION_CATRA = "Catra";
     const string DETENTION_NULLA = "Nulla";
 
-    SinnerInfomation[] sinnerInfomations;
+    const int SINNER_MAX= 31;
+    SinnerInfomation[] sinnerInfomations=new SinnerInfomation[31];
     List<SinnerInfomation> displaySinners;
     List<string> readData;
     List<SinnerInfomation> SinnerSort()
@@ -56,6 +62,7 @@ public class SinnerReferenceManager : MonoBehaviour
         return new List<SinnerInfomation>();
     }
 
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -63,6 +70,35 @@ public class SinnerReferenceManager : MonoBehaviour
         SetEventType(downKey, SinnerReferencePointerDown, this.gameObject);
         SetEventType(downKey, BackButtonPointerDown, backButton);
         KumagaiLibrary.Unity.EventSet.SetEventType("PointerDown", NextPage, nextButton);
+        for(int i=0;i<sinnerDatas.Length;i++)
+        {
+            SinnerInfomation sinnerData;
+            sinnerData.id = i;
+            List<string[]> data = Read(sinnerDatas[i]);
+            sinnerData.name = data[0][0];
+            sinnerData.type = data[1][0];
+            sinnerData.risk = data[2][0];
+            sinnerData.abnormal = data[3][0];
+            sinnerData.condition = data[4];
+            sinnerData.appearance = data[5][0];
+            sinnerData.explanation = data[6][0];
+            sinnerData.interview = data[7][0];
+            sinnerData.appendix = data[8][0];
+            Debug.Log("name"+sinnerData.name);
+            Debug.Log("type"+sinnerData.type);
+            Debug.Log("risk" + sinnerData.risk);
+            Debug.Log("abnormal" + sinnerData.abnormal);
+            for(int n=0;n<sinnerData.condition.Length;n++)
+            {
+                Debug.Log("condition"+n+sinnerData.condition[n]);
+            }
+            Debug.Log("apperance" + data[5][0]);
+            Debug.Log("explanation" + data[6][0]);
+            Debug.Log(sinnerData.interview);
+            Debug.Log(sinnerData.appendix);
+            
+
+        }
         
         //for(int i=0;i<scrollContent.transform.childCount;i++)
         //{
