@@ -35,6 +35,19 @@ public class SinnerReferenceManager : MonoBehaviour
         public string Interview;
         public string appendix;
     }
+
+    const string RISK_LUMENIS = "Lumenis";
+    const string RISK_VELGRA = "Velgra";
+    const string RISK_DRAVEX = "Dravex";
+    const string RISK_ZERATH = "Zerath";
+    const string RISK_OBLIVARA = "Oblivara";
+
+    const string DETENTION_SECRA = "Secra";
+    const string DETENTION_VIGIL = "Vigil";
+    const string DETENTION_HAZRA = "Hazra";
+    const string DETENTION_CATRA = "Catra";
+    const string DETENTION_NULLA = "Nulla";
+
     SinnerInfomation[] sinnerInfomations;
     List<SinnerInfomation> displaySinners;
     List<string> readData;
@@ -50,6 +63,7 @@ public class SinnerReferenceManager : MonoBehaviour
         SetEventType(downKey, SinnerReferencePointerDown, this.gameObject);
         SetEventType(downKey, BackButtonPointerDown, backButton);
         KumagaiLibrary.Unity.EventSet.SetEventType("PointerDown", NextPage, nextButton);
+        
         //for(int i=0;i<scrollContent.transform.childCount;i++)
         //{
         //    contents.Add(scrollContent.transform.GetChild(i).gameObject);
