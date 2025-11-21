@@ -50,7 +50,7 @@ Material:
     - _Size: 0.48
     - _Tilling: 3
     m_Colors:
-    - _Color: {r: 0, g: 2.89971, b: 4.0000005, a: 1}
+    - _Color: {r: 0, g: 2.5882354, b: 44.941177, a: 60}
     - _Scroll: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

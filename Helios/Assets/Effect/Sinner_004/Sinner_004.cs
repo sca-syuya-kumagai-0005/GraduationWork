@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class RippleControllerMulti : MonoBehaviour
+public class Sinner_004 : MonoBehaviour
 {
     public Material rippleMaterial;
     private int maxWaves = 10;

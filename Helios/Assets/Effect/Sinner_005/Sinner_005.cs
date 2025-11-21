@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class TimelineController : MonoBehaviour
+public class Sinner_005 : MonoBehaviour
 {
     [Header("=== 移動設定 ===")]
     public Vector3 moveTargetPosition = new Vector3(0f, -3f, 0f);
@@ -27,6 +27,7 @@ public class TimelineController : MonoBehaviour
     public SpriteRenderer[] nightIcons;
     public float fadeDuration = 3f;
     public float fadeDelay = 0f;
+    public Transform[] iconsTransform;
 
     [Header("=== 上昇設定 ===")]
     public Vector3 upTargetOffset = new Vector3(0, 2f, 0);
@@ -52,35 +53,79 @@ public class TimelineController : MonoBehaviour
     public FadeSettings featherReverse = new FadeSettings { propertyName = "_Feather", start = 0.1f, end = 0.8f, duration = 2f };
     public FadeSettings fadeReverse = new FadeSettings { propertyName = "_Fade", start = 0f, end = 1f, duration = 2f };
 
-    private void Start()
+    private Coroutine sequenceCoroutine;
+
+    private void OnEnable()
     {
-        StartCoroutine(Sequence());
+        // 既存のコルーチンがあれば停止
+        if (sequenceCoroutine != null)
+            StopCoroutine(sequenceCoroutine);
+
+        // 初期化
+        ResetState();
+
+        // 再生
+        sequenceCoroutine = StartCoroutine(Sequence());
     }
+
+    private void ResetState()
+    {
+        // Transform 初期化（y = 6.8 固定、x/z は現在位置を維持）
+        transform.position = new Vector3(transform.position.x, 6.8f, transform.position.z);
+        transform.rotation = Quaternion.identity;
+
+        for(int i = 0; i < iconsTransform.Length; i++ )
+        {
+            iconsTransform[i].rotation = Quaternion.identity;
+        }
+
+        // ClockHand 初期化
+        if (clockHand != null)
+            clockHand.rotation = Quaternion.identity;
+
+        // SpriteRenderer 初期化
+        if (nightIcons != null)
+        {
+            foreach (var sr in nightIcons)
+            {
+                if (sr != null)
+                {
+                    Color c = sr.color;
+                    sr.color = new Color(c.r, c.g, c.b, 1f); // フェード前はアルファ1
+                }
+            }
+        }
+
+        // Material 初期化
+        if (fadeMaterial != null)
+        {
+            fadeMaterial.SetFloat(featherForward.propertyName, featherForward.start);
+            fadeMaterial.SetFloat(fadeForward.propertyName, fadeForward.start);
+        }
+    }
+
 
     private IEnumerator Sequence()
     {
         // ================== 下落 ==================
         if (moveDelay > 0f) yield return new WaitForSeconds(moveDelay);
-
-        Coroutine moveDown = StartCoroutine(MoveCoroutine(moveTargetPosition, moveDuration, moveEase));
+        Vector3 start = new Vector3(transform.position.x, 6.8f, transform.position.z);
+        transform.position = start; // 開始位置にセット
+        Coroutine moveDown = StartCoroutine(MoveCoroutineDown(moveTargetPosition, moveDuration, moveEase));
         StartCoroutine(AnimateProperty(featherForward, true));
         StartCoroutine(AnimateProperty(fadeForward, true));
 
         yield return moveDown; // 下落が終わるまで待機
 
         // ================== 針回転 + 夜アイコンフェード + 自身回転 ==================
-
-        // 針
         Coroutine handCoroutine = null;
         if (clockHand != null)
             handCoroutine = StartCoroutine(StartAfterDelay(handDelay, RotateClockHand(clockHand, handRotationDelta, handRotationDuration, handEase)));
 
-        // 自身
         Coroutine selfCoroutine = null;
         if (rotateSelf)
             selfCoroutine = StartCoroutine(StartAfterDelay(selfDelay, RotateWithChildren(transform, selfRotationDelta, selfRotationDuration, selfEase)));
 
-        // 夜アイコン
         Coroutine[] iconCoroutines = new Coroutine[nightIcons.Length];
         for (int i = 0; i < nightIcons.Length; i++)
         {
@@ -98,21 +143,30 @@ public class TimelineController : MonoBehaviour
         if (upDelay > 0f) yield return new WaitForSeconds(upDelay);
 
         StartCoroutine(AnimateProperty(featherReverse, false));
-        StartCoroutine(AnimateProperty(fadeReverse, false));
-        yield return StartCoroutine(MoveCoroutine(transform.position + upTargetOffset, upDuration, upEase));
+        Coroutine fade = StartCoroutine(AnimateProperty(fadeReverse, false));
+        start = new Vector3(transform.position.x, 0f, transform.position.z);
+        transform.position = start; // 開始位置にセット
+        yield return StartCoroutine(MoveCoroutineUp(transform.position + upTargetOffset, upDuration, upEase));
+        yield return fade;
+        yield return new WaitForSeconds(0.25f);
+        if (transform.parent != null)
+        {
+            transform.parent.gameObject.SetActive(false);
+        }
+
     }
 
-    // -------- ヘルパー: 遅延してから開始 --------
     private IEnumerator StartAfterDelay(float delay, IEnumerator coroutine)
     {
         if (delay > 0f) yield return new WaitForSeconds(delay);
         yield return StartCoroutine(coroutine);
     }
 
-    // -------- 移動 --------
-    private IEnumerator MoveCoroutine(Vector3 target, float duration, AnimationCurve ease)
+    private IEnumerator MoveCoroutineDown(Vector3 target, float duration, AnimationCurve ease)
     {
-        Vector3 start = transform.position;
+        Vector3 start = new Vector3(transform.position.x, 6.8f, transform.position.z);
+        transform.position = start; // 開始位置にセット
+
         float time = 0f;
         while (time < duration)
         {
@@ -121,10 +175,29 @@ public class TimelineController : MonoBehaviour
             transform.position = Vector3.LerpUnclamped(start, target, ease.Evaluate(t));
             yield return null;
         }
+
         transform.position = target;
     }
 
-    // -------- 時計針回転 --------
+    private IEnumerator MoveCoroutineUp(Vector3 target, float duration, AnimationCurve ease)
+    {
+        Vector3 start = new Vector3(transform.position.x, 1f, transform.position.z);
+        transform.position = start; // 開始位置にセット
+
+        float time = 0f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = Mathf.Clamp01(time / duration);
+            transform.position = Vector3.LerpUnclamped(start, target, ease.Evaluate(t));
+            yield return null;
+        }
+
+        transform.position = target;
+        
+    }
+
+
     private IEnumerator RotateClockHand(Transform target, float deltaZ, float duration, AnimationCurve ease)
     {
         float startZ = target.eulerAngles.z;
@@ -143,7 +216,6 @@ public class TimelineController : MonoBehaviour
         target.rotation = Quaternion.Euler(0, 0, endZ);
     }
 
-    // -------- 自身回転 + 子オブジェクト --------
     private IEnumerator RotateWithChildren(Transform target, float deltaZ, float duration, AnimationCurve ease)
     {
         Quaternion start = target.rotation;
@@ -169,7 +241,6 @@ public class TimelineController : MonoBehaviour
         target.rotation = end;
     }
 
-    // -------- スプライトフェード --------
     private IEnumerator FadeSprite(SpriteRenderer sr, float duration)
     {
         Color start = sr.color;
@@ -184,7 +255,6 @@ public class TimelineController : MonoBehaviour
         sr.color = end;
     }
 
-    // -------- BlackFade --------
     private IEnumerator AnimateProperty(FadeSettings settings, bool forward)
     {
         if (settings.delay > 0f) yield return new WaitForSeconds(settings.delay);
@@ -201,5 +271,7 @@ public class TimelineController : MonoBehaviour
             yield return null;
         }
         fadeMaterial.SetFloat(settings.propertyName, to);
+
+        
     }
 }
