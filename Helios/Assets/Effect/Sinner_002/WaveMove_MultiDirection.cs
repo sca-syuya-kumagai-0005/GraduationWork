@@ -34,8 +34,16 @@ public class WaveMove_MultiPositions : MonoBehaviour
 
     private Coroutine moveCoroutine;
 
+    private Vector3 pos;
+
+    private void Awake()
+    {
+        pos = transform.localPosition;
+    }
+
     private void OnEnable()
     {
+        transform.localPosition = pos;
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 

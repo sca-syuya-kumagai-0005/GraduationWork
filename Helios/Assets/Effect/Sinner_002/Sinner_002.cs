@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class TrailController : MonoBehaviour
+public class Sinner_002 : MonoBehaviour
 {
     [Header("=== 対象設定 ===")]
     [SerializeField] private Transform[] targets;          // 移動対象
@@ -13,13 +13,22 @@ public class TrailController : MonoBehaviour
     [SerializeField] private Vector3 targetScale = Vector3.one;  // 最終スケール
     [SerializeField] private float waitAfterMove = 0.5f;         // 移動後に待つ時間
     [SerializeField] private float scaleDuration = 0.5f;         // スケールにかける時間
-    [SerializeField] private float scaleDistance = 0.5f;         //遅延
+    [SerializeField] private float scaleDistance = 0.5f;         // 遅延
 
-
-    private Vector3[] startPositions;
+    [SerializeField] private Vector3[] startPositions;
     private Vector3[] endPositions;
+    private Vector3[] initialScales;
 
-    private void Start()
+    private void OnEnable()
+    {
+        Initialize();
+        PlayAnimation();
+    }
+
+    /// <summary>
+    /// 初期化（座標・スケール・ターゲット補完）
+    /// </summary>
+    private void Initialize()
     {
         if (targets == null || targets.Length == 0)
         {
@@ -48,21 +57,33 @@ public class TrailController : MonoBehaviour
                 if (scaleTargets[i] == null) scaleTargets[i] = targets[i];
         }
 
-        // 座標準備
-        startPositions = new Vector3[targets.Length];
         endPositions = new Vector3[targets.Length];
+        initialScales = new Vector3[scaleTargets.Length];
         for (int i = 0; i < targets.Length; i++)
         {
-            startPositions[i] = targets[i].position;
-            endPositions[i] = startPositions[i] + moveDirections[i]; // ← normalized削除、ベクトルの長さを使用
+            //startPositions[i] = targets[i].position;
+            endPositions[i] = startPositions[i] + moveDirections[i];
+            initialScales[i] = scaleTargets[i].localScale;
         }
-
+    }
+    public void PlayAnimation()
+    {
+        ResetState();
         StartCoroutine(MoveSequence());
+    }
+
+    private void ResetState()
+    {
+        for (int i = 0; i < targets.Length; i++)
+        {
+            targets[i].position = startPositions[i];
+            scaleTargets[i].localScale = initialScales[i];
+        }
     }
 
     private IEnumerator MoveSequence()
     {
-        yield return new WaitForSeconds(scaleDistance); 
+        yield return new WaitForSeconds(scaleDistance);
         for (int i = 0; i < targets.Length; i++)
         {
             StartCoroutine(MoveAndScale(targets[i], scaleTargets[i], startPositions[i], endPositions[i]));
