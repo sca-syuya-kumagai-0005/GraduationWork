@@ -11,6 +11,8 @@ public class MapObjectRequest : MonoBehaviour
     int widthPositionID;
     int heightPositionID;
     [SerializeField]SpecifyingDeliveryRoutes sDR;
+    [SerializeField]GameObject sinnerReference;
+    Collider col;
     bool haveSinner = false;//このオブジェクトにシナーが配置されているかのフラグ
     public bool HaveSinner { set{haveSinner=value; } }
 
@@ -22,6 +24,8 @@ public class MapObjectRequest : MonoBehaviour
         widthPositionID = int.Parse(objectInfo[1]);
         heightPositionID = int.Parse(objectInfo[2]);
         sDR = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
+        sinnerReference = GameObject.Find("ReferenceData").gameObject.transform.GetChild(0).gameObject;
+        col=this.gameObject.GetComponent<Collider>();
         SetEventType(down,PointerDown,this.gameObject);
         SetEventType(enter,PointerEnter, this.gameObject);
         if(haveSinner)
@@ -29,6 +33,11 @@ public class MapObjectRequest : MonoBehaviour
             SpriteRenderer sr = this.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
             sr.color = new Color(1.0f, 0.4f, 0.0f);
         }
+    }
+
+    private void Update()
+    {
+        col.enabled=!sinnerReference.activeSelf;
     }
 
     void PointerDown()

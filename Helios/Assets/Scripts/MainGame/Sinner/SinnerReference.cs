@@ -1,15 +1,13 @@
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.UI;
 using static KumagaiLibrary.Unity.EventSet;
 
 public class SinnerReference : MonoBehaviour
 {
-    [SerializeField] string sinnerName;
-    [SerializeField] string type;
-    [SerializeField] string risk;
-    [SerializeField] string[] explanatory;
-    [SerializeField] int number;
+    [SerializeField] private TextAsset sinnerCsv;
+    
+
 
     GameObject reference;
     SinnerReferenceManager manager;
@@ -22,7 +20,6 @@ public class SinnerReference : MonoBehaviour
         manager = reference.GetComponent<SinnerReferenceManager>();
         SetEventType("Down", PointerDown, this.gameObject);
         nameText=this.gameObject.transform.GetChild(0).GetComponent<Text>();
-        nameText.text = sinnerName;
 
     }
 
@@ -33,8 +30,8 @@ public class SinnerReference : MonoBehaviour
     }
     public void PointerDown()
     {
-        Debug.Log(sinnerName);
-        manager.SetData(sinnerName,type,risk,explanatory);
+        //Debug.Log(sinnerName);
+        //manager.SetData(sinnerName,type,risk,explanatory);
     }
 
    
