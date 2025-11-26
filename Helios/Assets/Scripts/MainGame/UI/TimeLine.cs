@@ -61,19 +61,19 @@ public class TimeLine : MonoBehaviour
         {
             announceManager.MakeAnnounce("「朝」終了の1分30秒前です。");
             announced[0] = true;
-            timeState = TimeState.Morning;
+            timeState = TimeStates.Morning;
         }
         if (timeLine > totalTimes[1] - 90.0f && !announced[1])
         {
             announceManager.MakeAnnounce("「昼」終了の1分30秒前です。");
             announced[1] = true;
-            timeState = TimeState.Noon;
+            timeState = TimeStates.Noon;
         }
         if (timeLine > totalTimes[2] - 90.0f && !announced[2])
         {
             announceManager.MakeAnnounce("「夜」終了の1分30秒前です。");
             announced[2] = true;
-            timeState = TimeState.Night;
+            timeState = TimeStates.Night;
         }
         if (timeLine > totalTimes[2]) timeLine = 0.0f;
     }
