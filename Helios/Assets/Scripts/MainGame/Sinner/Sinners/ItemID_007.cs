@@ -73,8 +73,6 @@ public class ItemID_007 : Sinner
                 specifyingDeliveryRoutes.SinnerDebuff[i][sinnerName] = true;
 
             }
-               
-                
         }
     }
 }
