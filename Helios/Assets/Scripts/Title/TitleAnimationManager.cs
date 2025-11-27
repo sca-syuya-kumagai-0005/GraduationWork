@@ -22,16 +22,21 @@ public enum CautionaryNum {
 
 public class TitleAnimationManager : MonoBehaviour
 {
+    [SerializeField] Image fadePanel;
+    [SerializeField] Image backGround;
     [SerializeField, Header("起動時に表示する注意喚起演出")] Cautionary[] cautionaries;
     [SerializeField] Image cautionaryImage;
     [SerializeField] Text cautionaryHeader;
     [SerializeField] Text cautionaryText;
     [SerializeField] float waitTime;
-    [SerializeField] Image cautionaryPanel;
-    [SerializeField, Header("タイトル演出")] GameObject titleLogo;
+    [SerializeField, Header("タイトル開始時演出")] GameObject titleStartObj;
+    [SerializeField] GameObject titleLogo;
     Image logoImage;
     RectTransform logoRect;
     [SerializeField] Text pushText;
+    [SerializeField] GameObject rainParticle;
+    [SerializeField, Header("選択画面開始時演出")] GameObject titleSelectObj;
+    [SerializeField, Header("自室演出")] GameObject myRoomObj;
 
     bool skip = false;
     float time = 0;
@@ -74,10 +79,15 @@ public class TitleAnimationManager : MonoBehaviour
         cautionaryHeader.DOFade(0f, fadeOutTime);
         cautionaryText.DOFade(0f, fadeOutTime);
         yield return StartCoroutine(WaitAnim(fadeOutTime + delayTime));
-        if(cautionaryNum == CautionaryNum.SOUND) cautionaryPanel.DOFade(0f, fadeOutTime).WaitForCompletion();
+        if(cautionaryNum == CautionaryNum.SOUND) fadePanel.DOFade(0f, fadeOutTime).WaitForCompletion();
         skip = false;
     }
 
+    /// <summary>
+    /// アニメーション待機処理(マウス入力時スキップ)
+    /// </summary>
+    /// <param name="_waitTime"></param>
+    /// <returns></returns>
     IEnumerator WaitAnim(float _waitTime)
     {
         while (_waitTime > 0f)
@@ -117,7 +127,23 @@ public class TitleAnimationManager : MonoBehaviour
         }
         logoImage.DOFade(0f, 0.75f);
         pushText.DOFade(0f, 0.75f);
+        fadePanel.DOFade(1f, 0.8f);
         yield return new WaitForSeconds(1f);
+        titleStartObj.SetActive(false);
+        rainParticle.SetActive(false);
+    }
+
+    public IEnumerator TitleSelectDisplayAnim()
+    {
+        titleSelectObj.SetActive(true);
+        yield return fadePanel.DOFade(0f, 0.5f).WaitForCompletion();
+        fadePanel.raycastTarget = false;
+    }
+
+    public IEnumerator MyRoomAnim()
+    {
+        myRoomObj.SetActive(true);
+        yield break;
     }
 
     Color GetAlphaColor(Color color)

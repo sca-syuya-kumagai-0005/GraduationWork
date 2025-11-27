@@ -37,13 +37,18 @@ public class OptionSetting : MonoBehaviour
     float delayTimer;
     float delay;
     const float delayTime = 0.1f;
+    private void Awake()
+    {
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.worldCamera = Camera.main;
+    }
 
     private void OnEnable()
     {
         for (int i = 0; i < (int)Audio.MAX; i++)
         {
-            float decibel = Mathf.Clamp(20f * Mathf.Log10(volumeSliders[i].minValue), -80f, 0f);
-            volumeSliders[i].value = Locator<AudioManager>.Instance.GetVolumeF((Audio)i);
+            float decibel = Mathf.Clamp(20f * Mathf.Log10(volumeSliders[i].minValue), -volumeDiff, 0f);
+            volumeSliders[i].value = Locator<AudioManager>.Instance.GetVolume((Audio)i);
             if (Locator<AudioManager>.Instance.stockVolumes[i] != decibel)
             {
                 volumeSliders[i].interactable = false;
@@ -105,14 +110,6 @@ public class OptionSetting : MonoBehaviour
         if (volumeSliders[cursorMover.nowButton].interactable && _horizontal != 0)
         {
             volumeSliders[cursorMover.nowButton].value += _horizontal * Time.deltaTime * volumeUpSpeed;
-            if (volumeSliders[cursorMover.nowButton].value > volumeSliders[cursorMover.nowButton].maxValue)
-            {
-                volumeSliders[cursorMover.nowButton].value = volumeSliders[cursorMover.nowButton].maxValue;
-            }
-            else if (volumeSliders[cursorMover.nowButton].value < volumeSliders[cursorMover.nowButton].minValue)
-            {
-                volumeSliders[cursorMover.nowButton].value = volumeSliders[cursorMover.nowButton].minValue;
-            }
         }
     }
 
@@ -121,21 +118,15 @@ public class OptionSetting : MonoBehaviour
         AudioManager instance = Locator<AudioManager>.Instance;
         volumeSliders[cursorMover.nowButton].interactable = !volumeSliders[cursorMover.nowButton].interactable;
         //音量設定
-        instance.SetVolume((Audio)cursorMover.nowButton, instance.GetStockVolumeF(cursorMover.nowButton));
+        instance.SetVolume((Audio)cursorMover.nowButton, instance.GetStockVolume(cursorMover.nowButton));
         //音量ストック
         instance.SetStockVolume(cursorMover.nowButton, volumeSliders[cursorMover.nowButton].value);
         //スライダー変更
-        volumeSliders[cursorMover.nowButton].value = instance.GetVolumeF((Audio)cursorMover.nowButton);
+        volumeSliders[cursorMover.nowButton].value = instance.GetVolume((Audio)cursorMover.nowButton);
         //テキスト変更
         ChangeVolumeText((Audio)cursorMover.nowButton);
 
         volumeIcons[cursorMover.nowButton].sprite = volumeSliders[cursorMover.nowButton].interactable ? volumeSprites[0] : volumeSprites[1];
-    }
-
-    IEnumerator Close()
-    {
-        yield return optionWindowRest.DOScale(Vector3.zero, 0.3f).WaitForCompletion();
-        Destroy(this.gameObject);
     }
 
     public void ChangeVolumeText(Audio _audio)
@@ -147,5 +138,11 @@ public class OptionSetting : MonoBehaviour
     {
         Locator<AudioManager>.Instance.SetVolume((Audio)_audio, volumeSliders[_audio].value);
         ChangeVolumeText((Audio)_audio);
+    }
+
+    IEnumerator Close()
+    {
+        yield return optionWindowRest.DOScale(Vector3.zero, 0.3f).WaitForCompletion();
+        Destroy(this.gameObject);
     }
 }

@@ -1,15 +1,15 @@
 using DG.Tweening;
+using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
 
-public class MoveTest : EasingMethods
+public class SlingerMove : EasingMethods
 {
     KeyCode[] inputKey;
     float z;
     [SerializeField] float moveAngle;
     [SerializeField] float moveTime;
     public bool isMove {  get; private set; }
-    [SerializeField] GameObject gameObject;
 
     void Start()
     {
@@ -20,17 +20,6 @@ public class MoveTest : EasingMethods
         isMove = false;
     }
 
-    //void Update()
-    //{
-    //    for (int i = 0; i < inputKey.Length; i++)
-    //    {
-    //        if (Input.GetKeyDown(inputKey[i]))
-    //        {
-    //            float f = Input.GetAxisRaw("Horizontal");
-    //            StartCoroutine(Move(-f));
-    //        }
-    //    }
-    //}
     public IEnumerator Move(float _dir)
     {
         RectTransform rect = GetComponent<RectTransform>();

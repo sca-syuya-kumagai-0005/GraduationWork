@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class MusicList : MonoBehaviour
 {
@@ -10,12 +11,19 @@ public class MusicList : MonoBehaviour
     [SerializeField] GameObject musicPrefab;
     List<GameObject> musics = new List<GameObject>();
     ScrollRect myScrollRect;
+    RectTransform myRectTransform;
+    Vector2 defaultSize;
+    [SerializeField] Text musicNameText;
 
     private void Awake()
     {
         contentsRect = contents.GetComponent<RectTransform>();
         contentsTransform = contents.transform;
         myScrollRect = GetComponent<ScrollRect>();
+        myRectTransform = GetComponent<RectTransform>();
+        defaultSize = myRectTransform.sizeDelta;
+        myRectTransform.sizeDelta = new Vector2(defaultSize.x, 0);
+        this.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -28,6 +36,7 @@ public class MusicList : MonoBehaviour
         Locator<MusicList>.Unbind(this);
     }
 
+    //本実装関数
     //public void InstansMusic(AudioClip _audioClip)
     //{
     //    GameObject obj = Instantiate(musicPrefab, viewPortTransform);
@@ -38,6 +47,8 @@ public class MusicList : MonoBehaviour
 
     public void instans()
     {
+        this.gameObject.SetActive(true);
+        myRectTransform.DOSizeDelta(defaultSize, 0.25f);
         for (int i = 0; i < 15;i++)
         {
             InstansMusic(i.ToString());
@@ -56,13 +67,18 @@ public class MusicList : MonoBehaviour
     /// <summary>
     /// 表示中のリストを削除する
     /// </summary>
-    public void DeleteMusic()
+    public void DeleteMusic(string _text)
     {
-        foreach (GameObject obj in musics)
+        musicNameText.text = _text;
+        myRectTransform.DOSizeDelta(new Vector2(defaultSize.x, 0), 0.25f).OnComplete(() =>
         {
-            Destroy(obj);
-        }
-        musics.Clear();
+            foreach (GameObject obj in musics)
+            {
+                Destroy(obj);
+            }
+            musics.Clear();
+            this.gameObject.SetActive(false);
+        });
     }
 
     /// <summary>
