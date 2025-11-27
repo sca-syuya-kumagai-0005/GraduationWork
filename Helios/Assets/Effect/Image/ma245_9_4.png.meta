@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a299c6cdb0f32f14daeae3b4a74101a2
+guid: ea374831e0d948646b45907da09d657c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ParticleCloudWhite_0
+      name: ma245_9_4_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 459
+        height: 459
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,8 +125,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3e0ddde302ac1f942bab333640551319
-      internalID: 568848049
+      spriteID: d6b6b64954e1cea4991576f638490f6f
+      internalID: 100057474
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 544609ce05e68fa47870beb0d14b7971
+    spriteID: 33fb294ee548b36468edb7ec47fffdea
     internalID: 0
     vertices: []
     indices: 
@@ -145,7 +145,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ParticleCloudWhite_0: 568848049
+      ma245_9_4_0: 100057474
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

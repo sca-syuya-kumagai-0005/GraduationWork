@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Sinner009 : MonoBehaviour
+public class Sinner_009 : MonoBehaviour
 {
-    [SerializeField] private Renderer targetRenderer;   // フェード対象のRenderer
-    [SerializeField, Range(0f, 1f)] private float fromAlpha = 0f; // 開始α
-    [SerializeField, Range(0f, 1f)] private float toAlpha = 1f;   // 終了α
-    [SerializeField] private float duration = 1f;                  // フェード時間（秒）
-
+    [Header("=== Renderer / Fade Alpha ===")]
+    [SerializeField] private Renderer targetRenderer;
+    [SerializeField, Range(0f, 1f)] private float fromAlpha = 0f;
+    [SerializeField, Range(0f, 1f)] private float toAlpha = 1f;
+    [SerializeField] private float duration = 1f;
 
     [Header("=== Shader Materials ===")]
     [SerializeField] private Material[] v_DoorMat;
@@ -27,6 +27,9 @@ public class Sinner009 : MonoBehaviour
     [SerializeField] private Vector3 movePos;
     [SerializeField] private float moveTime = 1.5f;
 
+    [SerializeField] private Vector3 offSetA;
+    [SerializeField] private Vector3 offSetB;
+
     [Header("=== Rotation Set A ===")]
     [SerializeField] private Transform rotA_Obj1;
     [SerializeField] private Transform rotA_Obj2;
@@ -41,70 +44,18 @@ public class Sinner009 : MonoBehaviour
     [SerializeField] private Vector3 rotB_To2;
     [SerializeField] private float rotB_Time = 1f;
 
+    [Header("=== Rotation Start Angles (Inspector) ===")]
+    [SerializeField] private Vector3 rotA_Start1;
+    [SerializeField] private Vector3 rotA_Start2;
+    [SerializeField] private Vector3 rotB_Start1;
+    [SerializeField] private Vector3 rotB_Start2;
+
     [Header("=== Flags ===")]
-    [SerializeField] private bool UseSetA = true;
-    [SerializeField] private bool UseTarget = false;
+    [SerializeField] private bool useSetA = true;
 
     [Header("=== Barrier Fade Settings ===")]
     [SerializeField] private float barrierFadeDuration = 1f;
     [SerializeField] private float barrierAlpha = 1f;
-
-    // ===== 初期値保持 =====
-    private Vector3 moveTargetA_StartPos;
-    private Vector3 moveTargetB_StartPos;
-    private Quaternion rotA_Obj1_StartRot;
-    private Quaternion rotA_Obj2_StartRot;
-    private Quaternion rotB_Obj1_StartRot;
-    private Quaternion rotB_Obj2_StartRot;
-    private float[] v_DoorMat_StartAlpha;
-    private float[] e_DoorMat_StartAlpha;
-    private float v_BarrierMat_StartAlpha;
-    private float e_BarrierMat_StartAlpha;
-    private Vector3 movePos_Start;
-    private float startAlpha_Start;
-    private float endAlpha_Start;
-    private float fadeInDuration_Start;
-    private float fadeOutDuration_Start;
-    private float moveTime_Start;
-    private float rotA_Time_Start;
-    private float rotB_Time_Start;
-    private float barrierFadeDuration_Start;
-    private float barrierAlpha_Start;
-
-    private void Awake()
-    {
-        // オブジェクト初期値保存
-        moveTargetA_StartPos = moveTargetA.localPosition;
-        moveTargetB_StartPos = moveTargetB.localPosition;
-
-        rotA_Obj1_StartRot = rotA_Obj1.localRotation;
-        rotA_Obj2_StartRot = rotA_Obj2.localRotation;
-        rotB_Obj1_StartRot = rotB_Obj1.localRotation;
-        rotB_Obj2_StartRot = rotB_Obj2.localRotation;
-
-        movePos_Start = movePos;
-        startAlpha_Start = startAlpha;
-        endAlpha_Start = endAlpha;
-        fadeInDuration_Start = fadeInDuration;
-        fadeOutDuration_Start = fadeOutDuration;
-        moveTime_Start = moveTime;
-        rotA_Time_Start = rotA_Time;
-        rotB_Time_Start = rotB_Time;
-        barrierFadeDuration_Start = barrierFadeDuration;
-        barrierAlpha_Start = barrierAlpha;
-
-        // マテリアル初期α保存
-        v_DoorMat_StartAlpha = new float[v_DoorMat.Length];
-        for (int i = 0; i < v_DoorMat.Length; i++)
-            v_DoorMat_StartAlpha[i] = v_DoorMat[i].GetColor("_MainColor").a;
-
-        e_DoorMat_StartAlpha = new float[e_DoorMat.Length];
-        for (int i = 0; i < e_DoorMat.Length; i++)
-            e_DoorMat_StartAlpha[i] = e_DoorMat[i].GetColor("_MainColor").a;
-
-        if (v_BarrierMat) v_BarrierMat_StartAlpha = v_BarrierMat.GetColor("_DotColor").a;
-        if (e_BarrierMat) e_BarrierMat_StartAlpha = e_BarrierMat.GetColor("_DotColor").a;
-    }
 
     private void OnEnable()
     {
@@ -112,62 +63,77 @@ public class Sinner009 : MonoBehaviour
         StartCoroutine(ProcessRoutine());
     }
 
-    // ===== 初期値に戻す =====
+    #region Reset / Initialization
+
     public void ResetAll()
     {
-        moveTargetA.localPosition = moveTargetA_StartPos;
-        moveTargetB.localPosition = moveTargetB_StartPos;
-
-        rotA_Obj1.localRotation = rotA_Obj1_StartRot;
-        rotA_Obj2.localRotation = rotA_Obj2_StartRot;
-        rotB_Obj1.localRotation = rotB_Obj1_StartRot;
-        rotB_Obj2.localRotation = rotB_Obj2_StartRot;
-
-        movePos = movePos_Start;
-        startAlpha = startAlpha_Start;
-        endAlpha = endAlpha_Start;
-        fadeInDuration = fadeInDuration_Start;
-        fadeOutDuration = fadeOutDuration_Start;
-        moveTime = moveTime_Start;
-        rotA_Time = rotA_Time_Start;
-        rotB_Time = rotB_Time_Start;
-        barrierFadeDuration = barrierFadeDuration_Start;
-        barrierAlpha = barrierAlpha_Start;
-
-        for (int i = 0; i < v_DoorMat.Length; i++)
+        if (v_DoorMat != null)
         {
-            Color c = v_DoorMat[i].GetColor("_MainColor");
-            c.a = v_DoorMat_StartAlpha[i];
-            v_DoorMat[i].SetColor("_MainColor", c);
+            foreach (var m in v_DoorMat)
+            {
+                if (m == null) continue;
+                if (m.HasProperty("_MainColor"))
+                {
+                    Color vCol = m.GetColor("_MainColor");
+                    vCol.a = 0f;
+                    m.SetColor("_MainColor", vCol);
+                }
+            }
         }
 
-        for (int i = 0; i < e_DoorMat.Length; i++)
+        if (e_DoorMat != null)
         {
-            Color c = e_DoorMat[i].GetColor("_MainColor");
-            c.a = e_DoorMat_StartAlpha[i];
-            e_DoorMat[i].SetColor("_MainColor", c);
+            foreach (var m in e_DoorMat)
+            {
+                if (m == null) continue;
+                if (m.HasProperty("_MainColor"))
+                {
+                    Color eCol = m.GetColor("_MainColor");
+                    eCol.a = 0f;
+                    m.SetColor("_MainColor", eCol);
+                }
+            }
         }
 
-        if (v_BarrierMat)
+        if (v_BarrierMat != null && v_BarrierMat.HasProperty("_DotColor"))
         {
-            Color c = v_BarrierMat.GetColor("_DotColor");
-            c.a = v_BarrierMat_StartAlpha;
-            v_BarrierMat.SetColor("_DotColor", c);
+            Color vb = v_BarrierMat.GetColor("_DotColor");
+            vb.a = 0f;
+            v_BarrierMat.SetColor("_DotColor", vb);
         }
 
-        if (e_BarrierMat)
+        if (e_BarrierMat != null && e_BarrierMat.HasProperty("_DotColor"))
         {
-            Color c = e_BarrierMat.GetColor("_DotColor");
-            c.a = e_BarrierMat_StartAlpha;
-            e_BarrierMat.SetColor("_DotColor", c);
+            Color eb = e_BarrierMat.GetColor("_DotColor");
+            eb.a = 0f;
+            e_BarrierMat.SetColor("_DotColor", eb);
+        }
+
+        if (moveTargetA != null) moveTargetA.position = offSetA;
+        if (moveTargetB != null) moveTargetB.position = offSetB;
+
+        if (rotA_Obj1 != null) rotA_Obj1.localRotation = Quaternion.Euler(rotA_Start1);
+        if (rotA_Obj2 != null) rotA_Obj2.localRotation = Quaternion.Euler(rotA_Start2);
+
+        if (rotB_Obj1 != null) rotB_Obj1.localRotation = Quaternion.Euler(rotB_Start1);
+        if (rotB_Obj2 != null) rotB_Obj2.localRotation = Quaternion.Euler(rotB_Start2);
+
+        if (targetRenderer != null && targetRenderer.material != null)
+        {
+            Material mat = targetRenderer.material;
+            Color startColor = mat.color;
+            startColor.a = fromAlpha;
+            mat.color = startColor;
         }
     }
-    
-    // ===== ProcessRoutine 以下は変更なし =====
+
+    #endregion
+
+    #region Main Routine
+
     IEnumerator ProcessRoutine()
     {
-        Coroutine fadeA = StartCoroutine(FadeAlpha());
-        yield return fadeA;
+        yield return StartCoroutine(FadeAlpha());
 
         Coroutine fadeV = StartCoroutine(FadeMaterials(v_DoorMat, 0f, startAlpha, fadeInDuration));
         Coroutine fadeE = StartCoroutine(FadeMaterials(e_DoorMat, 0f, startAlpha, fadeInDuration));
@@ -176,11 +142,9 @@ public class Sinner009 : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        Transform movingTarget = UseSetA ? moveTargetA : moveTargetB;
-        Material[] nonMovingMats = UseSetA ? v_DoorMat : e_DoorMat;
-        Vector3 finalOffset = UseTarget ? movePos * -1f : movePos;
-
-       
+        Transform movingTarget = useSetA ? moveTargetA : moveTargetB;
+        Material[] nonMovingMats = useSetA ? v_DoorMat : e_DoorMat;
+        Vector3 finalOffset = useSetA ? movePos : movePos * -1f;
 
         Coroutine moveCoroutine = StartCoroutine(MoveObject(movingTarget, finalOffset, moveTime));
         Coroutine fadeOutCoroutine = StartCoroutine(FadeMaterials(nonMovingMats, startAlpha, endAlpha, fadeOutDuration));
@@ -190,7 +154,7 @@ public class Sinner009 : MonoBehaviour
 
         yield return new WaitForSeconds(0.75f);
 
-        if (UseSetA)
+        if (useSetA)
             yield return StartCoroutine(RotateTwo(rotA_Obj1, rotA_Obj2, rotA_To1, rotA_To2, rotA_Time));
         else
             yield return StartCoroutine(RotateTwo(rotB_Obj1, rotB_Obj2, rotB_To1, rotB_To2, rotB_Time));
@@ -198,12 +162,20 @@ public class Sinner009 : MonoBehaviour
         yield return StartCoroutine(FadeBarrierAfterRotation());
 
         yield return new WaitForSeconds(0.25f);
+
         ResetAll();
         gameObject.SetActive(false);
     }
 
+    #endregion
+
+    #region Coroutines
+
     private IEnumerator FadeAlpha()
     {
+        if (targetRenderer == null || targetRenderer.material == null)
+            yield break;
+
         Material mat = targetRenderer.material;
         Color startColor = mat.color;
         startColor.a = fromAlpha;
@@ -222,7 +194,6 @@ public class Sinner009 : MonoBehaviour
             yield return null;
         }
 
-        // 最終値を確実にセット
         Color finalColor = mat.color;
         finalColor.a = toAlpha;
         mat.color = finalColor;
@@ -230,6 +201,9 @@ public class Sinner009 : MonoBehaviour
 
     IEnumerator MoveObject(Transform obj, Vector3 offset, float duration)
     {
+        if (obj == null)
+            yield break;
+
         Vector3 startPos = obj.localPosition;
         Vector3 endPos = startPos + offset;
 
@@ -257,7 +231,7 @@ public class Sinner009 : MonoBehaviour
 
             foreach (var m in mats)
             {
-                if (!m) continue;
+                if (m == null || !m.HasProperty("_MainColor")) continue;
                 Color c = m.GetColor("_MainColor");
                 c.a = Mathf.Lerp(fromAlpha, toAlpha, ratio);
                 m.SetColor("_MainColor", c);
@@ -268,7 +242,7 @@ public class Sinner009 : MonoBehaviour
 
         foreach (var m in mats)
         {
-            if (!m) continue;
+            if (m == null || !m.HasProperty("_MainColor")) continue;
             Color c = m.GetColor("_MainColor");
             c.a = toAlpha;
             m.SetColor("_MainColor", c);
@@ -277,6 +251,9 @@ public class Sinner009 : MonoBehaviour
 
     IEnumerator RotateTwo(Transform obj1, Transform obj2, Vector3 to1, Vector3 to2, float duration)
     {
+        if (obj1 == null || obj2 == null)
+            yield break;
+
         Quaternion s1 = obj1.localRotation;
         Quaternion s2 = obj2.localRotation;
 
@@ -301,19 +278,21 @@ public class Sinner009 : MonoBehaviour
 
     IEnumerator FadeBarrierAfterRotation()
     {
-        Material barrierMat = UseSetA ? e_BarrierMat : v_BarrierMat;
-
-        if (!barrierMat) yield break;
+        Material barrierMat = useSetA ? e_BarrierMat : v_BarrierMat;
+        if (barrierMat == null || !barrierMat.HasProperty("_DotColor")) yield break;
 
         float fromAlpha = barrierMat.GetColor("_DotColor").a;
         float t = 0f;
+
         while (t < barrierFadeDuration)
         {
             t += Time.deltaTime;
             float ratio = Mathf.Clamp01(t / barrierFadeDuration);
+
             Color c = barrierMat.GetColor("_DotColor");
             c.a = Mathf.Lerp(fromAlpha, barrierAlpha, ratio);
             barrierMat.SetColor("_DotColor", c);
+
             yield return null;
         }
 
@@ -321,4 +300,6 @@ public class Sinner009 : MonoBehaviour
         finalColor.a = barrierAlpha;
         barrierMat.SetColor("_DotColor", finalColor);
     }
+
+    #endregion
 }
