@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ChangeMouseSpeed : MonoBehaviour
 {
-
     public const uint SPI_SETMOUSESPEED = 0x0071;
     public const uint SPI_GETMOUSESPEED = 0x0070;
 
@@ -38,6 +37,11 @@ public class ChangeMouseSpeed : MonoBehaviour
             SystemParametersInfo(SPI_SETMOUSESPEED, 0, currSpeed, 0);
             speedText.text = currSpeed.ToString();
         }
+    }
+
+    public void ChangeMouseSpeedText()
+    {
+        speedText.text = mouseSpeedSlider.value.ToString();
     }
 
     public void SetMouseSpeed()

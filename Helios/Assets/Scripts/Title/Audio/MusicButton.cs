@@ -19,6 +19,10 @@ public class MusicButton : MonoBehaviour
     //    musicNameText.text = _audioClip.name;
     //}
 
+    /// <summary>
+    /// デバッグ用
+    /// </summary>
+    /// <param name="_s">曲名</param>
     public void SetAudioCiip(string _s)
     {
         musicNameText.text = _s;
@@ -26,7 +30,7 @@ public class MusicButton : MonoBehaviour
 
     public void playMusic()
     {
-        Locator<MusicList>.Instance.DeleteMusic();
+        Locator<MusicList>.Instance.DeleteMusic(musicNameText.text);
         //Locator<AudioManager>.Instance.PlayBGM(audioClip);
     }
 }

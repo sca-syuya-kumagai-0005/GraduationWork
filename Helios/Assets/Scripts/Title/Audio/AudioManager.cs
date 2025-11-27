@@ -1,10 +1,7 @@
 using DG.Tweening;
-using System;
 using UnityEngine;
 using UnityEngine.Audio;
-using static UnityEngine.Rendering.DebugUI;
 
-[Serializable]
 public enum Audio
 {
     MASTER,
@@ -21,13 +18,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioMixer masterMixer;
     [SerializeField] AudioMixerGroup BGMMixerGroup;
     [SerializeField] AudioMixerGroup SEMixerGroup;
-
-    //const string MasterVolume = "VolumeParam_Master";
-    //const string BGMVolume = "VolumeParam_BGM";
-    //const string SEVolume = "VolumeParam_SE";
-
     private static readonly string[] audioTypes = { "VolumeParam_Master", "VolumeParam_BGM", "VolumeParam_SE" };
-
     float BGMvolume = 0.5f;
     public float[] stockVolumes { get; private set; }
 
@@ -49,7 +40,6 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Locator<AudioManager>.Unbind(this);
             Destroy(gameObject);
         }
     }
@@ -109,7 +99,7 @@ public class AudioManager : MonoBehaviour
         BGM.DOFade(0.0f, _time);
     }
 
-    public float GetVolumeF(Audio _audio)
+    public float GetVolume(Audio _audio)
     {
         masterMixer.GetFloat(audioTypes[(int)_audio], out float value);
         value = Mathf.Clamp01(Mathf.Pow(10, value / 20f));
@@ -144,7 +134,7 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     /// <param name="_num">îzóÒî‘çÜ</param>
     /// <returns>âπó èÓïÒÇ0Å`1ÇÃîÕàÕÇ≈ï‘Ç∑</returns>
-    public float GetStockVolumeF(int _num)
+    public float GetStockVolume(int _num)
     {
         float value = Mathf.Clamp01(Mathf.Pow(10, stockVolumes[_num] / 20f));
         return value;
