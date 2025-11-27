@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a299c6cdb0f32f14daeae3b4a74101a2
+guid: e8a65c317d4c0734c8cb8cb59e4dbcd2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ParticleCloudWhite_0
+      name: QuestionDouble_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 960
+        height: 960
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,8 +125,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3e0ddde302ac1f942bab333640551319
-      internalID: 568848049
+      spriteID: a9a8ba1edffb0604fa2367341b2c25de
+      internalID: -1260824467
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 544609ce05e68fa47870beb0d14b7971
+    spriteID: 4603d9e6311efe24bbb9c773da9db0f8
     internalID: 0
     vertices: []
     indices: 
@@ -145,7 +145,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ParticleCloudWhite_0: 568848049
+      QuestionDouble_0: -1260824467
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
