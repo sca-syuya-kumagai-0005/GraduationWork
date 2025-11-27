@@ -63864,7 +63864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1657092748
 Transform:
   m_ObjectHideFlags: 0
@@ -63896,7 +63896,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1657092747}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ed5366c092d1c4796bc89c92d72d29, type: 3}
+  m_Script: {fileID: 11500000, guid: bc21b4cd4e4b8dc479b275d315cbb105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _materials:
@@ -63907,8 +63907,8 @@ MonoBehaviour:
   _colorPropertyName: _DotColor
   _fromAlpha: 0
   _toAlpha: 1
-  _duration: 2
-  _stagger: 1
+  _duration: 1
+  _stagger: 0.25
   _secondIsHalfAlpha: 1
   _useEaseInOut: 1
 --- !u!1 &1689581363
