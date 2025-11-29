@@ -50,11 +50,11 @@ public class SinnerDistribute : MonoBehaviour
         housed = saveDataManager.HousedSinner;
         standbySinners = saveDataManager.Days + 1;
         int gamePhase = 0;
-        if (0 <= saveDataManager.Days && saveDataManager.Days < 10)
+        if (0 <= saveDataManager.Days && saveDataManager.Days < 9)
         {
             gamePhase = 0;
         }
-        else if (10 <= saveDataManager.Days && saveDataManager.Days < 20)
+        else if (10 <= saveDataManager.Days && saveDataManager.Days < 19)
         {
             gamePhase = 1;
         }
@@ -102,18 +102,18 @@ public class SinnerDistribute : MonoBehaviour
                 if (sinnerPools[gp].Count == 0) break;
                 if (housed[i])
                 {
-                    HousedNewSinner(gp, i, mapName + i);
+                    HousedNewSinner(gp, i);
                 }
             }
         }
 
         for (int i = 0; i < standbySinners; i++)
         {
-            HousedNewSinner(gamePhase, mapName);
+            HousedNewSinner(gamePhase);
         }
     }
 
-    private void HousedNewSinner(int phase, string mapAddress)
+    private void HousedNewSinner(int phase)
     {
         if (sinnerPools[phase].Count == 0) return;
         if (houseList[phase].Count == 0) return;
@@ -121,20 +121,20 @@ public class SinnerDistribute : MonoBehaviour
         int rand_house = Random.Range(0, houseList[phase].Count);
         int componentID = sinnerPools[phase][rand_sinner];
         houseList[phase][rand_house].AddComponent(sinnerComponents[componentID - 1].GetType());
+        Debug.Log(houseList[phase][rand_house] + "に" + componentID + "出現");
         houseList[phase].RemoveAt(rand_house);
         sinnerPools[phase].RemoveAt(rand_sinner);
         housed[rand_sinner] = true;
-        Debug.Log(mapAddress + "に" + componentID + "出現");
     }
-    private void HousedNewSinner(int phase, int stayedSinnerID, string mapAddress)
+    private void HousedNewSinner(int phase, int stayedSinnerID)
     {
         if (sinnerPools[phase].Count <= stayedSinnerID) return;
         if (houseList[phase].Count == 0) return;
         int rand = Random.Range(0, houseList[phase].Count);
         int componentID = sinnerPools[phase][stayedSinnerID];
         houseList[phase][rand].AddComponent(sinnerComponents[componentID - 1].GetType());
+        Debug.Log(houseList[phase][rand] + "に" + componentID + "出現");
         houseList[phase].RemoveAt(rand);
         standbySinners--;
-        Debug.Log(mapAddress + "に" + componentID + "出現");
     }
 }
