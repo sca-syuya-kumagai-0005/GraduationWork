@@ -30,7 +30,7 @@ public class RandomTable : MonoBehaviour
             
     }
         tableReadOnly = table;
-        Debug.Log(tableReadOnly.Count);
+        //Debug.Log(tableReadOnly.Count);
     }
 
     public IEnumerator RandomMove(GameObject moveObj,Vector3 endPosition,float time)

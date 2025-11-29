@@ -33,6 +33,7 @@ public class SaveDataManager : MonoBehaviour
     }
     public void Save()
     {
+        Debug.Log("Saved");
         string path = @"\Assets/SaveData.txt";
         if (File.Exists(Application.dataPath+ path))
         {
@@ -69,7 +70,7 @@ public class SaveDataManager : MonoBehaviour
         for (int i = 0; i < data[(int)DataAddress.HOUSEDSINNER].Length; i++)
         {
             housedSinners[i] = Convert.ToBoolean(housed[i] - adjustment);
-            sinnerMemory[i] = Convert.ToBoolean(memory[i] - adjustment);
+            //sinnerMemory[i] = Convert.ToBoolean(memory[i] - adjustment);
         }     
     }
 }
