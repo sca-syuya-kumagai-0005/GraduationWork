@@ -9526,6 +9526,7 @@ MonoBehaviour:
   nextButton: {fileID: 770186650}
   scrollContent: {fileID: 1272718575}
   contents: []
+  sinnerInfomations: []
 --- !u!58 &1289744394
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -14699,6 +14700,10 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: type
       value: Catra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.name
+      value: "\u3042\u3044\u3046\u3048\u304A"
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
