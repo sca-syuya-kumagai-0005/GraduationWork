@@ -83,6 +83,7 @@ public class SinnerDistribute : MonoBehaviour
         {
             for (int i = plotIDs[gp][0]; i <= plotIDs[gp][1]; i++)
             {
+               
                 GameObject go = GameObject.Find(mapName + i);
                 for (int j = 0; j < go.transform.childCount; j++)
                 {
@@ -108,11 +109,11 @@ public class SinnerDistribute : MonoBehaviour
 
         for (int i = 0; i < standbySinners; i++)
         {
-            HousedNewSinner(gamePhase, mapName + i);
+            HousedNewSinner(gamePhase, mapName);
         }
     }
 
-    private void HousedNewSinner(int phase, string map)
+    private void HousedNewSinner(int phase, string mapAddress)
     {
         if (sinnerPools[phase].Count == 0) return;
         if (houseList[phase].Count == 0) return;
@@ -123,9 +124,9 @@ public class SinnerDistribute : MonoBehaviour
         houseList[phase].RemoveAt(rand_house);
         sinnerPools[phase].RemoveAt(rand_sinner);
         housed[rand_sinner] = true;
-        Debug.Log(map + "に" + componentID + "出現");
+        Debug.Log(mapAddress + "に" + componentID + "出現");
     }
-    private void HousedNewSinner(int phase, int stayedSinnerID, string map)
+    private void HousedNewSinner(int phase, int stayedSinnerID, string mapAddress)
     {
         if (sinnerPools[phase].Count <= stayedSinnerID) return;
         if (houseList[phase].Count == 0) return;
@@ -134,6 +135,6 @@ public class SinnerDistribute : MonoBehaviour
         houseList[phase][rand].AddComponent(sinnerComponents[componentID - 1].GetType());
         houseList[phase].RemoveAt(rand);
         standbySinners--;
-        Debug.Log(map + "に" + componentID + "出現");
+        Debug.Log(mapAddress + "に" + componentID + "出現");
     }
 }

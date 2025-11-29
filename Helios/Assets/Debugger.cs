@@ -17,7 +17,7 @@ public class Debugger : MonoBehaviour
             Debug.Log("Raycast hits:");
             foreach (var hit in results)
             {
-                Debug.Log("Hit: " + hit.gameObject.name);
+                //Debug.Log("Hit: " + hit.gameObject.name);
             }
         }
     }

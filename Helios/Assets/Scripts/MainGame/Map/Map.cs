@@ -190,7 +190,7 @@ public class Map : MonoBehaviour
                 md.heightPositionID =i+height;
 
 
-                Debug.Log("error" + data[i][j]);
+                //Debug.Log("error" + data[i][j]);
                 GameObject obj = Instantiate(objectSpace,new Vector3(j+width,-(i+height),0),Quaternion.identity,address.transform);
                 GameObject instObj = mapObjects[(int.Parse(strs[0]))];
                 instObj = Instantiate(instObj, obj.transform.position, Quaternion.identity, obj.transform);
