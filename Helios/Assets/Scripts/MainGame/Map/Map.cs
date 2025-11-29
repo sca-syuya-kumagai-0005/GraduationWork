@@ -61,9 +61,13 @@ public class Map : MonoBehaviour
         ZOO = 21,
         PARK =22,
     }
+
+    int day;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        day=GameObject.Find("SaveManager").gameObject.GetComponent<SaveDataManager>().Days;
+
         for(int i = 0; i < MAPHEIGHT_MAX;i++)
         {
             mapDatas[i]=new MapData[MAPWIDTH_MAX];
@@ -75,8 +79,22 @@ public class Map : MonoBehaviour
             GameObject address = new GameObject();
             address.transform.parent = transform;
             address.name = "Address" + underbar + plotNumber[i];
-            if(plotNumber[i]==0)data = Read(mapCsv[plotNumber[i]]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
-            else data = Read(mapCsv[10]);
+            if(day<10)
+            {
+                if (plotNumber[i] == 0) data = Read(mapCsv[plotNumber[i]]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
+                else data = Read(mapCsv[10]);
+            }
+            else if(day<=20)
+            {
+                if (plotNumber[i] >= 0 && plotNumber[i]<=4) data = Read(mapCsv[plotNumber[i]]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
+                else data = Read(mapCsv[10]);
+            }
+            else if(day<=30)
+            {
+                if (plotNumber[i] >= 0 && plotNumber[i] <= 8) data = Read(mapCsv[plotNumber[i]]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
+                else data = Read(mapCsv[10]);
+            }
+            Debug.Log("マップアドレスは"+i);
             MapCreate(data, plotNumber[i], address);
         }
 
@@ -185,6 +203,8 @@ public class Map : MonoBehaviour
             {
                 string[] strs = data[i][j].Split(underbar);
                 MapData md = new MapData();
+                // Debug.Log(strs[0]);
+                if (strs[0]=="X")continue;
                 md.objectID = int.Parse(strs[0]);
                 md.widthPositionID = j+width;
                 md.heightPositionID =i+height;
