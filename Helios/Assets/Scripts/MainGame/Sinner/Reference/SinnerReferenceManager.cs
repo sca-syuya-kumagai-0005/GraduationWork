@@ -6,7 +6,7 @@ using static KumagaiLibrary.Unity.CsvManager;
 
 using Unity.VisualScripting;
 
-public class SinnerReferenceManager : MonoBehaviour
+public class SinnerReferenceManager : SinnerReferenceBase
 {
     [SerializeField] private GameObject sinnerReference;
     [SerializeField] private GameObject backButton;
@@ -41,11 +41,7 @@ public class SinnerReferenceManager : MonoBehaviour
         public string appendix;
     }
 
-    const string RISK_LUMENIS = "Lumenis";
-    const string RISK_VELGRA = "Velgra";
-    const string RISK_DRAVEX = "Dravex";
-    const string RISK_ZERATH = "Zerath";
-    const string RISK_OBLIVARA = "Oblivara";
+    
 
     const string DETENTION_SECRA = "Secra";
     const string DETENTION_VIGIL = "Vigil";

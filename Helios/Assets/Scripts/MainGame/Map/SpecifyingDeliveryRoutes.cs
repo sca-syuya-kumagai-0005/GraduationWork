@@ -16,7 +16,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     const int driverCount = 4;//トラックの数
     [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
     Map map;
-    ShortestPathSearch shortestPathSearch;
+    ShortestPathSearch shortestPathSearch;//最短経路探索のスクリプト
     List<int>[] routeObjectsID = new List<int>[driverCount];//それぞれのトラックが通るオブジェクトを順番通りに格納
     List<int[]>[] routes = new List<int[]>[driverCount];
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
@@ -76,6 +76,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     bool memoring;
 
     List<int>[] deliveryData = new List<int>[driverCount];//シナー側で使うデータ。配達の時に通ったオブジェクトとそれに隣接するオブジェクトのID
+    List<int>[] DeleveryData {get{return deliveryData;} }
     [SerializeField] List<string> delivery = new List<string>();
 
     [SerializeField] Dictionary<string, bool>[] sinnerDebuff = new Dictionary<string, bool>[driverCount];
