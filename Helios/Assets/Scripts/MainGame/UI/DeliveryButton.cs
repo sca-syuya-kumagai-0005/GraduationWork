@@ -31,7 +31,7 @@ public class DeliveryButton : EventSetter
     }
     private void OnClick()
     {
-        Debug.Log(myButtonType + "Button" + myButtonID + ":クリック");
+        //Debug.Log(myButtonType + "Button" + myButtonID + ":クリック");
         switch (myButtonType)
         {
             case ButtonType.Item:
