@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_BarberPole2D
-  m_Shader: {fileID: 4800000, guid: 144d95cad4c60de49ac62c834e8b1c41, type: 3}
+  m_Name: CRT
+  m_Shader: {fileID: 4800000, guid: 4fac292668036614fbf021a94a7fe669, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,15 +29,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 1
-    - _Angle: 92.5
-    - _Emission: 25
-    - _LineWidth: 0.1
-    - _Speed: -0.5
-    - _StripeWidth: 20
+    - _Distortion: 0.05
+    - _Line: 1
+    - _LineIntensity: 0.3
+    - _Noise: 0.2
+    - _NoiseSpeed: 1
+    - _ScanFreq: 300
     m_Colors:
-    - _Color1: {r: 1.8244281, g: 0, b: 2.9960785, a: 1}
-    - _Color2: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissionColor: {r: 5.0000005, g: 1, b: 1, a: 1}
+    - _Tint: {r: 1, g: 0.099056564, b: 0.099056564, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
