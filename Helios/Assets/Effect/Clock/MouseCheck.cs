@@ -41,6 +41,16 @@ public class MouseCheck : MonoBehaviour
         }
     }
 
+    private void OnMouseEnter()
+    {
+        isMouseOver = true;
+    }
+
+    private void OnMouseExit()
+    {
+        isMouseOver = false;
+    }
+
     private void MoveObject()
     {
         Vector3 targetPos = isMouseOver ? endPos : startPos;
