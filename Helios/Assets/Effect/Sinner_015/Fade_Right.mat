@@ -26,7 +26,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Fade: 0
-    - _Feather: 0
+    - _Feather: 0.5
     - _Power: 1.75
     m_Colors: []
   m_BuildTextureStacks: []
