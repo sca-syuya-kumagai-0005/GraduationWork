@@ -35,7 +35,7 @@ public class ProgressGraph : MonoBehaviour
                 saveData.Save();
                 timeLine.NextDay();
                 gameState.GameState = GameStateSystem.State.End;
-                StartCoroutine(blackScreen.FadeOut("MainScene"));
+                StartCoroutine(blackScreen.FadeOut("Adventure"));
             }
         }
     }

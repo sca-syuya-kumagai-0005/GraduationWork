@@ -28,6 +28,11 @@ public class BlackScreen : EasingMethods
             yield return null;
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sceneName">‘JˆÚ‚µ‚½‚¢ƒV[ƒ“–¼</param>
+    /// <returns></returns>
     public IEnumerator FadeOut(string sceneName)
     {
         gameObject.SetActive(true);

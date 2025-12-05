@@ -9,7 +9,7 @@ public class ItemID_009 : Sinner
         liskClass = LiskClass.Zerath;
         probabilitys = new float[8] { 10.0f, 10.0f, 20.0f, 100.0f, 150.0f, 50.0f, 250.0f, 0.0f };
         sinnerID = "ItemID_009";
-        sinnerName = "ヴァリアンス・オブ・エレナ";
+        sinnerName = "朽ちた天馬";
         LoadSprite("atokaraireru");
         //effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
         //GetEffectObject(true);

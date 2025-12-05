@@ -1,10 +1,10 @@
-﻿SetCharacter_A,上司.png
+﻿SetCharacter_A,上司
 SetSpeakTiming,0.5
 Speak_A,ああああああああああああああ
-SetCharacter_B,同僚A.png
+SetCharacter_B,同僚A
 Speak_B,いいいいいいいいいいいいいい
 RemoveCharacter_A,
-SetCharacter_A,同僚B.png
+SetCharacter_A,同僚B
 SetSpeakTiming,0.0
 Speak_A,うううううううううううううう
 Speak_Announce,〇日目を開始します。
