@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using KumagaiLibrary.Unity;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Adventure : MonoBehaviour
@@ -48,11 +49,12 @@ public class Adventure : MonoBehaviour
     void Start()
     {
         SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
+        backGround = GameObject.Find("BackGround").gameObject.GetComponent<Image>();
         nameBox = GameObject.Find("NameBox").gameObject.GetComponent<Text>();
         messageBox = GameObject.Find("MessageBox").gameObject.GetComponent<Text>();
         days = saveDataManager.Days;
         isComplete = true;
-        csvData = CsvManager.Read(storyCsvFiles[0]);
+        csvData = CsvManager.Read(storyCsvFiles[days]);
         lines = 0;
         speakTiming = 0;
         nameBox.name = "";
@@ -74,7 +76,11 @@ public class Adventure : MonoBehaviour
             commandTarget = data[commandTargetAdress];
         }
         //Debug.Log(commandType+":"+commandTarget);
-        if (csvData[lines][column_command] == nameof(Command.End)) Debug.Log("終了");
+        if (csvData[lines][column_command] == nameof(Command.End))
+        {
+            if (isComplete)
+                ChangeScene();
+        }
         else
         if (isComplete)
         {
@@ -166,11 +172,12 @@ public class Adventure : MonoBehaviour
     /// <summary>
     /// テキストウィンドウの文字送りを行う関数。
     /// </summary>
-    private IEnumerator ViewText(string quota,string text)
+    private IEnumerator ViewText(string quotaCommand,string text)
     {
         Debug.Log("Speak呼び出し");
         string name = "";
-        switch (ConvertStringToQuota(quota))
+        CharacterQuota quota = ConvertStringToQuota(quotaCommand);
+        switch (quota)
         {
             case CharacterQuota.Announce:
                 name = nameof(CharacterQuota.Announce);
@@ -179,7 +186,7 @@ public class Adventure : MonoBehaviour
                 name = "SystemError";
                 break;
             default:
-                name = characterNames[(int)ConvertStringToQuota(quota)];
+                name = characterNames[(int)quota];
                 break;
         }
         nameBox.text = name;
@@ -240,5 +247,10 @@ public class Adventure : MonoBehaviour
         //演出あるならどうぞ
         gameObject.GetComponent<Image>().sprite = sprite;
         yield return null;
+    }
+
+    private void ChangeScene()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 }
