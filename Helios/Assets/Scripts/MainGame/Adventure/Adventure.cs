@@ -40,7 +40,7 @@ public class Adventure : MonoBehaviour
         A=0,
         B,
         C,
-        Announce,
+        D,
         Else
     }
     private const byte column_command = 0;
@@ -179,9 +179,6 @@ public class Adventure : MonoBehaviour
         CharacterQuota quota = ConvertStringToQuota(quotaCommand);
         switch (quota)
         {
-            case CharacterQuota.Announce:
-                name = nameof(CharacterQuota.Announce);
-                break;
             case CharacterQuota.Else:
                 name = "SystemError";
                 break;
@@ -230,8 +227,8 @@ public class Adventure : MonoBehaviour
             case nameof(CharacterQuota.C):
                 ret = CharacterQuota.C;
                 break;
-            case nameof(CharacterQuota.Announce):
-                ret = CharacterQuota.Announce;
+            case nameof(CharacterQuota.D):
+                ret = CharacterQuota.D;
                 break;
         }
         return ret;
