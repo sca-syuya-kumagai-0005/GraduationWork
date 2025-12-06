@@ -115,7 +115,7 @@ public class Sinner : MonoBehaviour
         specifyingDeliveryRoutes = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
         transform.GetComponent<MapObjectRequest>().HaveSinner=true;
 
-        transform.GetChild(0).GetComponent<SpriteRenderer>().color=new Color(1.0f,0.5f,0.0f);
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color=new Color(0.925f,0.52f,0.0f);
     }
 
     /// <summary>

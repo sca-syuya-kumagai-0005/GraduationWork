@@ -45,6 +45,8 @@ public class Adventure : MonoBehaviour
     }
     private const byte column_command = 0;
     private const byte column_Text = 1;
+
+    private bool isSkiped;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -110,6 +112,10 @@ public class Adventure : MonoBehaviour
             }
             lines++;
         }
+        if(Input.GetMouseButtonDown(0))
+        {
+            isSkiped = true;
+        }
     }
     /// <summary>
     /// 文字送りの矢印のモーション。
@@ -174,6 +180,7 @@ public class Adventure : MonoBehaviour
     /// </summary>
     private IEnumerator ViewText(string quotaCommand,string text)
     {
+        isSkiped = false;
         Debug.Log("Speak呼び出し");
         string name = "";
         CharacterQuota quota = ConvertStringToQuota(quotaCommand);
@@ -194,7 +201,7 @@ public class Adventure : MonoBehaviour
         for(int i = 0; i < text.Length; i++)
         {
             messageBox.text += text[i];
-            if (Input.GetMouseButtonDown(0))
+            if (isSkiped)
             {
                 i = text.Length;
                 messageBox.text = text;
