@@ -57,7 +57,7 @@ public class Map : MonoBehaviour
         SHIRINE = 17,
         SCHOOL = 18,
         AQUARIUM = 19,
-        SEA = 20,
+        SEA = 99,
         ZOO = 21,
         PARK =22,
     }
