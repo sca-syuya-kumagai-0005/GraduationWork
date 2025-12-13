@@ -1,9 +1,10 @@
 using UnityEngine;
+using System;
 
 public class SinnerReferenceBase : MonoBehaviour
 {
      
-    public struct SinnerRisk
+    protected struct SinnerRisk
     {
         public const string LUMENIS = "Lumenis";
         public const string VELGRA = "Velgra";
@@ -12,7 +13,7 @@ public class SinnerReferenceBase : MonoBehaviour
         public const string OBLIVARA = "Oblivara";
     }
 
-    public struct SinnerType
+    protected struct SinnerType
     {
         public const string SECRA = "Secra";
         public const string VIGIL = "Vigil";
@@ -33,28 +34,26 @@ public class SinnerReferenceBase : MonoBehaviour
         public string apperance;
         public string exeplanation;
         public string[] overView;
+        public GameObject thisObject;
     }
-
-
-    public struct SortFlags
+    [System.Serializable]
+    public struct Risk
     {
-        public struct Risk
-        {
-           public bool lumenis;
-           public bool velgra;
-           public bool dravex;
-           public bool zerath;
-           public bool oblivara;
-        }
-
-        public struct Type
-        {
-            public bool secra;
-            public bool vigil;
-            public bool hazra;
-            public bool catra;
-            public bool nulla;
-        }
-       
+        public bool lumenis;
+        public bool velgra;
+        public bool dravex;
+        public bool zerath;
+        public bool oblivara;
     }
+    [System.Serializable]
+    public struct Type
+    {
+        public bool secra;
+        public bool vigil;
+        public bool hazra;
+        public bool catra;
+        public bool nulla;
+    }
+       
+    
 }
