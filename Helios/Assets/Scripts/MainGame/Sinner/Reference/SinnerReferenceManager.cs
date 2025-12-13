@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 using static KumagaiLibrary.Unity.EventSet;
 using static KumagaiLibrary.Unity.CsvManager;
+
 
 using Unity.VisualScripting;
 
@@ -25,21 +27,12 @@ public class SinnerReferenceManager : SinnerReferenceBase
     int pageCount = 0;
 
     const string downKey = "Down";
+    [SerializeField]
+    Risk riskFlags;
 
-
-    //public struct SinnerInfomation
-    //{
-    //    public string name;
-    //    public string type;
-    //    public string risk;
-    //    public string abnormal;
-    //    public string[] condition;
-    //    public int id;
-    //    public string appearance;
-    //    public string explanation;
-    //    public string interview;
-    //    public string appendix;
-    //}
+    [SerializeField]
+    Type typeFlags;
+  
 
     
 
@@ -47,11 +40,65 @@ public class SinnerReferenceManager : SinnerReferenceBase
 
     const int SINNER_MAX= 31;
     public List<SinnerInfomation> sinnerInfomations=new List<SinnerInfomation>();//シナーのデータ全て
+    [SerializeField]
     List<SinnerInfomation> displaySinners;//ソートによって表示するシナー
     //List<string> readData;
     List<SinnerInfomation> SinnerSort()
     {
         return new List<SinnerInfomation>();
+    }
+
+    public void CheckSortList()
+    {
+        List<SinnerInfomation> displaySinners = new List<SinnerInfomation>();//表示しない要素をまとめたList
+        Debug.Log(sinnerInfomations.Count);
+        Debug.Log(riskFlags.lumenis);
+        sinnerInfomations.Sort((a, b) => a.id.CompareTo(b.id));
+        for (int i=0;i<sinnerInfomations.Count;i++)
+        {
+            switch(sinnerInfomations[i].risk)
+            {
+                case (SinnerRisk.LUMENIS):
+                    {
+                        if(riskFlags.lumenis)displaySinners.Add(sinnerInfomations[i]);
+                        break;
+                    }
+                case (SinnerRisk.VELGRA):
+                    {
+                        if (riskFlags.velgra) displaySinners.Add(sinnerInfomations[i]);
+                        break;
+                    }
+                case (SinnerRisk.DRAVEX):
+                    {
+                        if (riskFlags.dravex) displaySinners.Add(sinnerInfomations[i]);
+                        break;
+                    }
+                case (SinnerRisk.ZERATH):
+                    {
+                        if (riskFlags.zerath) displaySinners.Add(sinnerInfomations[i]);
+                        break;
+                    }
+                case (SinnerRisk.OBLIVARA):
+                    {
+                        if (riskFlags.oblivara) displaySinners.Add(sinnerInfomations[i]);
+                        break;
+                    }
+            }
+            
+        }
+
+        for(int i=0;i<sinnerInfomations.Count;i++)
+        {
+            sinnerInfomations[i].thisObject.SetActive(false);
+            for (int j=0;j<displaySinners.Count;j++)
+            {
+                
+                if (i == displaySinners[j].id)
+                {
+                    displaySinners[j].thisObject.SetActive(true);
+                }
+            }
+        }
     }
 
     
@@ -105,12 +152,8 @@ public class SinnerReferenceManager : SinnerReferenceBase
     private void Update()
     {
         brokker.transform.position = transform.position + map.transform.localPosition;
-        //for (int i = 0; i < page.Length; i++)
-        //{
-        //    if (i == pageCount) page[i].SetActive(true);
-        //    else page[i].SetActive(false);
-        //}
-        //page[pageCount].SetActive(true);
+        CheckSortList();
+     
     }
     // Update is called once per frame
 
