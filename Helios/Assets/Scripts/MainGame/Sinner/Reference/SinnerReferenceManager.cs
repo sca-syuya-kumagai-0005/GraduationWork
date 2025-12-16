@@ -22,7 +22,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
     [SerializeField] GameObject nextButton;
    // [SerializeField] GameObject[] page;
     [SerializeField] GameObject scrollContent;
-    [SerializeField]List<GameObject> contents;
+    //[SerializeField]List<GameObject> contents;
    // [SerializeField] TextAsset[] sinnerDatas;
     int pageCount = 0;
 
@@ -53,38 +53,108 @@ public class SinnerReferenceManager : SinnerReferenceBase
         List<SinnerInfomation> displaySinners = new List<SinnerInfomation>();//表示しない要素をまとめたList
         Debug.Log(sinnerInfomations.Count);
         Debug.Log(riskFlags.lumenis);
-        sinnerInfomations.Sort((a, b) => a.id.CompareTo(b.id));
+        sinnerInfomations.Sort((a, b) => a.id.CompareTo(b.id));//シナーの情報を格納しているListの順番がバラバラなので一度シナー番号順に並べる
         for (int i=0;i<sinnerInfomations.Count;i++)
         {
             switch(sinnerInfomations[i].risk)
             {
                 case (SinnerRisk.LUMENIS):
                     {
-                        if(riskFlags.lumenis)displaySinners.Add(sinnerInfomations[i]);
+                        if (riskFlags.lumenis)
+                        {
+                            Debug.Log("LUMENIS");
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
                         break;
                     }
                 case (SinnerRisk.VELGRA):
                     {
-                        if (riskFlags.velgra) displaySinners.Add(sinnerInfomations[i]);
+                        if (riskFlags.velgra)
+                        {
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
                         break;
                     }
                 case (SinnerRisk.DRAVEX):
                     {
-                        if (riskFlags.dravex) displaySinners.Add(sinnerInfomations[i]);
+                        if (riskFlags.dravex)
+                        {
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
                         break;
                     }
                 case (SinnerRisk.ZERATH):
                     {
-                        if (riskFlags.zerath) displaySinners.Add(sinnerInfomations[i]);
+                        if (riskFlags.zerath)
+                        {
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
                         break;
                     }
                 case (SinnerRisk.OBLIVARA):
                     {
-                        if (riskFlags.oblivara) displaySinners.Add(sinnerInfomations[i]);
+                        if (riskFlags.oblivara)
+                        {
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
                         break;
                     }
             }
-            
+
+            switch(sinnerInfomations[i].type)
+            {
+                case (SinnerType.SECRA):
+                    {
+                        if (typeFlags.secra)
+                        {
+                            Debug.Log("SECRA");
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
+                        break;
+                    }
+                case (SinnerType.VIGIL):
+                    {
+                        if (typeFlags.vigil)
+                        {
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
+                        break;
+                    }
+                case (SinnerType.HAZRA):
+                    {
+                        if (typeFlags.hazra)
+                        {
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
+                        break;
+                    }
+                case (SinnerType.CATRA):
+                    {
+                        if (typeFlags.catra)
+                        {
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
+                        break;
+                    }
+                case (SinnerType.NULLA):
+                    {
+                        if (typeFlags.nulla)
+                        {
+                            displaySinners.Add(sinnerInfomations[i]);
+                            continue;
+                        }
+                        break;
+                    }
+            }
         }
 
         for(int i=0;i<sinnerInfomations.Count;i++)
