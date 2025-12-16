@@ -802,6 +802,10 @@ PrefabInstance:
       value: Secra
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
       value: "\u3042\u306A\u305F\u306E\u70BA\u306E\u5929\u8C61\u5100"
       objectReference: {fileID: 0}
@@ -1366,6 +1370,10 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: type
       value: Hazra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
@@ -3355,6 +3363,10 @@ PrefabInstance:
       value: Secra
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
       value: "\u7D05\u3044\u7CF8"
       objectReference: {fileID: 0}
@@ -3589,6 +3601,10 @@ PrefabInstance:
       value: Secra
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
       value: "\u30E1\u30E2\u30EA\u30FC\u30B9\u30EA\u30F3\u30AC\u30FC"
       objectReference: {fileID: 0}
@@ -3736,6 +3752,10 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: type
       value: Secra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
@@ -5322,6 +5342,10 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: type
       value: Vigil
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
@@ -9525,8 +9549,20 @@ MonoBehaviour:
   - {fileID: 2037605282}
   nextButton: {fileID: 770186650}
   scrollContent: {fileID: 1272718575}
-  contents: []
+  riskFlags:
+    lumenis: 0
+    velgra: 0
+    dravex: 0
+    zerath: 0
+    oblivara: 0
+  typeFlags:
+    secra: 0
+    vigil: 0
+    hazra: 0
+    catra: 0
+    nulla: 0
   sinnerInfomations: []
+  displaySinners: []
 --- !u!58 &1289744394
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -9747,6 +9783,10 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: type
       value: Catra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
@@ -10002,6 +10042,10 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: type
       value: Hazra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
@@ -11113,6 +11157,10 @@ PrefabInstance:
       value: Secra
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
       value: "\u8F2A\u5531\u306E\u5098"
       objectReference: {fileID: 0}
@@ -11475,6 +11523,10 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: type
       value: Secra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
@@ -12524,6 +12576,10 @@ PrefabInstance:
       value: Nulla
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
       value: "\u30D1\u30F3\u30C4\u30A1\u30FC-TSD-\u8ECA\u638C"
       objectReference: {fileID: 0}
@@ -13389,6 +13445,10 @@ PrefabInstance:
       value: Secra
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
       value: "\u81EA\u899A\u306E\u9053\u306F\u5DF1\u304C\u5922"
       objectReference: {fileID: 0}
@@ -13587,6 +13647,10 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: type
       value: Secra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
@@ -14216,6 +14280,10 @@ PrefabInstance:
       value: Secra
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.id
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
       value: "\u6C34\u9762\u3068\u540D\u93E1"
       objectReference: {fileID: 0}
@@ -14704,6 +14772,14 @@ PrefabInstance:
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: info.name
       value: "\u3042\u3044\u3046\u3048\u304A"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.risk
+      value: Lumenis
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
+      propertyPath: info.type
+      value: Secra
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: sinnerName
