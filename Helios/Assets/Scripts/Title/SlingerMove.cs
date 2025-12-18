@@ -5,24 +5,26 @@ using UnityEngine;
 
 public class SlingerMove : EasingMethods
 {
-    KeyCode[] inputKey;
     float z;
     [SerializeField] float moveAngle;
     [SerializeField] float moveTime;
     public bool isMove {  get; private set; }
+    RectTransform myRect;
 
-    void Start()
+    void Awake()
     {
         z = GetComponent<RectTransform>().rotation.z;
-        inputKey = new KeyCode[2];
-        inputKey[0] = KeyCode.A;
-        inputKey[1] = KeyCode.D;
         isMove = false;
+        myRect = GetComponent<RectTransform>();
+    }
+
+    private void OnEnable()
+    {
+        myRect.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     public IEnumerator Move(float _dir)
     {
-        RectTransform rect = GetComponent<RectTransform>();
         var sequence = DOTween.Sequence();
         isMove = true;
         float time = 0f;
@@ -36,7 +38,7 @@ public class SlingerMove : EasingMethods
                 time = moveTime;
             }
             float angle = (moveAngle * _dir) * EaseOutBack(EaseInCubic(time / moveTime));
-            rect.localRotation = Quaternion.Euler(0, 0, angle + z);
+            myRect.localRotation = Quaternion.Euler(0, 0, angle + z);
         }
         z += moveAngle * _dir;
         gameObject.transform.DOShakePosition(0.3f,0.7f,10,60,false);
