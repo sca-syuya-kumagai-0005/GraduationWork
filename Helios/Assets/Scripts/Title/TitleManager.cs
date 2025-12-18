@@ -16,7 +16,6 @@ public class TitleManager : MonoBehaviour
 {
     [SerializeField] TitleAnimationManager animationManager;
     [SerializeField] SlingerMove slingerMove;
-    KeyCode[] inputKey;
     Select select;
     [SerializeField] GameObject optionCanvasObj;
     bool isSelect;
@@ -24,9 +23,6 @@ public class TitleManager : MonoBehaviour
     {
         Locator<TitleManager>.Bind(this);
         select = Select.BEGINNING;
-        inputKey = new KeyCode[2];
-        inputKey[0] = KeyCode.A;
-        inputKey[1] = KeyCode.D;
         isSelect = false;
     }
     void Start()
@@ -35,6 +31,11 @@ public class TitleManager : MonoBehaviour
     }
 
     void Update()
+    {
+        InputSlingerMove();
+    }
+
+    void InputSlingerMove()
     {
         if (!isSelect || slingerMove.isMove) return;
         float mouse = Input.mouseScrollDelta.y;
@@ -56,7 +57,10 @@ public class TitleManager : MonoBehaviour
         yield return StartCoroutine(animationManager.CautionaryAnim(CautionaryNum.WARNING));
         yield return StartCoroutine(animationManager.CautionaryAnim(CautionaryNum.SOUND));
         yield return StartCoroutine(animationManager.TitleStartAnim());
-        yield return StartCoroutine(animationManager.TitleSelectDisplayAnim());
+        StartCoroutine(animationManager.TitleSelectDisplayAnim());
+    }
+    public void SelectStart()
+    {
         isSelect = true;
     }
 
@@ -65,17 +69,30 @@ public class TitleManager : MonoBehaviour
         Instantiate(optionCanvasObj);
     }
 
+    public void CloseMyRoom()
+    {
+        StartCoroutine(animationManager.TitleSelectDisplayAnim());
+    }
+
+    IEnumerator GoMain(bool _isPlay)
+    {
+        yield return StartCoroutine(animationManager.FadeAnimation(1f,0.5f));
+        SceneManager.LoadScene("MainScene");
+    }
+
     public void SelectButton()
     {
+        isSelect = false;
         switch (select)
         {
             case Select.BEGINNING:
-                SceneManager.LoadScene("");
+                StartCoroutine(GoMain(false));
                 break;
             case Select.CONTINUATION:
-                SceneManager.LoadScene("");
+                StartCoroutine(GoMain(true));
                 break;
             case Select.MYROOM:
+                StartCoroutine(animationManager.MyRoomAnim());
                 break;
             case Select.END:
 #if UNITY_EDITOR

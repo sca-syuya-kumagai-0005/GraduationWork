@@ -42,6 +42,7 @@ public class TitleAnimationManager : MonoBehaviour
     float time = 0;
     const float speed = 1.5f;
     const float sinLim = 0.8f;
+    GameObject nowTitleMode;
 
     private void Awake()
     {
@@ -53,6 +54,15 @@ public class TitleAnimationManager : MonoBehaviour
         logoRect = titleLogo.GetComponent<RectTransform>();
         logoImage.color = clear;
         pushText.color = clear;
+        titleStartObj.SetActive(true);
+        nowTitleMode = null;
+    }
+
+    public IEnumerator FadeAnimation(float _alpha,float _time)
+    {
+        //フェードのアニメーション次第で変更
+        yield return fadePanel.DOFade(_alpha, _time).WaitForCompletion();
+        fadePanel.raycastTarget = (_alpha == 1f);
     }
 
     public IEnumerator CautionaryAnim(CautionaryNum cautionaryNum)
@@ -79,7 +89,7 @@ public class TitleAnimationManager : MonoBehaviour
         cautionaryHeader.DOFade(0f, fadeOutTime);
         cautionaryText.DOFade(0f, fadeOutTime);
         yield return StartCoroutine(WaitAnim(fadeOutTime + delayTime));
-        if(cautionaryNum == CautionaryNum.SOUND) fadePanel.DOFade(0f, fadeOutTime).WaitForCompletion();
+        if(cautionaryNum == CautionaryNum.SOUND) yield return StartCoroutine(FadeAnimation(0f,fadeOutTime));
         skip = false;
     }
 
@@ -127,7 +137,7 @@ public class TitleAnimationManager : MonoBehaviour
         }
         logoImage.DOFade(0f, 0.75f);
         pushText.DOFade(0f, 0.75f);
-        fadePanel.DOFade(1f, 0.8f);
+        StartCoroutine(FadeAnimation(1f, 0.8f));
         yield return new WaitForSeconds(1f);
         titleStartObj.SetActive(false);
         rainParticle.SetActive(false);
@@ -135,15 +145,24 @@ public class TitleAnimationManager : MonoBehaviour
 
     public IEnumerator TitleSelectDisplayAnim()
     {
-        titleSelectObj.SetActive(true);
-        yield return fadePanel.DOFade(0f, 0.5f).WaitForCompletion();
-        fadePanel.raycastTarget = false;
+        yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        SetNowTitleMode(titleSelectObj);
+        yield return StartCoroutine(FadeAnimation(0f,0.5f));
+        Locator<TitleManager>.Instance.SelectStart();
     }
 
     public IEnumerator MyRoomAnim()
     {
-        myRoomObj.SetActive(true);
-        yield break;
+        yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        SetNowTitleMode(myRoomObj);
+        yield return StartCoroutine(FadeAnimation(0f, 0.5f));
+    }
+
+    void SetNowTitleMode(GameObject _obj)
+    {
+        _obj.SetActive(true);
+        if (nowTitleMode != null) nowTitleMode.SetActive(false);
+        nowTitleMode = _obj;
     }
 
     Color GetAlphaColor(Color color)
