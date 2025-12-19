@@ -27,6 +27,7 @@ public class Adventure : MonoBehaviour
     private float speakTiming;
     private bool isComplete;
 
+    private const char lineBreakCommand = '|';
     private enum Command
     {
         SetCharacter = 0,
@@ -200,7 +201,8 @@ public class Adventure : MonoBehaviour
 
         for(int i = 0; i < text.Length; i++)
         {
-            messageBox.text += text[i];
+            if (text[i] != lineBreakCommand) messageBox.text += text[i];
+            else messageBox.text += '\n';
             if (isSkiped)
             {
                 i = text.Length;
