@@ -42,6 +42,7 @@ public class SaveDataManager : MonoBehaviour
         StreamWriter streamWriter = new StreamWriter("./Assets/SaveData.txt", false);
         data[(int)DataAddress.DAY] = days.ToString();
         data[(int)DataAddress.HOUSEDSINNER] = null;
+        data[(int)DataAddress.MEMORY] = null;
         for (int i = 0; i < housedSinners.Length; i++)
         {
             data[(int)DataAddress.HOUSEDSINNER] += Convert.ToInt32(housedSinners[i]);

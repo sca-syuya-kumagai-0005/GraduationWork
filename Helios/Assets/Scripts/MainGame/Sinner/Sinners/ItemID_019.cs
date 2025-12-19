@@ -10,7 +10,7 @@ public class ItemID_019 : Sinner
         probabilitys = new float[8] { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
         sinnerID = "ItemID_019";
         sinnerName = "ƒtƒHƒ‹ƒe•P";
-        LoadSprite("atokaraireru");
+        LoadSprite("ID019");
         //effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
         //GetEffectObject(true);
         effectTimer = 6.5f;

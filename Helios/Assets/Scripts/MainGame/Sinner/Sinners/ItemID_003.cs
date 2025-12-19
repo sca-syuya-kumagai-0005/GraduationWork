@@ -27,7 +27,7 @@ public class ItemID_003 : Sinner
         deliveryItems[rand] = Mood.Exception;
         sinnerID = "ItemID_003";
         sinnerName = "¢ŠE‚ÅÅ‰‚É‹ó‚¢‚½ŒŠ";
-        LoadSprite("atokaraireru");
+        LoadSprite("ID003");
         effect = GameObject.Find("Effect").transform.Find("").gameObject;
         GetEffectObject(true);
         genesisPhase = 1;
