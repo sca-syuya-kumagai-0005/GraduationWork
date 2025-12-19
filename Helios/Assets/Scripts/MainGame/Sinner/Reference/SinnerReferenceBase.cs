@@ -25,16 +25,16 @@ public class SinnerReferenceBase : MonoBehaviour
     [System.Serializable]
     public struct SinnerInfomation
     {
-        public string name;
-        public int id;
-        public string risk;
-        public string type;
-        public string abnormal;
-        public string[] condition;
-        public string apperance;
-        public string exeplanation;
-        public string[] overView;
-        public GameObject thisObject;
+        public string name;//名前
+        public int id;//番号
+        public string risk;//リスククラス
+        public string type;//収容クラス
+        public string abnormal;//異常の内容
+        public string[] condition;//異常の条件
+        public string apperance;//外観説明
+        public string exeplanation;//説明
+        public string[] overView;//インタビューやそのほか
+        public GameObject thisObject;//この情報を与えるオブジェクト
     }
     [System.Serializable]
     public struct Risk

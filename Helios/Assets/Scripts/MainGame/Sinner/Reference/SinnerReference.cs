@@ -5,7 +5,7 @@ using static KumagaiLibrary.Unity.EventSet;
 
 public class SinnerReference : SinnerReferenceBase
 {
-    
+
     
     [SerializeField]
     SinnerInfomation info;
@@ -20,6 +20,7 @@ public class SinnerReference : SinnerReferenceBase
         manager = reference.GetComponent<SinnerReferenceManager>();
         SetEventType("Down", PointerDown, this.gameObject);
         nameText = this.gameObject.transform.GetChild(0).GetComponent<Text>(); 
+        nameText.text = info.name;
         info.thisObject=this.gameObject;
         manager.sinnerInfomations.Add(info);    
 
@@ -32,8 +33,8 @@ public class SinnerReference : SinnerReferenceBase
     }
     public void PointerDown()
     {
-        //Debug.Log(sinnerName);
-        //manager.SetData(sinnerName,type,risk,explanatory);
+        Debug.Log(info.name);
+        manager.SetData(info.name, info.type, info.risk, info.condition);
     }
 
    

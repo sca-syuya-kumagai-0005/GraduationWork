@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using static KumagaiLibrary.Unity.EventSet;
-using static KumagaiLibrary.Unity.CsvManager;
 
 
 using Unity.VisualScripting;
@@ -14,14 +13,18 @@ public class SinnerReferenceManager : SinnerReferenceBase
     [SerializeField] private GameObject backButton;
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject brokker;
+    [SerializeField] private GameObject nextButton;
+    [SerializeField] private GameObject scrollContent;
+    [SerializeField] private GameObject viewPort;
+    [SerializeField] private Image viewPortImage;
     [SerializeField] private Text selectSinnerName;
     [SerializeField] private Text sinnerNameText;
     [SerializeField] private Text sinnerTypeText;
     [SerializeField] private Text riskLevelText;
     [SerializeField] private Text[] explanatoryText;
-    [SerializeField] GameObject nextButton;
+  
    // [SerializeField] GameObject[] page;
-    [SerializeField] GameObject scrollContent;
+   
     //[SerializeField]List<GameObject> contents;
    // [SerializeField] TextAsset[] sinnerDatas;
     int pageCount = 0;
@@ -51,8 +54,6 @@ public class SinnerReferenceManager : SinnerReferenceBase
     public void CheckSortList()
     {
         List<SinnerInfomation> displaySinners = new List<SinnerInfomation>();//表示しない要素をまとめたList
-        Debug.Log(sinnerInfomations.Count);
-        Debug.Log(riskFlags.lumenis);
         sinnerInfomations.Sort((a, b) => a.id.CompareTo(b.id));//シナーの情報を格納しているListの順番がバラバラなので一度シナー番号順に並べる
         for (int i=0;i<sinnerInfomations.Count;i++)
         {
@@ -62,7 +63,6 @@ public class SinnerReferenceManager : SinnerReferenceBase
                     {
                         if (riskFlags.lumenis)
                         {
-                            Debug.Log("LUMENIS");
                             displaySinners.Add(sinnerInfomations[i]);
                             continue;
                         }
@@ -157,12 +157,19 @@ public class SinnerReferenceManager : SinnerReferenceBase
             }
         }
 
+      
+
         for(int i=0;i<sinnerInfomations.Count;i++)
         {
+            if (displaySinners.Count <= 0)
+            {
+                sinnerInfomations[i].thisObject.SetActive(true);
+                Debug.Log(displaySinners.Count);
+                continue;
+            }
             sinnerInfomations[i].thisObject.SetActive(false);
             for (int j=0;j<displaySinners.Count;j++)
             {
-                
                 if (i == displaySinners[j].id)
                 {
                     displaySinners[j].thisObject.SetActive(true);
@@ -178,6 +185,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
     {
         SetEventType(downKey, SinnerReferencePointerDown, this.gameObject);
         SetEventType(downKey, BackButtonPointerDown, backButton);
+        viewPortImage=viewPort.GetComponent<Image>();
         //KumagaiLibrary.Unity.EventSet.SetEventType("PointerDown", NextPage, nextButton);
         //for(int i=0;i<sinnerDatas.Length;i++)
         //{
@@ -222,6 +230,8 @@ public class SinnerReferenceManager : SinnerReferenceBase
     private void Update()
     {
         brokker.transform.position = transform.position + map.transform.localPosition;
+        float scroll=Input.mouseScrollDelta.y;
+        viewPortImage.raycastTarget=scroll!=0;
         CheckSortList();
      
     }
