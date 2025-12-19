@@ -10,7 +10,7 @@ public class ItemID_002 : Sinner
         sinnerID = "ItemID_002";
         sinnerName = "çgÇ¢éÖ";
         sinnerTypeList.Add(SinnerType.Humanoid);
-        LoadSprite("atokaraireru");
+        LoadSprite("ID002");
         effect = GameObject.Find("Effect").transform.Find("").gameObject;
         GetEffectObject(true);
         KumagaiLibrary.Dictionary.Support.AddArray(specifyingDeliveryRoutes.SinnerDebuff, sinnerName, false);
