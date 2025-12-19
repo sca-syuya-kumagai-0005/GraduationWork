@@ -18,13 +18,15 @@ public class SinnerReferenceManager : SinnerReferenceBase
     [SerializeField] private GameObject scrollContent;
     [SerializeField] private GameObject viewPort;
     [SerializeField] private Image viewPortImage;
+    [SerializeField] private Image icon;
     [SerializeField] private Sprite[] sortButtonBlue;
     [SerializeField] private Sprite[] sortButtonOrange;
     [SerializeField] private Text selectSinnerName;
     [SerializeField] private Text sinnerNameText;
     [SerializeField] private Text sinnerTypeText;
     [SerializeField] private Text riskLevelText;
-    [SerializeField] private Text[] explanatoryText;
+    [SerializeField] private Text[] conditionText;
+    [SerializeField] private Text abnormalText;
     [SerializeField] float selectSinnerNameTextWidth;
 
     [SerializeField] 
@@ -247,8 +249,6 @@ public class SinnerReferenceManager : SinnerReferenceBase
 
             var results = new System.Collections.Generic.List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
-            Debug.Log(results.Count);
-            Debug.Log(results[0].gameObject.name);
             if(results.Count>0)SortFlagSwitch(results[0].gameObject);
 
         }
@@ -269,7 +269,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
         brokker.SetActive(false);
     }
 
-    public void SetData(string name, string type, string level, string[] explanatory)
+    public void SetData(string name, string type, string level, string[] condition,string abnormal,Sprite iconImage)
     {
         sinnerNameText.text = name;
         selectSinnerName.text = name;
@@ -279,10 +279,12 @@ public class SinnerReferenceManager : SinnerReferenceBase
         sinnerTypeText.text = type;
         riskLevelText.text = level;
 
-        for (int i = 0; i < explanatory.Length; i++)
+        for (int i = 0; i < condition.Length; i++)
         {
-            explanatoryText[i].text = explanatory[i];
+            conditionText[i].text = condition[i];
         }
+        abnormalText.text = abnormal; 
+        icon.sprite=iconImage;
         Debug.Log("シナーの資料を選択されたシナーに更新しました");
     }
 
