@@ -15,8 +15,28 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 6c90194fc46db6b4bbeec683c7ead823
   m_SerializeEntries:
+  - m_GUID: 1275a308bd5929247834045973481be9
+    m_Address: ID020
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 197b509d9eac4334b80b5ac23566021e
     m_Address: Assets/Sprits/UI/Baggage image/Disgust.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23f3486124c8cad47b3740e2cfae963f
+    m_Address: ID023
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2456d657467274b469dfeb5f8cd756bd
+    m_Address: ID022
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 276b11e48704916428ab759c557c69bc
+    m_Address: ID006
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -25,8 +45,83 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31e16043480776a4a98f104a73a431ca
+    m_Address: ID010
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f7bad2410cedb846a34be2c1044273b
+    m_Address: ID021
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 615b1afaf818fe14ab9dc93744918cbe
+    m_Address: ID011
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65efd27297356ac4a8ee5ed96815c2b3
+    m_Address: ID014
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79f6e1a1a0a43f74eb94d193e92e81f0
+    m_Address: ID004
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bd354afdb3b8e9409afd08a12b761e7
+    m_Address: ID015
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7eb4259233682494eac594e19121e6b7
+    m_Address: ID009
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81ce69c37ff6e1e438fff8a4e8082653
+    m_Address: ID001
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 892f0f6fcbb3d4144a188c431a0187ca
+    m_Address: ID016
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8960aeeac9cda9247833d5dff8404817
+    m_Address: ID013
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8f7b067f367a5c3479615220011b726b
     m_Address: Assets/Sprits/UI/Baggage image/Expectation.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90539143b85504d488bf057dfd22f4c3
+    m_Address: ID012
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9162f9cd663a7be4fb0bf087aa554239
+    m_Address: ID008
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c9ad139c7ba41245be5b1f15aca82dc
+    m_Address: ID007
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8a2d02f8823a56448546c6705224614
+    m_Address: ID003
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc7985694acdea14f8e22d8d0f267061
+    m_Address: ID005
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -35,8 +130,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbc51c7f3c7e0394797eaf1dd6b96420
+    m_Address: ID019
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5e1319121f410648b7d528202ebce67
     m_Address: Assets/Sprits/UI/Baggage image/Sadness.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc221b3f68f2c4240815ebcc79a81e35
+    m_Address: ID017
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -52,6 +157,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f20433d7866fe0c449da15f6c69d83a3
     m_Address: Assets/Sprits/UI/Baggage image/Fear.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f37e33eef0ab05647955860ebda5e2cd
+    m_Address: ID002
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fca4230c0b0764f4ba850b826dc29a46
+    m_Address: ID018
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
