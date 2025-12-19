@@ -22,7 +22,8 @@ public class SinnerReferenceManager : SinnerReferenceBase
     [SerializeField] private Text sinnerTypeText;
     [SerializeField] private Text riskLevelText;
     [SerializeField] private Text[] explanatoryText;
-  
+    
+    [SerializeField]float selectSinnerNameTextWidth;
    // [SerializeField] GameObject[] page;
    
     //[SerializeField]List<GameObject> contents;
@@ -253,8 +254,12 @@ public class SinnerReferenceManager : SinnerReferenceBase
     {
         sinnerNameText.text = name;
         selectSinnerName.text = name;
+        float size = selectSinnerName.text.Length;
+        selectSinnerName.fontSize = (int)(selectSinnerNameTextWidth / size); 
+        Debug.Log((int)(size));
         sinnerTypeText.text = type;
         riskLevelText.text = level;
+
         for (int i = 0; i < explanatory.Length; i++)
         {
             explanatoryText[i].text = explanatory[i];
