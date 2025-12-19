@@ -1,6 +1,6 @@
 ﻿SetCharacter_A,上司
 SetSpeakTiming,0.5
-Speak_A,ああああああああああああああ
+Speak_A,ああ|ああああああああああああ
 SetCharacter_B,同僚A
 Speak_B,いいいいいいいいいいいいいい
 RemoveCharacter_A,
