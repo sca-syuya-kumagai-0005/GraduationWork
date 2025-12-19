@@ -20,10 +20,9 @@ public class SinnerReference : SinnerReferenceBase
         manager = reference.GetComponent<SinnerReferenceManager>();
         SetEventType("Down", PointerDown, this.gameObject);
         nameText = this.gameObject.transform.GetChild(0).GetComponent<Text>(); 
-        nameText.text = info.name;
+        nameText.text = (info.id+1).ToString()+" "+info.name;
         info.thisObject=this.gameObject;
-        manager.sinnerInfomations.Add(info);    
-
+        manager.sinnerInfomations.Add(info);
     }
 
 
