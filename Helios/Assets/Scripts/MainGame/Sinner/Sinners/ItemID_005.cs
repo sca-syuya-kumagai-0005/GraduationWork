@@ -13,9 +13,7 @@ public class ItemID_005 : Sinner
         sinnerID = "ItemID_005";
         sinnerName = "‚ ‚È‚½‚Ìˆ×‚Ì“VÛ‹V";
         LoadSprite("ID005");
-        //effect = GameObject.Find("Effect").transform.Find("").gameObject;
-        //GetEffectObject(false);
-
+        effect = effectObjectParent.transform.GetChild(4).gameObject;
         timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
         abnormalityDuration = 0.0f;
     }

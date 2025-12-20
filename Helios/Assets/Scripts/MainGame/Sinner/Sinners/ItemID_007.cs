@@ -20,8 +20,7 @@ public class ItemID_007 : Sinner
         sinnerName = "ñ`åØÊùÇÕçÇÇÁÇ©Ç…";
         sinnerTypeList.Add(SinnerType.Humanoid);
         LoadSprite("ID007");
-        //effect = GameObject.Find("Effect").transform.Find("").gameObject;
-        //GetEffectObject(false);
+        effect = effectObjectParent.transform.GetChild(6).gameObject;
         KumagaiLibrary.Dictionary.Support.AddArray(specifyingDeliveryRoutes.SinnerDebuff, sinnerName, false);
     }
     // Update is called once per frame

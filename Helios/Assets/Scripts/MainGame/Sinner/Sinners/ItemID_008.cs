@@ -14,8 +14,7 @@ public class ItemID_008 : Sinner
         sinnerID = "ItemID_008";
         sinnerName = "ó÷è•ÇÃéP";
         LoadSprite("ID008");
-        //effect = GameObject.Find("Effect").transform.Find("").gameObject;
-        //GetEffectObject(true);
+        effect = effectObjectParent.transform.GetChild(7).gameObject;
         effectTimer = 6.5f;
         KumagaiLibrary.Dictionary.Support.AddArray(specifyingDeliveryRoutes.SinnerDebuff, sinnerName, false);
     }

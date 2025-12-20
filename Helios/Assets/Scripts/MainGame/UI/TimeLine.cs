@@ -4,10 +4,6 @@ using UnityEngine;
 public class TimeLine : MonoBehaviour
 {
     [SerializeField]
-    private GameObject clock;
-    [SerializeField]
-    private Sprite[] clockSprites;
-    [SerializeField]
     private float timeLine;
     public float GetTimeLine {  get { return timeLine; } }
     private float[] times = new float[3];
@@ -28,6 +24,7 @@ public class TimeLine : MonoBehaviour
     private GameStateSystem gameState;
 
     private SaveDataManager saveDataManager;
+    private MouseCheck clock;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,6 +41,7 @@ public class TimeLine : MonoBehaviour
             times[0]+times[1]+times[2]
         };
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
+        clock=GameObject.Find("Clock").gameObject.GetComponent<MouseCheck>();
     }
     // Update is called once per frame
     void Update()

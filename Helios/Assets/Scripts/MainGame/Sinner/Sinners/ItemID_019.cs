@@ -11,9 +11,7 @@ public class ItemID_019 : Sinner
         sinnerID = "ItemID_019";
         sinnerName = "ƒtƒHƒ‹ƒe•P";
         LoadSprite("ID019");
-        //effect = GameObject.Find("Effect").transform.Find("Fog_001_VFX").gameObject;
-        //GetEffectObject(true);
-        effectTimer = 6.5f;
+        effect = effectObjectParent.transform.GetChild(18).gameObject.transform.GetChild(0).gameObject;
     }
     // Update is called once per frame
     void Update()

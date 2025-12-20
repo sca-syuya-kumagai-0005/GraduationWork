@@ -20,7 +20,7 @@ public class ProgressGraph : MonoBehaviour
         image.fillAmount = 0;
         saveData = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         norm = (int)Math.Ceiling(saveData.Days * 1.5);
-        timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
+        timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
         blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
     }
