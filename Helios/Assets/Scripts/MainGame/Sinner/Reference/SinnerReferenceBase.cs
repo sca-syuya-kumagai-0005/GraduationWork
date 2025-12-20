@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class SinnerReferenceBase : MonoBehaviour
@@ -34,6 +35,7 @@ public class SinnerReferenceBase : MonoBehaviour
         public string apperance;//外観説明
         public string exeplanation;//説明
         public string[] overView;//インタビューやそのほか
+        public Sprite icon;//アイコン
         public GameObject thisObject;//この情報を与えるオブジェクト
     }
     [System.Serializable]

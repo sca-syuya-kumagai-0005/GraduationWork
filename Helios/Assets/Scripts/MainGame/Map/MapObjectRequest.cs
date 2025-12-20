@@ -12,7 +12,7 @@ public class MapObjectRequest : MonoBehaviour
     int heightPositionID;
     [SerializeField]SpecifyingDeliveryRoutes sDR;
     [SerializeField]GameObject sinnerReference;
-    Collider col;
+    Collider2D col;
     bool haveSinner = false;//このオブジェクトにシナーが配置されているかのフラグ
     public bool HaveSinner { set{haveSinner=value; } }
 
@@ -25,7 +25,7 @@ public class MapObjectRequest : MonoBehaviour
         heightPositionID = int.Parse(objectInfo[2]);
         sDR = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
         sinnerReference = GameObject.Find("ReferenceData").gameObject.transform.GetChild(0).gameObject;
-        col=this.gameObject.GetComponent<Collider>();
+        col=this.gameObject.GetComponent<Collider2D>();
         SetEventType(down,PointerDown,this.gameObject);
         SetEventType(enter,PointerEnter, this.gameObject);
         if(haveSinner)
