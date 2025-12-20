@@ -33,7 +33,7 @@ public class SinnerReference : SinnerReferenceBase
     public void PointerDown()
     {
         Debug.Log(info.name);
-        manager.SetData(info.name, info.type, info.risk, info.condition,info.abnormal,info.icon);
+        manager.SetData(info.name, info.type, info.risk, info.condition,info.abnormal,info.icon,info.apperance,info.overView,info.apperance,info.exeplanation);
     }
 
    

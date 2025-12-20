@@ -17,6 +17,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
     [SerializeField] private GameObject nextButton;
     [SerializeField] private GameObject scrollContent;
     [SerializeField] private GameObject viewPort;
+    [SerializeField] private GameObject[] reference;
     [SerializeField] private Image viewPortImage;
     [SerializeField] private Image icon;
     [SerializeField] private Sprite[] sortButtonBlue;
@@ -27,7 +28,11 @@ public class SinnerReferenceManager : SinnerReferenceBase
     [SerializeField] private Text riskLevelText;
     [SerializeField] private Text[] conditionText;
     [SerializeField] private Text abnormalText;
+    [SerializeField] private Text[] referenceMaterials;
+    [SerializeField] private Text apperanceText;
+    [SerializeField] private Text exeplanationText;
     [SerializeField] float selectSinnerNameTextWidth;
+    int count;
 
     [SerializeField] 
    // [SerializeField] GameObject[] page;
@@ -164,6 +169,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
                         }
                         break;
                     }
+               
             }
         }
 
@@ -188,7 +194,10 @@ public class SinnerReferenceManager : SinnerReferenceBase
         }
     }
 
-    
+    private void OnEnable()
+    {
+        count=0;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -269,7 +278,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
         brokker.SetActive(false);
     }
 
-    public void SetData(string name, string type, string level, string[] condition,string abnormal,Sprite iconImage)
+    public void SetData(string name, string type, string level, string[] condition,string abnormal,Sprite iconImage,string extorior,string[] referenceMaterial,string apprance,string exeplanation)
     {
         sinnerNameText.text = name;
         selectSinnerName.text = name;
@@ -277,6 +286,8 @@ public class SinnerReferenceManager : SinnerReferenceBase
         selectSinnerName.fontSize = (int)(selectSinnerNameTextWidth / size); 
         Debug.Log((int)(size));
         sinnerTypeText.text = type;
+        apperanceText.text=apprance;
+        exeplanationText.text=exeplanation;
         riskLevelText.text = level;
 
         for (int i = 0; i < condition.Length; i++)
@@ -285,6 +296,12 @@ public class SinnerReferenceManager : SinnerReferenceBase
         }
         abnormalText.text = abnormal; 
         icon.sprite=iconImage;
+        for (int i = 0; i < referenceMaterials.Length; i++)
+        {
+            referenceMaterials[i].text = referenceMaterial[i];
+        }
+            
+        
         Debug.Log("シナーの資料を選択されたシナーに更新しました");
     }
 
@@ -380,6 +397,15 @@ public class SinnerReferenceManager : SinnerReferenceBase
                     Image image = click.GetComponent<Image>();
                     if (riskFlags.oblivara) image.sprite = sortButtonOrange[9];
                     else image.sprite = sortButtonBlue[9];
+                    break;
+                }
+            case ("ReverceButton"):
+                {
+                    count++;
+                    count %= 2;
+                    reference[count].SetActive(true);
+                    reference[(count + 1) % 2].SetActive(false);
+                    Debug.Log("Debug");
                     break;
                 }
         }
