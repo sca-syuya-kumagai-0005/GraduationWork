@@ -14,7 +14,7 @@ public class Debugger : MonoBehaviour
             var results = new System.Collections.Generic.List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
 
-            Debug.Log("Raycast hits:");
+            //Debug.Log("Raycast hits:");
             foreach (var hit in results)
             {
                 //Debug.Log("Hit: " + hit.gameObject.name);
