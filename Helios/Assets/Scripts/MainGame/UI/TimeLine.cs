@@ -7,6 +7,7 @@ public class TimeLine : MonoBehaviour
     private GameObject clock;
     [SerializeField]
     private Sprite[] clockSprites;
+    [SerializeField]
     private float timeLine;
     public float GetTimeLine {  get { return timeLine; } }
     private float[] times = new float[3];
@@ -75,7 +76,11 @@ public class TimeLine : MonoBehaviour
             announced[2] = true;
             timeState = TimeStates.Night;
         }
-        if (timeLine > totalTimes[2]) timeLine = 0.0f;
+        if (timeLine > totalTimes[2])
+        {
+            timeLine = 0.0f;
+            for(int i=0;i<times.Length;i++) announced[i]=false;
+        } 
     }
 
     public void NextDay()

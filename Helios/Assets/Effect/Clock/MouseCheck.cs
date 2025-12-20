@@ -58,10 +58,11 @@ public class MouseCheck : MonoBehaviour
 
         Vector3 targetPos = canMoveDown ? endPos : startPos;
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
+        transform.localPosition = Vector3.MoveTowards(
+            transform.localPosition,
             targetPos,
             speed * Time.deltaTime);
+        
     }
 
 
