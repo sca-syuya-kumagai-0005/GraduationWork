@@ -20,8 +20,10 @@ Speak_A,それで、あんたは入社した理由は何かあるか？
 Speak_A,……。すごい難しい顔してるな。
 Speak_A,まあ答えは人それぞれだよな。
 Speak_A,それに、いつか聞かせてくれれば大丈夫さ。
-Speak_Announce,ピィー…ッガガ。
-Speak_Announce,――月5日。本日の運送業務を開始します。
+SetCharacter_D,アナウンス
+Speak_D,ピィー…ッガガ。
+Speak_D,――月5日。本日の運送業務を開始します。
+RemoveCharacter_D,
 Speak_A,時間だね。雑談は終了～っと。
 Speak_A,さあ、切り替えて業務といこうか。
 End,
