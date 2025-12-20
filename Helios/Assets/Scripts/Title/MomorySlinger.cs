@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class MomorySlinger : MonoBehaviour
 {
     [SerializeField] SlingerMove slingerMove;
+    int nowSlinger;
     int nowSinner;
     int maxSinner;//csvÇ©ÇÁóvëfêîÇë„ì¸
     [SerializeField] Text[] sinnerNameTexts;
@@ -14,6 +15,7 @@ public class MomorySlinger : MonoBehaviour
 
     private void Awake()
     {
+        nowSlinger = 0;
         nowSinner = 0;
         maxSinner = 32;
         names = new string[maxSinner];
@@ -28,7 +30,7 @@ public class MomorySlinger : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         InputSlingerMove();
     }
@@ -40,14 +42,14 @@ public class MomorySlinger : MonoBehaviour
         float axis = Input.GetAxisRaw("Horizontal");
         if (axis != 0 || mouse != 0f)
         {
+            mouse /= Mathf.Abs(mouse);
             float f = (mouse != 0f) ? mouse : -axis;
-
             int a = (f < 0) ? right : left;
-            int num = (a * (int)f + nowSinner + sinnerNameTexts.Length) % sinnerNameTexts.Length;
-            int nameNum = ((int)f + nowSinner + maxSinner) % maxSinner;
-            Debug.Log(nameNum);
+            int num = (a * (int)f + nowSlinger + sinnerNameTexts.Length) % sinnerNameTexts.Length;
+            int nameNum = (a * (int)f + nowSinner + maxSinner) % maxSinner;
             sinnerNameTexts[num].text = names[nameNum];
-            nowSinner = (nowSinner <= 0 && f < 0) ? maxSinner - 1 : (nowSinner + (int)f) % maxSinner;
+            nowSlinger = (nowSlinger + (int)f < 0) ? sinnerNameTexts.Length - 1 : (nowSlinger + (int)f) % sinnerNameTexts.Length;
+            nowSinner = (nowSinner + (int)f < 0) ? maxSinner - 1 : (nowSinner + (int)f) % maxSinner;
             StartCoroutine(slingerMove.Move(f));
         }
     }

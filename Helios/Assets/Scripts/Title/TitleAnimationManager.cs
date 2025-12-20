@@ -37,6 +37,7 @@ public class TitleAnimationManager : MonoBehaviour
     [SerializeField] GameObject rainParticle;
     [SerializeField, Header("選択画面開始時演出")] GameObject titleSelectObj;
     [SerializeField, Header("自室演出")] GameObject myRoomObj;
+    [SerializeField, Header("メモリースリンガー演出")] GameObject memorySlingerObj;
 
     bool skip = false;
     float time = 0;
@@ -155,6 +156,13 @@ public class TitleAnimationManager : MonoBehaviour
     {
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
         SetNowTitleMode(myRoomObj);
+        yield return StartCoroutine(FadeAnimation(0f, 0.5f));
+    }
+
+    public IEnumerator MemorySlingerAnim()
+    {
+        yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        SetNowTitleMode(memorySlingerObj);
         yield return StartCoroutine(FadeAnimation(0f, 0.5f));
     }
 

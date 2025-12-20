@@ -74,10 +74,20 @@ public class TitleManager : MonoBehaviour
         StartCoroutine(animationManager.TitleSelectDisplayAnim());
     }
 
+    public void OpenMemorySlinger()
+    {
+        StartCoroutine(animationManager.MemorySlingerAnim());
+    }
+
+    public void CloseMemorySlinger()
+    {
+        StartCoroutine(animationManager.MyRoomAnim());
+    }
+
     IEnumerator GoMain(bool _isPlay)
     {
         yield return StartCoroutine(animationManager.FadeAnimation(1f,0.5f));
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("Adventure");
     }
 
     public void SelectButton()
@@ -102,5 +112,10 @@ public class TitleManager : MonoBehaviour
 #endif
                 break;
         }
+    }
+
+    public void ending()
+    {
+        SceneManager.LoadScene("EndRollScene");
     }
 }
