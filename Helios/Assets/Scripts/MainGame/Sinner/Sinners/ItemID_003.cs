@@ -28,8 +28,8 @@ public class ItemID_003 : Sinner
         sinnerID = "ItemID_003";
         sinnerName = "ê¢äEÇ≈ç≈èâÇ…ãÛÇ¢ÇΩåä";
         LoadSprite("ID003");
-        effect = GameObject.Find("Effect").transform.Find("").gameObject;
-        GetEffectObject(true);
+        //effect = GameObject.Find("Effect").transform.Find("").gameObject;
+        //GetEffectObject(true);
         genesisPhase = 1;
         timer = 0.0f;
     }
