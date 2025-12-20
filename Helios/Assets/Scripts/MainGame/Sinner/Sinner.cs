@@ -102,6 +102,8 @@ public class Sinner : MonoBehaviour
 
     protected SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     protected Map.MapObjectID mapObjectID;
+
+    protected GameObject effectObjectParent;
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
@@ -114,7 +116,7 @@ public class Sinner : MonoBehaviour
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
         specifyingDeliveryRoutes = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
         transform.GetComponent<MapObjectRequest>().HaveSinner=true;
-
+        effectObjectParent = GameObject.Find("SinnerALLEffect").gameObject;
         transform.GetChild(0).GetComponent<SpriteRenderer>().color=new Color(0.925f,0.52f,0.0f);
     }
 
@@ -134,11 +136,6 @@ public class Sinner : MonoBehaviour
             Mood.Fear,
             Mood.Trust,
         };
-    }
-    private IEnumerator EffectStop(float time)
-    {
-        yield return new WaitForSeconds(time);
-        effect.SetActive(false);
     }
     /// <summary>
     /// 配達員が建物に到着した時に呼ぶ
@@ -167,7 +164,6 @@ public class Sinner : MonoBehaviour
         string str = sinnerName + ":異常発生。\n直ちに損害を確認してください。";
         announceManager.MakeAnnounce(str);
         effect.SetActive(true);
-        StartCoroutine(EffectStop(effectTimer));
     }
     /// <summary>
     /// 配達表に自身の情報を渡す時に呼ぶ関数
