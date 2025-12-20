@@ -31,6 +31,8 @@ public class ResidenceCertificate : MonoBehaviour
     public string SetLiskClass { set { liskClass = value; } }
 
     [SerializeField]
+    private GameObject deliveryProcessParent;
+    [SerializeField]
     private GameObject[] deliveryProcessButton;
 
     private GameStateSystem gameState;
@@ -55,6 +57,11 @@ public class ResidenceCertificate : MonoBehaviour
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }
 
+    private void OnEnable()
+    {
+        deliveryProcessParent.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -65,8 +72,13 @@ public class ResidenceCertificate : MonoBehaviour
             for (int i = 0; i < deliveryItemButtons.Length; i++)
             {
                 deliveryItemButtons[i].GetComponent<Image>().sprite = DeliveryItemSprites[deliveryItems[i]];
+                deliveryItemButtons[i].GetComponent<DeliveryButton>().SetDeliveryProcess = deliveryProcessParent;
             }
         }
-        else gameObject.SetActive(false);
+        else
+        {
+            gameObject.SetActive(false);
+            deliveryProcessParent.SetActive(false);
+        }
     }
 }

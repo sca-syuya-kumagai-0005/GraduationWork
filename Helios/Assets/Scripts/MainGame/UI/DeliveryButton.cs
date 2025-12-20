@@ -18,6 +18,9 @@ public class DeliveryButton : EventSetter
     public ButtonType SetButtonType { set { myButtonType = value; } }
     private GameStateSystem gameState;
     private Sinner sinner;
+
+    private GameObject deliveryProcess;
+    public GameObject SetDeliveryProcess { set { deliveryProcess = value; } }
     void Awake()
     {
         specifyingDeliveryRoutes =
@@ -31,13 +34,14 @@ public class DeliveryButton : EventSetter
     }
     private void OnClick()
     {
-        //Debug.Log(myButtonType + "Button" + myButtonID + ":クリック");
         switch (myButtonType)
         {
             case ButtonType.Item:
                 {
                     //選択された配達物をSet
                     specifyingDeliveryRoutes.DeliveryItemSetting(myButtonID);
+                    //配達方法UIをActiveにする
+                    deliveryProcess.SetActive(true);
                 }
                 break;
 
@@ -46,7 +50,6 @@ public class DeliveryButton : EventSetter
                     //対応するレーンを起動、配達方法をSet
                     specifyingDeliveryRoutes.DeliveryProcessSetting(myButtonID);
                     gameState.GameState = GameStateSystem.State.Wait;
-                    //対応するトラックを起動
                 }
                 break;
             case ButtonType.Documents:
