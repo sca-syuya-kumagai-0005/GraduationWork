@@ -53,12 +53,17 @@ public class MouseCheck : MonoBehaviour
 
     private void MoveObject()
     {
-        Vector3 targetPos = isMouseOver ? endPos : startPos;
+        // マウスが乗っていて、かつマウス操作が一切されていない時だけ降りる
+        bool canMoveDown = isMouseOver && !IsAnyMouseInput();
+
+        Vector3 targetPos = canMoveDown ? endPos : startPos;
+
         transform.position = Vector3.MoveTowards(
             transform.position,
             targetPos,
             speed * Time.deltaTime);
     }
+
 
     private IEnumerator RotateTo(TimeState next)
     {
@@ -112,4 +117,13 @@ public class MouseCheck : MonoBehaviour
             icons[i].transform.localRotation = Quaternion.Euler(0, 0, -parentZ);
         }
     }
+
+    private bool IsAnyMouseInput()
+    {
+        return Input.GetMouseButton(0) ||   // 左クリック
+               Input.GetMouseButton(1) ||   // 右クリック
+               Input.GetMouseButton(2) ||   // 中クリック
+               Mathf.Abs(Input.mouseScrollDelta.y) > 0f; // ホイール
+    }
+
 }

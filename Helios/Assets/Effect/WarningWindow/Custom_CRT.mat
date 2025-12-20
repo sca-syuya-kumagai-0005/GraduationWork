@@ -31,7 +31,7 @@ Material:
     m_Floats:
     - _CoreBoost: 4
     - _Glow: 3
-    - _GlowIntensity: 0.3
+    - _GlowIntensity: 0.6
     - _GlowPower: 2
     - _GlowRange: 1
     - _GlowSize: 3
