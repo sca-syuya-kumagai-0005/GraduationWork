@@ -2295,7 +2295,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 22.310938, y: 8.685917, z: 2.25}
+  m_Size: {x: 22.310938, y: 8.685917, z: 2.37}
   m_Center: {x: -0.104813926, y: -0.9797438, z: 0}
 --- !u!212 &180891109
 SpriteRenderer:
@@ -4596,7 +4596,6 @@ GameObject:
   m_Component:
   - component: {fileID: 410966723}
   - component: {fileID: 410966726}
-  - component: {fileID: 410966725}
   - component: {fileID: 410966724}
   m_Layer: 2
   m_Name: StartButton (1)
@@ -4633,27 +4632,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
---- !u!65 &410966725
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410966722}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2.25}
-  m_Center: {x: 0, y: -0.84, z: 0}
 --- !u!212 &410966726
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5430,7 +5408,6 @@ GameObject:
   m_Component:
   - component: {fileID: 455035619}
   - component: {fileID: 455035622}
-  - component: {fileID: 455035621}
   - component: {fileID: 455035620}
   m_Layer: 2
   m_Name: StartButton (1)
@@ -5467,27 +5444,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
---- !u!65 &455035621
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455035618}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2.25}
-  m_Center: {x: 0, y: -0.84, z: 0}
 --- !u!212 &455035622
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10354,7 +10310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: info.id
-      value: 19
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: info.icon
@@ -13388,15 +13344,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13448,7 +13404,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: dab7114c4d4ee944eaf3bec292479546, type: 3}
     - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Color.g
@@ -13456,7 +13412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Color.r
-      value: 0.40482342
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8511989374376127958, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Name
@@ -13812,15 +13768,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13872,11 +13828,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: dab7114c4d4ee944eaf3bec292479546, type: 3}
     - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Color.r
@@ -18230,7 +18186,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1349765958}
   - component: {fileID: 1349765961}
-  - component: {fileID: 1349765960}
   - component: {fileID: 1349765959}
   m_Layer: 2
   m_Name: StartButton (1)
@@ -18267,27 +18222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
---- !u!65 &1349765960
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1349765957}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2.25}
-  m_Center: {x: 0, y: -0.84, z: 0}
 --- !u!212 &1349765961
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19838,15 +19772,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.05
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.05
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.05
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19896,6 +19830,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: dab7114c4d4ee944eaf3bec292479546, type: 3}
+    - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8511989374376127958, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Name
       value: DeliveryDriver
@@ -20684,7 +20630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: info.id
-      value: 19
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: info.icon
@@ -22338,7 +22284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: info.id
-      value: 19
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 2958626762161735202, guid: 58393547a7303ca41930b308c887d9f4, type: 3}
       propertyPath: info.icon
@@ -25189,7 +25135,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1977165394}
   - component: {fileID: 1977165397}
-  - component: {fileID: 1977165396}
   - component: {fileID: 1977165395}
   m_Layer: 2
   m_Name: StartButton (1)
@@ -25226,27 +25171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
---- !u!65 &1977165396
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1977165393}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2.25}
-  m_Center: {x: 0, y: -0.84, z: 0}
 --- !u!212 &1977165397
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -26807,15 +26731,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.005
+      value: 0.049999997
       objectReference: {fileID: 0}
     - target: {fileID: 3276622507814639545, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -26865,6 +26789,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: dab7114c4d4ee944eaf3bec292479546, type: 3}
+    - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236353533365951588, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8511989374376127958, guid: 1a89470042159d54b9bb16c6ff12d44e, type: 3}
       propertyPath: m_Name
       value: DeliveryDriver (1)
