@@ -1,6 +1,6 @@
+using KumagaiLibrary.Unity;
 using System.Collections;
 using System.Collections.Generic;
-using KumagaiLibrary.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,10 +15,10 @@ public class Adventure : MonoBehaviour
     [SerializeField]
     private Sprite characterSprites;
     private Image[] characters;
-    private string[] characterNames=new string[3];
+    private string[] characterNames = new string[4];
     private Text nameBox;
     private Text messageBox;
-    private const float textSpeed = 0.1f;
+    private float textSpeed = 0.1f;
     private GameObject arrow;
 
     private List<string[]> csvData = new List<string[]>();
@@ -67,7 +67,9 @@ public class Adventure : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        string commandType = null;
+        if (isSkiped) textSpeed = 0.0f;
+        else textSpeed = 0.1f;
+            string commandType = null;
         string commandTarget = null;
         string[] data = csvData[lines][column_command].Split("_");
         const int commandTypeAdress = 0;
@@ -203,11 +205,6 @@ public class Adventure : MonoBehaviour
         {
             if (text[i] != lineBreakCommand) messageBox.text += text[i];
             else messageBox.text += '\n';
-            if (isSkiped)
-            {
-                i = text.Length;
-                messageBox.text = text;
-            }
             yield return new WaitForSeconds(textSpeed);
         }
         Debug.Log("SpeakŠ®—¹:");
