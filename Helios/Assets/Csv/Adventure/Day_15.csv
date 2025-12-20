@@ -23,8 +23,10 @@ SetSpeakTiming,0
 Speak_A,ふむ……。しんみりとした話はここまでだ。
 Speak_A,君も何かあったら相談してくれ。
 Speak_A,必ず……とまでは断言できないが、全力をもって応えよう。
-Speak_Announce,ピィー……ッガガ。
-Speak_Announce,――月15日。本日の運送業務を開始します。
+SetCharacter_D,アナウンス
+Speak_D,ピィー……ッガガ。
+Speak_D,――月15日。本日の運送業務を開始します。
+RemoveCharacter_D,
 Speak_A,時間だが、業務の前にもう1つ。伝え忘れていたことがある。
 Speak_A,明日から君の新しいパートナーがやってくる。
 Speak_A,今度は君が彼女にいろいろ教えてやってほしい。

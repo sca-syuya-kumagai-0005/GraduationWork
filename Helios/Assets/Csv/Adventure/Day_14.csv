@@ -25,8 +25,10 @@ Speak_A,これは、主にヘリオス内部同士でしか通信が繋がらな
 Speak_A,それともう1点。詳細は省くが、彼の母親についてだ。
 Speak_A,彼の母親は生きている。私の調べではな。
 Speak_A,聞かせてくれてありがとう。感謝する。
-Speak_Announce,ピィー……ッガガ。
-Speak_Announce,――月14日。本日の運送業務を開始します。
+SetCharacter_D,アナウンス
+Speak_D,ピィー……ッガガ。
+Speak_D,――月14日。本日の運送業務を開始します。
+RemoveCharacter_D,
 Speak_A,時間だな。
 Speak_A,すまないが、今日の業務もよろしく頼むよ。
 End,

@@ -18,8 +18,10 @@ Speak_A,自分を安心させるために金を稼ぐ！それが俺の頑張る
 Speak_A,俺はそういう人間だって言ったろ。
 Speak_A,とはいえ、頑張る為にも、もう少し睡眠時間が欲しいわ…。
 Speak_A,それも無理ならコーヒー飲んでみようかなあ。
-Speak_Announce,ピィー…ッガガ。
-Speak_Announce,――月7日。本日の運送業務を開始します。
+SetCharacter_D,アナウンス
+Speak_D,ピィー…ッガガ。
+Speak_D,――月7日。本日の運送業務を開始します。
+RemoveCharacter_D,
 Speak_A,はぁ…。そんな時間はないらしい…。
 Speak_A,でもまあ、今日も頑張るとするか。
 End,
