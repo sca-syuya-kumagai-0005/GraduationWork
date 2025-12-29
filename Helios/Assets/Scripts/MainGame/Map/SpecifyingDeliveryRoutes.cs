@@ -28,6 +28,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     [SerializeField] GameObject arrows;
 
     [SerializeField] GameObject[] driver;
+    Collider2D[] driverSetButtonColliders=new Collider2D[driverCount];
+    [SerializeField] GameObject[] driverSetButtonBlackBoard;
     [SerializeField] float[] speed;
     LineRenderer[] line = new LineRenderer[driverCount];
     [SerializeField] float distance;
@@ -97,6 +99,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         writeButtonRenderer = writeButton.GetComponent<Image>();
         for (int i = 0; i < driverCount; i++)
         {
+            driverSetButtonColliders[i] = driverSetButton[i].GetComponent<Collider2D>();
             driverSetButtonRenderer[i] = driverSetButton[i].GetComponent<SpriteRenderer>();
             routes[i] = new List<int[]>();
             routesPosition[i] = new List<Vector3>();
@@ -140,6 +143,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         for (int i = 0; i < driverCount; i++)
         {
             //if (!driverSet) break;
+            driverSetButtonBlackBoard[i].SetActive(!(tmpDeliveryItem != -1 && tmpDeliveryProcess != -1) && !startButtons[i].activeSelf);
+            
             if (i == driverType) driverSetButtonRenderer[i].color = Color.green;
             else driverSetButtonRenderer[i].color = Color.white;
             canStart[i] = isDestinationSetting[i] && isItemSetting[i] && isItemSetting[i];
@@ -176,6 +181,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
         for (int i = 0; i < driverCount; i++)
         {
+            driverSetButtonColliders[i].enabled=!driverSet;
             if (lastRoutesPositionCount[i] != routesPosition[i].Count && routesPosition[i].Count > 1)
             {
                 coroutineNumber[i]++;
