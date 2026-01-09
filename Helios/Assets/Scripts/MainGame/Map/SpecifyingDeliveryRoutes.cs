@@ -181,7 +181,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
         for (int i = 0; i < driverCount; i++)
         {
-            driverSetButtonColliders[i].enabled=!driverSet;
+            driverSetButtonColliders[i].enabled = !isDriving[i] && !startButtons[i].activeSelf;
             if (lastRoutesPositionCount[i] != routesPosition[i].Count && routesPosition[i].Count > 1)
             {
                 coroutineNumber[i]++;
@@ -287,6 +287,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             isProcessSetting[driverID] = false;
             isDestinationSetting[driverID] = false;
         }
+
 
     }
 
@@ -1151,6 +1152,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     public void DeliveryProcessSetting(int deliveryProcessID)
     {
         tmpDeliveryProcess = deliveryProcessID;
+        for (int i = 0; i < driverCount; i++)
+        {
+            driverSetButtonColliders[i].enabled = true;
+        }
         tmpProcessSetting = true;
     }
 
