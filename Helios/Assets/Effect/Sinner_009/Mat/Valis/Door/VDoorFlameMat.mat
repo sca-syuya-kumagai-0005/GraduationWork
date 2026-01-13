@@ -43,7 +43,7 @@ Material:
     - _QueueOffset: 0
     - _maskPower: 0.12
     m_Colors:
-    - _MainColor: {r: 5.962264, g: 5.430541, b: 1.546814, a: 0}
+    - _MainColor: {r: 5.962264, g: 5.430541, b: 1.546814, a: 0.5}
     - _NoiseSpeed: {r: -0.05, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
