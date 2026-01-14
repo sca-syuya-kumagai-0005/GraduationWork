@@ -140,6 +140,11 @@ public class OptionSetting : MonoBehaviour
         ChangeVolumeText((Audio)_audio);
     }
 
+    public void CloseButton()
+    {
+        StartCoroutine(Close());
+    }
+
     IEnumerator Close()
     {
         yield return optionWindowRest.DOScale(Vector3.zero, 0.3f).WaitForCompletion();

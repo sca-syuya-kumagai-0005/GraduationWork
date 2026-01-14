@@ -33,10 +33,15 @@ public class TitleAnimationManager : MonoBehaviour
     [SerializeField] GameObject titleLogo;
     Image logoImage;
     RectTransform logoRect;
+    [SerializeField] GameObject startBackGround;
     [SerializeField] Text pushText;
     [SerializeField] GameObject rainParticle;
     [SerializeField, Header("選択画面開始時演出")] GameObject titleSelectObj;
+    [SerializeField] Image roadFade;
+    [SerializeField] Image houseFade;
+    [SerializeField] GameObject selectBackGround;
     [SerializeField, Header("自室演出")] GameObject myRoomObj;
+    [SerializeField] GameObject myRoomBackGround;
     [SerializeField, Header("メモリースリンガー演出")] GameObject memorySlingerObj;
 
     bool skip = false;
@@ -44,6 +49,7 @@ public class TitleAnimationManager : MonoBehaviour
     const float speed = 1.5f;
     const float sinLim = 0.8f;
     GameObject nowTitleMode;
+    GameObject nowBackGround;
 
     private void Awake()
     {
@@ -57,6 +63,7 @@ public class TitleAnimationManager : MonoBehaviour
         pushText.color = clear;
         titleStartObj.SetActive(true);
         nowTitleMode = null;
+        nowBackGround = null;
     }
 
     public IEnumerator FadeAnimation(float _alpha,float _time)
@@ -90,7 +97,11 @@ public class TitleAnimationManager : MonoBehaviour
         cautionaryHeader.DOFade(0f, fadeOutTime);
         cautionaryText.DOFade(0f, fadeOutTime);
         yield return StartCoroutine(WaitAnim(fadeOutTime + delayTime));
-        if(cautionaryNum == CautionaryNum.SOUND) yield return StartCoroutine(FadeAnimation(0f,fadeOutTime));
+        if(cautionaryNum == CautionaryNum.SOUND)
+        {
+            SetBackGround(startBackGround);
+            yield return StartCoroutine(FadeAnimation(0f, fadeOutTime));
+        }
         skip = false;
     }
 
@@ -146,15 +157,30 @@ public class TitleAnimationManager : MonoBehaviour
 
     public IEnumerator TitleSelectDisplayAnim()
     {
+        roadFade.fillAmount = 1f;
+        houseFade.fillAmount= 1f;
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        SetBackGround(selectBackGround);
         SetNowTitleMode(titleSelectObj);
         yield return StartCoroutine(FadeAnimation(0f,0.5f));
+        const float time = 1.5f;
+        roadFade.DOFillAmount(0.5f, time).SetEase(Ease.Linear);
+        houseFade.DOFillAmount(0.5f,time).SetEase(Ease.Linear); 
+        yield return new WaitForSeconds(time);
+        roadFade.fillMethod = Image.FillMethod.Horizontal;
+        roadFade.fillOrigin = 1;
+        houseFade.fillMethod = Image.FillMethod.Horizontal;
+        houseFade.fillOrigin = 1;
+        roadFade.DOFillAmount(0, time).SetEase(Ease.Linear);
+        houseFade.DOFillAmount(0, time).SetEase(Ease.Linear);
+        yield return new WaitForSeconds(time);
         Locator<TitleManager>.Instance.SelectStart();
     }
 
     public IEnumerator MyRoomAnim()
     {
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        SetBackGround(myRoomBackGround);
         SetNowTitleMode(myRoomObj);
         yield return StartCoroutine(FadeAnimation(0f, 0.5f));
     }
@@ -168,9 +194,18 @@ public class TitleAnimationManager : MonoBehaviour
 
     void SetNowTitleMode(GameObject _obj)
     {
+        if (nowTitleMode == _obj) return;
         _obj.SetActive(true);
         if (nowTitleMode != null) nowTitleMode.SetActive(false);
         nowTitleMode = _obj;
+    }
+
+    void SetBackGround(GameObject _obj)
+    {
+        if (nowBackGround == _obj) return;
+        _obj.SetActive(true);
+        if (nowBackGround != null) nowBackGround.SetActive(false);
+        nowBackGround = _obj;
     }
 
     Color GetAlphaColor(Color color)
