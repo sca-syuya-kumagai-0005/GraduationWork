@@ -9,7 +9,7 @@ public class OptionAnimetion : MonoBehaviour
     [SerializeField] RectTransform optionBaseRect;
     [SerializeField] float moveTime;
     [SerializeField] float dirayTime;
-
+    [SerializeField] MusicNameMover musicNameMover;
     public bool isAnim {  get; private set; }
 
     private void Awake()
@@ -38,5 +38,6 @@ public class OptionAnimetion : MonoBehaviour
         yield return new WaitForSeconds(dirayTime + moveTime);
         yield return optionBaseRect.DOScale(Vector3.one, moveTime + dirayTime);
         isAnim = false;
+        musicNameMover.PositionReset();
     }
 }

@@ -14,6 +14,8 @@ public class MusicList : MonoBehaviour
     RectTransform myRectTransform;
     Vector2 defaultSize;
     [SerializeField] Text musicNameText;
+    [SerializeField] MusicNameMover musicNameMover;
+    [SerializeField] AudioClip[] playList;
 
     private void Awake()
     {
@@ -47,11 +49,12 @@ public class MusicList : MonoBehaviour
 
     public void instans()
     {
+        Debug.Log("1");
         this.gameObject.SetActive(true);
         myRectTransform.DOSizeDelta(defaultSize, 0.25f);
         for (int i = 0; i < 15;i++)
         {
-            InstansMusic(i.ToString());
+            InstansMusic(i.ToString() + "aaaaaaaaaaa");
         }
         ContentSizeChange();
     }
@@ -70,6 +73,7 @@ public class MusicList : MonoBehaviour
     public void DeleteMusic(string _text)
     {
         musicNameText.text = _text;
+        musicNameMover.PositionReset();
         myRectTransform.DOSizeDelta(new Vector2(defaultSize.x, 0), 0.25f).OnComplete(() =>
         {
             foreach (GameObject obj in musics)
