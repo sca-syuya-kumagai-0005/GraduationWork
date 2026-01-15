@@ -19,6 +19,7 @@ public class TitleManager : MonoBehaviour
     Select select;
     [SerializeField] GameObject optionCanvasObj;
     bool isSelect;
+    [SerializeField] AudioClip titleBGM;
     private void Awake()
     {
         Locator<TitleManager>.Bind(this);
@@ -27,6 +28,7 @@ public class TitleManager : MonoBehaviour
     }
     void Start()
     {
+        Locator<AudioManager>.Instance.PlayBGM(titleBGM);
         StartCoroutine(TitleStart());
     }
 
@@ -64,6 +66,7 @@ public class TitleManager : MonoBehaviour
         isSelect = true;
     }
 
+    [Button]
     public void OptionOpen()
     {
         Instantiate(optionCanvasObj);

@@ -22,6 +22,8 @@ public class AudioManager : MonoBehaviour
     float BGMvolume = 0.5f;
     public float[] stockVolumes { get; private set; }
 
+    public AudioSource bgmAudio {  get; private set; }
+
 
     private void Awake()
     {
@@ -37,6 +39,7 @@ public class AudioManager : MonoBehaviour
             {
                 stockVolumes[i] = -80f;
             }
+            bgmAudio = BGM;
         }
         else
         {

@@ -1230,6 +1230,7 @@ MonoBehaviour:
   animationManager: {fileID: 602755633}
   slingerMove: {fileID: 1195093280}
   optionCanvasObj: {fileID: 2851964969212893739, guid: 360095915fa9bda4cadcf7299b57dbe6, type: 3}
+  titleBGM: {fileID: 8300000, guid: 22ab82e3abd13e74daf624ee8c01132f, type: 3}
 --- !u!4 &267019282
 Transform:
   m_ObjectHideFlags: 0
