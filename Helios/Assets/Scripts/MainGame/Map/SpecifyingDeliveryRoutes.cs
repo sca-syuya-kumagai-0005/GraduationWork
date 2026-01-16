@@ -11,7 +11,7 @@ using static KumagaiLibrary.String;
 public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
     //[SerializeField]List<int> nowList = new List<int>();
-
+    [SerializeField] private GameObject pen;
 
     const int driverCount = 4;//トラックの数
     [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
@@ -92,7 +92,9 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     void Start()
     {
         table = GameObject.Find("RandomTable").gameObject.GetComponent<RandomTable>();
-
+        originalScale=writeButtonBackGround.transform.localScale;
+        StartCoroutine(WriteButtonMover());
+        StartCoroutine(ScaleCoroutine());
         memoring = false;
         map = mapObject.GetComponent<Map>();
         shortestPathSearch = mapObject.GetComponent<ShortestPathSearch>();
@@ -137,6 +139,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        pen.SetActive(!writing);
         if (writing) writeButtonRenderer.sprite = writeSprite[0];
         else writeButtonRenderer.sprite = writeSprite[1];
         if (lastdriverType != driverType) writing = false;
@@ -1169,8 +1172,80 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         tmpDestinationSetting = true;
     }
 
-    public void ConfisonSet()
+    [SerializeField]private float rotateSpeed;
+    [SerializeField] private GameObject writeButtonBackGround;
+    private IEnumerator WriteButtonMover()
     {
+    //    if (driverType == -1)
+    //    {
+    //        StartCoroutine(WriteButtonMover());
+    //        yield break;
+    //    }
+        while (true)
+        {
+            if(driverType!=-1&&!writing)
+            {
+                writeButtonBackGround.transform.Rotate(0f, 0f, rotateSpeed * Time.deltaTime);
+            }
+            // フレームレートに依存しない回転
+          
+            yield return null; // 次のフレームまで待機
+        }
 
+        yield return null;
+    }
+
+    [SerializeField] float scaleMultiplier; // どれだけ大きくなるか
+    [SerializeField] float scaleDuration ;   // 大きくなる／戻る時間
+    [SerializeField] float scaleInterval;   // 拡大処理の周期
+
+    private Vector3 originalScale;
+    IEnumerator ScaleCoroutine()
+    {
+        while (true)
+        {
+            if(driverType!=-1&&!writing)
+            {
+                yield return new WaitForSeconds(scaleInterval);
+
+                // 拡大開始地点を必ず originalScale にする
+                writeButtonBackGround.transform.localScale = originalScale;
+
+                // 拡大
+                yield return StartCoroutine(ScaleFromTo(
+                    originalScale,
+                    originalScale * scaleMultiplier
+                ));
+
+                // 縮小（元に戻る）
+                yield return StartCoroutine(ScaleFromTo(
+                    originalScale * scaleMultiplier,
+                    originalScale
+                ));
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+    }
+
+    IEnumerator ScaleFromTo(Vector3 startScale, Vector3 targetScale)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < scaleDuration)
+        {
+            writeButtonBackGround.transform.localScale = Vector3.Lerp(
+                startScale,
+                targetScale,
+                elapsed / scaleDuration
+            );
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        writeButtonBackGround.transform.localScale = targetScale;
     }
 }
