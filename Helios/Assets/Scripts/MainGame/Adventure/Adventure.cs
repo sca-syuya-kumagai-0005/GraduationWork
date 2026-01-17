@@ -14,6 +14,7 @@ public class Adventure : MonoBehaviour
     private Image backGround;
     [SerializeField]
     private Sprite characterSprites;
+    [SerializeField]
     private Image[] characters;
     private string[] characterNames = new string[4];
     private Text nameBox;
@@ -52,9 +53,11 @@ public class Adventure : MonoBehaviour
     void Start()
     {
         SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
+        saveDataManager.Save();
         backGround = GameObject.Find("BackGround").gameObject.GetComponent<Image>();
         nameBox = GameObject.Find("NameBox").gameObject.GetComponent<Text>();
         messageBox = GameObject.Find("MessageBox").gameObject.GetComponent<Text>();
+        characters[0] = GameObject.Find("Characters").gameObject.GetComponent<Image>();
         days = saveDataManager.Days;
         isComplete = true;
         csvData = CsvManager.Read(storyCsvFiles[days]);
@@ -147,9 +150,11 @@ public class Adventure : MonoBehaviour
         while (!isEnd)
         {
             timer += Time.deltaTime / timeLate;
+            characters[0].gameObject.SetActive(true);
             if (timer >= 1.0f) isEnd = true;
             yield return null;
         }
+        characters[0].gameObject.SetActive(false);
         isComplete = true;
         Debug.Log("SetCharacterŠ®—¹:");
     }
