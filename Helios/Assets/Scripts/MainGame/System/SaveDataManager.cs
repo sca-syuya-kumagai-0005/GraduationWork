@@ -12,7 +12,7 @@ public class SaveDataManager : MonoBehaviour
         MAX
     }
     private string[] data = new string[(int)DataAddress.MAX];
-    private int days = 1;
+    private int days =1;
     const int adjustment = 48;
     public int Days {  get { return days; } set { days = value; } }
     private const int maxSinners = 31;
