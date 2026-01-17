@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using DG.Tweening.Plugins.Core.PathCore;
 using UnityEngine;
 
 public class SaveDataManager : MonoBehaviour
@@ -25,7 +26,7 @@ public class SaveDataManager : MonoBehaviour
     {
         Load();
     }
-
+    private static string SavePath => System.IO.Path.Combine(Application.persistentDataPath, "SaveData.txt");
     private void Update()
     {
         //if(Input.GetMouseButtonDown(2))
@@ -34,12 +35,11 @@ public class SaveDataManager : MonoBehaviour
     public void Save()
     {
         Debug.Log("Saved");
-        string path = @"\Assets/SaveData.txt";
-        if (File.Exists(Application.dataPath+ path))
+        if (File.Exists(SavePath))
         {
-            using (File.Create(path)) { }
+            using (File.Create(SavePath)) { }
         }
-        StreamWriter streamWriter = new StreamWriter("./Assets/SaveData.txt", false);
+        StreamWriter streamWriter = new StreamWriter(SavePath, false);
         data[(int)DataAddress.DAY] = days.ToString();
         data[(int)DataAddress.HOUSEDSINNER] = null;
         data[(int)DataAddress.MEMORY] = null;
@@ -55,7 +55,7 @@ public class SaveDataManager : MonoBehaviour
     }
     public void Load()
     {
-        StreamReader streamReader = new StreamReader("./Assets/SaveData.txt", true);
+        StreamReader streamReader = new StreamReader(SavePath, true);
         int lineCount = 0;
         const int DataEnd = -1;
         while (streamReader.Peek() != DataEnd)
