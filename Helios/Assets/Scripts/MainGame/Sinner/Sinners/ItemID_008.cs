@@ -35,7 +35,7 @@ public class ItemID_008 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        //if (ŠwZ‚Ì‘O‚ğ’Ê‚Á‚Ä‚È‚©‚Á‚½‚ç)
+        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.SCHOOL))
         {
             increase = 150.0f;
             IncreaseProbabilitys(increase);

@@ -53,7 +53,9 @@ public class SinnerDistribute : MonoBehaviour
     private bool[] housed = new bool[maxSinners];
     [SerializeField] private int standbySinners;
     private SaveDataManager saveDataManager;
-    //private int removeCount;
+
+    //各区画に住むシナーを入れるリスト
+    private List<GameObject>[] plotContainedObject = new List<GameObject>[10];
     private void Start()
     {
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
