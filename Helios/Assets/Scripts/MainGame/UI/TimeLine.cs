@@ -43,6 +43,7 @@ public class TimeLine : MonoBehaviour
         };
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
         clock=GameObject.Find("Clock").gameObject.GetComponent<MouseCheck>();
+        abnormalityList=new List<string>();
     }
     // Update is called once per frame
     void Update()

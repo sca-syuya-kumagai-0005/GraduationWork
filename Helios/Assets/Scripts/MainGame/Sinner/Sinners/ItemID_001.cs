@@ -15,7 +15,7 @@ public class ItemID_001 : Sinner
         LoadSprite("ID001");
         effect = effectObjectParent.transform.GetChild(0).gameObject;
 
-        timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
+        timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
     }
     // Update is called once per frame
     void Update()

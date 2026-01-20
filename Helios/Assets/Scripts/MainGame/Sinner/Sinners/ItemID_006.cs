@@ -24,7 +24,7 @@ public class ItemID_006 : Sinner
         timer += Time.deltaTime;
         if(timer >= timeLimit)
         {
-            timer = 0.0f;
+            timer -= timeLimit;
             increase = 10.0f;
             IncreaseProbabilitys(increase);
         }
@@ -45,7 +45,7 @@ public class ItemID_006 : Sinner
         announceManager.MakeAnnounce(str);
 
         //…‘°ŠÙ‚ğ’Ê‚Á‚Ä‚È‚©‚Á‚½‚ç
-        //if (specifyingDeliveryRoutes.GetDelevery[deliveryLineID].Contains((int)Map.MapObjectID.AQUARIUM))
+        if (!specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.AQUARIUM))
         {
             float probability = Random.Range(0, 101);
             int damage = Lottery(probability + probabilitys[deliveryLineID]);

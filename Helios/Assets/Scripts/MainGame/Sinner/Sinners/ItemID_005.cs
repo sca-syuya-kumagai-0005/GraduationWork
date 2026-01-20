@@ -15,7 +15,7 @@ public class ItemID_005 : Sinner
         sinnerName = "Ç†Ç»ÇΩÇÃà◊ÇÃìVè€ãV";
         LoadSprite("ID005");
         effect = effectObjectParent.transform.GetChild(4).gameObject;
-        timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
+        timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         abnormalityDuration = 0.0f;
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
