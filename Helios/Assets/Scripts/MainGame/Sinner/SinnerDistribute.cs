@@ -55,7 +55,6 @@ public class SinnerDistribute : MonoBehaviour
     //private int removeCount;
     private void Start()
     {
-        //removeCount = 0;
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         housed = saveDataManager.HousedSinner;
         standbySinners = saveDataManager.Days + 1;
@@ -96,16 +95,6 @@ public class SinnerDistribute : MonoBehaviour
                     }
                 }
             }
-
-            //for (int i = 0; i < housed.Length; i++)
-            //{
-            //    if (sinnerPools[gp].Count == 0) break;
-            //    if (housed[i])
-            //    {
-            //        HousedNewSinner(gp, i);
-            //    }
-            //}
-            //プールからまとめてremoveするのがよさそう
         }
 
         //housedのi+1番はプールの何番目か
@@ -148,7 +137,6 @@ public class SinnerDistribute : MonoBehaviour
 
         Debug.Log(houseList[phase][rand_house].transform.parent.name + "に" + sinnerComponents[componentID].GetType() + "出現第二");
         houseList[phase].RemoveAt(rand_house);
-        //sinnerPools[phase].RemoveAt(rand_sinner);
         housed[rand_sinner] = true;
     }
 

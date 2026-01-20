@@ -12,7 +12,6 @@ public class ItemID_023 : Sinner
         sinnerName = "‚Ð‚Æ‚è‚Ú‚Á‚¿‚Ìƒuƒ‰ƒ“ƒR";
         LoadSprite("ID023");
         effect = effectObjectParent.transform.GetChild(22).gameObject;
-        effectTimer = 6.5f;
     }
     // Update is called once per frame
     void Update()

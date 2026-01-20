@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeLine : MonoBehaviour
@@ -25,6 +25,7 @@ public class TimeLine : MonoBehaviour
 
     private SaveDataManager saveDataManager;
     private MouseCheck clock;
+    private List<string> abnormalityList;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,38 +48,41 @@ public class TimeLine : MonoBehaviour
     void Update()
     {
         timeLine += Time.deltaTime;
-        if (gameState.GameState == GameStateSystem.State.Start)
+        if (abnormalityList.Count != 0)
         {
-            if (timeLine > 1.5f)
+            if (gameState.GameState == GameStateSystem.State.Start)
             {
-                announceManager.MakeAnnounce("それでは本日の業務を開始します。");
-                gameState.GameState= GameStateSystem.State.Wait;
+                if (timeLine > 1.5f)
+                {
+                    announceManager.MakeAnnounce("それでは本日の業務を開始します。");
+                    gameState.GameState = GameStateSystem.State.Wait;
+                    timeLine = 0.0f;
+                }
+            }
+            if (timeLine > totalTimes[0] - 90.0f && !announced[0])
+            {
+                announceManager.MakeAnnounce("「朝」終了の1分30秒前です。");
+                announced[0] = true;
+                timeState = TimeStates.Morning;
+            }
+            if (timeLine > totalTimes[1] - 90.0f && !announced[1])
+            {
+                announceManager.MakeAnnounce("「昼」終了の1分30秒前です。");
+                announced[1] = true;
+                timeState = TimeStates.Noon;
+            }
+            if (timeLine > totalTimes[2] - 90.0f && !announced[2])
+            {
+                announceManager.MakeAnnounce("「夜」終了の1分30秒前です。");
+                announced[2] = true;
+                timeState = TimeStates.Night;
+            }
+            if (timeLine > totalTimes[2])
+            {
                 timeLine = 0.0f;
+                for (int i = 0; i < times.Length; i++) announced[i] = false;
             }
         }
-        if (timeLine > totalTimes[0] - 90.0f && !announced[0])
-        {
-            announceManager.MakeAnnounce("「朝」終了の1分30秒前です。");
-            announced[0] = true;
-            timeState = TimeStates.Morning;
-        }
-        if (timeLine > totalTimes[1] - 90.0f && !announced[1])
-        {
-            announceManager.MakeAnnounce("「昼」終了の1分30秒前です。");
-            announced[1] = true;
-            timeState = TimeStates.Noon;
-        }
-        if (timeLine > totalTimes[2] - 90.0f && !announced[2])
-        {
-            announceManager.MakeAnnounce("「夜」終了の1分30秒前です。");
-            announced[2] = true;
-            timeState = TimeStates.Night;
-        }
-        if (timeLine > totalTimes[2])
-        {
-            timeLine = 0.0f;
-            for(int i=0;i<times.Length;i++) announced[i]=false;
-        } 
     }
 
     public void NextDay()
@@ -87,5 +91,14 @@ public class TimeLine : MonoBehaviour
         gameState.GameState = GameStateSystem.State.End;
         timeLine = 0.0f;
         announceManager.MakeAnnounce("本日の業務は以上となります。\nお疲れ様でした。");
+    }
+
+    public void AddAbnormalityList(string sinnerName)
+    {
+        abnormalityList.Add(sinnerName);
+    }
+    public void RemoveAbnormalityList(string sinnerName)
+    {
+        abnormalityList.Remove(sinnerName);
     }
 }

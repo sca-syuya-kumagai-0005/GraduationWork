@@ -95,7 +95,6 @@ public class Sinner : MonoBehaviour
 
     protected AnnounceManager announceManager;
     protected GameObject effect;
-    protected float effectTimer;
     protected ProgressGraph progressGraph;
 
     private GameStateSystem gameState;
@@ -138,8 +137,11 @@ public class Sinner : MonoBehaviour
         };
     }
     /// <summary>
-    /// 配達員が建物に到着した時に呼ぶ
+    /// 配達員が到着した時に呼ぶ関数
     /// </summary>
+    /// <param name="itemID">配達物の番号　0～8</param>
+    /// <param name="deliveryProcessID">配達方法の番号　0～2</param>
+    /// <param name="deliveryLineID">配達ラインの番号　0～3</param>
     virtual public void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
         ReceivedItemID = itemID;
@@ -306,15 +308,5 @@ public class Sinner : MonoBehaviour
         _liskClass = (int)liskClass;
         string str = sinnerID.Split(underbar)[1];
         _sinnerID = int.Parse(str);
-    }
-    /// <summary>
-    /// 自分の子としてエフェクトを取得する
-    /// </summary>
-    /// <param name="centerOnself">自分の中心からエフェクトを出すか</param>
-    protected void GetEffectObject(bool centerOnself)
-    {
-        effect.gameObject.transform.parent = gameObject.transform;
-        if(centerOnself)
-        effect.transform.localPosition = Vector3.zero;
     }
 }

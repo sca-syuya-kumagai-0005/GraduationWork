@@ -1,6 +1,9 @@
+using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 public class ItemID_001 : Sinner
 {
+    private TimeLine timeLine;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -11,7 +14,8 @@ public class ItemID_001 : Sinner
         sinnerName = "ëûÇµÇ›ÇÃë¬êØ";
         LoadSprite("ID001");
         effect = effectObjectParent.transform.GetChild(0).gameObject;
-        //effectTimer = 6.5f;
+
+        timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
     }
     // Update is called once per frame
     void Update()
@@ -25,5 +29,26 @@ public class ItemID_001 : Sinner
 
         //ÇªÇÍÇºÇÍÇÃèàóùÇÕÇ±Ç±Ç…èëÇ≠
         //ê_é–Ç™é¿ëïÇ≥ÇÍÇΩÇÁèëÇ≠
+    }
+    public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    {
+        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains(0))
+        {
+
+        }
+        if(timeLine.TimeState == TimeLine.TimeStates.Morning)
+        {
+            //ìkï‡ÇæÇ¡ÇΩÇÁ
+            if (deliveryProcessID == 2) IncreaseProbabilitys(25.0f);
+        }
+        if (timeLine.TimeState == TimeLine.TimeStates.Night)
+        {
+            IncreaseProbabilitys(80.0f);
+        }
+        if (itemID==(int)Mood.Sadness)
+        {
+            IncreaseProbabilitys(100.0f);
+        }
+            base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
 }

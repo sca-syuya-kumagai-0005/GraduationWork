@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 public class ItemID_005 : Sinner
 {
@@ -17,17 +18,9 @@ public class ItemID_005 : Sinner
         timeLine = GameObject.Find("Clock").GetComponent<TimeLine>();
         abnormalityDuration = 0.0f;
     }
-    // Update is called once per frame
-    void Update()
-    {
-        abnormalityDuration -= Time.deltaTime;
-        if (abnormalityDuration >= 0.0f)
-        {
-
-        }
-    }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
+        abnormalityDuration = 45.0f;
         float increase;//ŠeðŒ‚É‘Î‚·‚éŠm—¦‘‰Á—Ê
         if (itemID == (int)Mood.Anticipation || itemID == (int)Mood.Trust)
         {
@@ -37,6 +30,7 @@ public class ItemID_005 : Sinner
         {
             increase = 100.0f;
             IncreaseProbabilitys(increase);
+            abnormalityDuration = 90.0f;
         }
         const int processType_Truck = 0;
         if (deliveryProcessID == processType_Truck)
@@ -53,5 +47,20 @@ public class ItemID_005 : Sinner
 
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
         //’‹‚ÉŒÅ’è‚·‚éˆ—‚ð‘‚­
+        timeLine.AddAbnormalityList(sinnerName);
+        timeLine.TimeState = TimeLine.TimeStates.Morning;
+        StartCoroutine(Release());
+    }
+
+    private IEnumerator Release()
+    {
+        float timer = 0.0f;
+        while (abnormalityDuration > timer)
+        {
+            if(!isRampage)
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        timeLine.RemoveAbnormalityList(sinnerName);
     }
 }
