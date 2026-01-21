@@ -42,7 +42,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Clip: 1
+    - _Clip: 0.8
     - _Feather: 0.26
     - _Power: 1
     - _QueueControl: 0
