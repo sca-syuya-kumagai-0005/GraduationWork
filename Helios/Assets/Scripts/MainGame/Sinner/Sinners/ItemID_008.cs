@@ -15,7 +15,6 @@ public class ItemID_008 : Sinner
         sinnerName = "ó÷è•ÇÃéP";
         LoadSprite("ID008");
         effect = effectObjectParent.transform.GetChild(7).gameObject;
-        effectTimer = 6.5f;
         KumagaiLibrary.Dictionary.Support.AddArray(specifyingDeliveryRoutes.SinnerDebuff, sinnerName, false);
     }
     // Update is called once per frame
@@ -36,7 +35,7 @@ public class ItemID_008 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        //if (äwçZÇÃëOÇí Ç¡ÇƒÇ»Ç©Ç¡ÇΩÇÁ)
+        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.SCHOOL))
         {
             increase = 150.0f;
             IncreaseProbabilitys(increase);

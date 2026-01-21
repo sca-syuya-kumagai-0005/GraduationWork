@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [DefaultExecutionOrder(1)]
@@ -36,8 +37,8 @@ public class SinnerDistribute : MonoBehaviour
         //new List<int> { 2,4,5,12,13,16,17,18,2,2 },
         //new List<int> { 3,6,7,11,19,20,3,3,3,3 },
         //new List<int> { 1,8,9,10,14 },
-        new List<int> { 11,12,13,14,15,16,17,18,19,20 },
         new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+        new List<int> { 11,12,13,14,15,16,17,18,19,20 },
         new List<int> { 21,22,23,24,25,26,27,28,29,30 }
     };
     private const int maxSinners = 31;
@@ -50,12 +51,13 @@ public class SinnerDistribute : MonoBehaviour
     private List<int> totalSinnerPool = new List<int>();
     [SerializeField]
     private bool[] housed = new bool[maxSinners];
-    [SerializeField]private int standbySinners;
+    [SerializeField] private int standbySinners;
     private SaveDataManager saveDataManager;
-    //private int removeCount;
+
+    //各区画に住むシナーを入れるリスト
+    private List<GameObject>[] plotContainedObject = new List<GameObject>[10];
     private void Start()
     {
-        //removeCount = 0;
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         housed = saveDataManager.HousedSinner;
         standbySinners = saveDataManager.Days + 1;
@@ -67,7 +69,7 @@ public class SinnerDistribute : MonoBehaviour
 
     private void Distribute(int gamePhase)
     {
-        for(int i = 0; i < sinnerPools.Length; i++)
+        for (int i = 0; i < sinnerPools.Length; i++)
         {
             totalSinnerPool.AddRange(sinnerPools[i]);
         }
@@ -96,26 +98,15 @@ public class SinnerDistribute : MonoBehaviour
                     }
                 }
             }
-
-            //for (int i = 0; i < housed.Length; i++)
-            //{
-            //    if (sinnerPools[gp].Count == 0) break;
-            //    if (housed[i])
-            //    {
-            //        HousedNewSinner(gp, i);
-            //    }
-            //}
-            //プールからまとめてremoveするのがよさそう
         }
 
-        //housedのi+1番はプールの何番目か
         for (int i = 0; i < housed.Length; i++)
         {
             if (housed[i])
             {
-                //Debug.Log("シナー" + (i + 1) + "は" + tmpList.IndexOf(i + 1));
+                //合算プールの何番目か
                 int sinnerID = totalSinnerPool.IndexOf(i + 1);
-                int gp = GetGamePhase(i);
+                int gp = GetGamePhase(totalSinnerPool[i]);
                 HousedExistingSinner(gp, sinnerID);
             }
         }
@@ -129,9 +120,9 @@ public class SinnerDistribute : MonoBehaviour
     {
         if (houseList[phase].Count == 0) return;
         int rand = Random.Range(0, houseList[phase].Count);
-        houseList[phase][rand].AddComponent(sinnerComponents[housedSinnerID].GetType());
+        houseList[phase][rand].AddComponent(sinnerComponents[totalSinnerPool[housedSinnerID - 1]].GetType());
         sinnerPools[phase].Remove(housedSinnerID + 1);
-        Debug.Log(houseList[phase][rand].transform.parent.name + "に" + sinnerComponents[housedSinnerID].GetType() + "出現第一");
+        Debug.Log(houseList[phase][rand].transform.parent.name + "に" + sinnerComponents[totalSinnerPool[housedSinnerID - 1]].GetType() + "続けて出現");
         houseList[phase].RemoveAt(rand);
         standbySinners--;
     }
@@ -146,9 +137,8 @@ public class SinnerDistribute : MonoBehaviour
         houseList[phase][rand_house].AddComponent(sinnerComponents[componentID].GetType());
         sinnerPools[phase].Remove(componentID + 1);
 
-        Debug.Log(houseList[phase][rand_house].transform.parent.name + "に" + sinnerComponents[componentID].GetType() + "出現第二");
+        Debug.Log(houseList[phase][rand_house].transform.parent.name + "に" + sinnerComponents[componentID].GetType() + "初めて出現");
         houseList[phase].RemoveAt(rand_house);
-        //sinnerPools[phase].RemoveAt(rand_sinner);
         housed[rand_sinner] = true;
     }
 

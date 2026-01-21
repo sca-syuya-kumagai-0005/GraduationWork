@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 public class ItemID_009 : Sinner
 {
-
+    private TimeLine timeLine;
+    bool isAbnormality;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -12,12 +14,33 @@ public class ItemID_009 : Sinner
         sinnerName = "朽ちた天馬";
         LoadSprite("ID009");
         effect = effectObjectParent.transform.GetChild(8).gameObject;
-        effectTimer = 6.5f;
+
+        timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
+        isAbnormality = false;
     }
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
+        if(!isAbnormality)
+        {
+            if (timeLine.TimeState == TimeLine.TimeStates.Night && deliveryCount == 0)
+            {
+                isAbnormality = true;
+                AbnormalPhenomenon();
+            }
+        }
+    }
+    public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    {
+        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0) AbnormalPhenomenon();
+        bool notPassedZoo = false;
+        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.ZOO))
+        {
+            IncreaseProbabilitys(90.0f);
+            notPassedZoo = true;
+        }
+        if (notPassedZoo) IncreaseProbabilitys(-90.0f);
+        base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
     protected override void AbnormalPhenomenon()
     {
@@ -25,5 +48,6 @@ public class ItemID_009 : Sinner
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
+        //「定期的に衝撃波をインスタンスする馬」をインスタンスする
     }
 }
