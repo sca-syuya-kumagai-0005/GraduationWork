@@ -22,7 +22,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     List<Vector3>[] routesPosition = new List<Vector3>[driverCount];//
     List<GameObject>[] passedObjects = new List<GameObject>[driverCount];
     [SerializeField] bool[] isConfison = new bool[driverCount];
-    public bool[] IsConfison { get { return isConfison; } } 
+    public bool[] IsConfison { get { return isConfison; } set { isConfison = value; } }
 
     [SerializeField] GameObject move;
     [SerializeField] GameObject arrows;
@@ -139,6 +139,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         pen.SetActive(!writing);
         if (writing) writeButtonRenderer.sprite = writeSprite[0];
         else writeButtonRenderer.sprite = writeSprite[1];
