@@ -64,6 +64,7 @@ public class TitleManager : MonoBehaviour
     public void SelectStart()
     {
         isSelect = true;
+        select = Select.BEGINNING;
     }
 
     [Button]

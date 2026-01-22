@@ -15,7 +15,8 @@ public class MusicList : MonoBehaviour
     Vector2 defaultSize;
     [SerializeField] Text musicNameText;
     [SerializeField] MusicNameMover musicNameMover;
-    [SerializeField] AudioClip[] playList;
+    [SerializeField] AudioClip[] playList; // 曲のリスト
+    MusicQueue musicQueue;
 
     private void Awake()
     {
@@ -25,6 +26,13 @@ public class MusicList : MonoBehaviour
         myRectTransform = GetComponent<RectTransform>();
         defaultSize = myRectTransform.sizeDelta;
         myRectTransform.sizeDelta = new Vector2(defaultSize.x, 0);
+        musicQueue = Locator<MusicQueue>.Instance;
+        musicQueue.SetQueue(playList);
+    }
+
+    private void Start()
+    {
+        musicNameText.text = Locator<AudioManager>.Instance.GetNowBGM().name;
         this.gameObject.SetActive(false);
     }
 
@@ -38,32 +46,24 @@ public class MusicList : MonoBehaviour
         Locator<MusicList>.Unbind(this);
     }
 
-    //本実装関数
-    //public void InstansMusic(AudioClip _audioClip)
-    //{
-    //    GameObject obj = Instantiate(musicPrefab, viewPortTransform);
-    //    obj.GetComponent<MusicButton>().SetAudioCiip(_audioClip);
-    //    obj.name = _audioClip.name;
-    //    musics.Add(obj);
-    //}
-
     public void instans()
     {
-        Debug.Log("1");
+        //ここでボタン系をストップ
         this.gameObject.SetActive(true);
         myRectTransform.DOSizeDelta(defaultSize, 0.25f);
-        for (int i = 0; i < 15;i++)
+        for (int i = (musicQueue.nowNumber + 1) % musicQueue.queue.Length; i != musicQueue.nowNumber; i = (i + 1) % musicQueue.queue.Length)
         {
-            InstansMusic(i.ToString() + "aaaaaaaaaaa");
+            InstansMusic(i, musicQueue.queue[i].name);
         }
         ContentSizeChange();
     }
 
-    public void InstansMusic(string _audioClip)
+    //本実装関数
+    public void InstansMusic(int _num, string _audioClipName)
     {
         GameObject obj = Instantiate(musicPrefab, contentsTransform);
-        obj.GetComponent<MusicButton>().SetAudioCiip(_audioClip);
-        obj.name = _audioClip;
+        obj.GetComponent<MusicButton>().SetAudioCiip(_num, _audioClipName);
+        obj.name = _audioClipName;
         musics.Add(obj);
     }
 
@@ -72,6 +72,7 @@ public class MusicList : MonoBehaviour
     /// </summary>
     public void DeleteMusic(string _text)
     {
+        //ここでボタン系を再稼働
         musicNameText.text = _text;
         musicNameMover.PositionReset();
         myRectTransform.DOSizeDelta(new Vector2(defaultSize.x, 0), 0.25f).OnComplete(() =>
@@ -93,5 +94,20 @@ public class MusicList : MonoBehaviour
         const float sizeY = 50.0f;
         contentsRect.sizeDelta = new Vector2(contentsRect.sizeDelta.x, sizeY * musics.Count);
         myScrollRect.verticalNormalizedPosition = 1f;
+    }
+
+    public void ChangeMusicNameText(string _text)
+    {
+        musicNameText.text = _text;
+    }
+
+    public void SetQueue()
+    {
+        musicQueue.SetQueue(playList);
+    }
+
+    public void RandomQueue()
+    {
+        musicQueue.SetRandomQueue();
     }
 }

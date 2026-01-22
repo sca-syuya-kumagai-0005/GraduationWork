@@ -826,7 +826,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3109511275374551612}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3460438045209787392}
+        m_TargetAssemblyTypeName: MusicQueue, Assembly-CSharp
+        m_MethodName: BackMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1249764190146985383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2198,6 +2210,8 @@ GameObject:
   - component: {fileID: 1110064293888424628}
   - component: {fileID: 4700210968088461166}
   - component: {fileID: 3528369933739774130}
+  - component: {fileID: 99244276409234986}
+  - component: {fileID: 4213889004936743416}
   m_Layer: 5
   m_Name: rewind
   m_TagString: Untagged
@@ -2262,6 +2276,65 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &99244276409234986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2575280209816354992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 3528369933739774130}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4213889004936743416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2575280209816354992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6cb15ed9dee6a54499d3a9c2740a833, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: 8fd209e4a42867b43ab3f437958c3836, type: 3}
+  - {fileID: 21300000, guid: 7dc3c25a5fc01004d8b77f2cfa022932, type: 3}
 --- !u!1 &2586641899389340624
 GameObject:
   m_ObjectHideFlags: 0
@@ -3122,6 +3195,54 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3456939220837861392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1654610296077818653}
+  - component: {fileID: 3460438045209787392}
+  m_Layer: 5
+  m_Name: MusicQueue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1654610296077818653
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3456939220837861392}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7663866271071642919}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3460438045209787392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3456939220837861392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26cd3541966784e46b5dc88bb8132c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3856610779701359955
 GameObject:
   m_ObjectHideFlags: 0
@@ -5009,7 +5130,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4073025909827183790}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3460438045209787392}
+        m_TargetAssemblyTypeName: MusicQueue, Assembly-CSharp
+        m_MethodName: NextMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7359745356300227610
 GameObject:
   m_ObjectHideFlags: 0
@@ -5434,6 +5567,7 @@ RectTransform:
   m_LocalScale: {x: 1.65, y: 1.65, z: 1.65}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 1654610296077818653}
   - {fileID: 5470582788132604837}
   - {fileID: 6971650762162707680}
   - {fileID: 8158876388324728105}
@@ -5497,6 +5631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicBar: {fileID: 731698655376336295}
+  musicList: {fileID: 0}
 --- !u!1 &8183414234714535939
 GameObject:
   m_ObjectHideFlags: 0
@@ -5887,6 +6022,25 @@ MonoBehaviour:
   musicPrefab: {fileID: 8940162786893236179, guid: e50859f45b50c8943bf2ca19b2b0f637, type: 3}
   musicNameText: {fileID: 1202217020148629434}
   musicNameMover: {fileID: 5660102650823086978}
+  playList:
+  - {fileID: 8300000, guid: 22ab82e3abd13e74daf624ee8c01132f, type: 3}
+  - {fileID: 8300000, guid: 59c3a9a5e47337b4abdad7a098ebfbf6, type: 3}
+  - {fileID: 8300000, guid: 266d65ff8ce2d584a979fb961bcb169d, type: 3}
+  - {fileID: 8300000, guid: 895bf17d1d5fd6e40aebe9cbbe062fbe, type: 3}
+  - {fileID: 8300000, guid: bdec69c80727aae4ca3da871fc10db30, type: 3}
+  - {fileID: 8300000, guid: 291bd05ceb84edd4ca9d08c4b9e620b8, type: 3}
+  - {fileID: 8300000, guid: 58b7a84b484b5fe44afd0046782b992d, type: 3}
+  - {fileID: 8300000, guid: 3603d24b9dd90c1469bda180078a1b41, type: 3}
+  - {fileID: 8300000, guid: f5bc761e8b29cfb439d40303114f6546, type: 3}
+  - {fileID: 8300000, guid: f686f5f94b3417740b12734989db5b0c, type: 3}
+  - {fileID: 8300000, guid: 0594b32272df02745a985ab90b053428, type: 3}
+  - {fileID: 8300000, guid: 8210bba27a1c60a479aced5d435a0410, type: 3}
+  - {fileID: 8300000, guid: 9e7ed61d4e3d3764bbb4709e0d2296c2, type: 3}
+  - {fileID: 8300000, guid: 53aa5cc5dc3e45847b35d1c20f8bba1d, type: 3}
+  - {fileID: 8300000, guid: a8e0cef4865b2194e8cbd26c64317d24, type: 3}
+  - {fileID: 8300000, guid: 01e3d975da4f2d944b12a07248cd534f, type: 3}
+  - {fileID: 8300000, guid: 9ef564d027c0546449889cc9ae3994d8, type: 3}
+  - {fileID: 8300000, guid: 2aed91a8d01d75e459e19638e94e91f5, type: 3}
 --- !u!1 &8807840118005453750
 GameObject:
   m_ObjectHideFlags: 0
