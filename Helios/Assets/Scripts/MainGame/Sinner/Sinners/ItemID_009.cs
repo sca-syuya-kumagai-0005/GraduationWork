@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class ItemID_009 : Sinner
 {
-    private GameObject sinnerIconObject;
     private TimeLine timeLine;
     bool isAbnormality;
     GameObject[] plot = new GameObject[9];
@@ -60,6 +59,6 @@ public class ItemID_009 : Sinner
 
         //それぞれの処理はここに書く
         //「定期的に衝撃波をインスタンスする馬」をインスタンスする
-        Instantiate(sinnerIconObject, transform.parent);
+        Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
     }
 }
