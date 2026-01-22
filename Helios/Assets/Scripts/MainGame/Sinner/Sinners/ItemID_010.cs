@@ -24,6 +24,9 @@ public class ItemID_010 : Sinner
         if (!isAbnormality)
         {
             if (timeLine.TimeState == TimeLine.TimeStates.Night && deliveryCount == 0)
+            {
+
+            }
         }
     }
     protected override void AbnormalPhenomenon()
@@ -32,6 +35,6 @@ public class ItemID_010 : Sinner
         base.AbnormalPhenomenon();
 
         //ÇªÇÍÇºÇÍÇÃèàóùÇÕÇ±Ç±Ç…èëÇ≠
-        timeline.TimeState = TimeLine.TimeStates.Abnormal;
+        timeLine.TimeState = TimeLine.TimeStates.Abnormal;
     }
 }
