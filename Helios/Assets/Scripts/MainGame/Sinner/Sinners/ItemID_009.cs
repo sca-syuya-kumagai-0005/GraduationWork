@@ -4,7 +4,6 @@ public class ItemID_009 : Sinner
 {
     private TimeLine timeLine;
     bool isAbnormality;
-    GameObject[] plot = new GameObject[9];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -12,15 +11,10 @@ public class ItemID_009 : Sinner
         liskClass = LiskClass.Zerath;
         probabilitys = new float[8] { 10.0f, 10.0f, 20.0f, 100.0f, 150.0f, 50.0f, 250.0f, 0.0f };
         sinnerID = "ItemID_009";
-        sinnerName = "‹€‚¿‚½“V”n";
+        sinnerName = "æœ½ã¡ãŸå¤©é¦¬";
         LoadSprite("ID009");
-        LoadSinnerObject();
         effect = effectObjectParent.transform.GetChild(8).gameObject;
 
-        for(int i = 0; i < plot.Length; i++)
-        {
-            plot[i] = GameObject.Find("Address_" + i);
-        }
         timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         isAbnormality = false;
     }
@@ -38,11 +32,7 @@ public class ItemID_009 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0)
-        {
-            AbnormalPhenomenon();
-            return;
-        } 
+        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0) AbnormalPhenomenon();
         bool notPassedZoo = false;
         if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.ZOO))
         {
@@ -54,11 +44,12 @@ public class ItemID_009 : Sinner
     }
     protected override void AbnormalPhenomenon()
     {
-        //‘S‚Ä‚ÌˆÙí‚É‚¨‚¢‚Ä‹¤’Ê‚Å‹N‚«‚é–‚ª‚ ‚ê‚Î«‚ğ•ÏX
+        //å…¨ã¦ã®ç•°å¸¸ã«ãŠã„ã¦å…±é€šã§èµ·ãã‚‹äº‹ãŒã‚ã‚Œã°â†“ã‚’å¤‰æ›´
         base.AbnormalPhenomenon();
 
-        //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
-        //u’èŠú“I‚ÉÕŒ‚”g‚ğƒCƒ“ƒXƒ^ƒ“ƒX‚·‚é”nv‚ğƒCƒ“ƒXƒ^ƒ“ƒX‚·‚é
+        //ãã‚Œãã‚Œã®å‡¦ç†ã¯ã“ã“ã«æ›¸ã
+        //ã€Œå®šæœŸçš„ã«è¡æ’ƒæ³¢ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã™ã‚‹é¦¬ã€ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã™ã‚‹
+
         Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
     }
 }
