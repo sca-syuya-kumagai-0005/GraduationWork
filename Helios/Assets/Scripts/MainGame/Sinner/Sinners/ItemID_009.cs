@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class ItemID_009 : Sinner
 {
-    private GameObject sinnerIconObject;
     private TimeLine timeLine;
     bool isAbnormality;
     GameObject[] plot = new GameObject[9];
@@ -13,7 +12,7 @@ public class ItemID_009 : Sinner
         liskClass = LiskClass.Zerath;
         probabilitys = new float[8] { 10.0f, 10.0f, 20.0f, 100.0f, 150.0f, 50.0f, 250.0f, 0.0f };
         sinnerID = "ItemID_009";
-        sinnerName = "æœ½ã¡ãŸå¤©é¦¬";
+        sinnerName = "‹€‚¿‚½“V”n";
         LoadSprite("ID009");
         LoadSinnerObject();
         effect = effectObjectParent.transform.GetChild(8).gameObject;
@@ -54,19 +53,10 @@ public class ItemID_009 : Sinner
         base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
     protected override void AbnormalPhenomenon()
-    {
-        //å…¨ã¦ã®ç•°å¸¸ã«ãŠã„ã¦å…±é€šã§èµ·ãã‚‹äº‹ãŒã‚ã‚Œã°â†“ã‚’å¤‰æ›´
+    {        
+        //‘S‚Ä‚ÌˆÙí‚É‚¨‚¢‚Ä‹¤’Ê‚Å‹N‚«‚é–‚ª‚ ‚ê‚Î«‚ğ•ÏX
         base.AbnormalPhenomenon();
 
-<<<<<<< HEAD
-        //ãã‚Œãã‚Œã®å‡¦ç†ã¯ã“ã“ã«æ›¸ã
-        //ã€Œå®šæœŸçš„ã«è¡æ’ƒæ³¢ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã™ã‚‹é¦¬ã€ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã™ã‚‹
-
         Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
-=======
-        //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
-        //u’èŠú“I‚ÉÕŒ‚”g‚ğƒCƒ“ƒXƒ^ƒ“ƒX‚·‚é”nv‚ğƒCƒ“ƒXƒ^ƒ“ƒX‚·‚é
-        Instantiate(sinnerIconObject, transform.parent);
->>>>>>> parent of 337848b (Revert "ä¸€æ—¦ã‚¢ãƒƒãƒ—")
     }
 }
