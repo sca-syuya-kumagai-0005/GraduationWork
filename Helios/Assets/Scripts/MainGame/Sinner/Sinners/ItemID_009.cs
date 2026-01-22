@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class ItemID_009 : Sinner
 {
+    private GameObject sinnerIconObject;
     private TimeLine timeLine;
     bool isAbnormality;
+    GameObject[] plot = new GameObject[9];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,8 +15,13 @@ public class ItemID_009 : Sinner
         sinnerID = "ItemID_009";
         sinnerName = "朽ちた天馬";
         LoadSprite("ID009");
+        LoadSinnerObject();
         effect = effectObjectParent.transform.GetChild(8).gameObject;
 
+        for(int i = 0; i < plot.Length; i++)
+        {
+            plot[i] = GameObject.Find("Address_" + i);
+        }
         timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         isAbnormality = false;
     }
@@ -32,7 +39,11 @@ public class ItemID_009 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0) AbnormalPhenomenon();
+        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0)
+        {
+            AbnormalPhenomenon();
+            return;
+        } 
         bool notPassedZoo = false;
         if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.ZOO))
         {
@@ -49,5 +60,6 @@ public class ItemID_009 : Sinner
 
         //それぞれの処理はここに書く
         //「定期的に衝撃波をインスタンスする馬」をインスタンスする
+        Instantiate(sinnerIconObject, transform.parent);
     }
 }
