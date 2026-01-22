@@ -55,6 +55,7 @@ public class ItemID_006 : Sinner
                 player.Health -= damage;
             }
         }
+        deliveryCount++;
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
     }

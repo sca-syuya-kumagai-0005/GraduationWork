@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class ItemID_009 : Sinner
 {
+    private GameObject sinnerIconObject;
     private TimeLine timeLine;
     bool isAbnormality;
+    GameObject[] plot = new GameObject[9];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,8 +15,13 @@ public class ItemID_009 : Sinner
         sinnerID = "ItemID_009";
         sinnerName = "ÊúΩ„Å°„ÅüÂ§©È¶¨";
         LoadSprite("ID009");
+        LoadSinnerObject();
         effect = effectObjectParent.transform.GetChild(8).gameObject;
 
+        for(int i = 0; i < plot.Length; i++)
+        {
+            plot[i] = GameObject.Find("Address_" + i);
+        }
         timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         isAbnormality = false;
     }
@@ -32,7 +39,11 @@ public class ItemID_009 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0) AbnormalPhenomenon();
+        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0)
+        {
+            AbnormalPhenomenon();
+            return;
+        } 
         bool notPassedZoo = false;
         if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.ZOO))
         {
@@ -47,9 +58,15 @@ public class ItemID_009 : Sinner
         //ÂÖ®„Å¶„ÅÆÁï∞Â∏∏„Å´„Åä„ÅÑ„Å¶ÂÖ±ÈÄö„ÅßËµ∑„Åç„Çã‰∫ã„Åå„ÅÇ„Çå„Å∞‚Üì„ÇíÂ§âÊõ¥
         base.AbnormalPhenomenon();
 
+<<<<<<< HEAD
         //„Åù„Çå„Åû„Çå„ÅÆÂá¶ÁêÜ„ÅØ„Åì„Åì„Å´Êõ∏„Åè
         //„ÄåÂÆöÊúüÁöÑ„Å´Ë°ùÊíÉÊ≥¢„Çí„Ç§„É≥„Çπ„Çø„É≥„Çπ„Åô„ÇãÈ¶¨„Äç„Çí„Ç§„É≥„Çπ„Çø„É≥„Çπ„Åô„Çã
 
         Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
+=======
+        //ÇªÇÍÇºÇÍÇÃèàóùÇÕÇ±Ç±Ç…èëÇ≠
+        //ÅuíËä˙ìIÇ…è’åÇîgÇÉCÉìÉXÉ^ÉìÉXÇ∑ÇÈînÅvÇÉCÉìÉXÉ^ÉìÉXÇ∑ÇÈ
+        Instantiate(sinnerIconObject, transform.parent);
+>>>>>>> parent of 337848b (Revert "‰∏ÄÊó¶„Ç¢„ÉÉ„Éó")
     }
 }

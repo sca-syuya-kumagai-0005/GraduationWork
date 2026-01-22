@@ -5,6 +5,8 @@ using UnityEngine;
 [DefaultExecutionOrder(1)]
 public class SinnerDistribute : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject sinnerObject;
     private const int poolSize = 3;
     private List<Object> sinnerComponents = new List<Object>()
     {
@@ -55,7 +57,7 @@ public class SinnerDistribute : MonoBehaviour
     private SaveDataManager saveDataManager;
 
     //各区画に住むシナーを入れるリスト
-    private List<GameObject>[] plotContainedObject = new List<GameObject>[10];
+    private List<GameObject>[] plotContainedSinner = new List<GameObject>[10];
     private void Start()
     {
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();

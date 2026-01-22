@@ -103,6 +103,8 @@ public class Sinner : MonoBehaviour
     protected Map.MapObjectID mapObjectID;
 
     protected GameObject effectObjectParent;
+
+    protected GameObject sinnerIconObject;
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
@@ -117,6 +119,7 @@ public class Sinner : MonoBehaviour
         transform.GetComponent<MapObjectRequest>().HaveSinner=true;
         effectObjectParent = GameObject.Find("SinnerALLEffect").gameObject;
         transform.GetChild(0).GetComponent<SpriteRenderer>().color=new Color(0.925f,0.52f,0.0f);
+        deliveryCount = 0;
     }
 
     /// <summary>
@@ -155,6 +158,7 @@ public class Sinner : MonoBehaviour
             AbnormalPhenomenon();
             player.Health -= damage;
         }
+        deliveryCount++;
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
     }
@@ -278,6 +282,21 @@ public class Sinner : MonoBehaviour
             if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
             {
                 sinnerSprite = handle.Result;
+            }
+            else
+            {
+                Debug.LogError($"Failed to load sprite at path: {path}");
+            }
+        };
+    }
+    protected void LoadSinnerObject()
+    {
+        string path = "SinnerObject";
+        Addressables.LoadAssetAsync<GameObject>(path).Completed += handle =>
+        {
+            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            {
+                sinnerIconObject = handle.Result;
             }
             else
             {
