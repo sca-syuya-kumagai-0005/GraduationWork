@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 251fd318841c25043827d8b3a7fe6d59
+    m_Address: SinnerObject
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 276b11e48704916428ab759c557c69bc
     m_Address: ID006
     m_ReadOnly: 0
