@@ -37,9 +37,9 @@ public class TitleAnimationManager : MonoBehaviour
     [SerializeField] Text pushText;
     [SerializeField] GameObject rainParticle;
     [SerializeField, Header("選択画面開始時演出")] GameObject titleSelectObj;
-    [SerializeField] Image roadFade;
-    [SerializeField] Image houseFade;
     [SerializeField] GameObject selectBackGround;
+    [SerializeField] ChangePixelColor roadPixelColor;
+    [SerializeField] ChangePixelColor fadePixelColor;
     [SerializeField, Header("自室演出")] GameObject myRoomObj;
     [SerializeField] GameObject myRoomBackGround;
     [SerializeField, Header("メモリースリンガー演出")] GameObject memorySlingerObj;
@@ -157,23 +157,14 @@ public class TitleAnimationManager : MonoBehaviour
 
     public IEnumerator TitleSelectDisplayAnim()
     {
-        roadFade.fillAmount = 1f;
-        houseFade.fillAmount= 1f;
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
         SetBackGround(selectBackGround);
         SetNowTitleMode(titleSelectObj);
-        yield return StartCoroutine(FadeAnimation(0f,0.5f));
-        const float time = 1.5f;
-        roadFade.DOFillAmount(0.5f, time).SetEase(Ease.Linear);
-        houseFade.DOFillAmount(0.5f,time).SetEase(Ease.Linear); 
-        yield return new WaitForSeconds(time);
-        roadFade.fillMethod = Image.FillMethod.Horizontal;
-        roadFade.fillOrigin = 1;
-        houseFade.fillMethod = Image.FillMethod.Horizontal;
-        houseFade.fillOrigin = 1;
-        roadFade.DOFillAmount(0, time).SetEase(Ease.Linear);
-        houseFade.DOFillAmount(0, time).SetEase(Ease.Linear);
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(0.5f);
+        const float fadeTime = 3.0f;
+        roadPixelColor.OnAnim();
+        fadePixelColor.OnAnim();
+        yield return StartCoroutine(FadeAnimation(0f, fadeTime + 0.5f));
         Locator<TitleManager>.Instance.SelectStart();
     }
 

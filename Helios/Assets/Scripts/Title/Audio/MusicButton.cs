@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class MusicButton : MonoBehaviour
 {
     private Button button;
-    AudioClip audioClip;
+    int num;
     [SerializeField] Text musicNameText;
 
     void Start()
@@ -13,24 +13,15 @@ public class MusicButton : MonoBehaviour
         button.onClick.AddListener(playMusic);
     }
 
-    //public void SetAudioCiip(AudioClip _audioClip)
-    //{
-    //    audioClip = _audioClip;
-    //    musicNameText.text = _audioClip.name;
-    //}
-
-    /// <summary>
-    /// デバッグ用
-    /// </summary>
-    /// <param name="_s">曲名</param>
-    public void SetAudioCiip(string _s)
+    public void SetAudioCiip(int _num ,string _audioClipName)
     {
-        musicNameText.text = _s;
+        num = _num;
+        musicNameText.text = _audioClipName;
     }
 
     public void playMusic()
     {
         Locator<MusicList>.Instance.DeleteMusic(musicNameText.text);
-        //Locator<AudioManager>.Instance.PlayBGM(audioClip);
+        Locator<MusicQueue>.Instance.ChangeBGM(num);
     }
 }

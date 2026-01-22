@@ -47,6 +47,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public AudioClip GetNowBGM()
+    {
+        return BGM.clip;
+    }
+
     /// <summary>
     /// BGM‚ğİ’è‚µ‚ÄÄ¶‚·‚é
     /// </summary>

@@ -122,14 +122,28 @@ public class ChangePixelColor : MonoBehaviour
 
     List<int> nums = new List<int>();
     int[] pixelDirection;
-    const int size = 1920 * 1080;
+    int size; //ŽG
 
     private void Start()
     {
         Texture2D mainTex = targetRawImage.texture as Texture2D;
 
-        texture = new Texture2D(mainTex.width, mainTex.height);
-        texture.SetPixels(mainTex.GetPixels());
+        if (targetRawImage.texture != null)
+        {
+            texture = new Texture2D(mainTex.width, mainTex.height);
+            texture.SetPixels(mainTex.GetPixels());
+        }
+        else
+        {
+            RectTransform myRect = GetComponent<RectTransform>();
+            texture = new Texture2D((int)myRect.sizeDelta.x, (int)myRect.sizeDelta.y);
+            var data = texture.GetRawTextureData<Color32>();
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = Color.white;
+            }
+        }
+            
         texture.Apply();
         targetRawImage.texture = texture;
         nums.Add(0);
@@ -139,10 +153,11 @@ public class ChangePixelColor : MonoBehaviour
         //pixelDirection[(int)Direction.RIGHT] = PixelVector.right;
         //pixelDirection[(int)Direction.DOWN] = PixelVector.down;
         //pixelDirection[(int)Direction.LEFT] = PixelVector.left;
+        size = texture.width * texture.height;
         pixelDirection = new int[(int)Direction.MAX];
-        pixelDirection[(int)Direction.UPPER] = 1920;
+        pixelDirection[(int)Direction.UPPER] = texture.width;
         pixelDirection[(int)Direction.RIGHT] = 1;
-        pixelDirection[(int)Direction.DOWN] = -1920;
+        pixelDirection[(int)Direction.DOWN] = -texture.width;
         pixelDirection[(int)Direction.LEFT] = -1;
     }
 
@@ -193,6 +208,7 @@ public class ChangePixelColor : MonoBehaviour
         {
             int p = pos + pixelDirection[i];
             if (p < 0 || p > size - 1) continue;
+            if (((Direction)i == Direction.RIGHT && p % texture.width == 0) || ((Direction)i == Direction.LEFT && p % texture.width == texture.width - 1)) continue;
             if (pixelData[p] == Color.white && !list.Contains(p))
             {
                 list.Add(p);
