@@ -4,7 +4,6 @@ public class ItemID_009 : Sinner
 {
     private TimeLine timeLine;
     bool isAbnormality;
-    GameObject[] plot = new GameObject[9];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,10 +16,6 @@ public class ItemID_009 : Sinner
         LoadSinnerObject();
         effect = effectObjectParent.transform.GetChild(8).gameObject;
 
-        for(int i = 0; i < plot.Length; i++)
-        {
-            plot[i] = GameObject.Find("Address_" + i);
-        }
         timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         isAbnormality = false;
     }
@@ -57,6 +52,10 @@ public class ItemID_009 : Sinner
         //‘S‚Ä‚ÌˆÙí‚É‚¨‚¢‚Ä‹¤’Ê‚Å‹N‚«‚é–‚ª‚ ‚ê‚Î«‚ğ•ÏX
         base.AbnormalPhenomenon();
 
+        GameObject mapObject =
         Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
+        CelestialSteed celestialSteed = mapObject.AddComponent<CelestialSteed>();
+        celestialSteed.SetEffectObject = effect;
+        celestialSteed.SetSprite = sinnerSprite;
     }
 }
