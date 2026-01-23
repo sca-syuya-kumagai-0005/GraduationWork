@@ -24,6 +24,7 @@ public class MusicNameMover : MonoBehaviour
     void Move()
     {
         float endValue = defaultPosition.x - myRect.sizeDelta.x + moveDistance;
+        if (endValue > defaultPosition.x) endValue = defaultPosition.x;
         myRect.DOAnchorPosX(endValue, 1.5f).SetEase(Ease.Linear).SetDelay(delayTime).OnComplete(() =>
         {
             Invoke(nameof(PositionReset), delayTime);

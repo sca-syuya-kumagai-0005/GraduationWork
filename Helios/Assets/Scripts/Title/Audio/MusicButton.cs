@@ -21,7 +21,7 @@ public class MusicButton : MonoBehaviour
 
     public void playMusic()
     {
-        Locator<MusicList>.Instance.DeleteMusic(musicNameText.text);
-        Locator<MusicQueue>.Instance.ChangeBGM(num);
+        Locator<Phone>.Instance.ChangeBGM(num);
+        Locator<MusicList>.Instance.DeleteMusic();
     }
 }

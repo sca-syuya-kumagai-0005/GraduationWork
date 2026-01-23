@@ -10,30 +10,27 @@ public class MusicList : MonoBehaviour
     Transform contentsTransform;
     [SerializeField] GameObject musicPrefab;
     List<GameObject> musics = new List<GameObject>();
-    ScrollRect myScrollRect;
-    RectTransform myRectTransform;
+    [SerializeField] ScrollRect listScrollRect;
+    [SerializeField] RectTransform listRectTransform;
     Vector2 defaultSize;
     [SerializeField] Text musicNameText;
     [SerializeField] MusicNameMover musicNameMover;
     [SerializeField] AudioClip[] playList; // 曲のリスト
-    MusicQueue musicQueue;
+    Phone phone;
 
     private void Awake()
     {
         contentsRect = contents.GetComponent<RectTransform>();
         contentsTransform = contents.transform;
-        myScrollRect = GetComponent<ScrollRect>();
-        myRectTransform = GetComponent<RectTransform>();
-        defaultSize = myRectTransform.sizeDelta;
-        myRectTransform.sizeDelta = new Vector2(defaultSize.x, 0);
-        musicQueue = Locator<MusicQueue>.Instance;
-        musicQueue.SetQueue(playList);
+        defaultSize = listRectTransform.sizeDelta;
+        listRectTransform.sizeDelta = new Vector2(defaultSize.x, 0);
     }
 
     private void Start()
     {
         musicNameText.text = Locator<AudioManager>.Instance.GetNowBGM().name;
-        this.gameObject.SetActive(false);
+        phone = Locator<Phone>.Instance;
+        phone.SetQueue(playList);
     }
 
     private void OnEnable()
@@ -49,11 +46,16 @@ public class MusicList : MonoBehaviour
     public void instans()
     {
         //ここでボタン系をストップ
-        this.gameObject.SetActive(true);
-        myRectTransform.DOSizeDelta(defaultSize, 0.25f);
-        for (int i = (musicQueue.nowNumber + 1) % musicQueue.queue.Length; i != musicQueue.nowNumber; i = (i + 1) % musicQueue.queue.Length)
+        if (musics.Count != 0)
         {
-            InstansMusic(i, musicQueue.queue[i].name);
+            DeleteMusic();
+            return;
+        }
+        this.gameObject.SetActive(true);
+        listRectTransform.DOSizeDelta(defaultSize, 0.25f);
+        for (int i = (phone.nowNumber + 1) % phone.queue.Length; i != phone.nowNumber; i = (i + 1) % phone.queue.Length)
+        {
+            InstansMusic(i, phone.queue[i].name);
         }
         ContentSizeChange();
     }
@@ -70,19 +72,16 @@ public class MusicList : MonoBehaviour
     /// <summary>
     /// 表示中のリストを削除する
     /// </summary>
-    public void DeleteMusic(string _text)
+    public void DeleteMusic()
     {
         //ここでボタン系を再稼働
-        musicNameText.text = _text;
-        musicNameMover.PositionReset();
-        myRectTransform.DOSizeDelta(new Vector2(defaultSize.x, 0), 0.25f).OnComplete(() =>
+        listRectTransform.DOSizeDelta(new Vector2(defaultSize.x, 0), 0.25f).OnComplete(() =>
         {
             foreach (GameObject obj in musics)
             {
                 Destroy(obj);
             }
             musics.Clear();
-            this.gameObject.SetActive(false);
         });
     }
 
@@ -93,21 +92,22 @@ public class MusicList : MonoBehaviour
     {
         const float sizeY = 50.0f;
         contentsRect.sizeDelta = new Vector2(contentsRect.sizeDelta.x, sizeY * musics.Count);
-        myScrollRect.verticalNormalizedPosition = 1f;
+        listScrollRect.verticalNormalizedPosition = 1f;
     }
 
     public void ChangeMusicNameText(string _text)
     {
         musicNameText.text = _text;
+        musicNameMover.PositionReset();
     }
 
     public void SetQueue()
     {
-        musicQueue.SetQueue(playList);
+        phone.SetQueue(playList);
     }
 
     public void RandomQueue()
     {
-        musicQueue.SetRandomQueue();
+        phone.SetRandomQueue();
     }
 }
