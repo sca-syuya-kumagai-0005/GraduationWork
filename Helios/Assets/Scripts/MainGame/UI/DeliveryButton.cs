@@ -17,16 +17,22 @@ public class DeliveryButton : EventSetter
     private ButtonType myButtonType;
     public ButtonType SetButtonType { set { myButtonType = value; } }
     private GameStateSystem gameState;
-    private Sinner sinner;
 
     private GameObject deliveryProcess;
     public GameObject SetDeliveryProcess { set { deliveryProcess = value; } }
+    private bool isPuhsed;
+    public bool IsPuhsed {  get { return isPuhsed; } }
     void Awake()
     {
         specifyingDeliveryRoutes =
             GameObject.Find(driverTag).GetComponent<SpecifyingDeliveryRoutes>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
     }
+    private void OnEnable()
+    {
+        isPuhsed = false;
+    }
+        
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,6 +44,8 @@ public class DeliveryButton : EventSetter
         {
             case ButtonType.Item:
                 {
+                    isPuhsed = true;
+                    gameState.GameState = GameStateSystem.State.DeliveryPreparation;
                     //選択された配達物をSet
                     specifyingDeliveryRoutes.DeliveryItemSetting(myButtonID);
                     //配達方法UIをActiveにする

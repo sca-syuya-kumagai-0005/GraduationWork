@@ -55,13 +55,13 @@ public class BlackScreen : EasingMethods
     {
         gameObject.SetActive(true);
         float t = 0.0f;
-        float timerLate = 2.5f;
+        float timerLate = 7f;
         bool isEnd = false;
         Color color = Color.black;
         while (!isEnd)
         {
             t += Time.deltaTime / timerLate;
-            color = Color.black - Color.black * EaseOutSine(t);
+            color = Color.black - Color.black * EaseInExpo(t);
             image.color = color;
             if (t >= 1.0f) isEnd = true;
             yield return null;
