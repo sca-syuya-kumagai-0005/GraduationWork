@@ -19,11 +19,11 @@ public class DliverRequest : MonoBehaviour
 
     private void Update()
     {
-        int confisonCount = 0;
-        if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_007)) confisonCount += sDR.SinnerDebuff[driverID][SINNER_007] ? 1 : 0;　//フラグがTrueなら混乱状態を示す変数を加算
-        if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_008)) confisonCount += sDR.SinnerDebuff[driverID][SINNER_008] ? 1 : 0;  //上と同じ
-        isConfison = confisonCount > 0;
-        sDR.IsConfison[driverID] = isConfison;
+        //int confisonCount = 0;
+        //if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_007)) confisonCount += sDR.SinnerDebuff[driverID][SINNER_007] ? 1 : 0;　//フラグがTrueなら混乱状態を示す変数を加算
+        //if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_008)) confisonCount += sDR.SinnerDebuff[driverID][SINNER_008] ? 1 : 0;  //上と同じ
+        //isConfison = confisonCount > 0;
+        //sDR.IsConfison[driverID] = isConfison;
     }
     public void PointerDown()
     {
