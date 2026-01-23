@@ -16,13 +16,13 @@ public class ItemID_023 : Sinner
         sinnerID = "ItemID_023";
         sinnerName = "‚Ð‚Æ‚è‚Ú‚Á‚¿‚Ìƒuƒ‰ƒ“ƒR";
         LoadSprite("ID023");
-        effect = effectObjectParent.transform.GetChild(22).gameObject;
+        effect = effectObjectParent.transform.GetChild(21).gameObject;
 
         isAbnormality = false;
         isWalk = false;
         isNight = false;
         timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
-        mouseNoise=GameObject.Find("Plyaer").GetComponent<MouseNoise>();    
+        mouseNoise = GameObject.Find("PlayerObject").GetComponent<MouseNoise>();
     }
     // Update is called once per frame
     void Update()
