@@ -52,7 +52,7 @@ public class ItemID_003 : Sinner
         if (deliveryItems[itemID] == Mood.Exception)
         {
             int heal = 10 * genesisPhase;
-            player.Health += heal;
+            player.Heal(heal);
             string text = genesisPhase + "“ú–ÚB\n" + itemNames[genesisPhase];
             announceManager.MakeAnnounce(text);
             genesisPhase++;

@@ -68,4 +68,10 @@ public class BlackScreen : EasingMethods
         }
         gameObject.SetActive(false);
     }
+
+    public void OnClick()
+    {
+        gameObject.SetActive(true);
+        StartCoroutine(FadeOut("MainScene"));
+    }
 }

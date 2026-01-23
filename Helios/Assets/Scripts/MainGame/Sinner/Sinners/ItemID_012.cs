@@ -37,7 +37,7 @@ public class ItemID_012 : Sinner
             if (timer > timeLimit)
             {
                 timer -= timeLimit;
-                if (timeLine.TimeStateAccess == TimeLine.TimeState.Night) player.Health += 3;
+                if (timeLine.TimeStateAccess == TimeLine.TimeState.Night) player.Heal(3);
                 else
                 {
                     if (player.Health > 3)

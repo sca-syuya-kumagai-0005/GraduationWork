@@ -91,7 +91,7 @@ public class Adventure : EasingMethods
         if (csvData[lines][column_command] == nameof(Command.End))
         {
             if (isComplete)
-                ChangeScene();
+                blackScreen.FadeOut("MainScene");
         }
         else
         if (isComplete)
