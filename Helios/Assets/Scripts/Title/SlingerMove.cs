@@ -21,6 +21,7 @@ public class SlingerMove : EasingMethods
     private void OnEnable()
     {
         myRect.localRotation = Quaternion.Euler(0, 0, 0);
+        z = 0;
     }
 
     public IEnumerator Move(float _dir)

@@ -47,6 +47,7 @@ public class TitleManager : MonoBehaviour
             float f = (mouse != 0f) ? mouse : -axis;
             select = ((int)select + (int)f < 0) ? Select.END : (Select)(((int)select + (int)f) % (int)Select.MAX);
             StartCoroutine(slingerMove.Move(f));
+            Debug.Log(select);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -75,7 +76,7 @@ public class TitleManager : MonoBehaviour
 
     public void CloseMyRoom()
     {
-        StartCoroutine(animationManager.TitleSelectDisplayAnim());
+        StartCoroutine(animationManager.BackTitleSelect());
     }
 
     public void OpenMemorySlinger()

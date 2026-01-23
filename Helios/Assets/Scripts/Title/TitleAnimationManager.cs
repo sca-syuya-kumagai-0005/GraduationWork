@@ -168,6 +168,15 @@ public class TitleAnimationManager : MonoBehaviour
         Locator<TitleManager>.Instance.SelectStart();
     }
 
+    public IEnumerator BackTitleSelect()
+    {
+        yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        SetBackGround(selectBackGround);
+        SetNowTitleMode(titleSelectObj);
+        yield return StartCoroutine(FadeAnimation(0f, 0.5f));
+        Locator<TitleManager>.Instance.SelectStart();
+    }
+
     public IEnumerator MyRoomAnim()
     {
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
