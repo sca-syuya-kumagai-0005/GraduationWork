@@ -112,7 +112,7 @@ public class Sinner : MonoBehaviour
         residenceCertificate = GameObject.Find("ResidenceCertificate").GetComponent<ResidenceCertificate>();
         announceManager = GameObject.Find("AnnounceCenter").GetComponent<AnnounceManager>();
         SetEventType(down, OnClick, gameObject);
-        player = GameObject.Find("Player").GetComponent<Player>();
+        player = GameObject.Find("PlayerObject").GetComponent<Player>();
         SetDeliveryItems();
         progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();

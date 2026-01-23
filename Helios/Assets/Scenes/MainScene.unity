@@ -6221,8 +6221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698448d5877ecd741baf1ec9b4779b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  housed: 00000000000000000000000000000000000000000000000000000000000000
-  standbySinners: 0
+  sinnerObject: {fileID: 0}
 --- !u!114 &478194911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9846,7 +9845,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822925924}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &822925926
 Camera:
   m_ObjectHideFlags: 0
@@ -24898,8 +24897,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1767555653}
   - component: {fileID: 1767555654}
+  - component: {fileID: 1767555655}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24934,6 +24934,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveCircleController: {fileID: 1318052018}
   hpGage: {fileID: 1443687273}
+--- !u!114 &1767555655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767555652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44dff52c40f80e44ebd05de038f36279, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 25
 --- !u!1 &1784699272
 GameObject:
   m_ObjectHideFlags: 0
@@ -27698,8 +27711,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf4356c5ef319343807634cd75ab317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLine: 0
+  timer: 0
   announceManager: {fileID: 0}
+  abnormalityList: []
 --- !u!1 &2006430153
 GameObject:
   m_ObjectHideFlags: 0
