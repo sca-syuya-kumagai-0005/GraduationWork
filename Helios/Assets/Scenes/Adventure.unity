@@ -761,6 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   singletonObjects:
   - {fileID: 1507911810249053223, guid: 45591e0c0a6bd9841b1cd9e3b2909dc3, type: 3}
+  - {fileID: 9126745569650289719, guid: c4aeec3f93184f5468a2b140bf563c77, type: 3}
 --- !u!4 &722649827
 Transform:
   m_ObjectHideFlags: 0
@@ -1376,6 +1377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c82d424f51bf5204fa93981441200300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeInTime: 3
 --- !u!114 &1151930667
 MonoBehaviour:
   m_ObjectHideFlags: 0

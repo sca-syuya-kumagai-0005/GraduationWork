@@ -46,9 +46,10 @@ public class ItemID_005 : Sinner
         base.AbnormalPhenomenon();
 
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
-        //’‹‚ÉŒÅ’è‚·‚éˆ—‚ğ‘‚­
-        timeLine.AddAbnormalityList(sinnerName);
-        timeLine.TimeStateAccess = TimeLine.TimeState.Noon;
+        //’©‚ÉŒÅ’è‚·‚éˆ—‚ğ‘‚­
+        if (!timeLine.AbnormalityList.Contains(sinnerName))
+            timeLine.AddAbnormalityList(sinnerName);
+        timeLine.TimeStateAccess = TimeLine.TimeState.Morning;
         StartCoroutine(Release());
     }
 
@@ -62,5 +63,6 @@ public class ItemID_005 : Sinner
             yield return null;
         }
         timeLine.RemoveAbnormalityList(sinnerName);
+        announceManager.MakeAnnounce(sinnerID + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
     }
 }

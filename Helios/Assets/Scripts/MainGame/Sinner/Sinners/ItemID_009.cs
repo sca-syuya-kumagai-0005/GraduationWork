@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class ItemID_009 : Sinner
 {
+    private GameObject mapObject;
     private SinnerDistribute distribute;
     private TimeLine timeLine;
     bool isAbnormality;
@@ -35,30 +36,50 @@ public class ItemID_009 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        if (timeLine.TimeStateAccess == TimeLine.TimeState.Night || deliveryProcessID == 0)
+        if (deliveryItems[7] != Mood.Exception)
         {
-            AbnormalPhenomenon();
-            return;
-        } 
-        bool notPassedZoo = false;
-        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.ZOO))
-        {
-            IncreaseProbabilitys(90.0f);
-            notPassedZoo = true;
+            if (timeLine.TimeStateAccess == TimeLine.TimeState.Night || deliveryProcessID == 0)
+            {
+                AbnormalPhenomenon();
+                player.Health -= (int)DamageLevel.Minor;
+                progressGraph.AddProgress();
+                Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
+                return;
+            }
+            bool notPassedZoo = false;
+            if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.ZOO))
+            {
+                IncreaseProbabilitys(90.0f);
+                notPassedZoo = true;
+            }
+            if (notPassedZoo) IncreaseProbabilitys(-90.0f);
+            base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
         }
-        if (notPassedZoo) IncreaseProbabilitys(-90.0f);
-        base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
+        else
+        {
+            if (deliveryItems[itemID] == Mood.Exception)
+            {
+                Destroy(mapObject);
+                deliveryItems[7] = Mood.Trust;
+                announceManager.MakeAnnounce(sinnerID + "の異常は解消されました。");
+            }
+            progressGraph.AddProgress();
+            Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
+        }
     }
     public override void AbnormalPhenomenon()
     {        
         //全ての異常において共通で起きる事があれば↓を変更
         base.AbnormalPhenomenon();
 
-        GameObject mapObject =
-        Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
+        mapObject = Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
         CelestialSteed celestialSteed = mapObject.AddComponent<CelestialSteed>();
         celestialSteed.SetEffectObject = effect;
         celestialSteed.SetSprite = sinnerSprite;
         mapObject.name = "朽ちた天馬";
+
+        isAbnormality = true;
+
+        deliveryItems[7] = Mood.Exception;
     }
 }

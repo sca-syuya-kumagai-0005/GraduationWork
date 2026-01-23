@@ -2,7 +2,6 @@ using KumagaiLibrary.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Adventure : EasingMethods
@@ -50,6 +49,8 @@ public class Adventure : EasingMethods
     private const byte column_Text = 1;
 
     private bool isSkiped;
+
+    private AudioManager audioManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -70,6 +71,7 @@ public class Adventure : EasingMethods
         {
             characters[i].color = Color.clear;
         }
+        audioManager = GameObject.Find("Audio(Clone)").gameObject.GetComponent<AudioManager>();
     }
     // Update is called once per frame
     void Update()
@@ -91,36 +93,40 @@ public class Adventure : EasingMethods
         if (csvData[lines][column_command] == nameof(Command.End))
         {
             if (isComplete)
-                blackScreen.FadeOut("MainScene");
+            {
+               StartCoroutine(blackScreen.FadeOut("MainScene"));
+            }
         }
         else
-        if (isComplete)
         {
-            Debug.Log(lines + "行目読み込み：Command=" + commandType);
-            isComplete = false;
-            switch (commandType)
+            if (isComplete)
             {
-                case nameof(Command.SetCharacter):
-                    StartCoroutine(CharacterFadein(commandTarget));
-                    break;
+                Debug.Log(lines + "行目読み込み：Command=" + commandType);
+                isComplete = false;
+                switch (commandType)
+                {
+                    case nameof(Command.SetCharacter):
+                        StartCoroutine(CharacterFadein(commandTarget));
+                        break;
 
-                case nameof(Command.RemoveCharacter):
-                    StartCoroutine(CharacterFadeOut(commandTarget));
-                    break;
+                    case nameof(Command.RemoveCharacter):
+                        StartCoroutine(CharacterFadeOut(commandTarget));
+                        break;
 
-                case nameof(Command.SetSpeakTiming):
-                    SetWaitTime();
-                    break;
+                    case nameof(Command.SetSpeakTiming):
+                        SetWaitTime();
+                        break;
 
-                case nameof(Command.Speak):
-                    StartCoroutine(ViewText(data[commandTargetAdress], csvData[lines][column_Text]));
-                    break;
+                    case nameof(Command.Speak):
+                        StartCoroutine(ViewText(data[commandTargetAdress], csvData[lines][column_Text]));
+                        break;
 
-                default:
-                    StartCoroutine(ViewText("システム", lines + "行目で例外、または未対応コマンドが確認されました。"));
-                    break;
+                    default:
+                        StartCoroutine(ViewText("システム", lines + "行目で例外、または未対応コマンドが確認されました。"));
+                        break;
+                }
+                lines++;
             }
-            lines++;
         }
         if(Input.GetMouseButtonDown(0))
         {
@@ -207,9 +213,9 @@ public class Adventure : EasingMethods
         bool isEnd = false;
         float timer = 0.0f;
         float timeLate = 1.0f;
-        int quotaNumber = (int)ConvertStringToQuota(quota);
-
         bool quotaIsD = false;
+        int quotaNumber = (int)ConvertStringToQuota(quota);
+        if (quotaNumber == (int)CharacterQuota.D) quotaIsD = true;
         if (!quotaIsD)
         {
 
@@ -318,10 +324,5 @@ public class Adventure : EasingMethods
         //演出あるならどうぞ
         gameObject.GetComponent<Image>().sprite = sprite;
         yield return null;
-    }
-
-    private void ChangeScene()
-    {
-        SceneManager.LoadScene("MainScene");
     }
 }

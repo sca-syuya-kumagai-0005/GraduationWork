@@ -49,10 +49,13 @@ public class ItemID_008 : Sinner
 
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
         specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID][sinnerName] = true;
+        specifyingDeliveryRoutes.ConfisonClickCount[deliveryLineID] = 50;
     }
     private void AbnormalPhenomenon(int lineID)
     {
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
         specifyingDeliveryRoutes.SinnerDebuff[lineID][sinnerName] = true;
+        specifyingDeliveryRoutes.ConfisonClickCount[lineID] = 50;
+        specifyingDeliveryRoutes.TotalAbnormal++;
     }
 }

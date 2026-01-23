@@ -6,6 +6,8 @@ using UnityEngine.UI;
 [DefaultExecutionOrder(-1)]
 public class BlackScreen : EasingMethods
 {
+    [SerializeField]
+    private float fadeInTime;
     Image image;
     private void Start()
     {
@@ -55,7 +57,7 @@ public class BlackScreen : EasingMethods
     {
         gameObject.SetActive(true);
         float t = 0.0f;
-        float timerLate = 7f;
+        float timerLate = fadeInTime;
         bool isEnd = false;
         Color color = Color.black;
         while (!isEnd)

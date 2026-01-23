@@ -3,7 +3,7 @@ using static UnityEngine.Rendering.DebugUI;
 public class ItemID_003 : Sinner
 {
     private int genesisPhase;
-    private const float timeRimit = 30.0f;
+    private const float timeLimit = 30.0f;
     private float timer;
     private string[] itemNames = new string[9]
     {
@@ -36,7 +36,7 @@ public class ItemID_003 : Sinner
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= timeRimit)
+        if (timer >= timeLimit)
         {
             AbnormalPhenomenon();
             timer = 0.0f;
@@ -70,7 +70,7 @@ public class ItemID_003 : Sinner
         int damage = 5 * genesisPhase;
         player.Health -= damage;
         string text;
-        if (timer >= timeRimit)
+        if (timer >= timeLimit)
         {
             text = "‘ã‚ÍŠù‚Éx•¥‚í‚ê‚Ü‚µ‚½B";
             announceManager.MakeAnnounce(text);
