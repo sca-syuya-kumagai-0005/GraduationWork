@@ -39,7 +39,7 @@ public class ItemID_010 : Sinner
     {
         if (!isTimeChecked)
         {
-            if (timeLine.TimeStateAccess == TimeLine.TimeState.Night && deliveryCount == 0)
+            if (timeLine.TimeStateAccess == TimeLine.TimeState.Night && specifyingDeliveryRoutes.TotalAbnormal == 0)
             {
                 isTimeChecked = true;
                 AbnormalPhenomenon();

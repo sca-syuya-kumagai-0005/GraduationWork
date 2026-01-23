@@ -32,18 +32,13 @@ public class ItemID_001 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains(0))
-        {
-
-        }
-        if(timeLine.TimeStateAccess == TimeLine.TimeState.Morning)
-        {
-            //徒歩だったら
-            if (deliveryProcessID == 2) IncreaseProbabilitys(25.0f);
-        }
-        if (timeLine.TimeStateAccess == TimeLine.TimeState.Night)
+        if (timeLine.TimeStateAccess == TimeLine.TimeState.Night||timeLine.AbnormalityList.Contains("オオマガトキ"))
         {
             IncreaseProbabilitys(80.0f);
+        }
+        if ((timeLine.TimeStateAccess == TimeLine.TimeState.Morning || timeLine.AbnormalityList.Contains("オオマガトキ")) && deliveryProcessID != 2)
+        {
+            IncreaseProbabilitys(25.0f);
         }
         if (itemID==(int)Mood.Sadness)
         {

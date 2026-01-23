@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Adventure : MonoBehaviour
+public class Adventure : EasingMethods
 {
     [SerializeField]
     private TextAsset[] storyCsvFiles;
@@ -13,7 +13,7 @@ public class Adventure : MonoBehaviour
     private Sprite[] backGroundSprites;
     private Image backGround;
     [SerializeField]
-    private Sprite characterSprites;
+    private Sprite[] characterSprites;
     [SerializeField]
     private Image[] characters;
     private string[] characterNames = new string[4];
@@ -21,6 +21,7 @@ public class Adventure : MonoBehaviour
     private Text messageBox;
     private float textSpeed = 0.1f;
     private GameObject arrow;
+    private BlackScreen blackScreen;
 
     private List<string[]> csvData = new List<string[]>();
     private int lines;
@@ -55,9 +56,9 @@ public class Adventure : MonoBehaviour
         SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         saveDataManager.Save();
         backGround = GameObject.Find("BackGround").gameObject.GetComponent<Image>();
+        blackScreen = GameObject.Find("BlackScreen").gameObject.GetComponent<BlackScreen>();
         nameBox = GameObject.Find("NameBox").gameObject.GetComponent<Text>();
         messageBox = GameObject.Find("MessageBox").gameObject.GetComponent<Text>();
-        characters[0] = GameObject.Find("Characters").gameObject.GetComponent<Image>();
         days = saveDataManager.Days;
         isComplete = true;
         csvData = CsvManager.Read(storyCsvFiles[days]);
@@ -65,8 +66,11 @@ public class Adventure : MonoBehaviour
         speakTiming = 0;
         nameBox.name = "";
         messageBox.name = "";
+        for(int i = 0; i < characters.Length; i++)
+        {
+            characters[i].color = Color.clear;
+        }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -146,15 +150,53 @@ public class Adventure : MonoBehaviour
         float timer = 0.0f;
         float timeLate = 1.0f;
 
-        characterNames[(int)ConvertStringToQuota(quota)] = csvData[lines][column_Text];
-        while (!isEnd)
+        int quotaNumber = (int)ConvertStringToQuota(quota);
+        characterNames[quotaNumber] = csvData[lines][column_Text];
+
+        bool quotaIsD = false;
+        switch (characterNames[quotaNumber])
         {
-            timer += Time.deltaTime / timeLate;
-            characters[0].gameObject.SetActive(true);
-            if (timer >= 1.0f) isEnd = true;
-            yield return null;
+            case "ãŽi":
+                characters[quotaNumber].sprite = characterSprites[0];
+                break;
+            case "“¯—»A":
+                characters[quotaNumber].sprite = characterSprites[1];
+                break;
+            case "“¯—»B":
+                characters[quotaNumber].sprite = characterSprites[2];
+                break;
+            default:
+                quotaIsD = true;
+                break;
         }
-        characters[0].gameObject.SetActive(false);
+        if (!quotaIsD )
+        {
+
+            float defPos = 0.0f;
+            switch (quotaNumber)
+            {
+                case 1:
+                    defPos = -400.0f;
+                    break;
+                case 2:
+                    defPos = 400.0f;
+                    break;
+            }
+            float addPos = 100.0f;
+            characters[quotaNumber].transform.localPosition = new Vector3(defPos + addPos, 0, 0);
+
+            characters[quotaNumber].color = Color.clear;
+            while (!isEnd)
+            {
+                timer += Time.deltaTime / timeLate;
+                float pos = (defPos + addPos) - addPos * EaseOutCubic(timer);
+                characters[quotaNumber].transform.localPosition = new Vector3(pos, 0, 0);
+                characters[quotaNumber].color = Color.clear + Color.white * EaseOutCubic(timer);
+                if (timer >= 1.0f) isEnd = true;
+                yield return null;
+            }
+            characters[quotaNumber].color = Color.white;
+        }
         isComplete = true;
         Debug.Log("SetCharacterŠ®—¹:");
     }
@@ -165,12 +207,33 @@ public class Adventure : MonoBehaviour
         bool isEnd = false;
         float timer = 0.0f;
         float timeLate = 1.0f;
+        int quotaNumber = (int)ConvertStringToQuota(quota);
 
-        while (!isEnd)
+        bool quotaIsD = false;
+        if (!quotaIsD)
         {
-            timer += Time.deltaTime / timeLate;
-            if (timer >= 1.0f) isEnd = true;
-            yield return null;
+
+            float defPos = 0.0f;
+            switch (quotaNumber)
+            {
+                case 1:
+                    defPos = -400.0f;
+                    break;
+                case 2:
+                    defPos = 400.0f;
+                    break;
+            }
+            float addPos = 100.0f;
+            characters[quotaNumber].transform.localPosition = new Vector3(defPos, 0, 0);
+            characters[quotaNumber].color = Color.white;
+            while (!isEnd)
+            {
+                timer += Time.deltaTime / timeLate;
+                float pos = defPos - addPos * EaseOutCubic(timer);
+                characters[quotaNumber].color = Color.white - Color.white * EaseOutCubic(timer);
+                if (timer >= 1.0f) isEnd = true;
+                yield return null;
+            }
         }
         isComplete = true;
         Debug.Log("RemoveCharacterŠ®—¹:");

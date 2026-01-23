@@ -105,7 +105,6 @@ public class Sinner : MonoBehaviour
     protected GameObject effectObjectParent;
 
     protected GameObject sinnerIconObject;
-    public void Test() { Debug.Log(sinnerID); }
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
@@ -156,6 +155,7 @@ public class Sinner : MonoBehaviour
         int damage = Lottery(deliveryLineID);
         if (damage != 0)
         {
+            specifyingDeliveryRoutes.AbnormalCount[deliveryLineID]++;
             AbnormalPhenomenon();
             player.Health -= damage;
         }
@@ -168,6 +168,7 @@ public class Sinner : MonoBehaviour
     /// </summary>
     virtual public void AbnormalPhenomenon()
     {
+        specifyingDeliveryRoutes.TotalAbnormal++;
         string str = sinnerName + ":異常発生。\n直ちに損害を確認してください。";
         announceManager.MakeAnnounce(str);
         effect.SetActive(true);

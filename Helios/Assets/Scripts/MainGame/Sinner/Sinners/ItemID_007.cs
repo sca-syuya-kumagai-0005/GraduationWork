@@ -53,6 +53,7 @@ public class ItemID_007 : Sinner
         if (damage != 0)
         {
             AbnormalPhenomenon();
+            specifyingDeliveryRoutes.AbnormalCount[deliveryLineID]++;
             player.Health -= damage;
         }
         progressGraph.AddProgress();
