@@ -10,6 +10,9 @@ using static KumagaiLibrary.String;
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
+    const int driverCount = 4;//トラックの数
+    [SerializeField] private int[] confisonClickCount = new int[driverCount];
+    public int[] ConfisonClickCount { get { return confisonClickCount; } set { confisonClickCount = value; } }
     int[] abnormalCount;
     int totalAbnormal;
     public int[] AbnormalCount { get { return abnormalCount;} set { abnormalCount=value;} }
@@ -19,7 +22,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     //[SerializeField]List<int> nowList = new List<int>();
     [SerializeField] private GameObject pen;
 
-    const int driverCount = 4;//トラックの数
+ 
     [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
     Map map;
     ShortestPathSearch shortestPathSearch;//最短経路探索のスクリプト
@@ -94,9 +97,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     //[SerializeField] string[] str;
     RandomTable table;
 
+    List<Vector3>[] tmpRoutePosition = new List<Vector3>[driverCount];
+    List<int[]>[] tmpRoutes = new List<int[]>[driverCount];
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         table = GameObject.Find("RandomTable").gameObject.GetComponent<RandomTable>();
         originalScale=writeButtonBackGround.transform.localScale;
         StartCoroutine(WriteButtonMover());
@@ -118,6 +125,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             lastRoutesPositionCount[i] = 0;
             canStart[i] = false;
             deliveryData[i] = new List<int>();
+            tmpRoutePosition[i] = new List<Vector3>();
+            tmpRoutes[i] = new List<int[]>();
             Directions(i);
         }
         //SinnerDebuff = AddArray(SinnerDebuff, str, false);
@@ -318,6 +327,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         int tableID = 0;
         bool randomed = false;//一度でも混乱状態になっていたら
         bool confisonClear = false;
+        tmpRoutePosition[driverID] = routesPosition[driverID];
+        tmpRoutes[driverID] = routes[driverID];
         for (int i = 1; i < routesPosition[driverID].Count; i++)
         {
 
@@ -352,6 +363,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 int goalWidth = routes[driverID][routes[driverID].Count - 1][1];
                 int goalHeight = routes[driverID][routes[driverID].Count - 1][0];
                 line[driverID].positionCount = 0;
+                tmpRoutePosition[driverID] = routesPosition[driverID];
+                tmpRoutes[driverID] = routes[driverID];
                 List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight, ref routes[driverID]);
                 routesPosition[driverID] = shortestPositions;
                 Debug.Log("routestPositionCount" + routesPosition[driverID].Count);
@@ -547,16 +560,15 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         }
         DeliveryCompleted(destination[driverID], driverID);
 
-        Debug.Log("ちゃんと呼ばれたよ");
-        {
-            int startWidth = md.widthPositionID;
-            int startHeight = md.heightPositionID;
-            int goalWidth = 31;
-            int goalHeight = 52;
-            line[driverID].positionCount = 0;
-            List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight, ref routes[driverID]);
-            routesPosition[driverID] = shortestPositions;
-        }
+        //{
+        //    int startWidth = md.widthPositionID;
+        //    int startHeight = md.heightPositionID;
+        //    int goalWidth = 31;
+        //    int goalHeight = 52;
+        //    line[driverID].positionCount = 0;
+        //    List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight, ref routes[driverID]);
+        //    routesPosition[driverID] = shortestPositions;
+        //}
      
         yield return new WaitForSeconds(2f);
         for (int i = routesPosition[driverID].Count - 2; i >= 0; i--)
@@ -767,6 +779,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
     }
 
+   
     private IEnumerator DriverMove(int driverID, List<Vector3> positionID)
     {
         Debug.Log("引数2つ");
@@ -775,10 +788,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         List<MapData> lastList = new List<MapData>();
         List<MapData> nowList = new List<MapData>();
         MapData md = map.MapDatas[routes[driverID][1][0]][routes[driverID][1][1]];
+     
+
+     
         bool confisonClear = false;
         for (int i = 1; i < routesPosition[driverID].Count; i++)
         {
-
             // Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
             //Vector3 lastDirction = dir;
             switch (deliveryProcess[driverID])
@@ -809,6 +824,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 int startHeight = md.heightPositionID;
                 int goalWidth = routes[driverID][routes[driverID].Count - 1][1];
                 int goalHeight = routes[driverID][routes[driverID].Count - 1][0];
+                tmpRoutePosition[driverID] = routesPosition[driverID];
+                tmpRoutes[driverID] = routes[driverID];
                 line[driverID].positionCount = 0;
                 List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight,ref routes[driverID]);
                 routesPosition[driverID] = shortestPositions;
@@ -820,9 +837,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             }
             if (!isConfison[driverID])
             {
-              
-                Debug.Log("routes" + routes[driverID][i][0]);
-                Debug.Log("map.MapDatas"+ map.MapDatas.Length);
                 Debug.Log("i"+i);
                 if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
                 {
@@ -978,19 +992,22 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             }
         }
         DeliveryCompleted(destination[driverID], driverID);
-        {
-            Debug.Log("空虚");
-            int startWidth = routes[driverID][routes[driverID][0].Length][0];
-            int startHeight = routes[driverID][routes[driverID][1].Length][1];
-            int goalWidth = 52;
-            int goalHeight = 31;
-            line[driverID].positionCount = 0;
-            List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight,ref routes[driverID]);
-            routesPosition[driverID] = shortestPositions;
-            Debug.Log(shortestPositions.Count); 
-        }
+
+        //{
+        //    Debug.Log("空虚su");
+        //    int goalWidth = 31;
+        //    int goalHeight = 52;
+        //    int startWidth = routes[driverID][routes[driverID].Count - 2][0];//最後に通過した道路　配列の最後は配達地点のため、その一つ前を取得
+        //    int startHeight = routes[driverID][routes[driverID].Count - 2][1];
+        //    line[driverID].positionCount = 0;
+        //    List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startHeight, startWidth, goalWidth, goalHeight,ref routes[driverID]);
+        //    routesPosition[driverID] = shortestPositions;
+        //}
         yield return new WaitForSeconds(2f);
-        Debug.Log(routesPosition[driverID].Count);
+     
+        routesPosition[driverID] = tmpRoutePosition[driverID];
+        routes[driverID] = tmpRoutes[driverID];
+        Debug.Log("rotuesPosition.Count"+routesPosition[driverID].Count);
         for (int i = routesPosition[driverID].Count - 2; i >= 0; i--)
         {// Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
             //Vector3 lastDirction = dir;
@@ -1013,13 +1030,14 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     break;
             }
 
-            if (lastIsConfison && !isConfison[driverID] && !confisonClear)
+            if (lastIsConfison && !isConfison[driverID])
             {
                 // ランダム挙動の最後の位置から最短ルートを取得
                 //Vector3 currentPos = obj.transform.position - map.transform.localPosition;
                 int startWidth = md.widthPositionID;
                 int startHeight = md.heightPositionID;
                 int goalWidth = routes[driverID][routes[driverID].Count - 1][1];
+               
                 int goalHeight = routes[driverID][routes[driverID].Count - 1][0];
                 line[driverID].positionCount = 0;
                 List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, 31, 52, ref routes[driverID]);
@@ -1190,6 +1208,9 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             Destroy(o);
         }
         routes[driverID] = new List<int[]>();
+        tmpRoutePosition[driverID] = new List<Vector3>();
+        tmpRoutes[driverID] = new List<int[]>();
+
         routesPosition[driverID] = new List<Vector3>();
         line[driverID].positionCount = 0;
         routeObjectsID[driverID] = new List<int>();

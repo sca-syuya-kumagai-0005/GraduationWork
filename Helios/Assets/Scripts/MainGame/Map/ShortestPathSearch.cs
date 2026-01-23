@@ -32,13 +32,14 @@ public class ShortestPathSearch : MonoBehaviour
     {
         Map.MapData[][] mapData = map.MapDatas;
 
+
         // shortestPath を初期化
         for (int y = 0; y < mapData.Length; y++)
             for (int x = 0; x < mapData[y].Length; x++)
                 mapData[y][x].shortestPath = int.MaxValue;
 
         // BFSで最短距離を計算
-        BFSShortestPath(mapData, targetWidthID, targetHeightID);
+        BFSShortestPath(mapData, targetWidthID, targetHeightID,widthID,heightID );
 
         // エディタ表示用に文字列化
         ConvertShortestPathToStrings(mapData);
@@ -54,23 +55,26 @@ public class ShortestPathSearch : MonoBehaviour
         routes.Add(ints);
         // スタート→ゴール順にする
         //positions.Reverse();
+        Debug.Log("数は"+positions.Count);
         return positions;
     }
 
     /// <summary>
     /// BFSで最短距離を計算
     /// </summary>
-    private void BFSShortestPath(Map.MapData[][] mapData, int targetX, int targetY)
+    private void BFSShortestPath(Map.MapData[][] mapData, int targetX, int targetY,int startX,int startY)
     {
+      
         Queue<(int x, int y)> queue = new Queue<(int x, int y)>();
         mapData[targetY][targetX].shortestPath = 0;
         queue.Enqueue((targetX, targetY));
-
+        
         while (queue.Count > 0)
         {
+            Debug.Log("値を埋め込みます");
             var (x, y) = queue.Dequeue();
             int currentDist = mapData[y][x].shortestPath;
-
+            Debug.Log(currentDist);
             foreach (var dir in directions)
             {
                 int newX = x + dir.x;
@@ -89,10 +93,20 @@ public class ShortestPathSearch : MonoBehaviour
                     continue;
 
                 // 最短距離を更新してキューに追加
+                Debug.Log("Queueに追加しました");
                 mapData[newY][newX].shortestPath = currentDist + 1;
                 queue.Enqueue((newX, newY));
+                if (mapData[startY][startX].objectID==(int)Map.MapObjectID.HOUSE_1)
+                {
+
+                    mapData[startY][startX].shortestPath = currentDist + 2;
+                    queue.Enqueue((newX, newY));
+                }
+           
+
             }
         }
+       
     }
 
     /// <summary>
@@ -108,10 +122,14 @@ public class ShortestPathSearch : MonoBehaviour
     /// </summary>
     private void SetRoute(int startX, int startY, int targetX, int targetY, ref Map.MapData[][] mapData, ref List<Vector3> routesPos,ref List<int[]> routes)
     {
-        if (startX == targetX && startY == targetY) return;
+        if (startX == targetX && startY == targetY) 
+            {
+                Debug.Log("returnします");
+                return;
+            }
 
         int currentDist = mapData[startY][startX].shortestPath;
-
+        Debug.Log(mapData[startY][startX].obj.name+currentDist);
         foreach (var dir in directions)
         {
             int newX = startX + dir.x;
@@ -119,9 +137,10 @@ public class ShortestPathSearch : MonoBehaviour
 
             if (newX < 0 || newX >= mapData[0].Length || newY < 0 || newY >= mapData.Length)
                 continue;
-
+            Debug.Log("周囲"+ mapData[newY][newX].shortestPath);
             if (mapData[newY][newX].shortestPath == currentDist - 1)
             {
+                Debug.Log("positionsに追加しました");
                 routesPos.Add(mapData[newY][newX].obj.transform.localPosition);
                 int[] ints = new int[2];
                 ints[0] = mapData[newY][newX].heightPositionID;
