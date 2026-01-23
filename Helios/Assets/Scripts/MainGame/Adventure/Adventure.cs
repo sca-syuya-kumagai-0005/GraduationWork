@@ -51,6 +51,8 @@ public class Adventure : EasingMethods
     private bool isSkiped;
 
     private AudioManager audioManager;
+    [SerializeField]
+    private AudioClip[] audioClip;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -71,7 +73,8 @@ public class Adventure : EasingMethods
         {
             characters[i].color = Color.clear;
         }
-        audioManager = GameObject.Find("Audio(Clone)").gameObject.GetComponent<AudioManager>();
+        audioManager = GameObject.Find("Audio").gameObject.GetComponent<AudioManager>();
+        audioManager.PlayBGM(audioClip[0]);
     }
     // Update is called once per frame
     void Update()
@@ -277,8 +280,10 @@ public class Adventure : EasingMethods
 
         for(int i = 0; i < text.Length; i++)
         {
-            if (text[i] != lineBreakCommand) messageBox.text += text[i];
+            if (text[i] != lineBreakCommand)
+                messageBox.text += text[i];
             else messageBox.text += '\n';
+            //audioManager.PlaySE(audioClip[1]);
             yield return new WaitForSeconds(textSpeed);
         }
         Debug.Log("SpeakŠ®—¹:");

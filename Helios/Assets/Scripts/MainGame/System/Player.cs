@@ -15,6 +15,7 @@ public class Player : EasingMethods
     private GameObject warning;
     private WarningColor warningColor;
     private WarningLine warningLine;
+    private WarningWindow warningWindow;
     private int health;
     private const int maxHealth = 100;
     [SerializeField]
@@ -30,6 +31,7 @@ public class Player : EasingMethods
         Emergency
     }
     private Phase phase;
+    private Phase lastPhase;
     public void formatting()
     {
         health = maxHealth;
@@ -46,10 +48,13 @@ public class Player : EasingMethods
         restartButton = restartPanel.transform.GetChild(1).gameObject;
         warningColor = warning.transform.GetChild(0).GetComponent<WarningColor>();
         warningLine = warning.transform.GetChild(0).GetComponent<WarningLine>();
+        warningWindow = warningWindow.transform.GetChild(1).GetComponent<WarningWindow>();
+        phase = 0;
+        lastPhase = 0;
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) health = 0;
+        if(Input.GetKeyDown(KeyCode.Escape)) health -= 10;
         if (health <= 0)
         {
             if (gameStateSystem.GameState != GameStateSystem.State.End)
@@ -68,10 +73,22 @@ public class Player : EasingMethods
         waveCircleController.targetState = (ECGWaveCircleController.WaveState)phase;
         hpGage.fillAmount = (float)health / maxHealth;
 
-        warningColor.colorType = (WarningColorType)phase;
-        warningLine.state = WarningLine.WarningState.In;
+        if (lastPhase != phase)
+        {
+            int[] colorNumber = new int[5] { 3, 2, 1, 4, 0 };
+
+            warningColor.colorType = (WarningColorType)colorNumber[(int)phase];
+            StartCoroutine(WarningTape());
+        }
+        lastPhase = phase;
     }
 
+    private IEnumerator WarningTape()
+    {
+        warningLine.SetState(WarningLine.WarningState.In);
+        yield return new WaitForSeconds(5);
+        warningLine.SetState(WarningLine.WarningState.Out);
+    }
     private IEnumerator FallRestartButton()
     {
         float timer = 0.0f;
@@ -83,7 +100,6 @@ public class Player : EasingMethods
         transform.localPosition = new Vector3(0, defaultPos, 0);
         while (!isEnd)
         {
-            Debug.Log(timer);
             timer += Time.deltaTime;
             float addPos = (motionedPos - defaultPos) * EaseInOutCubic(timer);
             restartButton.transform.localPosition = new Vector3(0, defaultPos + addPos+50, 0);
