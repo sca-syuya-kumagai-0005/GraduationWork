@@ -1,7 +1,12 @@
 using UnityEngine;
 public class ItemID_023 : Sinner
 {
+    private bool isAbnormality;
+    private bool isWalk;
+    private bool isNight;
 
+    MouseNoise mouseNoise;
+    TimeLine timeLine;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -12,17 +17,57 @@ public class ItemID_023 : Sinner
         sinnerName = "ひとりぼっちのブランコ";
         LoadSprite("ID023");
         effect = effectObjectParent.transform.GetChild(22).gameObject;
+
+        isAbnormality = false;
+        isWalk = false;
+        isNight = false;
+        timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
+        mouseNoise=GameObject.Find("Plyaer").GetComponent<MouseNoise>();    
     }
     // Update is called once per frame
     void Update()
     {
-
+        mouseNoise.IsNoise = isAbnormality;
     }
+    public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    {
+        if (deliveryProcessID == 2)
+        {
+            if (isAbnormality)
+            {
+                isAbnormality = false;
+            }
+            else
+            {
+                isWalk = true;
+                IncreaseProbabilitys(150.0f);
+            }
+        }
+        if (timeLine.TimeStateAccess == TimeLine.TimeState.Night)
+        {
+            isNight = true;
+            IncreaseProbabilitys(200.0f);
+        }
+        base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
+
+        if (isWalk)
+        {
+            IncreaseProbabilitys(-150.0f);
+            isWalk = false;
+        }
+        if(isNight)
+        {
+            IncreaseProbabilitys(-200.0f);
+            isNight = false;
+        }
+    }
+
     public override void AbnormalPhenomenon()
     {
         //全ての異常において共通で起きる事があれば↓を変更
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
+        isAbnormality = true;
     }
 }
