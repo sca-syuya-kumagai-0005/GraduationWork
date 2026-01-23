@@ -37,6 +37,8 @@ public class MouseCheck : MonoBehaviour
     }
     private void Update()
     {
+        GameStateSystem gameStateSystem = GameObject.Find("GameState").GetComponent<GameStateSystem>();
+        if (gameStateSystem.GameState != GameStateSystem.State.End)
         MoveObject();
 
         // Ž©“®‰ñ“]ŠÄŽ‹
