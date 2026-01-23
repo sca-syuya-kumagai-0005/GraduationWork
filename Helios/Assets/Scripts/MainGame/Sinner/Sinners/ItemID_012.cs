@@ -50,7 +50,7 @@ public class ItemID_012 : Sinner
 
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.SHIRINE))
+        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.SHIRINE_LEFT)|| specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.SHIRINE_RIGHT))
         {
             isAbnormality = false;
             timer = 0.0f;
