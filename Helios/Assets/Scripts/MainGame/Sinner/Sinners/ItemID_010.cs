@@ -59,8 +59,9 @@ public class ItemID_010 : Sinner
         announceManager.MakeAnnounce(text);
 
         List<GameObject> samePlotSinners = distribute.GetSinnerHousedObjects[housedPlotNumber];
-        for (int i = 1; i < samePlotSinners.Count; i++)
+        for (int i = 0; i < samePlotSinners.Count; i++)
         {
+            if (plotContainSinnerID[housedPlotNumber][i] == 10) continue;
             samePlotSinners[i].GetComponent<Sinner>().AbnormalPhenomenon();
         }
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­

@@ -59,5 +59,6 @@ public class ItemID_009 : Sinner
         CelestialSteed celestialSteed = mapObject.AddComponent<CelestialSteed>();
         celestialSteed.SetEffectObject = effect;
         celestialSteed.SetSprite = sinnerSprite;
+        mapObject.name = "‹€‚¿‚½“V”n";
     }
 }
