@@ -9,6 +9,7 @@ public class DliverRequest : MonoBehaviour
     SpecifyingDeliveryRoutes sDR;
     private const string SINNER_007 = "–`Œ¯æ‚Í‚‚ç‚©‚É";
     private const string SINNER_008 = "—Ö¥‚ÌŽP";
+   
     bool isConfison = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,18 +20,26 @@ public class DliverRequest : MonoBehaviour
 
     private void Update()
     {
-        //int confisonCount = 0;
-        //if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_007)) confisonCount += sDR.SinnerDebuff[driverID][SINNER_007] ? 1 : 0;@//ƒtƒ‰ƒO‚ªTrue‚È‚ç¬—ó‘Ô‚ðŽ¦‚·•Ï”‚ð‰ÁŽZ
-        //if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_008)) confisonCount += sDR.SinnerDebuff[driverID][SINNER_008] ? 1 : 0;  //ã‚Æ“¯‚¶
-        //isConfison = confisonCount > 0;
-        //sDR.IsConfison[driverID] = isConfison;
+        int confisonCount = 0;
+        if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_007)) confisonCount += sDR.SinnerDebuff[driverID][SINNER_007] ? 1 : 0;@//ƒtƒ‰ƒO‚ªTrue‚È‚ç¬—ó‘Ô‚ðŽ¦‚·•Ï”‚ð‰ÁŽZ
+        if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_008)) confisonCount += sDR.SinnerDebuff[driverID][SINNER_008] ? 1 : 0;  //ã‚Æ“¯‚¶
+        isConfison = confisonCount > 0;
+        sDR.IsConfison[driverID] = isConfison;
     }
     public void PointerDown()
     {
         sDR.DriverSetting(driverID);
-       
+    }
 
-
+    public void ConfisonClick()
+    {
+        sDR.ConfisonClickCount[driverID]--;
+        if (sDR.ConfisonClickCount[driverID] <=0)
+        {
+            if(sDR.SinnerDebuff[driverID].ContainsKey(SINNER_007))sDR.SinnerDebuff[driverID][SINNER_007] = false;
+            if (sDR.SinnerDebuff[driverID].ContainsKey(SINNER_007)) sDR.SinnerDebuff[driverID][SINNER_008] = false;
+            isConfison = false;
+        }
     }
 
 }
