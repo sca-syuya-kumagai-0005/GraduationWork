@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class ItemID_009 : Sinner
 {
+    private SinnerDistribute distribute;
     private TimeLine timeLine;
     bool isAbnormality;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,6 +17,7 @@ public class ItemID_009 : Sinner
         LoadSinnerObject();
         effect = effectObjectParent.transform.GetChild(8).gameObject;
 
+        distribute = GameObject.Find("Map").gameObject.GetComponent<SinnerDistribute>();
         timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         isAbnormality = false;
     }
@@ -24,7 +26,7 @@ public class ItemID_009 : Sinner
     {
         if(!isAbnormality)
         {
-            if (timeLine.TimeState == TimeLine.TimeStates.Night && deliveryCount == 0)
+            if (timeLine.TimeStateAccess == TimeLine.TimeState.Night && deliveryCount == 0)
             {
                 isAbnormality = true;
                 AbnormalPhenomenon();
@@ -33,7 +35,7 @@ public class ItemID_009 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0)
+        if (timeLine.TimeStateAccess == TimeLine.TimeState.Night || deliveryProcessID == 0)
         {
             AbnormalPhenomenon();
             return;
@@ -47,7 +49,7 @@ public class ItemID_009 : Sinner
         if (notPassedZoo) IncreaseProbabilitys(-90.0f);
         base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
-    protected override void AbnormalPhenomenon()
+    public override void AbnormalPhenomenon()
     {        
         //ëSÇƒÇÃàŸèÌÇ…Ç®Ç¢Çƒã§í Ç≈ãNÇ´ÇÈéñÇ™Ç†ÇÍÇŒÅ´ÇïœçX
         base.AbnormalPhenomenon();

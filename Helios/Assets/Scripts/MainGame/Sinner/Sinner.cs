@@ -105,6 +105,7 @@ public class Sinner : MonoBehaviour
     protected GameObject effectObjectParent;
 
     protected GameObject sinnerIconObject;
+    public void Test() { Debug.Log(sinnerID); }
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
@@ -165,7 +166,7 @@ public class Sinner : MonoBehaviour
     /// <summary>
     /// 異常発生時に呼ぶ仮想関数
     /// </summary>
-    virtual protected void AbnormalPhenomenon()
+    virtual public void AbnormalPhenomenon()
     {
         string str = sinnerName + ":異常発生。\n直ちに損害を確認してください。";
         announceManager.MakeAnnounce(str);
