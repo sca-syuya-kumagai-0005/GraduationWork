@@ -52,6 +52,7 @@ public class ItemID_006 : Sinner
             if (damage != 0)
             {
                 AbnormalPhenomenon();
+                specifyingDeliveryRoutes.AbnormalCount[deliveryLineID]++;
                 player.Health -= damage;
             }
         }
