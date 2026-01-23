@@ -28,7 +28,7 @@ public class ShortestPathSearch : MonoBehaviour
     /// <summary>
     /// スタートからゴールまでの最短経路を取得
     /// </summary>
-    public List<Vector3> ShortestPath(int widthID, int heightID, int targetWidthID, int targetHeightID)
+    public List<Vector3> ShortestPath(int widthID, int heightID, int targetWidthID, int targetHeightID, ref List<int[]> routes)
     {
         Map.MapData[][] mapData = map.MapDatas;
 
@@ -46,8 +46,12 @@ public class ShortestPathSearch : MonoBehaviour
         // 経路格納
         List<Vector3> positions = new List<Vector3>();
         positions.Add(mapData[heightID][widthID].obj.transform.localPosition); // スタート位置追加
-        SetRoute(widthID, heightID, targetWidthID, targetHeightID, ref mapData, ref positions);
-
+        routes.Clear();
+        SetRoute(widthID, heightID, targetWidthID, targetHeightID, ref mapData, ref positions,ref routes);
+        int[] ints = new int[2];
+        ints[0] = targetWidthID;
+        ints[1] = targetHeightID;
+        routes.Add(ints);
         // スタート→ゴール順にする
         //positions.Reverse();
         return positions;
@@ -102,7 +106,7 @@ public class ShortestPathSearch : MonoBehaviour
     /// <summary>
     /// 最短経路を再帰で取得
     /// </summary>
-    private void SetRoute(int startX, int startY, int targetX, int targetY, ref Map.MapData[][] mapData, ref List<Vector3> routes)
+    private void SetRoute(int startX, int startY, int targetX, int targetY, ref Map.MapData[][] mapData, ref List<Vector3> routesPos,ref List<int[]> routes)
     {
         if (startX == targetX && startY == targetY) return;
 
@@ -118,9 +122,12 @@ public class ShortestPathSearch : MonoBehaviour
 
             if (mapData[newY][newX].shortestPath == currentDist - 1)
             {
-                routes.Add(mapData[newY][newX].obj.transform.localPosition);
-                Debug.Log(mapData[newY][newX].name);
-                SetRoute(newX, newY, targetX, targetY, ref mapData, ref routes);
+                routesPos.Add(mapData[newY][newX].obj.transform.localPosition);
+                int[] ints = new int[2];
+                ints[0] = mapData[newY][newX].heightPositionID;
+                ints[1] = mapData[newY][newX].widthPositionID;
+                routes.Add(ints);
+                SetRoute(newX, newY, targetX, targetY, ref mapData, ref routesPos,ref routes);
                 break; // 一度進めばOK
             }
         }
