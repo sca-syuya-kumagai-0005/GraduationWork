@@ -54,12 +54,14 @@ public class Map : MonoBehaviour
         APARTMENT_2 = 14,
         APARTMENT_3 = 15,
         APAETMENT_4 = 16,
-        SHIRINE = 17,
+      
         SCHOOL = 18,
         AQUARIUM = 19,
         SEA = 99,
         ZOO = 21,
         PARK =22,
+        SHIRINE_LEFT = 23,
+        SHIRINE_RIGHT = 24,
     }
 
     int day;
