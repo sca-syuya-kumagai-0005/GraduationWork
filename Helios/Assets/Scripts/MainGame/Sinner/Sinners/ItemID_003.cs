@@ -65,7 +65,7 @@ public class ItemID_003 : Sinner
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
         timer = 0.0f;
     }
-    protected override void AbnormalPhenomenon()
+    public override void AbnormalPhenomenon()
     {
         int damage = 5 * genesisPhase;
         player.Health -= damage;

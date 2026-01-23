@@ -40,7 +40,7 @@ public class ItemID_005 : Sinner
         }
         base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
-    protected override void AbnormalPhenomenon()
+    public override void AbnormalPhenomenon()
     {
         //‘S‚Ä‚ÌˆÙí‚É‚¨‚¢‚Ä‹¤’Ê‚Å‹N‚«‚é–‚ª‚ ‚ê‚Î«‚ğ•ÏX
         base.AbnormalPhenomenon();
@@ -48,7 +48,7 @@ public class ItemID_005 : Sinner
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
         //’‹‚ÉŒÅ’è‚·‚éˆ—‚ğ‘‚­
         timeLine.AddAbnormalityList(sinnerName);
-        timeLine.TimeState = TimeLine.TimeStates.Morning;
+        timeLine.TimeStateAccess = TimeLine.TimeState.Noon;
         StartCoroutine(Release());
     }
 

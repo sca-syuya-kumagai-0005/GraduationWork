@@ -31,7 +31,7 @@ public class ItemID_002 : Sinner
         }
         base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
-    protected override void AbnormalPhenomenon()
+    public override void AbnormalPhenomenon()
     {
         //‘S‚Ä‚ÌˆÙí‚É‚¨‚¢‚Ä‹¤’Ê‚Å‹N‚«‚é–‚ª‚ ‚ê‚Î«‚ğ•ÏX
         base.AbnormalPhenomenon();

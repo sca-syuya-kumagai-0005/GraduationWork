@@ -22,7 +22,7 @@ public class ItemID_001 : Sinner
     {
 
     }
-    protected override void AbnormalPhenomenon()
+    public override void AbnormalPhenomenon()
     {
         //‘S‚Ä‚ÌˆÙí‚É‚¨‚¢‚Ä‹¤’Ê‚Å‹N‚«‚é–‚ª‚ ‚ê‚Î«‚ğ•ÏX
         base.AbnormalPhenomenon();
@@ -36,12 +36,12 @@ public class ItemID_001 : Sinner
         {
 
         }
-        if(timeLine.TimeState == TimeLine.TimeStates.Morning)
+        if(timeLine.TimeStateAccess == TimeLine.TimeState.Morning)
         {
             //“k•à‚¾‚Á‚½‚ç
             if (deliveryProcessID == 2) IncreaseProbabilitys(25.0f);
         }
-        if (timeLine.TimeState == TimeLine.TimeStates.Night)
+        if (timeLine.TimeStateAccess == TimeLine.TimeState.Night)
         {
             IncreaseProbabilitys(80.0f);
         }

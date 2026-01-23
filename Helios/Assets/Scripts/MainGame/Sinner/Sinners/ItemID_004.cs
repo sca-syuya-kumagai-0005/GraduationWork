@@ -17,7 +17,7 @@ public class ItemID_004 : Sinner
     {
 
     }
-    protected override void AbnormalPhenomenon()
+    public override void AbnormalPhenomenon()
     {
         //‘S‚Ä‚ÌˆÙí‚É‚¨‚¢‚Ä‹¤’Ê‚Å‹N‚«‚é–‚ª‚ ‚ê‚Î«‚ğ•ÏX
         base.AbnormalPhenomenon();

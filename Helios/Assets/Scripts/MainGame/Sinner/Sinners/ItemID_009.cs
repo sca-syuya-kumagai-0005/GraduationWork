@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class ItemID_009 : Sinner
 {
+    private SinnerDistribute distribute;
     private TimeLine timeLine;
     bool isAbnormality;
-    GameObject[] plot = new GameObject[9];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,10 +17,7 @@ public class ItemID_009 : Sinner
         LoadSinnerObject();
         effect = effectObjectParent.transform.GetChild(8).gameObject;
 
-        for(int i = 0; i < plot.Length; i++)
-        {
-            plot[i] = GameObject.Find("Address_" + i);
-        }
+        distribute = GameObject.Find("Map").gameObject.GetComponent<SinnerDistribute>();
         timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         isAbnormality = false;
     }
@@ -29,7 +26,7 @@ public class ItemID_009 : Sinner
     {
         if(!isAbnormality)
         {
-            if (timeLine.TimeState == TimeLine.TimeStates.Night && deliveryCount == 0)
+            if (timeLine.TimeStateAccess == TimeLine.TimeState.Night && deliveryCount == 0)
             {
                 isAbnormality = true;
                 AbnormalPhenomenon();
@@ -38,7 +35,7 @@ public class ItemID_009 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
-        if (timeLine.TimeState == TimeLine.TimeStates.Night || deliveryProcessID == 0)
+        if (timeLine.TimeStateAccess == TimeLine.TimeState.Night || deliveryProcessID == 0)
         {
             AbnormalPhenomenon();
             return;
@@ -52,11 +49,15 @@ public class ItemID_009 : Sinner
         if (notPassedZoo) IncreaseProbabilitys(-90.0f);
         base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
     }
-    protected override void AbnormalPhenomenon()
+    public override void AbnormalPhenomenon()
     {        
         //ëSÇƒÇÃàŸèÌÇ…Ç®Ç¢Çƒã§í Ç≈ãNÇ´ÇÈéñÇ™Ç†ÇÍÇŒÅ´ÇïœçX
         base.AbnormalPhenomenon();
 
+        GameObject mapObject =
         Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
+        CelestialSteed celestialSteed = mapObject.AddComponent<CelestialSteed>();
+        celestialSteed.SetEffectObject = effect;
+        celestialSteed.SetSprite = sinnerSprite;
     }
 }

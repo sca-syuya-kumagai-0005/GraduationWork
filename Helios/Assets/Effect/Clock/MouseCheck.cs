@@ -3,17 +3,18 @@ using System.Collections;
 
 public class MouseCheck : MonoBehaviour
 {
-    public enum TimeState
-    {
-        Morning,
-        Noon,
-        Night,
-        Warning
-    }
+    //public enum TimeState
+    //{
+    //    Morning,
+    //    Noon,
+    //    Night,
+    //    Warning
+    //}
 
     [Header("State")]
-    public TimeState currentState;
-    public TimeState targetState; // ñ⁄ïWèÛë‘
+    public TimeLine.TimeState currentState;
+    public TimeLine.TimeState targetState; // ñ⁄ïWèÛë‘
+    private TimeLine timeLine;
 
     [Header("Movement Settings")]
     [SerializeField] private Transform target;
@@ -30,6 +31,10 @@ public class MouseCheck : MonoBehaviour
     private bool isMouseOver = false;
     private bool isRotating = false;
 
+    private void Start()
+    {
+        timeLine = transform.parent.GetComponent<TimeLine>();
+    }
     private void Update()
     {
         MoveObject();
@@ -39,6 +44,7 @@ public class MouseCheck : MonoBehaviour
         {
             StartCoroutine(RotateTo(targetState));
         }
+        targetState = timeLine.TimeStateAccess;
     }
 
     private void OnMouseEnter()
@@ -66,7 +72,7 @@ public class MouseCheck : MonoBehaviour
     }
 
 
-    private IEnumerator RotateTo(TimeState next)
+    private IEnumerator RotateTo(TimeLine.TimeState next)
     {
         isRotating = true;
 
