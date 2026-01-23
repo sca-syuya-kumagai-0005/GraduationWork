@@ -33,7 +33,7 @@ public class TimeLine : MonoBehaviour
         announceManager = GameObject.Find("AnnounceCenter").GetComponent<AnnounceManager>();
         times = new float[3]
         {
-            10.0f,10.0f,180.0f
+            210.0f,210.0f,180.0f
         };
         totalTimes = new float[3]
         {
@@ -51,7 +51,7 @@ public class TimeLine : MonoBehaviour
         timer += Time.deltaTime;
         if (gameState.GameState == GameStateSystem.State.Start)
         {
-            if (timer > 1.5f)
+            if (timer > 7.0f)
             {
                 announceManager.MakeAnnounce("それでは本日の業務を開始します。");
                 gameState.GameState = GameStateSystem.State.Wait;
