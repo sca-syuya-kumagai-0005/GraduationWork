@@ -39,7 +39,7 @@ public class SinnerDistribute : MonoBehaviour
     public List<GameObject>[] GetSinnerHousedObjects { get { return sinnerHousedObjects; } }
     private List<int>[] sinnerPools = new List<int>[poolSize]
     {
-        new List<int> { 2,4, 5, 6, 7, 8, 9,12,13,15},
+        new List<int> { 2,4, 5, 6, 7, 8, 9,12,13,23},
         new List<int> { 1,3,16,10,11,14,19,20,17,18},
         new List<int> { 21},
         //new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
