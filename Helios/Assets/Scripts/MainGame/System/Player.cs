@@ -25,16 +25,13 @@ public class Player : MonoBehaviour
         health = maxHealth;
     }
 
-    public void fluctuationHealth(int value)
-    {
-        health += value;
-    }
     private void Start()
     {
         formatting();
     }
     private void Update()
     {
+        if (health > maxHealth) health = maxHealth;
         phase = 0;
         for (int i = 0; i < phaseLine.Length; i++)
         {

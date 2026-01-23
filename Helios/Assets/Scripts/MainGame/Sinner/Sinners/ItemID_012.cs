@@ -1,7 +1,14 @@
 using UnityEngine;
 public class ItemID_012 : Sinner
 {
+    private bool isAbnormality;
+    private bool isWalk;
+    private bool isBycicle;
 
+    private TimeLine timeLine;
+
+    private float timer;
+    private float timeLimit;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -11,12 +18,66 @@ public class ItemID_012 : Sinner
         sinnerID = "ItemID_012";
         sinnerName = "êlÇ…èZÇ≠åœ";
         LoadSprite("ID012");
+        timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         effect = effectObjectParent.transform.GetChild(11).gameObject;
-    }
-    // Update is called once per frame
-    void Update()
-    {
 
+        isAbnormality = false;
+        isWalk = false;
+        isBycicle = false;
+
+        timer = 0.0f;
+        timeLimit = 90.0f;
+    }
+
+    private void Update()
+    {
+        if (isAbnormality)
+        {
+            timer += Time.deltaTime;
+            if (timer > timeLimit)
+            {
+                timer -= timeLimit;
+                if (timeLine.TimeStateAccess == TimeLine.TimeState.Night) player.Health += 3;
+                else
+                {
+                    if (player.Health > 3)
+                        player.Health -= 3;
+                    else player.Health = 1;
+                }
+            }
+        }
+    }
+
+    public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    {
+        if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.SHIRINE))
+        {
+            isAbnormality = false;
+            timer = 0.0f;
+        }
+
+        if (deliveryProcessID == 2)
+        {
+            isWalk = true;
+            IncreaseProbabilitys(-45.0f);
+        }
+        if (deliveryProcessID == 1)
+        {
+            isBycicle = true;
+            IncreaseProbabilitys(40.0f);
+        }
+        base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
+
+        if (isWalk)
+        {
+            IncreaseProbabilitys(45.0f);
+            isWalk = false;
+        }
+        if (isBycicle)
+        {
+            IncreaseProbabilitys(-40.0f);
+            isBycicle = false;
+        }
     }
     public override void AbnormalPhenomenon()
     {
@@ -24,5 +85,6 @@ public class ItemID_012 : Sinner
         base.AbnormalPhenomenon();
 
         //ÇªÇÍÇºÇÍÇÃèàóùÇÕÇ±Ç±Ç…èëÇ≠
+        isAbnormality = true;
     }
 }

@@ -36,6 +36,10 @@ public class ItemID_023 : Sinner
             if (isAbnormality)
             {
                 isAbnormality = false;
+                IncreaseProbabilitys(-999.0f);
+                base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
+                IncreaseProbabilitys(999.0f);
+                return;
             }
             else
             {
