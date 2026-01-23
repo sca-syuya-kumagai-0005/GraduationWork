@@ -48,13 +48,15 @@ public class ItemID_010 : Sinner
         if (timeLine.AbnormalityList.Count > 1)
         {
             timeLine.RemoveAbnormalityList(sinnerName);
+            announceManager.MakeAnnounce(sinnerID + "の異常は解消されました。");
         }
     }
     public override void AbnormalPhenomenon()
     {
         //全ての異常において共通で起きる事があれば↓を変更
         sinnerName = onatherName;
-        timeLine.AddAbnormalityList(sinnerName);
+        if (!timeLine.AbnormalityList.Contains(sinnerName))
+            timeLine.AddAbnormalityList(sinnerName);
         string text = sinnerName + ":異常発生。\n平和は覆された。";
         announceManager.MakeAnnounce(text);
 

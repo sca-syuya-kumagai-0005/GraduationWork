@@ -39,6 +39,7 @@ public class ItemID_023 : Sinner
                 IncreaseProbabilitys(-999.0f);
                 base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
                 IncreaseProbabilitys(999.0f);
+                announceManager.MakeAnnounce(sinnerID + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
                 return;
             }
             else

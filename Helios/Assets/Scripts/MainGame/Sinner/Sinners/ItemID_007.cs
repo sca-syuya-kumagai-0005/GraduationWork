@@ -71,7 +71,7 @@ public class ItemID_007 : Sinner
             if (specifyingDeliveryRoutes.IsDriving[i])
             {
                 specifyingDeliveryRoutes.SinnerDebuff[i][sinnerName] = true;
-
+                specifyingDeliveryRoutes.ConfisonClickCount[i] = 50;
             }
         }
     }

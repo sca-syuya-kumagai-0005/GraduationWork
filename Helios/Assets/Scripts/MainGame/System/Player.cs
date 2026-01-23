@@ -44,6 +44,8 @@ public class Player : EasingMethods
         formatting();
         gameStateSystem = GameObject.Find("GameState").gameObject.GetComponent<GameStateSystem>();
         restartButton = restartPanel.transform.GetChild(1).gameObject;
+        warningColor = warning.transform.GetChild(0).GetComponent<WarningColor>();
+        warningLine = warning.transform.GetChild(0).GetComponent<WarningLine>();
     }
     private void Update()
     {
@@ -65,6 +67,9 @@ public class Player : EasingMethods
         }
         waveCircleController.targetState = (ECGWaveCircleController.WaveState)phase;
         hpGage.fillAmount = (float)health / maxHealth;
+
+        warningColor.colorType = (WarningColorType)phase;
+        warningLine.state = WarningLine.WarningState.In;
     }
 
     private IEnumerator FallRestartButton()
