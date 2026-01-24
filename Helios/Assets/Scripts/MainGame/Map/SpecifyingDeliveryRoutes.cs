@@ -13,7 +13,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     const int driverCount = 4;//トラックの数
     [SerializeField] private int[] confisonClickCount = new int[driverCount];
     public int[] ConfisonClickCount { get { return confisonClickCount; } set { confisonClickCount = value; } }
-    int[] abnormalCount=new int[driverCount];
+    int[] abnormalCount = new int[driverCount];
     int totalAbnormal;
     public int[] AbnormalCount { get { return abnormalCount;} set { abnormalCount=value;} }
     public int TotalAbnormal { get { return totalAbnormal;} set { totalAbnormal = value;} }

@@ -105,6 +105,16 @@ public class Sinner : MonoBehaviour
     protected GameObject effectObjectParent;
 
     protected GameObject sinnerIconObject;
+
+    private AudioManager audioManager;
+    private AudioClip[] audioClips = new AudioClip[3];
+    private string[] audioFiles=new string[3]
+    {
+        "Delivery_Failed",
+        "Delivery_Success",
+        "Warning_Sound"
+    };
+
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
@@ -120,6 +130,11 @@ public class Sinner : MonoBehaviour
         effectObjectParent = GameObject.Find("SinnerALLEffect").gameObject;
         transform.GetChild(0).GetComponent<SpriteRenderer>().color=new Color(0.925f,0.52f,0.0f);
         deliveryCount = 0;
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        for (int i = 0; i < audioFiles.Length; i++)
+        {
+            audioClips[i] = Resources.Load<AudioClip>("SinnersSE/" + audioFiles[i]);
+        }
     }
 
     /// <summary>
@@ -158,8 +173,14 @@ public class Sinner : MonoBehaviour
             specifyingDeliveryRoutes.AbnormalCount[deliveryLineID]++;
             AbnormalPhenomenon();
             player.Health -= damage;
+
+            audioManager.PlaySE(audioClips[1]);
         }
-        deliveryCount++;
+        else
+        {
+            audioManager.PlaySE(audioClips[0]);
+        }
+            deliveryCount++;
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
     }
@@ -172,6 +193,7 @@ public class Sinner : MonoBehaviour
         string str = sinnerName + ":異常発生。\n直ちに損害を確認してください。";
         announceManager.MakeAnnounce(str);
         effect.SetActive(true);
+        audioManager.PlaySE(audioClips[2]);
     }
     /// <summary>
     /// 配達表に自身の情報を渡す時に呼ぶ関数
