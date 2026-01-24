@@ -275,7 +275,6 @@ public class WarningWindow : MonoBehaviour
 
         mat.SetFloat(prop, to);
     }
-
     private IEnumerator RestoreValues(float duration)
     {
         float timer = 0;
@@ -329,5 +328,10 @@ public class WarningWindow : MonoBehaviour
 
         ResetAllValues();
         playState = PlayState.Idle;
+    }
+
+    public void SetPlayState(PlayState state)
+    {
+        playState = state;
     }
 }
