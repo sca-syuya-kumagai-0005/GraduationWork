@@ -283,7 +283,7 @@ public class Adventure : EasingMethods
             if (text[i] != lineBreakCommand)
                 messageBox.text += text[i];
             else messageBox.text += '\n';
-            //audioManager.PlaySE(audioClip[1]);
+            audioManager.PlaySE(audioClip[1]);
             yield return new WaitForSeconds(textSpeed);
         }
         Debug.Log("SpeakŠ®—¹:");

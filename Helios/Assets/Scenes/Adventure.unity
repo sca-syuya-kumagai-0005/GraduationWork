@@ -506,6 +506,7 @@ MonoBehaviour:
   - {fileID: 263142441}
   audioClip:
   - {fileID: 8300000, guid: a8e0cef4865b2194e8cbd26c64317d24, type: 3}
+  - {fileID: 8300000, guid: 00b371d99faf4c54290730a977c1f8e0, type: 3}
 --- !u!1 &263142440
 GameObject:
   m_ObjectHideFlags: 0
