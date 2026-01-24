@@ -46,6 +46,15 @@ public class AnnounceManager : EasingMethods
     private List<AnnounceTimer> timerList = new List<AnnounceTimer>();
 
     private const int listTop = 0;
+
+    [SerializeField]
+    private AudioClip audioClip;
+    private AudioManager audioManager;
+
+    private void Start()
+    {
+        audioManager = GameObject.Find("Audio").gameObject.GetComponent<AudioManager>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -133,6 +142,7 @@ public class AnnounceManager : EasingMethods
         AnnounceTimer annouceTimer = new AnnounceTimer(0.0f);
         timerList.Add(annouceTimer);
         announceList.Add(announce);
+        audioManager.PlaySE(audioClip);
     }
 
     private void DeleteAnnounce()
