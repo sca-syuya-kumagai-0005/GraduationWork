@@ -36,6 +36,8 @@ public class Sinner_020 : MonoBehaviour
 
     private float currentRotationSpeed;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_020;
 
     private void OnEnable()
     {
@@ -44,6 +46,9 @@ public class Sinner_020 : MonoBehaviour
         if (stone != null) stone.localScale = stoneStartScale;
         currentRotationSpeed = rotationSpeedStart;
         bombEffect.SetActive(false);
+
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_020);
 
         // アニメーション開始
         StartCoroutine(FlowProcess());

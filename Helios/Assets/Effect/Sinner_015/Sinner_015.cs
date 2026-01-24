@@ -122,6 +122,9 @@ public class Sinner_015 : MonoBehaviour
     public Action OnReaperStopCallback;
 
     // “ˆê‚µ‚½ OnReaperStop À‘•id•¡‚ğ‰ğÁj
+
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_015;
     public void OnReaperStop()
     {
         ReaperCount++;
@@ -258,6 +261,9 @@ public class Sinner_015 : MonoBehaviour
 
     private void OnEnable()
     {
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_015);
+
         fadeProgressIndex = 0;
         ReaperCount = 0;
         foreach (var sr in renderers) SetAlpha(sr, startAlpha);

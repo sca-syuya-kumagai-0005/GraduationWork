@@ -18,8 +18,13 @@ public class Sinner_004 : MonoBehaviour
     public float startAlpha = 0.75f;     // フェードイン後の到達α値
     public float endAlpha = 0f;          // フェードアウト後のα値
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_004;
+
     void OnEnable()
     {
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        
         // 毎回リセット
         waveCount = new Vector4[maxWaves];
         waveStartTimes = new float[maxWaves];
@@ -79,9 +84,10 @@ public class Sinner_004 : MonoBehaviour
 
             yield return null;
         }
-
+        audioManager.PlaySE(sinner_004);
         // フェード完了後に波紋ループ開始
         yield return StartCoroutine(RippleAndFadeOut());
+        
     }
 
     IEnumerator RippleAndFadeOut()

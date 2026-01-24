@@ -18,11 +18,16 @@ public class Sinner_002 : MonoBehaviour
     [SerializeField] private Vector3[] startPositions;  // Å© localç¿ïWÇ∆ÇµÇƒàµÇ§
     [SerializeField] private GameObject loveEffect;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_002;
+
     private Vector3[] endPositions;
     private Vector3[] initialScales;
 
     private void OnEnable()
     {
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_002);
         loveEffect.SetActive(false);
         Initialize();
         PlayAnimation();

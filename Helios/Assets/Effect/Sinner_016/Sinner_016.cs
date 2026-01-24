@@ -14,6 +14,9 @@ public class Sinner_016 : MonoBehaviour
     [SerializeField] private Vector3 endScale2 = Vector3.one * 0.5f;
     [SerializeField] private float duration2 = 1.0f;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_016;
+
     #endregion
 
     #region === Clip Settings ===
@@ -174,6 +177,9 @@ public class Sinner_016 : MonoBehaviour
             Color c = mat2_StartColors[0] * mat2_StartIntensity[0];
             colorMat2.SetColor("_Color", c);
         }
+
+        //audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        //audioManager.PlaySE(sinner_016);
 
         // --- コルーチン再スタート ---
         StopAllCoroutines();
