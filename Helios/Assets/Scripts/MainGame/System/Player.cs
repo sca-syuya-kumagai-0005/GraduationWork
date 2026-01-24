@@ -58,7 +58,7 @@ public class Player : EasingMethods
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) health -= 10;
+        //if(Input.GetKeyDown(KeyCode.Escape)) health -= 10;
         if (health <= 0)
         {
             if (gameStateSystem.GameState != GameStateSystem.State.End)
