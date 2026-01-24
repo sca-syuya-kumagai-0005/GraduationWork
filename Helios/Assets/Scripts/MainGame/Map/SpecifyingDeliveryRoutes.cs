@@ -13,7 +13,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     const int driverCount = 4;//トラックの数
     [SerializeField] private int[] confisonClickCount = new int[driverCount];
     public int[] ConfisonClickCount { get { return confisonClickCount; } set { confisonClickCount = value; } }
-    int[] abnormalCount;
+    int[] abnormalCount=new int[driverCount];
     int totalAbnormal;
     public int[] AbnormalCount { get { return abnormalCount;} set { abnormalCount=value;} }
     public int TotalAbnormal { get { return totalAbnormal;} set { totalAbnormal = value;} }
@@ -287,6 +287,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     public void MemoryStart()
     {
         if (!writing || !driverSet) { return; }
+
         memoring = true;
         StartCoroutine(Directions(driverType));
 
@@ -294,7 +295,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
     public void StartDriver(int driverID)
     {
-        Debug.Log("押せてはいる");
         if (routeObjectsID[driverID].Count == 0) return;
         if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == (int)MapObjectID.HOUSE_1)
         {
@@ -338,17 +338,17 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             {
                 case 0:
                     {
-                        speed[driverID] = 0.5f;
+                        speed[driverID] = 1f;
                     }
                     break;
                 case 1:
                     {
-                        speed[driverID] = 1f;
+                        speed[driverID] = 2f;
                     }
                     break;
                 case 2:
                     {
-                        speed[driverID] = 2f;
+                        speed[driverID] = 4f;
                     }
                     break;
             }
@@ -768,11 +768,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         }
         routes[driverID] = new List<int[]>();
         routesPosition[driverID] = new List<Vector3>();
+        tmpRoutePosition[driverID]=new List<Vector3>();
+        tmpRoutes[driverID] = new List<int[]>();
         line[driverID].positionCount = 0;
         routeObjectsID[driverID] = new List<int>();
         isItemSetting[driverID] = false;
         isProcessSetting[driverID] = false;
-        memoring = false;
         isDriving[driverID] = false;
         driver[driverID].SetActive(false);
         yield return null;
@@ -800,17 +801,17 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             {
                 case 0:
                     {
-                        speed[driverID] = 0.5f;
+                        speed[driverID] = 1f;
                     }
                     break;
                 case 1:
                     {
-                        speed[driverID] = 1f;
+                        speed[driverID] = 2f;
                     }
                     break;
                 case 2:
                     {
-                        speed[driverID] = 2f;
+                        speed[driverID] = 4f;
                     }
                     break;
             }
@@ -1015,17 +1016,17 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             {
                 case 0:
                     {
-                        speed[driverID] = 0.5f;
+                        speed[driverID] = 1f;
                     }
                     break;
                 case 1:
                     {
-                        speed[driverID] = 1f;
+                        speed[driverID] = 2f;
                     }
                     break;
                 case 2:
                     {
-                        speed[driverID] = 2f;
+                        speed[driverID] = 4f;
                     }
                     break;
             }
@@ -1216,7 +1217,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         routeObjectsID[driverID] = new List<int>();
         isItemSetting[driverID] = false;
         isProcessSetting[driverID] = false;
-        memoring = false;
         isDriving[driverID] = false;
         driver[driverID].SetActive(false);
         yield return null;
