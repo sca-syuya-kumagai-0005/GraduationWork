@@ -15,7 +15,6 @@ public class Player : EasingMethods
     private GameObject warning;
     private WarningColor warningColor;
     private WarningLine warningLine;
-    private WarningWindow warningWindow;
     private int health;
     private const int maxHealth = 100;
     [SerializeField]
@@ -32,6 +31,10 @@ public class Player : EasingMethods
     }
     private Phase phase;
     private Phase lastPhase;
+
+    [SerializeField]
+    private AudioClip[] emergencyClips;
+    private AudioManager audioManager;
     public void formatting()
     {
         health = maxHealth;
@@ -48,9 +51,10 @@ public class Player : EasingMethods
         restartButton = restartPanel.transform.GetChild(1).gameObject;
         warningColor = warning.transform.GetChild(0).GetComponent<WarningColor>();
         warningLine = warning.transform.GetChild(0).GetComponent<WarningLine>();
-        warningWindow = warningWindow.transform.GetChild(1).GetComponent<WarningWindow>();
         phase = 0;
         lastPhase = 0;
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlayBGM(emergencyClips[0]);
     }
     private void Update()
     {
@@ -76,13 +80,21 @@ public class Player : EasingMethods
         if (lastPhase != phase)
         {
             int[] colorNumber = new int[5] { 3, 2, 1, 4, 0 };
-
             warningColor.colorType = (WarningColorType)colorNumber[(int)phase];
             StartCoroutine(WarningTape());
+            StartCoroutine(EmergencyAudioChenge());
         }
         lastPhase = phase;
     }
 
+    private IEnumerator EmergencyAudioChenge()
+    {
+        float timer = 0.5f;
+        audioManager.FadeOutBGM(timer);
+        yield return new WaitForSeconds(timer);
+        audioManager.PlayBGM(emergencyClips[(int)phase]);
+        audioManager.FadeInBGM(timer);
+    }
     private IEnumerator WarningTape()
     {
         warningLine.SetState(WarningLine.WarningState.In);
