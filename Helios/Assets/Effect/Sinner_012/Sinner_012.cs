@@ -24,8 +24,13 @@ public class Sinner_012 : MonoBehaviour
     private float delayTimer = 0f;
     private bool isFinished = false;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_012;
+
     private void OnEnable()
     {
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_012);
         ResetAnimationState();
     }
 

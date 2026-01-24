@@ -19,8 +19,13 @@ public class Sinner_018 : MonoBehaviour
 
     private Coroutine playRoutine;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_018;
+
     private void OnEnable()
     {
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_018);
         Play();
     }
 

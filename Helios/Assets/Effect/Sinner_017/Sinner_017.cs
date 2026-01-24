@@ -38,6 +38,8 @@ public class Sinner017 : MonoBehaviour
     [SerializeField]
     private GameObject piero1;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_017;
 
     void Update()
     {
@@ -48,6 +50,8 @@ public class Sinner017 : MonoBehaviour
 
     public void OnEnable()
     {
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_017);
         isStopped = false;
 
         // リセット処理
@@ -77,7 +81,8 @@ public class Sinner017 : MonoBehaviour
         // OutLine 自体も非表示
         outLine.gameObject.SetActive(false);
 
-      
+
+
         // 元の処理（内容は一切変更なし)
         StartCoroutine(FadePiero());
         SetRandomWinLose();

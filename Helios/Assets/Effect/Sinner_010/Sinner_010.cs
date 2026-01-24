@@ -25,12 +25,19 @@ public sealed class Sinner_010 : MonoBehaviour
     private readonly List<Coroutine> _runningCoroutines = new();
     private bool _started;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_010;
+    [SerializeField] private AudioClip sinner_010SE;
+
     private void OnEnable()
     {
         // 再表示された時に再スタートできるようにする
         _started = false;
         ResetAlpha();
         TryStart();
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_010);
+        audioManager.PlaySE(sinner_010SE);
     }
 
     private void OnBecameVisible()

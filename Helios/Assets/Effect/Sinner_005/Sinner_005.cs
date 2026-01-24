@@ -55,6 +55,9 @@ public class Sinner_005 : MonoBehaviour
 
     private Coroutine sequenceCoroutine;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_005;
+
     private void OnEnable()
     {
         // Šù‘¶‚ÌƒRƒ‹[ƒ`ƒ“‚ª‚ ‚ê‚Î’â~
@@ -66,6 +69,8 @@ public class Sinner_005 : MonoBehaviour
 
         // Ä¶
         sequenceCoroutine = StartCoroutine(Sequence());
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_005);
     }
 
     private void ResetState()

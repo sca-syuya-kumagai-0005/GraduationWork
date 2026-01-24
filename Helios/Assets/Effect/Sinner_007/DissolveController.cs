@@ -37,6 +37,9 @@ public class DissolveController : MonoBehaviour
 
     private Coroutine mainRoutine;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_007;
+
     private void OnEnable()
     {
         // 初期値リセット
@@ -54,6 +57,9 @@ public class DissolveController : MonoBehaviour
         if (targetObject != null)
             targetObject.rotation = Quaternion.Euler(0, startAngle, 0);
 
+
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_007);
         // 実行開始
         PlaySequence();
     }

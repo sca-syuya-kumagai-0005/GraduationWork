@@ -35,13 +35,19 @@ public class ExplosionEffect : MonoBehaviour
     bool absorbFinished;
     Coroutine sequence;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_003;
+
     // =======================
     // 表示されたら毎回リセット＆再生
     // =======================
     void OnEnable()
     {
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_003);
         Initialize();
         sequence = StartCoroutine(AutoExplosionSequence());
+
     }
 
     void OnDisable()
@@ -74,7 +80,7 @@ public class ExplosionEffect : MonoBehaviour
             if (init == null)
                 init = child.gameObject.AddComponent<PieceInitializer>();
 
-            init.ResetToInitial(); // ★ 位置0にしない（元に戻す）
+            init.ResetToInitial(); // 位置0にしない（元に戻す）
 
             // Rigidbody 初期化
             var rb = child.GetComponent<Rigidbody>();
@@ -91,7 +97,7 @@ public class ExplosionEffect : MonoBehaviour
             var orbit = child.GetComponent<OrbitAndAbsorb>();
             if (orbit != null) Destroy(orbit);
 
-            // ★ 最初は必ず非表示
+            // 最初は必ず非表示
             child.gameObject.SetActive(false);
         }
 
@@ -181,7 +187,7 @@ public class ExplosionEffect : MonoBehaviour
         }
     }
 
-    // ★ 全ピース吸収完了時
+    // 全ピース吸収完了時
     public void NotifyAbsorbFinished()
     {
         if (absorbFinished) return;
@@ -192,7 +198,7 @@ public class ExplosionEffect : MonoBehaviour
         {
             absorbFinished = true;
 
-            // ★ 演出完了 → 自身を非表示
+            // 演出完了 → 自身を非表示
             gameObject.SetActive(false);
         }
     }

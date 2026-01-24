@@ -87,6 +87,8 @@ public sealed class Sinner_011_Destruction : MonoBehaviour
     [SerializeField] private Vector3 postExplosionLocalPosition = Vector3.zero;
     [SerializeField] private Vector3 postExplosionLocalRotation = Vector3.zero;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_011Boom;
 
     private void OnEnable()
     {
@@ -139,7 +141,8 @@ public sealed class Sinner_011_Destruction : MonoBehaviour
 
         boom.SetActive(false);
         explosion.SetActive(false);
-
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_011Boom);
         StartAction();
     }
 

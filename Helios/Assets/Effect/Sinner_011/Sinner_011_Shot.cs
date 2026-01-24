@@ -84,6 +84,9 @@ public sealed class Sinner_011_Shot: MonoBehaviour
 
     [SerializeField] private ParticleSystem mazle;
 
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip sinner_011;
+
     // =========================================================
     private void OnEnable()
     {
@@ -131,7 +134,8 @@ public sealed class Sinner_011_Shot: MonoBehaviour
                 }
             }
         }
-
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
+        audioManager.PlaySE(sinner_011);
         StartAction();
     }
 
