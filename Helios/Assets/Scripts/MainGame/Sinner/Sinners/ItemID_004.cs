@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 public class ItemID_004 : Sinner
 {
@@ -23,5 +24,9 @@ public class ItemID_004 : Sinner
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
+        if (specifyingDeliveryRoutes.SinnerDebuff[0].ContainsKey("君と歩んだクラゲ"))
+        {
+            specifyingDeliveryRoutes.SinnerDebuff[0]["君と歩んだクラゲ"] = false;
+        }
     }
 }

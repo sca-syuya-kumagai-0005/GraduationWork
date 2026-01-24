@@ -5,7 +5,6 @@ public class ItemID_006 : Sinner
     const float timeLimit = 60.0f;
     float increase;
 
-    bool isAbnormality;//そのうち資料側のフラグを直接変更する
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,7 +15,7 @@ public class ItemID_006 : Sinner
         sinnerName = "君と歩んだクラゲ";
         LoadSprite("ID006");
         effect = effectObjectParent.transform.GetChild(5).gameObject;
-        isAbnormality = false;
+        specifyingDeliveryRoutes.SinnerDebuff[0][sinnerName] = false;
     }
     // Update is called once per frame
     void Update()
@@ -66,6 +65,6 @@ public class ItemID_006 : Sinner
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
-        isAbnormality = true;
+        specifyingDeliveryRoutes.SinnerDebuff[0][sinnerName] = true;
     }
 }
