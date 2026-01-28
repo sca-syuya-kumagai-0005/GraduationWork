@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Sinner_023 : MonoBehaviour
+public class Sinner_022 : MonoBehaviour
 {
     [Header("=== Ripple Material ===")]
     public Material rippleMaterial;
