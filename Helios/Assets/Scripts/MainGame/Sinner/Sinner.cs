@@ -78,6 +78,7 @@ public class Sinner : MonoBehaviour
         Enormous = 30,
         Death = 100
     }
+    private bool isDerivered = false;
     private const int moods = 8;//感情の数
     protected int ReceivedItemID;//受け取る荷物のアイテム番号
     protected float[] probabilitys = new float[moods];//それぞれの確率
@@ -115,6 +116,7 @@ public class Sinner : MonoBehaviour
         "Warning_Sound"
     };
 
+    SpriteRenderer spriteRenderer;
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
@@ -135,6 +137,8 @@ public class Sinner : MonoBehaviour
         {
             audioClips[i] = Resources.Load<AudioClip>("SinnersSE/" + audioFiles[i]);
         }
+        spriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        spriteRenderer.color = new Color(1.0f, 0.4f, 0.0f);
     }
 
     /// <summary>
@@ -351,5 +355,12 @@ public class Sinner : MonoBehaviour
         _liskClass = (int)liskClass;
         string str = sinnerID.Split(underbar)[1];
         _sinnerID = int.Parse(str);
+    }
+
+    public void HouseColorChange()
+    {
+        if (spriteRenderer.color == new Color(1.0f, 0.4f, 0.0f))
+            spriteRenderer.color = new Color(1.0f, 0.4f, 0.0f);
+        else spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
     }
 }

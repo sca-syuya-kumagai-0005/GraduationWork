@@ -17,6 +17,12 @@ public class MapObjectRequest : MonoBehaviour
     public bool HaveSinner { set{haveSinner=value; } }
 
     MapObjectID id;
+
+    private GameObject residenceCertificate;//”z’B•\
+    private void Awake()
+    {
+        residenceCertificate = GameObject.Find("ResidenceCertificate");
+    }
     private void Start()
     {
         objectInfo = this.gameObject.name.Split(underbar);
@@ -28,11 +34,6 @@ public class MapObjectRequest : MonoBehaviour
         col=this.gameObject.GetComponent<Collider>();
         SetEventType(down,PointerDown,this.gameObject);
         SetEventType(enter,PointerEnter, this.gameObject);
-        if(haveSinner)
-        {
-            SpriteRenderer sr = this.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
-            sr.color = new Color(1.0f, 0.4f, 0.0f);
-        }
     }
 
     private void Update()
@@ -68,6 +69,8 @@ public class MapObjectRequest : MonoBehaviour
                 }
                 break;
         }
+        if (!haveSinner)
+            residenceCertificate.SetActive(false);
     }
 
     void PointerEnter()
