@@ -15,10 +15,17 @@ public class Adventure : EasingMethods
     private Sprite[] characterSprites;
     [SerializeField]
     private Image[] characters;
-    private string[] characterNames = new string[4];
+    private Vector3[] defaultPosition = new Vector3[3]
+    {
+        new Vector3(0,-450,0),
+        new Vector3(-400,-450,0),
+        new Vector3(400,-450,0)
+    };
+    private string[] characterNames;
+    private bool[] characterIsSetting;
     private Text nameBox;
     private Text messageBox;
-    private float textSpeed = 0.1f;
+    private const float textSpeed = 0.1f;
     private GameObject arrow;
     private BlackScreen blackScreen;
 
@@ -48,11 +55,13 @@ public class Adventure : EasingMethods
     private const byte column_command = 0;
     private const byte column_Text = 1;
 
-    private bool isSkiped;
-
     private AudioManager audioManager;
     [SerializeField]
     private AudioClip[] audioClip;
+
+    private bool isMassageSkipped;
+
+    private List<string> textLog = new List<string>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -63,25 +72,27 @@ public class Adventure : EasingMethods
         nameBox = GameObject.Find("NameBox").gameObject.GetComponent<Text>();
         messageBox = GameObject.Find("MessageBox").gameObject.GetComponent<Text>();
         days = saveDataManager.Days;
-        isComplete = true;
+        isComplete = false;
         csvData = CsvManager.Read(storyCsvFiles[days]);
         lines = 0;
         speakTiming = 0;
+        characterNames = new string[4];
+        characterIsSetting = new bool[characters.Length];
+        for (int i = 0; i < characters.Length; i++)
+        {
+            characterIsSetting[i] = false;
+            characters[i].color = Color.clear;
+        } 
         nameBox.name = "";
         messageBox.name = "";
-        for(int i = 0; i < characters.Length; i++)
-        {
-            characters[i].color = Color.clear;
-        }
         audioManager = GameObject.Find("Audio").gameObject.GetComponent<AudioManager>();
-        audioManager.PlayBGM(audioClip[0]);
+        //audioManager.PlayBGM(audioClip[0]);
+        StartCoroutine(StartWait());
     }
     // Update is called once per frame
     void Update()
     {
-        if (isSkiped) textSpeed = 0.0f;
-        else textSpeed = 0.1f;
-            string commandType = null;
+        string commandType = null;
         string commandTarget = null;
         string[] data = csvData[lines][column_command].Split("_");
         const int commandTypeAdress = 0;
@@ -106,6 +117,7 @@ public class Adventure : EasingMethods
             {
                 Debug.Log(lines + "行目読み込み：Command=" + commandType);
                 isComplete = false;
+                isMassageSkipped = false;
                 switch (commandType)
                 {
                     case nameof(Command.SetCharacter):
@@ -130,10 +142,10 @@ public class Adventure : EasingMethods
                 }
                 lines++;
             }
-        }
-        if(Input.GetMouseButtonDown(0))
-        {
-            isSkiped = true;
+            if (Input.GetMouseButtonDown(0))
+            {
+                isMassageSkipped = true;
+            }
         }
     }
     /// <summary>
@@ -180,26 +192,16 @@ public class Adventure : EasingMethods
         }
         if (!quotaIsD )
         {
-
-            float defPos = 0.0f;
-            switch (quotaNumber)
-            {
-                case 1:
-                    defPos = -400.0f;
-                    break;
-                case 2:
-                    defPos = 400.0f;
-                    break;
-            }
+            characterIsSetting[quotaNumber] = true;
             float addPos = 100.0f;
-            characters[quotaNumber].transform.localPosition = new Vector3(defPos + addPos, 0, 0);
+            characters[quotaNumber].transform.localPosition = new Vector3(defaultPosition[quotaNumber].x + addPos, -550, 0);
 
             characters[quotaNumber].color = Color.clear;
             while (!isEnd)
             {
                 timer += Time.deltaTime / timeLate;
-                float pos = (defPos + addPos) - addPos * EaseOutCubic(timer);
-                characters[quotaNumber].transform.localPosition = new Vector3(pos, 0, 0);
+                float pos = (defaultPosition[quotaNumber].x + addPos) - addPos * EaseOutCubic(timer);
+                characters[quotaNumber].transform.localPosition = new Vector3(pos, -550, 0);
                 characters[quotaNumber].color = Color.clear + Color.white * EaseOutCubic(timer);
                 if (timer >= 1.0f) isEnd = true;
                 yield return null;
@@ -221,28 +223,19 @@ public class Adventure : EasingMethods
         if (quotaNumber == (int)CharacterQuota.D) quotaIsD = true;
         if (!quotaIsD)
         {
-
-            float defPos = 0.0f;
-            switch (quotaNumber)
-            {
-                case 1:
-                    defPos = -400.0f;
-                    break;
-                case 2:
-                    defPos = 400.0f;
-                    break;
-            }
             float addPos = 100.0f;
-            characters[quotaNumber].transform.localPosition = new Vector3(defPos, 0, 0);
+            characters[quotaNumber].transform.localPosition = new Vector3(defaultPosition[quotaNumber].x, -550, 0);
             characters[quotaNumber].color = Color.white;
             while (!isEnd)
             {
                 timer += Time.deltaTime / timeLate;
-                float pos = defPos - addPos * EaseOutCubic(timer);
+                float pos = defaultPosition[quotaNumber].x - addPos * EaseOutCubic(timer);
+                characters[quotaNumber].transform.localPosition = new Vector3(pos, characters[quotaNumber].transform.localPosition.y, 0);
                 characters[quotaNumber].color = Color.white - Color.white * EaseOutCubic(timer);
                 if (timer >= 1.0f) isEnd = true;
                 yield return null;
             }
+            characterIsSetting[quotaNumber] = false;
         }
         isComplete = true;
         Debug.Log("RemoveCharacter完了:");
@@ -260,10 +253,11 @@ public class Adventure : EasingMethods
     /// </summary>
     private IEnumerator ViewText(string quotaCommand,string text)
     {
-        isSkiped = false;
         Debug.Log("Speak呼び出し");
         string name = "";
         CharacterQuota quota = ConvertStringToQuota(quotaCommand);
+        float[] defPosY = new float[characters.Length];
+        for (int i = 0; i < defPosY.Length; i++) defPosY[i] = characters[i].transform.position.y;
         switch (quota)
         {
             case CharacterQuota.Else:
@@ -273,19 +267,50 @@ public class Adventure : EasingMethods
                 name = characterNames[(int)quota];
                 break;
         }
+
+        for (int i = 0; i < characters.Length; i++)
+        {
+            Vector3 pos = new Vector3(characters[i].transform.localPosition.x ,defPosY[i]);
+            if (i == (int)quota)
+            {
+                characters[i].color = Color.white;
+                pos = defaultPosition[i] + new Vector3(0, 50.0f);
+                characters[i].transform.localPosition = pos;
+            }
+            else
+            {
+                if (characterIsSetting[i])
+                {
+                    Color color = Color.white / 2;
+                    color.a = 1.0f;
+                    characters[i].color = color;
+                    pos = defaultPosition[i] - new Vector3(0, 100.0f);
+                    characters[i].transform.localPosition = pos;
+                }
+                else
+                {
+                    characters[i].color = Color.clear;
+                }
+            }
+        }
+
         nameBox.text = name;
         //テキストボックスを初期化
         messageBox.text = "";
         yield return new WaitForSeconds(speakTiming);
 
-        for(int i = 0; i < text.Length; i++)
+        for (int i = 0; i < text.Length; i++)
         {
             if (text[i] != lineBreakCommand)
                 messageBox.text += text[i];
             else messageBox.text += '\n';
-            audioManager.PlaySE(audioClip[1]);
-            yield return new WaitForSeconds(textSpeed);
+            if (!isMassageSkipped)
+            {
+                audioManager.PlaySE(audioClip[1]);
+                yield return new WaitForSeconds(textSpeed);
+            }
         }
+        textLog.Add(messageBox.text);
         Debug.Log("Speak完了:");
 
         while (!isComplete)
@@ -317,6 +342,12 @@ public class Adventure : EasingMethods
                 break;
         }
         return ret;
+    }
+
+    private IEnumerator StartWait()
+    {
+        yield return new WaitForSeconds(3.0f);
+        isComplete = true;
     }
 
     /// <summary>
