@@ -44,6 +44,8 @@ public class ItemID_007 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
+        progressGraph.SinnerList.Remove(sinnerName);
+        spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
         ReceivedItemID = itemID;
         this.deliveryProcessID = deliveryProcessID;
         this.deliveryLineID = deliveryLineID;
@@ -58,6 +60,11 @@ public class ItemID_007 : Sinner
         }
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
+        if (progressGraph.SinnerList.Count != 0 && gameState.GameState != GameStateSystem.State.End)
+        {
+            announceManager.MakeAnnounce("本日のノルマは達成しましたが、全シナーへの配達が未完了です。");
+            announceManager.MakeAnnounce("全シナーへの配達を完了し本日の業務を終了して下さい。");
+        }
     }
     public override void AbnormalPhenomenon()
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,9 +14,13 @@ public class ProgressGraph : MonoBehaviour
     private GameStateSystem gameState;
     private BlackScreen blackScreen;
     private SaveDataManager saveData;
+    [SerializeField]
+    private List<string> sinnerList;
+    public List<string> SinnerList { get { return sinnerList; } set { sinnerList = value; } }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        sinnerList = new List<string>();
         progress = 0;
         image.fillAmount = 0;
         saveData = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
@@ -28,7 +33,7 @@ public class ProgressGraph : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (progress >= norm)
+        if (progress >= norm && sinnerList.Count == 0)
         {
             if (gameState.GameState != GameStateSystem.State.End)
             {
