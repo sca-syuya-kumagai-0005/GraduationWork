@@ -103,9 +103,9 @@ public class SinnerDistribute : MonoBehaviour
                     List<string> mapTile_House = new List<string>
                     {
                     ((int)Map.MapObjectID.HOUSE_1).ToString(),
-                    ((int)Map.MapObjectID.HOUSE_1).ToString(),
-                    ((int)Map.MapObjectID.HOUSE_1).ToString(),
-                    ((int)Map.MapObjectID.HOUSE_1).ToString(),
+                    ((int)Map.MapObjectID.HOUSE_2).ToString(),
+                    ((int)Map.MapObjectID.HOUSE_3).ToString(),
+                    ((int)Map.MapObjectID.HOUSE_4).ToString(),
                     };
                     const string underBar = "_";
                     if (mapTile_House.Contains(go.transform.GetChild(j).name.Split(underBar)[0]))
