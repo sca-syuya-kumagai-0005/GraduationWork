@@ -67,11 +67,7 @@ public class ItemID_003 : Sinner
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
         timer = 0.0f;
 
-        if (progressGraph.SinnerList.Count != 0 && gameState.GameState != GameStateSystem.State.End)
-        {
-            announceManager.MakeAnnounce("本日のノルマは達成しましたが、全シナーへの配達が未完了です。");
-            announceManager.MakeAnnounce("全シナーへの配達を完了し本日の業務を終了して下さい。");
-        }
+        DeliveryProgressCheck();
     }
     public override void AbnormalPhenomenon()
     {
