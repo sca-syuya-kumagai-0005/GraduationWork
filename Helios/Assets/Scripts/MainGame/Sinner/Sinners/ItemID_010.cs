@@ -48,7 +48,7 @@ public class ItemID_010 : Sinner
         if (timeLine.AbnormalityList.Count > 1)
         {
             timeLine.RemoveAbnormalityList(sinnerName);
-            announceManager.MakeAnnounce(sinnerID + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+            announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
         }
     }
     public override void AbnormalPhenomenon()
