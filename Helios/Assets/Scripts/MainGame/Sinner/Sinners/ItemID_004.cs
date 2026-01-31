@@ -27,6 +27,7 @@ public class ItemID_004 : Sinner
         if (specifyingDeliveryRoutes.SinnerDebuff[0].ContainsKey("君と歩んだクラゲ"))
         {
             specifyingDeliveryRoutes.SinnerDebuff[0]["君と歩んだクラゲ"] = false;
+            announceManager.MakeAnnounce("君と歩んだクラゲの異常は解消されました。");
         }
     }
 }

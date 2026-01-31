@@ -63,7 +63,7 @@ public class ItemID_009 : Sinner
             {
                 Destroy(mapObject);
                 deliveryItems[7] = Mood.Trust;
-                announceManager.MakeAnnounce(sinnerID + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+                announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
             }
             progressGraph.AddProgress();
             Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);

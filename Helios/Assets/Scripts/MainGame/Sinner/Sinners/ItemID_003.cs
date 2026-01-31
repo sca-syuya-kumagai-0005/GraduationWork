@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 public class ItemID_003 : Sinner
 {
     private int genesisPhase;
@@ -81,7 +80,7 @@ public class ItemID_003 : Sinner
         }
         else
         {
-            text = sinnerID + "：異常発生。";
+            text = sinnerName + "：異常発生。";
             announceManager.MakeAnnounce(text);
         }
     }

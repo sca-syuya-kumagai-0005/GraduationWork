@@ -63,6 +63,6 @@ public class ItemID_005 : Sinner
             yield return null;
         }
         timeLine.RemoveAbnormalityList(sinnerName);
-        announceManager.MakeAnnounce(sinnerID + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+        announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
     }
 }
