@@ -29,6 +29,11 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     [SerializeField] private GameObject pen;
     [SerializeField] private Sprite[] driverStateSprite;
     [SerializeField] private SpriteRenderer[] driverStateRenderer;
+    [SerializeField] private GameObject[] waitText;
+    [SerializeField] private GameObject[] driveText;
+    [SerializeField] private GameObject[] confisonText;
+    [SerializeField] private GameObject[] breakText;
+
 
     [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
     Map map;
@@ -1516,18 +1521,34 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             if (breaking[i])
             {
                 driverStateRenderer[i].sprite = driverStateSprite[3];
+                waitText[i].SetActive(false);
+                driveText[i].SetActive(false);
+                confisonText[i].SetActive(false);
+                breakText[i].SetActive(true);
             }
             else if (isConfison[i])
             {
                 driverStateRenderer[i].sprite = driverStateSprite[2];
+                waitText[i].SetActive(false);
+                driveText[i].SetActive(false);
+                confisonText[i].SetActive(true);
+                breakText[i].SetActive(false);
             }
             else if (isDriving[i])
             {
                 driverStateRenderer[i].sprite = driverStateSprite[1];
+                waitText[i].SetActive(false);
+                driveText[i].SetActive(true);
+                confisonText[i].SetActive(false);
+                breakText[i].SetActive(false);
             }
             else
             {
                 driverStateRenderer[i].sprite = driverStateSprite[0];
+                waitText[i].SetActive(true);
+                driveText[i].SetActive(false);
+                confisonText[i].SetActive(false);
+                breakText[i].SetActive(false);
             }
         }
     }
