@@ -137,6 +137,7 @@ public class Sinner : MonoBehaviour
         }
         spriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.color = new Color(1.0f, 0.4f, 0.0f);
+        //spriteRenderer.color = new Color(255.0f, 255.0f, 255.0f);
         StartCoroutine(AddListMyname());
     }
     /// <summary>
@@ -187,11 +188,7 @@ public class Sinner : MonoBehaviour
             deliveryCount++;
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
-        if (progressGraph.SinnerList.Count != 0 && gameState.GameState != GameStateSystem.State.End)
-        {
-            announceManager.MakeAnnounce("本日のノルマは達成しましたが、全シナーへの配達が未完了です。");
-            announceManager.MakeAnnounce("全シナーへの配達を完了し本日の業務を終了して下さい。");
-        }
+
     }
     /// <summary>
     /// 異常発生時に呼ぶ仮想関数
@@ -365,5 +362,14 @@ public class Sinner : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         progressGraph.SinnerList.Add(sinnerName);
+    }
+
+    protected void DeliveryProgressCheck()
+    {
+        if (progressGraph.GetProgres>=1.0f && gameState.GameState != GameStateSystem.State.End)
+        {
+            announceManager.MakeAnnounce("本日のノルマは達成しましたが、全シナーへの配達が未完了です。");
+            announceManager.MakeAnnounce("全シナーへの配達を完了し本日の業務を終了して下さい。");
+        }
     }
 }

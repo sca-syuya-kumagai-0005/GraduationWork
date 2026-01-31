@@ -36,6 +36,8 @@ public class ItemID_009 : Sinner
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
+        progressGraph.SinnerList.Remove(sinnerName);
+        spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
         if (deliveryItems[7] != Mood.Exception)
         {
             if (timeLine.TimeStateAccess == TimeLine.TimeState.Night || deliveryProcessID == 0)
@@ -66,6 +68,8 @@ public class ItemID_009 : Sinner
             progressGraph.AddProgress();
             Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
         }
+
+        DeliveryProgressCheck();
     }
     public override void AbnormalPhenomenon()
     {        
