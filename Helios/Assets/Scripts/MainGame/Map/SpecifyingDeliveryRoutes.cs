@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+
 using static Map;
 using static KumagaiLibrary.String;
 
@@ -33,6 +35,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     [SerializeField] private GameObject[] driveText;
     [SerializeField] private GameObject[] confisonText;
     [SerializeField] private GameObject[] breakText;
+
 
 
     [SerializeField] GameObject mapObject;//マップを格納している親オブジェクト
@@ -89,6 +92,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     [SerializeField] GameObject[] driverSetButton;
     SpriteRenderer[] driverSetButtonRenderer = new SpriteRenderer[driverCount];
     [SerializeField] GameObject[] startButtons;
+    [SerializeField] private GameObject[] recoveryButtons;
 
     [SerializeField] GameObject[] lineObject;
 
@@ -171,12 +175,32 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
         pen.SetActive(!writing);
         DriverStateControler();
+
+        if (Input.GetMouseButtonDown(0)) // 左クリック
+        {
+            PointerEventData pointerData = new PointerEventData(EventSystem.current);
+            pointerData.position = Input.mousePosition;
+
+            var results = new System.Collections.Generic.List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+
+            //Debug.Log("Raycast hits:");
+            foreach (var hit in results)
+            {
+                if(hit.gameObject.name=="RecoveryButton")
+                {   
+                    Debug.Log("DDDDDDD");
+                    Recovery(int.Parse(hit.gameObject.transform.GetChild(0).gameObject.name));
+                }
+            }
+        }
         if (writing) writeButtonRenderer.sprite = writeSprite[0];
         else writeButtonRenderer.sprite = writeSprite[1];
         if (lastdriverType != driverType) writing = false;
         for (int i = 0; i < driverCount; i++)
         {
             //if (!driverSet) break;
+            recoveryButtons[i].SetActive(isDriving[i]);
             driverSetButtonBlackBoard[i].SetActive(!(tmpDeliveryItem != -1 && tmpDeliveryProcess != -1) && !startButtons[i].activeSelf);
 
             if (i == driverType) driverSetButtonRenderer[i].color = Color.green;
@@ -346,7 +370,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         tmpRoutes[driverID] = routes[driverID];
         for (int i = 1; i < routesPosition[driverID].Count; i++)
         {
-
             // Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
             //Vector3 lastDirction = dir;
             switch (deliveryProcess[driverID])
@@ -434,7 +457,11 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
                     obj.transform.position += vec / speed[driverID];
-                    dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                    if (isDriving[driverID])
+                    {
+                        dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
+                    }
+                   
                     yield return null;
                 }
                 obj.transform.position = routesPosition[driverID][i] + map.transform.localPosition;
@@ -1551,5 +1578,25 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 breakText[i].SetActive(false);
             }
         }
+    }
+
+    private void Recovery(int driverID)
+    {
+        Debug.Log("DDDDDDDDDDDDDDDDDDDDDDDDD");
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
+        foreach (GameObject o in objs)
+        {
+            Destroy(o);
+        }
+        routes[driverID] = new List<int[]>();
+        tmpRoutePosition[driverID] = new List<Vector3>();
+        tmpRoutes[driverID] = new List<int[]>();
+        routesPosition[driverID] = new List<Vector3>();
+        line[driverID].positionCount = 0;
+        routeObjectsID[driverID] = new List<int>();
+        isItemSetting[driverID] = false;
+        isProcessSetting[driverID] = false;
+        isDriving[driverID] = false;
+        driver[driverID].SetActive(false);
     }
 }
