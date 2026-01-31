@@ -136,8 +136,8 @@ public class Sinner : MonoBehaviour
             audioClips[i] = Resources.Load<AudioClip>("SinnersSE/" + audioFiles[i]);
         }
         spriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
-        //spriteRenderer.color = new Color(1.0f, 0.4f, 0.0f);        
-        spriteRenderer.color = new Color(255.0f, 255.0f, 255.0f);
+        spriteRenderer.color = new Color(1.0f, 0.4f, 0.0f);
+        //spriteRenderer.color = new Color(255.0f, 255.0f, 255.0f);
         StartCoroutine(AddListMyname());
     }
     /// <summary>

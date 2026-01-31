@@ -14,6 +14,7 @@ public class PointBlink : EasingMethods
 
 private IEnumerator Blink()
     {
+        int counter = 0;
         while (true)
         {
             bool isEnd = false;
@@ -24,16 +25,27 @@ private IEnumerator Blink()
             Color motionedColor = Color.clear;
             while (!isEnd)
             {
-                timer += Time.deltaTime;
-                transform.localScale = Vector3.one 
-                    * (defaultScale + (motionedScale - defaultScale) * EaseOutCirc(timer));
 
-                spriteRenderer.color = 
+                if (counter % 10 == 0)
+                {
+                    motionedScale = 15.0f;
+                    defaultColor = new Color(25.5f, 23.0f, 6.4f)/2;
+                }
+                else
+                {
+                    motionedScale = 1.5f;
+                    defaultColor = Color.red;
+                }
+                timer += Time.deltaTime;
+                transform.localScale = Vector3.one
+                    * (defaultScale + (motionedScale - defaultScale) * EaseOutCirc(timer));
+                spriteRenderer.color =
                     defaultColor + (motionedColor - defaultColor) * EaseInCubic(timer);
 
                 if (timer > 1.0f) isEnd = true;
                 yield return null;
             }
+            counter++;
         }
     }
 }
