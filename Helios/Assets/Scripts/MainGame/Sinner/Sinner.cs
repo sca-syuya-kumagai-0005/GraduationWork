@@ -78,7 +78,6 @@ public class Sinner : MonoBehaviour
         Enormous = 30,
         Death = 100
     }
-    private bool isDerivered = false;
     private const int moods = 8;//感情の数
     protected int ReceivedItemID;//受け取る荷物のアイテム番号
     protected float[] probabilitys = new float[moods];//それぞれの確率
@@ -98,7 +97,7 @@ public class Sinner : MonoBehaviour
     protected GameObject effect;
     protected ProgressGraph progressGraph;
 
-    private GameStateSystem gameState;
+    protected GameStateSystem gameState;
 
     protected SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     protected Map.MapObjectID mapObjectID;
@@ -116,7 +115,7 @@ public class Sinner : MonoBehaviour
         "Warning_Sound"
     };
 
-    SpriteRenderer spriteRenderer;
+    protected SpriteRenderer spriteRenderer;
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
@@ -130,7 +129,6 @@ public class Sinner : MonoBehaviour
         specifyingDeliveryRoutes = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
         transform.GetComponent<MapObjectRequest>().HaveSinner = true;
         effectObjectParent = GameObject.Find("SinnerALLEffect").gameObject;
-        transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0.925f, 0.52f, 0.0f);
         deliveryCount = 0;
         audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
         for (int i = 0; i < audioFiles.Length; i++)
@@ -139,8 +137,8 @@ public class Sinner : MonoBehaviour
         }
         spriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.color = new Color(1.0f, 0.4f, 0.0f);
+        StartCoroutine(AddListMyname());
     }
-
     /// <summary>
     /// 配達されうる荷物の初期化
     /// </summary>
@@ -166,6 +164,8 @@ public class Sinner : MonoBehaviour
     /// <param name="deliveryLineID">配達ラインの番号　0～3</param>
     virtual public void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
+        progressGraph.SinnerList.Remove(sinnerName);
+        spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
         ReceivedItemID = itemID;
         this.deliveryProcessID = deliveryProcessID;
         this.deliveryLineID = deliveryLineID;
@@ -187,6 +187,11 @@ public class Sinner : MonoBehaviour
             deliveryCount++;
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
+        if (progressGraph.SinnerList.Count != 0 && gameState.GameState != GameStateSystem.State.End)
+        {
+            announceManager.MakeAnnounce("本日のノルマは達成しましたが、全シナーへの配達が未完了です。");
+            announceManager.MakeAnnounce("全シナーへの配達を完了し本日の業務を終了して下さい。");
+        }
     }
     /// <summary>
     /// 異常発生時に呼ぶ仮想関数
@@ -356,11 +361,9 @@ public class Sinner : MonoBehaviour
         string str = sinnerID.Split(underbar)[1];
         _sinnerID = int.Parse(str);
     }
-
-    public void HouseColorChange()
+    protected IEnumerator AddListMyname()
     {
-        if (spriteRenderer.color == new Color(1.0f, 0.4f, 0.0f))
-            spriteRenderer.color = new Color(1.0f, 0.4f, 0.0f);
-        else spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
+        yield return new WaitForEndOfFrame();
+        progressGraph.SinnerList.Add(sinnerName);
     }
 }
