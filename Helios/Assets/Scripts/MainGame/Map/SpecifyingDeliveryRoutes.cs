@@ -14,7 +14,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
     const int driverCount = 4;//トラックの数
     bool[] breaking = new bool[driverCount];
-    public bool[] Breaking { get { return Breaking;} }
+    public bool[] Breaking { get { return Breaking; } }
     [SerializeField] private int[] confisonClickCount = new int[driverCount];
     public int[] ConfisonClickCount { get { return confisonClickCount; } set { confisonClickCount = value; } }
     int[] abnormalCount = new int[driverCount];
@@ -179,7 +179,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             canStart[i] = isDestinationSetting[i] && isItemSetting[i] && isItemSetting[i];
             if (routeObjectsID[i].Count > 0)
             {
-                if (routeObjectsID[i][routeObjectsID[i].Count - 1] == (int)MapObjectID.HOUSE_1)
+                if ((int)MapObjectID.HOUSE_1 <= routeObjectsID[i][routeObjectsID[i].Count - 1] && routeObjectsID[i][routeObjectsID[i].Count - 1] <= (int)MapObjectID.HOUSE_4)
                 {
                     startButtons[i].SetActive(true);
                 }
@@ -261,7 +261,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         int routeObjectsIDCount = routeObjectsID[driverType].Count;
         if (routeObjectsIDCount > 0)
         {
-            if (routeObjectsID[driverType][routeObjectsIDCount - 1] == (int)MapObjectID.HOUSE_1) return;
+            if ((int)MapObjectID.HOUSE_1 <= routeObjectsID[driverType][routeObjectsIDCount - 1] && routeObjectsID[driverType][routeObjectsIDCount - 1] <= (int)MapObjectID.HOUSE_4) return;
         }
         positionID[0] = heightPositionID;
         positionID[1] = widthPositionID;
@@ -283,7 +283,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             passedObjects[driverType].Add(obj);
             line[driverType].positionCount++;
             line[driverType].SetPosition(line[driverType].positionCount - 1, position);
-            if (objectID == 9)
+            if ((int)MapObjectID.HOUSE_1 <= objectID && objectID <= (int)MapObjectID.HOUSE_4)
             {
                 writing = false;
                 destination[driverType] = obj;
@@ -306,7 +306,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     public void StartDriver(int driverID)
     {
         if (routeObjectsID[driverID].Count == 0) return;
-        if (routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] == (int)MapObjectID.HOUSE_1)
+        if ((int)MapObjectID.HOUSE_1 <= routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] && routeObjectsID[driverID][routeObjectsID[driverID].Count - 1] <= (int)MapObjectID.HOUSE_4)
         {
             driver[driverID].SetActive(true);
             Debug.Log(ColorChanger("運転を開始します", "red"));
@@ -384,7 +384,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             }
             if (!isConfison[driverID])
             {
-                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
                 {
                     // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
                     string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
@@ -521,7 +521,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
                 Vector3 endPos = md.obj.transform.localPosition;
-                if (md.objectID != (int)MapObjectID.HOUSE_1)
+                if (md.objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < md.objectID)
                 {
 
                     string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
@@ -595,7 +595,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
                 Vector3 dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                 Vector3 lastDirction = dir;
-                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
+
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
                 {
                     // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
                     string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
@@ -616,6 +617,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     nowList = new List<MapData>();
                     //Debug.Log(ColorChanger(map.MapDatas))
                 }
+
                 while (lastDirction == dir)
                 {
                     if (dir.x == 1)
@@ -730,7 +732,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
                 Vector3 endPos = md.obj.transform.localPosition;
-                if (md.objectID != (int)MapObjectID.HOUSE_1)
+                if (md.objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < md.objectID)
                 {
                     string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
                     passArea[driverID].Add(int.Parse(str[0]));
@@ -862,7 +864,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             if (!isConfison[driverID])
             {
                 Debug.Log("i" + i);
-                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
                 {
                     // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
                     string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
@@ -969,7 +971,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
                 Vector3 endPos = md.obj.transform.localPosition;
-                if (md.objectID != (int)MapObjectID.HOUSE_1)
+                if (md.objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < md.objectID)
                 {
                     string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
                     passArea[driverID].Add(int.Parse(str[0]));
@@ -1079,7 +1081,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             if (!isConfison[driverID])
             {
 
-                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID != (int)MapObjectID.HOUSE_1)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
                 {
                     string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
                     passArea[driverID].Add(int.Parse(str[0]));
@@ -1186,7 +1188,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
                 Vector3 endPos = md.obj.transform.localPosition;
-                if (md.objectID != (int)MapObjectID.HOUSE_1)
+                if (md.objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < md.objectID)
                 {
                     string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
                     passArea[driverID].Add(int.Parse(str[0]));
@@ -1377,7 +1379,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         {
             if (routeObjectsID[driverType].Count > 0)
             {
-                if (routeObjectsID[driverType][routeObjectsID[driverType].Count - 1] != (int)MapObjectID.HOUSE_1)
+                if (routeObjectsID[driverType][routeObjectsID[driverType].Count - 1] < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < routeObjectsID[driverType][routeObjectsID[driverType].Count - 1])
                 {
                     Debug.Log("通過している");
                     routes[driverType] = new List<int[]>();

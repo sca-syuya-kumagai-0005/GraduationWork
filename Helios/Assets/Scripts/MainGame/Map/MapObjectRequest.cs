@@ -62,8 +62,26 @@ public class MapObjectRequest : MonoBehaviour
                    
                 }
                 break;
+            case MapObjectID.HOUSE_2:
+                {
+                    sDR.DestinationSetting(this.gameObject);
 
-                default:
+                }
+                break;
+            case MapObjectID.HOUSE_3:
+                {
+                    sDR.DestinationSetting(this.gameObject);
+
+                }
+                break;
+            case MapObjectID.HOUSE_4:
+                {
+                    sDR.DestinationSetting(this.gameObject);
+
+                }
+                break;
+
+            default:
                 {
 
                 }
@@ -116,7 +134,34 @@ public class MapObjectRequest : MonoBehaviour
                     
                 }
                 break;
-          
+            case MapObjectID.HOUSE_2:
+                {
+                    if (haveSinner)
+                    {
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
+                    }
+
+                }
+                break;
+            case MapObjectID.HOUSE_3:
+                {
+                    if (haveSinner)
+                    {
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
+                    }
+
+                }
+                break;
+            case MapObjectID.HOUSE_4:
+                {
+                    if (haveSinner)
+                    {
+                        sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
+                    }
+
+                }
+                break;
+
         }
     }
 }

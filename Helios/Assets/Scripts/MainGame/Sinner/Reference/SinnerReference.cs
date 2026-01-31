@@ -37,8 +37,8 @@ public class SinnerReference : SinnerReferenceBase
     public void PointerDown()
     {
         Debug.Log(info.name);
-       // if (sDR.SinnerDebuff[0].ContainsKey(SINNER_006)|| sDR.SinnerDebuff[1].ContainsKey(SINNER_006)|| sDR.SinnerDebuff[2].ContainsKey(SINNER_006)|| sDR.SinnerDebuff[3].ContainsKey(SINNER_006))
-        if(true)
+        // if (sDR.SinnerDebuff[0].ContainsKey(SINNER_006)|| sDR.SinnerDebuff[1].ContainsKey(SINNER_006)|| sDR.SinnerDebuff[2].ContainsKey(SINNER_006)|| sDR.SinnerDebuff[3].ContainsKey(SINNER_006))
+        if (sDR.SinnerDebuff[0].ContainsKey(SINNER_006) && sDR.SinnerDebuff[0][SINNER_006])
         {
             string name=RandomChange(info.name.Length);
             string type= RandomChange(info.type.Length);
