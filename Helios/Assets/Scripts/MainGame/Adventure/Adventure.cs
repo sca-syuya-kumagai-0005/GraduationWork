@@ -17,9 +17,9 @@ public class Adventure : EasingMethods
     private Image[] characters;
     private Vector3[] defaultPosition = new Vector3[3]
     {
-        new Vector3(0,-450,0),
-        new Vector3(-400,-450,0),
-        new Vector3(400,-450,0)
+        new Vector3(0,-700,0),
+        new Vector3(-400,-700,0),
+        new Vector3(400,-700,0)
     };
     private string[] characterNames;
     private bool[] characterIsSetting;
@@ -142,10 +142,10 @@ public class Adventure : EasingMethods
                 }
                 lines++;
             }
-            if (Input.GetMouseButtonDown(0))
-            {
-                isMassageSkipped = true;
-            }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            isMassageSkipped = true;
         }
     }
     /// <summary>
@@ -194,14 +194,14 @@ public class Adventure : EasingMethods
         {
             characterIsSetting[quotaNumber] = true;
             float addPos = 100.0f;
-            characters[quotaNumber].transform.localPosition = new Vector3(defaultPosition[quotaNumber].x + addPos, -550, 0);
+            characters[quotaNumber].transform.localPosition = defaultPosition[quotaNumber];
 
             characters[quotaNumber].color = Color.clear;
             while (!isEnd)
             {
                 timer += Time.deltaTime / timeLate;
                 float pos = (defaultPosition[quotaNumber].x + addPos) - addPos * EaseOutCubic(timer);
-                characters[quotaNumber].transform.localPosition = new Vector3(pos, -550, 0);
+                characters[quotaNumber].transform.localPosition = new Vector3(pos, defaultPosition[quotaNumber].y, 0);
                 characters[quotaNumber].color = Color.clear + Color.white * EaseOutCubic(timer);
                 if (timer >= 1.0f) isEnd = true;
                 yield return null;
@@ -224,7 +224,7 @@ public class Adventure : EasingMethods
         if (!quotaIsD)
         {
             float addPos = 100.0f;
-            characters[quotaNumber].transform.localPosition = new Vector3(defaultPosition[quotaNumber].x, -550, 0);
+            characters[quotaNumber].transform.localPosition = defaultPosition[quotaNumber];
             characters[quotaNumber].color = Color.white;
             while (!isEnd)
             {
@@ -274,7 +274,7 @@ public class Adventure : EasingMethods
             if (i == (int)quota)
             {
                 characters[i].color = Color.white;
-                pos = defaultPosition[i] + new Vector3(0, 50.0f);
+                pos = defaultPosition[i] + new Vector3(0, 30.0f);
                 characters[i].transform.localPosition = pos;
             }
             else
@@ -284,7 +284,7 @@ public class Adventure : EasingMethods
                     Color color = Color.white / 2;
                     color.a = 1.0f;
                     characters[i].color = color;
-                    pos = defaultPosition[i] - new Vector3(0, 100.0f);
+                    pos = defaultPosition[i];
                     characters[i].transform.localPosition = pos;
                 }
                 else
