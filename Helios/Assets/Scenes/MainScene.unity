@@ -9780,6 +9780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 578933303}
+  sinnerList: []
 --- !u!1 &770186650
 GameObject:
   m_ObjectHideFlags: 0
@@ -13124,6 +13125,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   confisonClickCount: 00000000000000000000000000000000
   pen: {fileID: 1719378801}
+  driverStateSprite:
+  - {fileID: 21300000, guid: aca71ea9269ccac4eb0fd1d55c782038, type: 3}
+  - {fileID: 21300000, guid: 47ba2513843bf524088e4e8a7fe360f0, type: 3}
+  - {fileID: 21300000, guid: beba6fdde677bd5489babd2538e16336, type: 3}
+  - {fileID: 21300000, guid: 398e07911551a39459a2e1f36e4846ac, type: 3}
+  driverStateRenderer:
+  - {fileID: 458384198}
+  - {fileID: 335400157}
+  - {fileID: 2058472287}
+  - {fileID: 1158237661}
   mapObject: {fileID: 478194907}
   isConfison: 00000000
   move: {fileID: 2582001399943237785, guid: 2f73aa1d9ec41ab499fa87909c308cf8, type: 3}
