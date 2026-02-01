@@ -38,6 +38,8 @@ public class TitleAnimationManager : MonoBehaviour
     [SerializeField] GameObject rainParticle;
     [SerializeField, Header("選択画面開始時演出")] GameObject titleSelectObj;
     [SerializeField] GameObject selectBackGround;
+    [SerializeField] RectTransform slingerRect;
+    [SerializeField] RectTransform arrowsRect;
     [SerializeField] ChangePixelColor roadPixelColor;
     [SerializeField] ChangePixelColor fadePixelColor;
     [SerializeField, Header("自室演出")] GameObject myRoomObj;
@@ -160,11 +162,19 @@ public class TitleAnimationManager : MonoBehaviour
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
         SetBackGround(selectBackGround);
         SetNowTitleMode(titleSelectObj);
+        slingerRect.anchoredPosition = new Vector2(-500f,-500f);
+        arrowsRect.anchoredPosition = new Vector2(-500f, -500f);
         yield return new WaitForSeconds(0.5f);
         const float fadeTime = 3.0f;
+        const float delay = 0.5f;
         roadPixelColor.OnAnim();
         fadePixelColor.OnAnim();
-        yield return StartCoroutine(FadeAnimation(0f, fadeTime + 0.5f));
+        yield return StartCoroutine(FadeAnimation(0f, fadeTime + delay));
+        var sequence = DOTween.Sequence();
+        sequence.PrependInterval(delay)
+                .Append(slingerRect.DOAnchorPos(Vector2.zero, 1.25f).SetEase(Ease.OutBack))
+                //.AppendInterval(delay)
+                .Append(arrowsRect.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.OutBack));
         Locator<TitleManager>.Instance.SelectStart();
     }
 

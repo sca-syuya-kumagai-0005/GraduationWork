@@ -45,14 +45,20 @@ public class TitleManager : MonoBehaviour
         if (axis != 0 || mouse != 0f)
         {
             float f = (mouse != 0f) ? mouse : -axis;
-            select = ((int)select + (int)f < 0) ? Select.END : (Select)(((int)select + (int)f) % (int)Select.MAX);
-            StartCoroutine(slingerMove.Move(f));
+            SlingerButton((int)f);
             Debug.Log(select);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SelectButton();
         }
+    }
+
+    public void SlingerButton(int _dir)
+    {
+        if (!isSelect || slingerMove.isMove) return;
+        select = ((int)select + _dir < 0) ? Select.END : (Select)(((int)select + (int)_dir) % (int)Select.MAX);
+        StartCoroutine(slingerMove.Move(_dir));
     }
 
     IEnumerator TitleStart()
