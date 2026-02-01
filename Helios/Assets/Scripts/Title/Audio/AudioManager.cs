@@ -88,6 +88,14 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
+    /// SEを止める関数
+    /// </summary>
+    public void StopSE()
+    {
+        SE.Stop();
+    }
+
+    /// <summary>
     /// BGMをフェードインさせる
     /// </summary>
     /// <param name="_time">フェードインにかかる秒数</param>

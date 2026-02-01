@@ -9,7 +9,7 @@ public class ChangePixelColor : MonoBehaviour
 {
     [SerializeField] RawImage targetRawImage;
     Texture2D texture;
-    List<PixelVector> values = new List<PixelVector>();
+    //List<PixelVector> values = new List<PixelVector>();
     public struct PixelVector
     {
         public int x, y;
@@ -114,7 +114,6 @@ public class ChangePixelColor : MonoBehaviour
     }
 
     //PixelVector[] pixelDirection;
-    int count = 1;
 
     /// <summary>
     /// ‰º‚©‚ç‘±‚«
@@ -126,10 +125,9 @@ public class ChangePixelColor : MonoBehaviour
 
     private void Start()
     {
-        Texture2D mainTex = targetRawImage.texture as Texture2D;
-
         if (targetRawImage.texture != null)
         {
+            Texture2D mainTex = targetRawImage.texture as Texture2D;
             texture = new Texture2D(mainTex.width, mainTex.height);
             texture.SetPixels(mainTex.GetPixels());
         }
@@ -137,7 +135,7 @@ public class ChangePixelColor : MonoBehaviour
         {
             RectTransform myRect = GetComponent<RectTransform>();
             texture = new Texture2D((int)myRect.sizeDelta.x, (int)myRect.sizeDelta.y);
-            var data = texture.GetRawTextureData<Color32>();
+            var data = texture.GetPixelData<Color32>(0);
             for (int i = 0; i < data.Length; i++)
             {
                 data[i] = Color.white;
@@ -165,15 +163,15 @@ public class ChangePixelColor : MonoBehaviour
     public void OnAnim()
     {
         Debug.Log("clear");
-        const int process = 2841;
+        int process = texture.width + texture.height;
+        multipleNum = 15;
         float diray = time / process * multipleNum;
         Debug.Log(diray);
         StartCoroutine(Amim(diray));
     }
 
-    //H”2841
     [SerializeField] float time;
-    [SerializeField] int multipleNum;
+    int multipleNum;
     IEnumerator Amim(float diray)
     {
         var pixelData = texture.GetPixelData<Color32>(0);
@@ -193,12 +191,7 @@ public class ChangePixelColor : MonoBehaviour
         if (nums.Count != 0)
         {
             yield return new WaitForSeconds(diray);
-            count++;
             StartCoroutine(Amim(diray));
-        }
-        else
-        {
-            Debug.Log(count);
         }
     }
 
