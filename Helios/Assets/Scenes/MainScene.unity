@@ -30839,7 +30839,7 @@ MonoBehaviour:
   times: []
   viewDuration: 5
   viewLimit: 4
-  audioClip: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: ab88f285e4116394eace3f398e22f02a, type: 3}
 --- !u!43 &1704742390
 Mesh:
   m_ObjectHideFlags: 0
