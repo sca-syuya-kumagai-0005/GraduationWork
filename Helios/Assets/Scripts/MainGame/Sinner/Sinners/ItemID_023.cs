@@ -16,7 +16,7 @@ public class ItemID_023 : Sinner
         sinnerID = "ItemID_023";
         sinnerName = "‚Ð‚Æ‚è‚Ú‚Á‚¿‚Ìƒuƒ‰ƒ“ƒR";
         LoadSprite("ID023");
-        effect = effectObjectParent.transform.GetChild(21).gameObject;
+        effect = effectObjectParent.transform.GetChild(22).gameObject;
 
         isAbnormality = false;
         isWalk = false;
