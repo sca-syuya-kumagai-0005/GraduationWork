@@ -78,7 +78,6 @@ public class ItemID_009 : Sinner
 
         mapObject = Instantiate(sinnerIconObject, Vector3.zero, Quaternion.identity, transform.parent.parent);
         CelestialSteed celestialSteed = mapObject.AddComponent<CelestialSteed>();
-        celestialSteed.SetEffectObject = effect;
         celestialSteed.SetSprite = sinnerSprite;
         mapObject.name = "‹€‚¿‚½“V”n";
 

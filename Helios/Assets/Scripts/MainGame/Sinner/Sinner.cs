@@ -90,8 +90,8 @@ public class Sinner : MonoBehaviour
     protected int deliveryCount;//配達された回数
     protected ResidenceCertificate residenceCertificate;
     protected Mood[] deliveryItems = new Mood[moods];//自身が配達されうる荷物
-    protected int deliveryProcessID;
-    protected int deliveryLineID;
+    protected int deliveryProcessID;//配達方法番号
+    protected int deliveryLineID;//配達ライン番号
 
     protected AnnounceManager announceManager;
     protected GameObject effect;
