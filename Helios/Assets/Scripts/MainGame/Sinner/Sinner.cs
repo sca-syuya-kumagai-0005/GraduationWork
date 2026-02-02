@@ -128,7 +128,7 @@ public class Sinner : MonoBehaviour
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
         specifyingDeliveryRoutes = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
         transform.GetComponent<MapObjectRequest>().HaveSinner = true;
-        effectObjectParent = GameObject.Find("SinnerALLEffect").gameObject;
+        effectObjectParent = GameObject.Find("SinnerALLEffect1-27").gameObject;
         deliveryCount = 0;
         audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
         for (int i = 0; i < audioFiles.Length; i++)
