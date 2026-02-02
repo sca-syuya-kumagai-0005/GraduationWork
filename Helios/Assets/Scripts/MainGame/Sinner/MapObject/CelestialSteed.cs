@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class CelestialSteed : MonoBehaviour
 {
-    private float timer;
-    private float timeLimit;
-    private GameObject effectObject;
-    public GameObject SetEffectObject { set { effectObject = value; } }
     private GameObject[] plot = new GameObject[9];
     private SpriteRenderer spriteRenderer;
     private Sprite iconSprite;
+    private SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
+    private GameObject[] drivers = new GameObject[4];
     public Sprite SetSprite { set { iconSprite = value; } }
+    private PointBlink point;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,28 +20,70 @@ public class CelestialSteed : MonoBehaviour
         for (int i = 0; i < plot.Length; i++)
         {
             plot[i] = GameObject.Find("Address_" + i);
+
         }
-        timeLimit = 10.0f;
-        timer = timeLimit;
+        GameObject go = GameObject.Find("Drivers").gameObject;
+        specifyingDeliveryRoutes = go.GetComponent<SpecifyingDeliveryRoutes>();
+        for (int i = 0; i < drivers.Length; i++)
+        {
+            drivers[i] = go.transform.GetChild(i).gameObject;
+        }
+        point = transform.GetChild(3).GetComponent<PointBlink>();
+        StartCoroutine(Blink());
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        timer += Time.deltaTime;
-        if(timer > timeLimit)
+        for (int i = 0; i < drivers.Length; i++)
         {
-            timer -= timeLimit;
-            StartCoroutine(Warp(0));
+            if (drivers[i].activeSelf)
+            {
+                Vector2 pos;
+                pos = drivers[i].transform.position;
+                float distX = pos.x - transform.position.x;
+                float distY = pos.y - transform.position.y;
+                float distance = Mathf.Sqrt(distX * distX + distY * distY);
+                Debug.Log(distance);
+            }
         }
     }
-     
-    private IEnumerator Warp(int plotNumber)
+
+    private IEnumerator Blink()
     {
-        float waitTime = 1.0f;
-        yield return new WaitForSeconds(waitTime);
+        int counter = 0;
+        while (true)
+        {
+            counter++;
+            bool IsShockWave = counter % 10 == 0;
+            StartCoroutine(point.Blink(IsShockWave));
+            if (IsShockWave) Warp(0);
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+
+    private void Warp(int plotNumber)
+    {
         gameObject.transform.parent = plot[plotNumber].transform;
         gameObject.transform.localPosition = new Vector3(31.0f, -53.0f, 0.0f);
-        Debug.Log("ÕŒ‚”gƒ@!");
+        ShockWave();
+    }
+
+    private void ShockWave()
+    {
+        for(int i = 0; i < drivers.Length; i++)
+        {
+            if (drivers[i].activeSelf)
+            {
+                Vector2 pos;
+                pos = drivers[i].transform.position;
+                float distX = pos.x - transform.position.x;
+                float distY= pos.y - transform.position.y;
+                float distance = Mathf.Sqrt(distX * distX + distY * distY);
+                if (distance <= 5.0f)
+                {
+                    specifyingDeliveryRoutes.Breaking[i] = true;
+                }
+            }
+        }
     }
 }
