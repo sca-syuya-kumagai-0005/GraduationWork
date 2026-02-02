@@ -21,7 +21,10 @@ public class ResidenceCertificate : MonoBehaviour
     private int[] deliveryItems;
     public int[] SetDeliveryItems { set { deliveryItems = value; } }
     [SerializeField]
-    private Sprite[] DeliveryItemSprites;
+    private Sprite[] deliveryItemSprites_Off;
+    public Sprite[] DeliveryItemSprites { get { return deliveryItemSprites_Off; } }
+    [SerializeField]
+    private Sprite[] deliveryItemSprites_On;
 
     private string secureClass;
     public string SetSecureClass {  set { secureClass = value; } }
@@ -71,7 +74,9 @@ public class ResidenceCertificate : MonoBehaviour
             sinnerNameText.text = sinnerName;
             for (int i = 0; i < deliveryItemButtons.Length; i++)
             {
-                deliveryItemButtons[i].GetComponent<Image>().sprite = DeliveryItemSprites[deliveryItems[i]];
+                DeliveryButton db = deliveryItemButtons[i].GetComponent<DeliveryButton>();
+                db.OffButtonSprite = deliveryItemSprites_Off[deliveryItems[i]];
+                db.OnButtonSprite = deliveryItemSprites_On[deliveryItems[i]];
                 deliveryItemButtons[i].GetComponent<DeliveryButton>().SetDeliveryProcess = deliveryProcessParent;
             }
         }

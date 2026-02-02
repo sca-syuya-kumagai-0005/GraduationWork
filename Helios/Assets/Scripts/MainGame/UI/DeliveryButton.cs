@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 //　9/27 熊谷追加
@@ -20,34 +23,47 @@ public class DeliveryButton : EventSetter
 
     private GameObject deliveryProcess;
     public GameObject SetDeliveryProcess { set { deliveryProcess = value; } }
-    private bool isPuhsed;
-    public bool IsPuhsed {  get { return isPuhsed; } }
+    private Sprite[] buttonSprites = new Sprite[2];
+    public Sprite OffButtonSprite { set { buttonSprites[0] = value; } }
+    public Sprite OnButtonSprite { set { buttonSprites[1] = value; } }
+    private Image myButton;
+    private bool onClicked;
     void Awake()
     {
-        specifyingDeliveryRoutes =
-            GameObject.Find(driverTag).GetComponent<SpecifyingDeliveryRoutes>();
+        specifyingDeliveryRoutes = GameObject.Find(driverTag).GetComponent<SpecifyingDeliveryRoutes>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
+        myButton = gameObject.GetComponent<Image>();
     }
     private void OnEnable()
     {
-        isPuhsed = false;
+        onClicked = false;
     }
-        
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         SetEventType(down, OnClick);
     }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            onClicked = false;
+        }
+        if (!buttonSprites.Contains(null))
+        myButton.sprite = buttonSprites[onClicked ? 1 : 0];
+    }
+
     private void OnClick()
     {
         switch (myButtonType)
         {
             case ButtonType.Item:
                 {
-                    isPuhsed = true;
                     gameState.GameState = GameStateSystem.State.DeliveryPreparation;
                     //選択された配達物をSet
                     specifyingDeliveryRoutes.DeliveryItemSetting(myButtonID);
+                    StartCoroutine(ChangeMySprite());
                     //配達方法UIをActiveにする
                     deliveryProcess.SetActive(true);
                 }
@@ -67,5 +83,11 @@ public class DeliveryButton : EventSetter
                 }
                 break;
         }
+    }
+
+    private IEnumerator ChangeMySprite()
+    {
+        yield return new WaitForEndOfFrame();
+        onClicked = true;
     }
 }

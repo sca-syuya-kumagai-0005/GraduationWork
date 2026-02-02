@@ -43,14 +43,13 @@ public class CelestialSteed : MonoBehaviour
                 float distX = pos.x - transform.position.x;
                 float distY = pos.y - transform.position.y;
                 float distance = Mathf.Sqrt(distX * distX + distY * distY);
-                Debug.Log(distance);
             }
         }
     }
 
     private IEnumerator Blink()
     {
-        int counter = 0;
+        int counter = 5;
         while (true)
         {
             counter++;
