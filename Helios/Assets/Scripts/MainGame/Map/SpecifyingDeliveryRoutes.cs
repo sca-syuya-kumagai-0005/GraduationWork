@@ -190,6 +190,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 if(hit.gameObject.name=="RecoveryButton")
                 {   
                     Debug.Log("DDDDDDD");
+                    for(int i=0;i<driverCount;i++)
+                    {
+                        recovering[i]=false;
+                    }
                     Recovery(int.Parse(hit.gameObject.transform.GetChild(0).gameObject.name));
                 }
             }
@@ -438,6 +442,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
+                    if (recovering[driverID])
+                    {
+                        yield break;
+                    }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -477,6 +485,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 string dirction = "";
                 while (!dirSetted)
                 {
+
                     string[] addDir = new string[3];
                     if (lastDir == "TOP")
                     {
@@ -579,7 +588,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
-
+                    if (recovering[driverID])
+                    {
+                        yield break;
+                    }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -652,6 +664,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
                 while (lastDirction == dir)
                 {
+                    if (recovering[driverID])
+                    {
+                        yield break;
+                    }
                     if (dir.x == 1)
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
@@ -789,7 +805,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
-
+                    if (recovering[driverID])
+                    {
+                        yield break;
+                    }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -922,6 +941,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
+                    if (recovering[driverID])
+                    {
+                        yield break;
+                    }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -1029,6 +1052,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 while (lastDirction == dir)
                 {
                     lastDirction = dir;
+                    if (recovering[driverID])
+                    {
+                        yield break;
+                    }
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
                     {
@@ -1139,6 +1166,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
+                    if (recovering[driverID])
+                    {
+                        yield break;
+                    }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -1245,6 +1276,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
+                    if (recovering[driverID])
+                    {
+                        yield break;
+                    }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -1580,14 +1615,17 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         }
     }
 
+    bool[] recovering = new bool[driverCount];
     private void Recovery(int driverID)
     {
-        Debug.Log("DDDDDDDDDDDDDDDDDDDDDDDDD");
+        
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Arrow");
         foreach (GameObject o in objs)
         {
             Destroy(o);
         }
+
+        recovering[driverID]=true;
         routes[driverID] = new List<int[]>();
         tmpRoutePosition[driverID] = new List<Vector3>();
         tmpRoutes[driverID] = new List<int[]>();
