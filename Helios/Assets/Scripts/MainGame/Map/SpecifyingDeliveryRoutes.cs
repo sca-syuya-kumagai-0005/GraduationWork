@@ -116,6 +116,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     List<Vector3>[] tmpRoutePosition = new List<Vector3>[driverCount];
     List<int[]>[] tmpRoutes = new List<int[]>[driverCount];
 
+    Vector3[] driverFirstPosition = new Vector3[driverCount];   
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -161,6 +163,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         for (int i = 0; i < driver.Length; i++)
         {
             line[i] = lineObject[i].GetComponent<LineRenderer>();
+            driverFirstPosition[i] = driver[i].transform.localPosition;
             driver[i].SetActive(false);
         }
 
@@ -176,6 +179,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         pen.SetActive(!writing);
         DriverStateControler();
 
+        for (int i = 0; i < driverCount; i++)
+        {
+            recovering[i] = false;
+        }
         if (Input.GetMouseButtonDown(0)) // 左クリック
         {
             PointerEventData pointerData = new PointerEventData(EventSystem.current);
@@ -185,15 +192,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             EventSystem.current.RaycastAll(pointerData, results);
 
             //Debug.Log("Raycast hits:");
+          
             foreach (var hit in results)
             {
                 if(hit.gameObject.name=="RecoveryButton")
                 {   
                     Debug.Log("DDDDDDD");
-                    for(int i=0;i<driverCount;i++)
-                    {
-                        recovering[i]=false;
-                    }
+                  
                     Recovery(int.Parse(hit.gameObject.transform.GetChild(0).gameObject.name));
                 }
             }
@@ -374,6 +379,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         tmpRoutes[driverID] = routes[driverID];
         for (int i = 1; i < routesPosition[driverID].Count; i++)
         {
+            
             // Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
             //Vector3 lastDirction = dir;
             switch (deliveryProcess[driverID])
@@ -1615,7 +1621,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         }
     }
 
-    bool[] recovering = new bool[driverCount];
+  [SerializeField]  bool[] recovering = new bool[driverCount];
     private void Recovery(int driverID)
     {
         
@@ -1624,7 +1630,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         {
             Destroy(o);
         }
-
+        driver[driverID].transform.localPosition = driverFirstPosition[driverID];
         recovering[driverID]=true;
         routes[driverID] = new List<int[]>();
         tmpRoutePosition[driverID] = new List<Vector3>();
