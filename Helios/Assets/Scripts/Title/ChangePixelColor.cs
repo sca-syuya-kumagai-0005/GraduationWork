@@ -166,7 +166,6 @@ public class ChangePixelColor : MonoBehaviour
         int process = texture.width + texture.height;
         multipleNum = 15;
         float diray = time / process * multipleNum;
-        Debug.Log(diray);
         StartCoroutine(Amim(diray));
     }
 
@@ -186,7 +185,7 @@ public class ChangePixelColor : MonoBehaviour
             nums.Clear();
             nums = nextNums;
         }
-
+        
         texture.Apply();
         if (nums.Count != 0)
         {
