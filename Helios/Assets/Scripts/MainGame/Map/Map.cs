@@ -11,6 +11,7 @@ public class Map : MonoBehaviour
     [SerializeField] TextAsset[] mapCsv;
     [SerializeField] GameObject objectSpace;
     [SerializeField] GameObject[] mapObjects;
+    [SerializeField] TutorialMG tutorialMG;
     private char underbar = '_';
     private const int ADDRES_MAX = 10;
     private const int OUTER = 2;
@@ -81,7 +82,12 @@ public class Map : MonoBehaviour
             GameObject address = new GameObject();
             address.transform.parent = transform;
             address.name = "Address" + underbar + plotNumber[i];
-            if(day<10)
+            if(tutorialMG.IsTutorial)
+            {
+                if (plotNumber[i] == 0) data = Read(mapCsv[plotNumber[i]]);//チュートリアル用のマップ生成
+                else data = Read(mapCsv[10]);
+            }
+            else if (day<10)
             {
                 if (plotNumber[i] == 0) data = Read(mapCsv[plotNumber[i]]);//後で変更　今は中心のマップ以外を0で埋められたCSVで代用
                 else data = Read(mapCsv[10]);

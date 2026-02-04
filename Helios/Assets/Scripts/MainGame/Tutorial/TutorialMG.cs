@@ -30,7 +30,7 @@ public class TutorialMG : MonoBehaviour
         External
     }
 
-    
+
 
     public TutorialState CurrentState => currentState;
 
@@ -90,8 +90,8 @@ public class TutorialMG : MonoBehaviour
 
     private Dictionary<(TutorialState, int), Action> stateMessageActions;
 
-    private bool isTutorial  = true;
-    public bool IsTuotorial
+    private bool isTutorial = true;
+    public bool IsTutorial
     {
         get { return isTutorial; } // getterの部分
         set { isTutorial = value; } // setterの部分}
@@ -409,16 +409,19 @@ public class TutorialMG : MonoBehaviour
             case TutorialState.Click:
                 // UIWindow と キャラクターを非表示
                 uiWindow?.SetActive(false); character?.SetActive(false);
-                unMask.enabled = true;screen.enabled = true;
+                unMask.enabled = true; screen.enabled = true;
                 pin.SetActive(true);
                 GameObject parent = GameObject.Find("9_26_52");
-                if (parent != null && pin != null) { pin.transform.SetParent(parent.transform, false); 
-                    Debug.Log("pin を 9_26_52 の子オブジェクトに設定しました"); } 
+                if (parent != null && pin != null)
+                {
+                    pin.transform.SetParent(parent.transform, false);
+                    Debug.Log("pin を 9_26_52 の子オブジェクトに設定しました");
+                }
                 else { Debug.LogWarning("9_26_52 または pin が見つかりません"); }
                 unmaskScale.StartByState(currentState);
                 break;
 
-            case TutorialState.DeliveryExplanation:                
+            case TutorialState.DeliveryExplanation:
                 ChangeState(TutorialState.DocumentCheck);
                 unmaskScale.StartByState(currentState);
                 break;
