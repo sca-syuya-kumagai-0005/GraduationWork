@@ -9,6 +9,8 @@ public class DestinationPin : EasingMethods
     private GameObject ring;
     [SerializeField]
     private SpriteRenderer color;
+    int deliveryLine;
+    public int DeliveryLine { set { deliveryLine = value; } }
 
     private void Start()
     {
