@@ -184,7 +184,7 @@ public class SinnerDistribute : MonoBehaviour
         {
             gamePhase = 1;
         }
-        else if (20 <= number && number < 30)
+        else if (20 <= number && number <= 29)
         {
             gamePhase = 2;
         }

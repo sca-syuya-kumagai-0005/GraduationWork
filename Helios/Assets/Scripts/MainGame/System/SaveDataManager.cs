@@ -24,6 +24,11 @@ public class SaveDataManager : MonoBehaviour
     public bool[] Memory { get { return sinnerMemory; } set { sinnerMemory = value; } }
     private void Start()
     {
+        if (!File.Exists(SavePath))
+        {
+            File.Create(SavePath);
+            Save();
+        }
         Load();
     }
     private static string SavePath => System.IO.Path.Combine(Application.persistentDataPath, "SaveData.txt");
@@ -35,10 +40,6 @@ public class SaveDataManager : MonoBehaviour
     public void Save()
     {
         Debug.Log("Saved");
-        if (File.Exists(SavePath))
-        {
-            using (File.Create(SavePath)) { }
-        }
         StreamWriter streamWriter = new StreamWriter(SavePath, false);
         data[(int)DataAddress.DAY] = days.ToString();
         data[(int)DataAddress.HOUSEDSINNER] = null;
