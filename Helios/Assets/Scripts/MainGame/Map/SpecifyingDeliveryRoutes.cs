@@ -197,8 +197,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             {
                 if(hit.gameObject.name=="RecoveryButton")
                 {   
-                    Debug.Log("DDDDDDD");
-                  
                     Recovery(int.Parse(hit.gameObject.transform.GetChild(0).gameObject.name));
                 }
             }
@@ -403,7 +401,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
             if (lastIsConfison && !isConfison[driverID] && !confisonClear)
             {
-                Debug.Log("DEBUG.LOG");
                 // ランダム挙動の最後の位置から最短ルートを取得
                 //Vector3 currentPos = obj.transform.position - map.transform.localPosition;
                 int startWidth = md.widthPositionID;
@@ -415,7 +412,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 tmpRoutes[driverID] = routes[driverID];
                 List<Vector3> shortestPositions = shortestPathSearch.ShortestPath(startWidth, startHeight, goalWidth, goalHeight, ref routes[driverID]);
                 routesPosition[driverID] = shortestPositions;
-                Debug.Log("routestPositionCount" + routesPosition[driverID].Count);
                 StartCoroutine(DriverMove(driverID, shortestPositions));
                 yield break;
 
@@ -701,7 +697,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
             else
             {
-                Debug.Log("呼ばれている");
                 bool dirSetted = false;
                 randomed = true;
                 MapData randomMd = new MapData();
@@ -865,7 +860,6 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
     private IEnumerator DriverMove(int driverID, List<Vector3> positionID)
     {
-        Debug.Log("引数2つ");
         GameObject obj = driver[driverID];
         bool lastIsConfison = false;
         List<MapData> lastList = new List<MapData>();
