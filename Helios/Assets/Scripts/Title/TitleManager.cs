@@ -20,6 +20,7 @@ public class TitleManager : MonoBehaviour
     [SerializeField] GameObject optionCanvasObj;
     bool isSelect;
     [SerializeField] AudioClip titleBGM;
+
     private void Awake()
     {
         Locator<TitleManager>.Bind(this);

@@ -12,16 +12,18 @@ public class MapMobilityManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
 
-      
 
+        Vector3 mouseDelta = Input.mousePositionDelta;
+        if(Input.GetMouseButton(1))
+        {
+            this.transform.position += mouseDelta*Time.deltaTime;
+        }
         this.transform.position +=DirctionSet()*Time.deltaTime/speed;
     }
 
@@ -64,5 +66,5 @@ public class MapMobilityManager : MonoBehaviour
         }
         return new Vector3 (horizontal, vertical, 0);
     }
-
+      
 }
