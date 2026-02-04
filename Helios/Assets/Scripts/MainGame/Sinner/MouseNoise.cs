@@ -4,8 +4,7 @@ using System.Runtime.InteropServices;
 using System.Collections;
 public class MouseNoise : MonoBehaviour
 {
-    [SerializeField]
-    float radius = 3f;
+    private float radius;
 
     Vector2 noise = Vector2.zero;
     Vector2 noisePosition = Vector2.zero;

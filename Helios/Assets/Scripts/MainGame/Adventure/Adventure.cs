@@ -66,7 +66,7 @@ public class Adventure : EasingMethods
     void Start()
     {
         SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        saveDataManager.Save();
+        //saveDataManager.Save();
         backGround = GameObject.Find("BackGround").gameObject.GetComponent<Image>();
         blackScreen = GameObject.Find("BlackScreen").gameObject.GetComponent<BlackScreen>();
         nameBox = GameObject.Find("NameBox").gameObject.GetComponent<Text>();

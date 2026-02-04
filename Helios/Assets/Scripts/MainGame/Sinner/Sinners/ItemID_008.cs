@@ -1,10 +1,23 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public class ItemID_008 : Sinner
 {
+
+    bool isAbnormality;
+    AudioManager audioManager;
     float increase;
-    float timer;
-    const float timeLimit = 10.0f;
+    float[] timer = new float[2]
+    {
+        0.0f,
+        0.0f
+    };
+    float[] timeLimit = new float[2]
+    {
+        30.0f,
+        10.0f
+    };
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,22 +28,41 @@ public class ItemID_008 : Sinner
         sinnerName = "ó÷è•ÇÃéP";
         LoadSprite("ID008");
         effect = effectObjectParent.transform.GetChild(7).gameObject;
-        KumagaiLibrary.Dictionary.Support.AddArray(specifyingDeliveryRoutes.SinnerDebuff, sinnerName, false);
+        for(int i = 0; i < specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
+        {
+            specifyingDeliveryRoutes.SinnerDebuff[i].Add(sinnerName, false);
+        }
+        audioManager = GameObject.Find("Audio").gameObject.GetComponent<AudioManager>();
+        isAbnormality = false;
     }
     // Update is called once per frame
     void Update()
     {
-        if (timer >= timeLimit)
+        if(isAbnormality)
         {
-            timer = 0.0f;
-            List<int> normlLines = new List<int>();
-            for (int i = 0; i > specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
+            timer[1] += Time.deltaTime;
+        }
+        bool addConfition = true;
+        if (audioManager.GetVolume(Audio.MASTER) < 0.05f)
+            addConfition = false;
+
+        if (audioManager.GetVolume(Audio.BGM) < 0.05f && audioManager.GetVolume(Audio.SE) < 0.05f)
+            addConfition = false;
+
+        if (addConfition)
+        {
+            if (timer[1] >= timeLimit[1])
             {
-                if (!specifyingDeliveryRoutes.SinnerDebuff[i][sinnerName])
-                    normlLines.Add(i);
+                timer[1] -= timeLimit[1];
+                List<int> normalLines = new List<int>();
+                for (int i = 0; i < specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
+                {
+                    if (!specifyingDeliveryRoutes.SinnerDebuff[i][sinnerName])
+                        normalLines.Add(i);
+                }
+                int rand = Random.Range(0, normalLines.Count);
+                AbnormalPhenomenon(normalLines[rand]);
             }
-            int rand = Random.Range(0, normlLines.Count);
-            AbnormalPhenomenon(normlLines[rand]);
         }
     }
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
@@ -41,6 +73,10 @@ public class ItemID_008 : Sinner
             IncreaseProbabilitys(increase);
         }
         base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
+        if (!isAbnormality)
+        {
+            StartCoroutine(CountDown(deliveryLineID));
+        }
     }
     public override void AbnormalPhenomenon()
     {
@@ -48,8 +84,7 @@ public class ItemID_008 : Sinner
         base.AbnormalPhenomenon();
 
         //ÇªÇÍÇºÇÍÇÃèàóùÇÕÇ±Ç±Ç…èëÇ≠
-        specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID][sinnerName] = true;
-        specifyingDeliveryRoutes.ConfisonClickCount[deliveryLineID] = 50;
+        isAbnormality = true;
     }
     private void AbnormalPhenomenon(int lineID)
     {
@@ -57,5 +92,21 @@ public class ItemID_008 : Sinner
         specifyingDeliveryRoutes.SinnerDebuff[lineID][sinnerName] = true;
         specifyingDeliveryRoutes.ConfisonClickCount[lineID] = 50;
         specifyingDeliveryRoutes.TotalAbnormal++;
+    }
+
+    private IEnumerator CountDown(int lineNumber)
+    {
+        bool isEnd = false;
+        while (!isEnd)
+        {
+            timer[0] += Time.deltaTime;
+            if (!specifyingDeliveryRoutes.IsDriving[lineNumber]|| timeLimit[0] < timer[0])
+            {
+                isEnd = true;
+            }
+            yield return null;
+        }
+        if(timeLimit[0] < timer[0])AbnormalPhenomenon();
+        timer[0] = 0.0f;
     }
 }
