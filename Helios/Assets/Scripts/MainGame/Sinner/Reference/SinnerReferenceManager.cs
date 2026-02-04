@@ -269,7 +269,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
 
     public void SinnerReferencePointerDown()
     {
-        if (tutorialMG.IsTuotorial && tutorialMG.CurrentState == TutorialMG.TutorialState.DocumentCheck)
+        if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.DocumentCheck)
         {
             tutorialMG.ChangeState(TutorialMG.TutorialState.OpenDocument);
         }
@@ -279,7 +279,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
 
     public void BackButtonPointerDown()
     {
-        if (tutorialMG.IsTuotorial && tutorialMG.CurrentState == TutorialMG.TutorialState.OpenDocument)
+        if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.OpenDocument)
         {
             tutorialMG.ChangeState(TutorialMG.TutorialState.OneMoreHouseClick);
         }

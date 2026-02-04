@@ -17,7 +17,7 @@ public class MapObjectRequest : MonoBehaviour
     public bool HaveSinner { set{haveSinner=value; } }
 
     MapObjectID id;
-
+    private TutorialMG tutorialMG;
     private GameObject residenceCertificate;//”z’B•\
     private void Awake()
     {
@@ -29,6 +29,7 @@ public class MapObjectRequest : MonoBehaviour
         id = (MapObjectID)int.Parse(objectInfo[0]);
         widthPositionID = int.Parse(objectInfo[1]);
         heightPositionID = int.Parse(objectInfo[2]);
+        tutorialMG = GameObject.Find("TutorialMG").GetComponent<TutorialMG>();
         sDR = GameObject.Find("Drivers").GetComponent<SpecifyingDeliveryRoutes>();
         sinnerReference = GameObject.Find("ReferenceData").gameObject.transform.GetChild(0).gameObject;
         col=this.gameObject.GetComponent<Collider>();
@@ -58,8 +59,16 @@ public class MapObjectRequest : MonoBehaviour
                 break;
             case MapObjectID.HOUSE_1:
                 {
-                        sDR.DestinationSetting(this.gameObject);
-                   
+                    if (tutorialMG.IsTutorial && haveSinner && tutorialMG.CurrentState == TutorialMG.TutorialState.Click)
+                    {
+                        tutorialMG.ChangeState(TutorialMG.TutorialState.DeliveryExplanation);
+                    }
+                    else if (tutorialMG.IsTutorial && haveSinner && tutorialMG.CurrentState == TutorialMG.TutorialState.OneMoreHouseClick)
+                    {
+                        tutorialMG.ChangeState(TutorialMG.TutorialState.TypeSelection);
+                    }
+                    sDR.DestinationSetting(this.gameObject);
+
                 }
                 break;
             case MapObjectID.HOUSE_2:
@@ -127,6 +136,10 @@ public class MapObjectRequest : MonoBehaviour
                 break;
             case MapObjectID.HOUSE_1:
                 {
+                    if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.DrawLine)
+                    {
+                        tutorialMG.ChangeState(TutorialMG.TutorialState.EndDrawLine);
+                    }
                     if (haveSinner)
                     {
                         sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);
@@ -154,6 +167,7 @@ public class MapObjectRequest : MonoBehaviour
                 break;
             case MapObjectID.HOUSE_4:
                 {
+                    
                     if (haveSinner)
                     {
                         sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);

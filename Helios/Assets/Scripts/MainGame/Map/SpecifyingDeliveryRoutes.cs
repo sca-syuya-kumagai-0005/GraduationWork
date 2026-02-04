@@ -116,12 +116,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     List<Vector3>[] tmpRoutePosition = new List<Vector3>[driverCount];
     List<int[]>[] tmpRoutes = new List<int[]>[driverCount];
 
-    Vector3[] driverFirstPosition = new Vector3[driverCount];   
+    Vector3[] driverFirstPosition = new Vector3[driverCount];
+    private TutorialMG tutorialMG;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        tutorialMG = GameObject.Find("TutorialMG").gameObject.GetComponent<TutorialMG>();
         table = GameObject.Find("RandomTable").gameObject.GetComponent<RandomTable>();
         originalScale = writeButtonBackGround.transform.localScale;
         StartCoroutine(WriteButtonMover());
@@ -209,7 +210,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         for (int i = 0; i < driverCount; i++)
         {
             //if (!driverSet) break;
-            recoveryButtons[i].SetActive(isDriving[i]);
+            if (!tutorialMG.IsTutorial) recoveryButtons[i].SetActive(isDriving[i]);
+            else recoveryButtons[i].SetActive(false);
             driverSetButtonBlackBoard[i].SetActive(!(tmpDeliveryItem != -1 && tmpDeliveryProcess != -1) && !startButtons[i].activeSelf);
 
             if (i == driverType) driverSetButtonRenderer[i].color = Color.green;
@@ -387,6 +389,8 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 case 0:
                     {
                         speed[driverID] = 1f;
+
+                        //ここいじる
                     }
                     break;
                 case 1:
@@ -858,6 +862,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         isProcessSetting[driverID] = false;
         isDriving[driverID] = false;
         driver[driverID].SetActive(false);
+        if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.EndDrawLine)
+        {
+            tutorialMG.ChangeState(TutorialMG.TutorialState.EndDelivery);
+        }
         yield return null;
 
     }
@@ -1426,6 +1434,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     }
     public void WritingSwitch()
     {
+        if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.PushButton)
+        {
+            tutorialMG.ChangeState(TutorialMG.TutorialState.DrawLine);
+        }
         if (driverType == -1) return;
         writing = !writing;
 
@@ -1513,6 +1525,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         //    {
         //        StartCoroutine(WriteButtonMover());
         //        yield break;
+        
         //    }
         while (true)
         {

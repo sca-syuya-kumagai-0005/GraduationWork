@@ -10,6 +10,7 @@ public class ProgressGraph : MonoBehaviour
     private int progress;
     public float GetProgres { get { return (float)progress / norm; } }
     private int norm;//ノルマ、そのうち増え方変える
+    private int tutorialNorm = 1;
     private TimeLine timeLine;
     private GameStateSystem gameState;
     private BlackScreen blackScreen;
@@ -17,6 +18,7 @@ public class ProgressGraph : MonoBehaviour
     [SerializeField]
     private List<string> sinnerList;
     public List<string> SinnerList { get { return sinnerList; } set { sinnerList = value; } }
+    private TutorialMG tutorialMG;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,6 +26,7 @@ public class ProgressGraph : MonoBehaviour
         progress = 0;
         image.fillAmount = 0;
         saveData = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
+        tutorialMG = GameObject.Find("TutorialMG").GetComponent<TutorialMG>();
         norm = (int)Math.Ceiling(saveData.Days * 1.3);
         timeLine = GameObject.Find("ClockObject").GetComponent<TimeLine>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
@@ -33,7 +36,11 @@ public class ProgressGraph : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (progress >= norm && sinnerList.Count == 0)
+        if (progress >= tutorialNorm && sinnerList.Count == 0 && tutorialMG.IsTutorial)
+        {
+            Debug.Log("チュートリアル終わり");
+        }
+        else if (progress >= norm && sinnerList.Count == 0)
         {
             if (gameState.GameState != GameStateSystem.State.End)
             {
@@ -46,8 +53,18 @@ public class ProgressGraph : MonoBehaviour
     }
     public void AddProgress()
     {
-        progress++;
-        float late = (float)(progress * 10 / norm) / 10;
-        image.fillAmount = late;
+        if(tutorialMG.IsTutorial)
+        {
+            progress++;
+            float late = (float)(progress * 10 / tutorialNorm) / 10;
+            image.fillAmount = late;
+        }
+        else
+        {
+            progress++;
+            float late = (float)(progress * 10 / norm) / 10;
+            image.fillAmount = late;
+        }
+       
     }
 }

@@ -58,25 +58,46 @@ public class SinnerDistribute : MonoBehaviour
     private bool[] housed = new bool[maxSinners];
     private int standbySinners;
     private SaveDataManager saveDataManager;
+    private TutorialMG tutorialMG;
 
     //各区画に住むシナーを入れるリスト
     private List<int>[] plotContainedSinner = new List<int>[10];
     public List<int>[] GetPlotContainedSinnerID { get { return plotContainedSinner; } }
     const string mapName = "Address_";
+
+    [Header("Tutorial Fixed House Settings")]
+    [SerializeField] private string tutorialHouseA = "9_26_52";
+
+    [SerializeField] private int tutorialSinnerA = 4;
+
     private void Start()
     {
-        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
-        housed = saveDataManager.HousedSinner;
-        standbySinners = saveDataManager.Days + 1;
-        int gamePhase = GetGamePhase(saveDataManager.Days);
+        tutorialMG = GameObject.Find("TutorialMG").GetComponent<TutorialMG>();
+        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();　
+       
+       
+       
         for (int i = 0; i < plotContainedSinner.Length; i++)
         {
             plotContainedSinner[i] = new List<int>();
             sinnerHousedObjects[i] = new List<GameObject>();
         }
+        if (tutorialMG.IsTutorial)//名前間違てるねごめん
+        {
+            // セーブ使いたくないんで
+            housed = new bool[maxSinners];
+            DistributeTutorial();
+        }
+        else
+        {
+            housed = saveDataManager.HousedSinner;
+            standbySinners = saveDataManager.Days + 1;
+            int gamePhase = GetGamePhase(saveDataManager.Days);
+            Distribute(gamePhase);
+            saveDataManager.HousedSinner = housed;
+        }
 
-        Distribute(gamePhase);
-        saveDataManager.HousedSinner = housed;
+       
     }
 
     private void Distribute(int gamePhase)
@@ -192,4 +213,50 @@ public class SinnerDistribute : MonoBehaviour
 
         return gamePhase;
     }
+
+    private void DistributeTutorial()
+    {
+        Debug.Log("チュートリアル用のシナーを固定配置します");
+
+        PlaceTutorialSinnerToHouseName(tutorialSinnerA, tutorialHouseA);
+    }
+
+
+    private void PlaceTutorialSinnerToHouseName(int sinnerID, string houseName)
+    {
+        GameObject house = GameObject.Find(houseName);
+
+        if (house == null)
+        {
+            Debug.LogError($"[Tutorial] House '{houseName}' が見つかりません");
+            return;
+        }
+
+        // すでにシナーがいるかチェック
+        foreach (var comp in sinnerComponents)
+        {
+            if (house.GetComponent(comp.GetType()) != null)
+            {
+                Debug.LogWarning($"[Tutorial] {houseName} にはすでにシナーがいます");
+                return;
+            }
+        }
+
+        // シナー配置
+        house.AddComponent(
+            sinnerComponents[sinnerID - 1].GetType()
+        );
+
+        housed[sinnerID - 1] = true;
+
+        // Plot番号取得（親が Address_x）
+        string plotName = house.transform.parent.name;
+        int plotNumber = int.Parse(plotName.Replace(mapName, ""));
+
+        plotContainedSinner[plotNumber].Add(sinnerID);
+        sinnerHousedObjects[plotNumber].Add(house);
+
+        Debug.Log($"[Tutorial] {houseName} に Sinner {sinnerID} を固定配置");
+    }
+
 }

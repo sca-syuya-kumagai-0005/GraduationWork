@@ -7,6 +7,7 @@ public class DliverRequest : MonoBehaviour
     [SerializeField]int driverID;
     [SerializeField]GameObject Drivers;
     SpecifyingDeliveryRoutes sDR;
+    TutorialMG tutorialMG;
     private const string SINNER_007 = "ñ`åØÊùÇÕçÇÇÁÇ©Ç…";
     private const string SINNER_008 = "ó÷è•ÇÃéP";
    
@@ -14,6 +15,7 @@ public class DliverRequest : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        tutorialMG = GameObject.Find("TutorialMG").GetComponent<TutorialMG>();
         sDR=Drivers.GetComponent<SpecifyingDeliveryRoutes>();
         SetEventType(down,PointerDown,this.gameObject);
     }
@@ -28,6 +30,10 @@ public class DliverRequest : MonoBehaviour
     }
     public void PointerDown()
     {
+        if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.TypeSelection)
+        {
+            tutorialMG.ChangeState(TutorialMG.TutorialState.PushButton);
+        }
         sDR.DriverSetting(driverID);
     }
 
