@@ -32,6 +32,7 @@ public class SinnerReferenceManager : SinnerReferenceBase
     [SerializeField] private Text apperanceText;
     [SerializeField] private Text exeplanationText;
     [SerializeField] float selectSinnerNameTextWidth;
+    [SerializeField] private TutorialMG tutorialMG;
     int count;
 
     [SerializeField] 
@@ -268,12 +269,20 @@ public class SinnerReferenceManager : SinnerReferenceBase
 
     public void SinnerReferencePointerDown()
     {
+        if (tutorialMG.IsTuotorial && tutorialMG.CurrentState == TutorialMG.TutorialState.DocumentCheck)
+        {
+            tutorialMG.ChangeState(TutorialMG.TutorialState.OpenDocument);
+        }
         sinnerReference.SetActive(true);
         brokker.SetActive(true);
     }
 
     public void BackButtonPointerDown()
     {
+        if (tutorialMG.IsTuotorial && tutorialMG.CurrentState == TutorialMG.TutorialState.OpenDocument)
+        {
+            tutorialMG.ChangeState(TutorialMG.TutorialState.OneMoreHouseClick);
+        }
         sinnerReference.SetActive(false);
         brokker.SetActive(false);
     }
@@ -300,8 +309,11 @@ public class SinnerReferenceManager : SinnerReferenceBase
         {
             referenceMaterials[i].text = referenceMaterial[i];
         }
-            
-        
+
+        if (name == "水面と明鏡")
+        {
+            tutorialMG.ContinueFromOutside();
+        }
         Debug.Log("シナーの資料を選択されたシナーに更新しました");
     }
 
