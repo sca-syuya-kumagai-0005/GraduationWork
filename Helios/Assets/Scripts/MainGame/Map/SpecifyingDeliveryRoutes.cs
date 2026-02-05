@@ -323,6 +323,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             line[driverType].SetPosition(line[driverType].positionCount - 1, position);
             if ((int)MapObjectID.HOUSE_1 <= objectID && objectID <= (int)MapObjectID.HOUSE_4)
             {
+                if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.DrawLine)
+                {
+                    tutorialMG.ChangeState(TutorialMG.TutorialState.EndDrawLine);
+                }
                 writing = false;
                 destination[driverType] = obj;
                 driverType = -1;
@@ -386,19 +390,19 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             {
                 case 0:
                     {
-                        speed[driverID] = 1f;
+                        speed[driverID] = 0.35f;
 
                         //ここいじる
                     }
                     break;
                 case 1:
                     {
-                        speed[driverID] = 2f;
+                        speed[driverID] = 0.5f;
                     }
                     break;
                 case 2:
                     {
-                        speed[driverID] = 4f;
+                        speed[driverID] = 1f;
                     }
                     break;
             }
@@ -885,7 +889,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             {
                 case 0:
                     {
-                        speed[driverID] = 0.25f;
+                        speed[driverID] = 0.35f;
                     }
                     break;
                 case 1:
@@ -1114,7 +1118,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             {
                 case 0:
                     {
-                        speed[driverID] = 0.25f;
+                        speed[driverID] = 0.35f;
                     }
                     break;
                 case 1:

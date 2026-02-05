@@ -58,6 +58,7 @@ public class TutorialMG : MonoBehaviour
 
 
     [SerializeField] private UnmaskScale unmaskScale;
+    [SerializeField] private Image tutorialcurrent;
 
     [SerializeField] private string[] targetMessages;
 
@@ -90,7 +91,7 @@ public class TutorialMG : MonoBehaviour
 
     private Dictionary<(TutorialState, int), Action> stateMessageActions;
 
-    private bool isTutorial = true;
+    [SerializeField]private bool isTutorial = true;
     public bool IsTutorial
     {
         get { return isTutorial; } // getterÇÃïîï™
@@ -241,6 +242,15 @@ public class TutorialMG : MonoBehaviour
 
     void Start()
     {
+        if(currentState == TutorialState.Click)
+        {
+            tutorialcurrent.enabled = true;
+
+        }
+        else
+        {
+            tutorialcurrent.enabled = false;
+        }
         unMask.enabled = false;
         screen.enabled = false;
     }
@@ -273,8 +283,7 @@ public class TutorialMG : MonoBehaviour
         Debug.Log($"TutorialStateïœçX: {prevState} Å® {currentState}");
 
         unMask.enabled = false;
-        screen.enabled = false;
-
+        screen.enabled = false; 
         OnStateChanged(prevState, currentState);
     }
 
@@ -484,7 +493,7 @@ public class TutorialMG : MonoBehaviour
             default:
                 unMask.enabled = false;
                 screen.enabled = false;
-                gameObject.SetActive(false);
+                tutorialcurrent.enabled = false;
                 break;
         }
     }

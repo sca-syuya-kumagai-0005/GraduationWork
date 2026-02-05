@@ -136,10 +136,7 @@ public class MapObjectRequest : MonoBehaviour
                 break;
             case MapObjectID.HOUSE_1:
                 {
-                    if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.DrawLine)
-                    {
-                        tutorialMG.ChangeState(TutorialMG.TutorialState.EndDrawLine);
-                    }
+                    
                     if (haveSinner)
                     {
                         sDR.MemoryRoute(widthPositionID, heightPositionID, (int)id, this.gameObject, this.gameObject.transform.localPosition);

@@ -10,7 +10,7 @@ public class MapMobilityManager : MonoBehaviour
     [SerializeField, Range(-1, 1)] int horizontal;
     [SerializeField, Range(-1, 1)] int vertical;
 
-    string northKey = "W";
+    [SerializeField]private string northKey = "W";
     public string NorthKey {  get { return northKey; } }    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,7 +25,7 @@ public class MapMobilityManager : MonoBehaviour
         Vector3 mouseDelta = Input.mousePositionDelta;
         if (Input.GetMouseButton(1))
         {
-            this.transform.position += mouseDelta * Time.deltaTime;
+            this.transform.position += mouseDelta * Time.deltaTime*2;
         }
         this.transform.position += DirctionSet() * Time.deltaTime / speed;
     }
