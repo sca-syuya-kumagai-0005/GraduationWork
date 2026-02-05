@@ -242,7 +242,15 @@ public class TutorialMG : MonoBehaviour
 
     void Start()
     {
-        tutorialcurrent.enabled = false;
+        if(currentState == TutorialState.Click)
+        {
+            tutorialcurrent.enabled = true;
+
+        }
+        else
+        {
+            tutorialcurrent.enabled = false;
+        }
         unMask.enabled = false;
         screen.enabled = false;
     }
@@ -275,8 +283,7 @@ public class TutorialMG : MonoBehaviour
         Debug.Log($"TutorialStateïœçX: {prevState} Å® {currentState}");
 
         unMask.enabled = false;
-        screen.enabled = false;
-
+        screen.enabled = false; 
         OnStateChanged(prevState, currentState);
     }
 
