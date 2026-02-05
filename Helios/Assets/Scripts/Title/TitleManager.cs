@@ -20,6 +20,8 @@ public class TitleManager : MonoBehaviour
     [SerializeField] GameObject optionCanvasObj;
     bool isSelect;
     [SerializeField] AudioClip titleBGM;
+    [SerializeField] AudioClip selectSE;
+    [SerializeField] AudioClip slingerSE;
 
     private void Awake()
     {
@@ -58,6 +60,7 @@ public class TitleManager : MonoBehaviour
     public void SlingerButton(int _dir)
     {
         if (!isSelect || slingerMove.isMove) return;
+        Locator<AudioManager>.Instance.PlaySE(slingerSE);
         select = ((int)select + _dir < 0) ? Select.END : (Select)(((int)select + (int)_dir) % (int)Select.MAX);
         StartCoroutine(slingerMove.Move(_dir));
     }
@@ -66,7 +69,7 @@ public class TitleManager : MonoBehaviour
     {
         yield return StartCoroutine(animationManager.CautionaryAnim(CautionaryNum.WARNING));
         yield return StartCoroutine(animationManager.CautionaryAnim(CautionaryNum.SOUND));
-        yield return StartCoroutine(animationManager.TitleStartAnim());
+        yield return StartCoroutine(animationManager.TitleStartAnim(selectSE));
         StartCoroutine(animationManager.TitleSelectDisplayAnim());
     }
     public void SelectStart()
@@ -78,33 +81,43 @@ public class TitleManager : MonoBehaviour
     [Button]
     public void OptionOpen()
     {
+        Locator<AudioManager>.Instance.PlaySE(selectSE);
         Instantiate(optionCanvasObj);
     }
 
     public void CloseMyRoom()
     {
+        Locator<AudioManager>.Instance.PlaySE(selectSE);
         StartCoroutine(animationManager.BackTitleSelect());
     }
 
     public void OpenMemorySlinger()
     {
+        Locator<AudioManager>.Instance.PlaySE(selectSE);
         StartCoroutine(animationManager.MemorySlingerAnim());
     }
 
     public void CloseMemorySlinger()
     {
+        Locator<AudioManager>.Instance.PlaySE(selectSE);
         StartCoroutine(animationManager.MyRoomAnim());
     }
 
     IEnumerator GoMain(bool _isPlay)
     {
         yield return StartCoroutine(animationManager.FadeAnimation(1f,0.5f));
+        if(_isPlay)
+        {
+            SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
+            saveDataManager.Load();
+        }
         SceneManager.LoadScene("Adventure");
     }
 
     public void SelectButton()
     {
         isSelect = false;
+        Locator<AudioManager>.Instance.PlaySE(selectSE);
         switch (select)
         {
             case Select.BEGINNING:

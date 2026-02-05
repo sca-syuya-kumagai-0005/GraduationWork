@@ -1,5 +1,3 @@
-using DG.Tweening;
-using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
 
@@ -8,7 +6,7 @@ public class SlingerMove : EasingMethods
     float z;
     [SerializeField] float moveAngle;
     [SerializeField] float moveTime;
-    public bool isMove {  get; private set; }
+    public bool isMove { get; private set; }
     RectTransform myRect;
 
     void Awake()
@@ -26,7 +24,6 @@ public class SlingerMove : EasingMethods
 
     public IEnumerator Move(float _dir)
     {
-        var sequence = DOTween.Sequence();
         isMove = true;
         float time = 0f;
         while (isMove)
@@ -42,6 +39,6 @@ public class SlingerMove : EasingMethods
             myRect.localRotation = Quaternion.Euler(0, 0, angle + z);
         }
         z += moveAngle * _dir;
-        gameObject.transform.DOShakePosition(0.3f,0.7f,10,60,false);
+        //gameObject.transform.DOShakePosition(0.3f,0.7f,10,60,false);
     }
 }

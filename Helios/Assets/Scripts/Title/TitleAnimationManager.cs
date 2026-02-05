@@ -3,6 +3,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using UnityEngine.Rendering;
 
 [Serializable]
 public struct Cautionary
@@ -33,6 +34,7 @@ public class TitleAnimationManager : MonoBehaviour
     [SerializeField] GameObject titleLogo;
     Image logoImage;
     RectTransform logoRect;
+    [SerializeField] GameObject volume;
     [SerializeField] GameObject startBackGround;
     [SerializeField] Text pushText;
     [SerializeField] GameObject rainParticle;
@@ -66,6 +68,7 @@ public class TitleAnimationManager : MonoBehaviour
         titleStartObj.SetActive(true);
         nowTitleMode = null;
         nowBackGround = null;
+        volume.SetActive(false);
     }
 
     public IEnumerator FadeAnimation(float _alpha,float _time)
@@ -129,7 +132,7 @@ public class TitleAnimationManager : MonoBehaviour
         }
     }
 
-    public IEnumerator TitleStartAnim()
+    public IEnumerator TitleStartAnim(AudioClip _selectSE)
     {
         logoImage.DOFade(1f, 0.5f);
         yield return new WaitForSeconds(0.75f);
@@ -145,6 +148,7 @@ public class TitleAnimationManager : MonoBehaviour
                 if (Input.GetMouseButtonDown(i))
                 {
                     isPush = true;
+                    Locator<AudioManager>.Instance.PlaySE(_selectSE);
                     break;
                 }
             }
@@ -160,6 +164,7 @@ public class TitleAnimationManager : MonoBehaviour
     public IEnumerator TitleSelectDisplayAnim()
     {
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        volume.SetActive(true);
         SetBackGround(selectBackGround);
         SetNowTitleMode(titleSelectObj);
         slingerRect.anchoredPosition = new Vector2(-500f,-500f);
@@ -181,6 +186,7 @@ public class TitleAnimationManager : MonoBehaviour
     public IEnumerator BackTitleSelect()
     {
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        volume.SetActive(true);
         SetBackGround(selectBackGround);
         SetNowTitleMode(titleSelectObj);
         yield return StartCoroutine(FadeAnimation(0f, 0.5f));
@@ -190,6 +196,7 @@ public class TitleAnimationManager : MonoBehaviour
     public IEnumerator MyRoomAnim()
     {
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        volume.SetActive(false);
         SetBackGround(myRoomBackGround);
         SetNowTitleMode(myRoomObj);
         yield return StartCoroutine(FadeAnimation(0f, 0.5f));
