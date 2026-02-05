@@ -323,6 +323,10 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             line[driverType].SetPosition(line[driverType].positionCount - 1, position);
             if ((int)MapObjectID.HOUSE_1 <= objectID && objectID <= (int)MapObjectID.HOUSE_4)
             {
+                if (tutorialMG.IsTutorial && tutorialMG.CurrentState == TutorialMG.TutorialState.DrawLine)
+                {
+                    tutorialMG.ChangeState(TutorialMG.TutorialState.EndDrawLine);
+                }
                 writing = false;
                 destination[driverType] = obj;
                 driverType = -1;
