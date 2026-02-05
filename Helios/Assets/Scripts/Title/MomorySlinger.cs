@@ -1,15 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MomorySlinger : MonoBehaviour
 {
+    [SerializeField] SaveDataManager saveDataManager;
+    bool[] memory;
     [SerializeField] SlingerMove slingerMove;
     int nowSlinger;
     int nowSinner;
-    int maxSinner;//csvから要素数を代入
+    int maxSinner;
     [SerializeField] Text[] sinnerNameTexts;
     const int right = 2;
     const int left = 2;
@@ -18,7 +19,11 @@ public class MomorySlinger : MonoBehaviour
     [SerializeField] ScrollRect listScrollRect;
     [SerializeField] GameObject contentsObj;
     RectTransform contentsRect;
+    [SerializeField] GameObject conditionTextObj;
+    List<GameObject> conditionList;
+    [SerializeField] GameObject conditionObj;
     [SerializeField] Text sinnerName;
+    [SerializeField] Image sinnerImage;
     [SerializeField] Image secureImage;
     [SerializeField] Image liskImage;
     [SerializeField] Sprite[] secureSprites;
@@ -31,38 +36,30 @@ public class MomorySlinger : MonoBehaviour
         nowSlinger = 0;
         nowSinner = 0;
         maxSinner = sinnerMemoryDatas.Length;
-        //for (int i = 0; i < sinnerNameTexts.Length; i++)
-        //{
-        //    int num = (i < right) ? i : maxSinner - (sinnerNameTexts.Length - i);
-        //    sinnerNameTexts[i].text = sinnerMemoryDatas[num].name;
-        //}
+        for (int i = 0; i < sinnerNameTexts.Length; i++)
+        {
+            int num = (i < right) ? i : maxSinner - (sinnerNameTexts.Length - i);
+            sinnerNameTexts[i].text = sinnerMemoryDatas[num].name;
+        }
         contentsRect = contentsObj.GetComponent<RectTransform>();
+        memory = new bool[maxSinner];
+        for (int i = 0; i < maxSinner; i++)
+        {
+            memory[i] = saveDataManager.Memory[i];
+            if (i == maxSinner - 1) memory[i] = saveDataManager.Memory[saveDataManager.Memory.Length - 1];
+        }
     }
 
     private void Start()
     {
         explanatoryList = new List<GameObject>();
+        conditionList = new List<GameObject>();
         Set();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         InputSlingerMove();
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            AudioManager a = Locator<AudioManager>.Instance;
-            Debug.Log(a.GetVolume(Audio.BGM));
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            for (int i = 0; i < sinnerMemoryDatas[nowSinner].explanatoryTexts.Length;i++)
-            {
-                GameObject obj = Instantiate(explanatoryTextObj, contentsObj.transform);
-                obj.GetComponent<DataText>().SetText(sinnerMemoryDatas[nowSinner].explanatoryTexts[i].headingText, sinnerMemoryDatas[nowSinner].explanatoryTexts[i].Text);
-                explanatoryList.Add(obj);
-            }
-            ContentSizeChange();
-        }
     }
 
     void InputSlingerMove()
@@ -80,27 +77,67 @@ public class MomorySlinger : MonoBehaviour
             sinnerNameTexts[num].text = sinnerMemoryDatas[nameNum].name;
             nowSlinger = (nowSlinger + (int)f < 0) ? sinnerNameTexts.Length - 1 : (nowSlinger + (int)f) % sinnerNameTexts.Length;
             nowSinner = (nowSinner + (int)f < 0) ? maxSinner - 1 : (nowSinner + (int)f) % maxSinner;
-            StartCoroutine(slingerMove.Move(f));
+            StartCoroutine(Anim((int)f));
         }
+    }
+
+    IEnumerator Anim(float _dir)
+    {
+        yield return StartCoroutine(slingerMove.Move(_dir));
+        Set();
     }
 
     void Set()
     {
+        DeliteList();
         ///─────表示情報更新─────///
+        //名前
         sinnerName.text = sinnerMemoryDatas[nowSinner].name;
+        //クラス
         secureImage.sprite = secureSprites[(int)sinnerMemoryDatas[nowSinner].secureClass];
         liskImage.sprite = liskSprites[(int)sinnerMemoryDatas[nowSinner].liskClass];
-        for (int i = 0; i < sinnerMemoryDatas[nowSinner].emotionValue.Length;i++)
+        //シナー画像
+        sinnerImage.sprite = sinnerMemoryDatas[nowSinner].sinnerImage;
+        //配達確率
+        for (int i = 0; i < sinnerMemoryDatas[nowSinner].emotionValue.Length; i++)
         {
             emotions[i].text = sinnerMemoryDatas[nowSinner].emotionValue[i] + "%";
         }
-        for (int i = 0; i < sinnerMemoryDatas[nowSinner].explanatoryTexts.Length;i++)
+        //説明文
+        for (int i = 0; i < sinnerMemoryDatas[nowSinner].explanatoryTexts.Length; i++)
         {
+            if (sinnerMemoryDatas[nowSinner].explanatoryTexts[i].isMemory && !memory[i]) continue;
             GameObject obj = Instantiate(explanatoryTextObj, contentsObj.transform);
             obj.GetComponent<DataText>().SetText(sinnerMemoryDatas[nowSinner].explanatoryTexts[i].headingText, sinnerMemoryDatas[nowSinner].explanatoryTexts[i].Text);
             explanatoryList.Add(obj);
         }
+        //スクロール更新
         ContentSizeChange();
+        //条件文
+        for (int i = 0; i < sinnerMemoryDatas[nowSinner].conditionalTexts.Length; i++)
+        {
+            GameObject obj = Instantiate(conditionTextObj, conditionObj.transform);
+            string text;
+            if (sinnerMemoryDatas[nowSinner].conditionalTexts[i].isMemory)
+            {
+                text = (!memory[i]) ? sinnerMemoryDatas[nowSinner].conditionalTexts[i].Text : sinnerMemoryDatas[nowSinner].conditionalTexts[i].housedText;
+            }
+            else
+            {
+                text = sinnerMemoryDatas[nowSinner].conditionalTexts[i].Text;
+            }
+            obj.GetComponent<ConditionText>().SetText(text);
+            conditionList.Add(obj);
+        }
+    }
+
+    void DeliteList()
+    {
+        foreach (GameObject obj in explanatoryList) Destroy(obj);
+        explanatoryList.Clear();
+
+        foreach (GameObject obj in conditionList) Destroy(obj);
+        conditionList.Clear();
     }
 
     /// <summary>

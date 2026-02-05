@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4066660660956051893}
   - component: {fileID: 2363673102983840613}
   - component: {fileID: 3541929989546077071}
+  - component: {fileID: 7113159171407982722}
+  - component: {fileID: 2858376514359603187}
   m_Layer: 5
   m_Name: HeaderText
   m_TagString: Untagged
@@ -34,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: 750, y: 35}
+  m_AnchoredPosition: {x: 10, y: -10}
+  m_SizeDelta: {x: 0, y: 35}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &2363673102983840613
 CanvasRenderer:
@@ -59,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -78,7 +80,33 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u88DC\u907A \u2588\u2588\u2588\u2588-1"
+  m_Text: "\u88DC\u907A\u2588\u2588\u2588\u2588-4\uFF1A\u5E73\u548C\u306E\u7720\u308A\u9CE5\u3068\u756A\u53F7004\uFF08\u6C34\u9762\u3068\u6C34\u93E1\uFF09\u306E\u76F4\u63A5\u76F8\u4E92\u4F5C\u7528\u8A66\u9A13\u8A18\u9332"
+--- !u!114 &7113159171407982722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508793362156508416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
+--- !u!114 &2858376514359603187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508793362156508416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd5c9ce3f5486e0479a440584cdcff5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1938863393061117066
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,6 +797,7 @@ MonoBehaviour:
   dataText: {fileID: 5063894211707073582}
   listScrollRect: {fileID: 6294493640246971225}
   contentsRect: {fileID: 8519966457277501005}
+  textMover: {fileID: 2858376514359603187}
 --- !u!1 &7956255633901902859
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,11 +868,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8519966457277501005}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 750, y: 0}
-  m_Pivot: {x: 0.5, y: 1}
+  m_SizeDelta: {x: 730, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &40229730344817126
 CanvasRenderer:
   m_ObjectHideFlags: 0
