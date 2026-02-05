@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c8f20bf0b0a02cb4d9c431258a8d811d
+guid: 4944cff8d44a7c346a23f83730b7e24f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,13 +43,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 200, y: 200, z: 200, w: 200}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -110,23 +110,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: windowwaku 1_0
+      name: underwindow_C_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 3438
-        height: 2268
+        x: 50
+        y: 5
+        width: 1820
+        height: 165
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b07af347239df6f44a581701eeec048e
-      internalID: 1822903927
+      spriteID: 6b34a125a086c85448eca75036bce3f2
+      internalID: -1999737917
       vertices: []
       indices: 
       edges: []
@@ -136,7 +136,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -145,7 +145,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      windowwaku 1_0: 1822903927
+      underwindow_C_0: -1999737917
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

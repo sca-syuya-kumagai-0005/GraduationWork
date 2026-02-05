@@ -25,7 +25,7 @@ public enum LiskClass
 [Serializable]
 public struct ConditionalText
 {
-    public bool isHoused;
+    public bool isMemory;
     [TextArea] public string Text;
     [TextArea] public string housedText;
 }
@@ -33,7 +33,7 @@ public struct ConditionalText
 [Serializable]
 public struct ExplanatoryText
 {
-    public bool isHoused;
+    public bool isMemory;
     public string headingText;
     [TextArea] public string Text;
 }

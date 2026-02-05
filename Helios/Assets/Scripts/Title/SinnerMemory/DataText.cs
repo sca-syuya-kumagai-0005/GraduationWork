@@ -8,6 +8,7 @@ public class DataText : MonoBehaviour
     [SerializeField] Text dataText;
     [SerializeField] ScrollRect listScrollRect;
     [SerializeField] RectTransform contentsRect;
+    [SerializeField] TextMover textMover;
 
     public void SetText(string _header, string _data)
     {
@@ -21,5 +22,6 @@ public class DataText : MonoBehaviour
         yield return null;
         contentsRect.sizeDelta = new Vector2(contentsRect.sizeDelta.x, headerText.rectTransform.sizeDelta.y + dataText.rectTransform.sizeDelta.y);
         listScrollRect.verticalNormalizedPosition = 1f;
+        textMover.PositionReset();
     }
 }
