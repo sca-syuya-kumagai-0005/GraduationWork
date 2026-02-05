@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,15 +6,16 @@ using UnityEngine.UI;
 
 public class MomorySlinger : MonoBehaviour
 {
-    [SerializeField] SaveDataManager saveDataManager;
+    [SerializeField] AudioClip slingerSE;
+    SaveDataManager saveDataManager;
     bool[] memory;
     [SerializeField] SlingerMove slingerMove;
     int nowSlinger;
     int nowSinner;
     int maxSinner;
     [SerializeField] Text[] sinnerNameTexts;
-    const int right = 2;
-    const int left = 2;
+    [SerializeField, Header("アニメ-ション関連")] Image sinnerLoadImage;
+    [SerializeField] Image noizeFade;
     [SerializeField, Header("シナーメモリー関連")] GameObject explanatoryTextObj;
     List<GameObject> explanatoryList;
     [SerializeField] ScrollRect listScrollRect;
@@ -30,6 +32,8 @@ public class MomorySlinger : MonoBehaviour
     [SerializeField] Sprite[] liskSprites;
     [SerializeField] Text[] emotions = new Text[8];
     [SerializeField] SinnerMemoryData[] sinnerMemoryDatas;
+    const int right = 2;
+    const int left = 2;
 
     private void Awake()
     {
@@ -42,19 +46,20 @@ public class MomorySlinger : MonoBehaviour
             sinnerNameTexts[i].text = sinnerMemoryDatas[num].name;
         }
         contentsRect = contentsObj.GetComponent<RectTransform>();
+    }
+
+    private void Start()
+    {
+        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
         memory = new bool[maxSinner];
         for (int i = 0; i < maxSinner; i++)
         {
             memory[i] = saveDataManager.Memory[i];
             if (i == maxSinner - 1) memory[i] = saveDataManager.Memory[saveDataManager.Memory.Length - 1];
         }
-    }
-
-    private void Start()
-    {
         explanatoryList = new List<GameObject>();
         conditionList = new List<GameObject>();
-        Set();
+        StartCoroutine(Anim(0));
     }
 
     private void Update()
@@ -69,8 +74,8 @@ public class MomorySlinger : MonoBehaviour
         float axis = Input.GetAxisRaw("Horizontal");
         if (axis != 0 || mouse != 0f)
         {
-            mouse /= Mathf.Abs(mouse);
             float f = (mouse != 0f) ? mouse : -axis;
+            f /= Mathf.Abs(f);
             int a = (f < 0) ? right : left;
             int num = (a * (int)f + nowSlinger + sinnerNameTexts.Length) % sinnerNameTexts.Length;
             int nameNum = (a * (int)f + nowSinner + maxSinner) % maxSinner;
@@ -83,8 +88,19 @@ public class MomorySlinger : MonoBehaviour
 
     IEnumerator Anim(float _dir)
     {
+        sinnerImage.DOKill();
+        sinnerImage.DOFade(0f, 0f);
+        sinnerLoadImage.DOKill();
+        sinnerLoadImage.DOFillAmount(0f, 0f);
+        Locator<AudioManager>.Instance.PlaySE(slingerSE);
         yield return StartCoroutine(slingerMove.Move(_dir));
-        Set();
+        //画面にノイズを入れる
+        sinnerLoadImage.DOFillAmount(1f, 0.5f).SetEase(Ease.InOutQuint).OnComplete(() =>
+        {
+            Set();
+            noizeFade.DOFade(1f, 0.3f).SetLoops(2, LoopType.Yoyo);
+            sinnerImage.DOFade(1f, 0.5f).SetDelay(0.3f); ;
+        });
     }
 
     void Set()
