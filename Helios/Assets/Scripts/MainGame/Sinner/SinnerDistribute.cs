@@ -8,7 +8,7 @@ public class SinnerDistribute : MonoBehaviour
 {
     [SerializeField]
     private GameObject sinnerObject;
-    private const int poolSize = 3;
+    private const int poolSize = 4;
     private List<Object> sinnerComponents = new List<Object>()
     {
         new ItemID_001(),
@@ -34,14 +34,19 @@ public class SinnerDistribute : MonoBehaviour
         new ItemID_021(),
         new ItemID_022(),
         new ItemID_023(),
+        new ItemID_024(),
+        new ItemID_025(),
+        new ItemID_026(),
+        new ItemID_031()
     };
     private List<GameObject>[] sinnerHousedObjects = new List<GameObject>[10];
     public List<GameObject>[] GetSinnerHousedObjects { get { return sinnerHousedObjects; } }
     private List<int>[] sinnerPools = new List<int>[poolSize]
     {
-        new List<int> { 14,4, 5, 6, 7, 8, 9,12,13,23},
-        new List<int> { 1,3,16,10,11,14,19,20,17,18},
-        new List<int> { 21},
+        new List<int> { 2, 4, 5,12,13,16,17,23,12,13},
+        new List<int> { 3 ,6, 7,19,20,21,22,24,27,20},
+        new List<int> { 1, 8, 9,10,14,25,26, 9,10,14},
+        new List<int> {31}
         //new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
         //new List<int> { 11,12,13,14,15,16,17,18,19,20 },
         //new List<int> { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 },
@@ -53,14 +58,16 @@ public class SinnerDistribute : MonoBehaviour
         new List<GameObject>(),
         new List<GameObject>(),
         new List<GameObject>(),
+        new List<GameObject>()
     };
     private List<int> totalSinnerPool = new List<int>();
     private bool[] housed = new bool[maxSinners];
     private int standbySinners;
     private SaveDataManager saveDataManager;
     private TutorialMG tutorialMG;
+    private GameObject unmaskBlock;
 
-    //Še‹æ‰æ‚ÉZ‚ŞƒVƒi[‚ğ“ü‚ê‚éƒŠƒXƒg
+    //å„åŒºç”»ã«ä½ã‚€ã‚·ãƒŠãƒ¼ã‚’å…¥ã‚Œã‚‹ãƒªã‚¹ãƒˆ
     private List<int>[] plotContainedSinner = new List<int>[10];
     public List<int>[] GetPlotContainedSinnerID { get { return plotContainedSinner; } }
     const string mapName = "Address_";
@@ -72,19 +79,20 @@ public class SinnerDistribute : MonoBehaviour
 
     private void Start()
     {
+        unmaskBlock = GameObject.Find("UnMaskBlock").gameObject;
         tutorialMG = GameObject.Find("TutorialMG").GetComponent<TutorialMG>();
-        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();@
-       
-       
+        //unmaskBlock.SetActive(tutorialMG.IsTutorial);
+        //tutorialMG.gameObject.SetActive(tutorialMG.IsTutorial);
+        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();ã€€
        
         for (int i = 0; i < plotContainedSinner.Length; i++)
         {
             plotContainedSinner[i] = new List<int>();
             sinnerHousedObjects[i] = new List<GameObject>();
         }
-        if (tutorialMG.IsTutorial)//–¼‘OŠÔˆá‚Ä‚é‚Ë‚²‚ß‚ñ
+        if (tutorialMG.IsTutorial)//åå‰é–“é•ã¦ã‚‹ã­ã”ã‚ã‚“
         {
-            // ƒZ[ƒug‚¢‚½‚­‚È‚¢‚ñ‚Å
+            // ã‚»ãƒ¼ãƒ–ä½¿ã„ãŸããªã„ã‚“ã§
             housed = new bool[maxSinners];
             DistributeTutorial();
         }
@@ -95,9 +103,8 @@ public class SinnerDistribute : MonoBehaviour
             int gamePhase = GetGamePhase(saveDataManager.Days);
             Distribute(gamePhase);
             saveDataManager.HousedSinner = housed;
-        }
 
-       
+        }
     }
 
     private void Distribute(int gamePhase)
@@ -106,7 +113,7 @@ public class SinnerDistribute : MonoBehaviour
         {
             totalSinnerPool.AddRange(sinnerPools[i]);
         }
-        //‚±‚±‚ÉŠeƒ}ƒbƒv
+        //ã“ã“ã«å„ãƒãƒƒãƒ—
         int[][] plotIDs = new int[4][]
         {
             new int[2]{0,0},
@@ -141,7 +148,7 @@ public class SinnerDistribute : MonoBehaviour
         {
             if (housed[i])
             {
-                //‡Zƒv[ƒ‹‚Ì‰½”Ô–Ú‚©
+                //åˆç®—ãƒ—ãƒ¼ãƒ«ã®ä½•ç•ªç›®ã‹
                 int sinnerID = totalSinnerPool.IndexOf(i + 1);
                 int gp = GetGamePhase(sinnerID);
                 HousedExistingSinner(gp, sinnerID);
@@ -161,7 +168,7 @@ public class SinnerDistribute : MonoBehaviour
         GameObject sinnerHousedObject = houseList[phase][rand];
 
         string plot = houseList[phase][rand].transform.parent.name;
-        Debug.Log(plot + "‚É" + sinnerComponents[totalSinnerPool[housedSinnerID] - 1].GetType() + "‘±‚¯‚ÄoŒ»");
+        Debug.Log(plot + "ã«" + sinnerComponents[totalSinnerPool[housedSinnerID] - 1].GetType() + "ç¶šã‘ã¦å‡ºç¾");
         standbySinners--;
 
         int plotNumber = int.Parse(plot.Split(mapName)[1]);
@@ -183,7 +190,7 @@ public class SinnerDistribute : MonoBehaviour
         GameObject sinnerHousedObject = houseList[phase][rand_house];
 
         string plot = houseList[phase][rand_house].transform.parent.name;
-        Debug.Log(plot + "‚É" + sinnerComponents[componentID-1].GetType() + "‰‚ß‚ÄoŒ»");
+        Debug.Log(plot + "ã«" + sinnerComponents[componentID-1].GetType() + "åˆã‚ã¦å‡ºç¾");
         housed[rand_sinner] = true;
 
         int plotNumber = int.Parse(plot.Split(mapName)[1]);
@@ -216,7 +223,7 @@ public class SinnerDistribute : MonoBehaviour
 
     private void DistributeTutorial()
     {
-        Debug.Log("ƒ`ƒ…[ƒgƒŠƒAƒ‹—p‚ÌƒVƒi[‚ğŒÅ’è”z’u‚µ‚Ü‚·");
+        Debug.Log("ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ç”¨ã®ã‚·ãƒŠãƒ¼ã‚’å›ºå®šé…ç½®ã—ã¾ã™");
 
         PlaceTutorialSinnerToHouseName(tutorialSinnerA, tutorialHouseA);
     }
@@ -228,35 +235,35 @@ public class SinnerDistribute : MonoBehaviour
 
         if (house == null)
         {
-            Debug.LogError($"[Tutorial] House '{houseName}' ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
+            Debug.LogError($"[Tutorial] House '{houseName}' ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“");
             return;
         }
 
-        // ‚·‚Å‚ÉƒVƒi[‚ª‚¢‚é‚©ƒ`ƒFƒbƒN
+        // ã™ã§ã«ã‚·ãƒŠãƒ¼ãŒã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
         foreach (var comp in sinnerComponents)
         {
             if (house.GetComponent(comp.GetType()) != null)
             {
-                Debug.LogWarning($"[Tutorial] {houseName} ‚É‚Í‚·‚Å‚ÉƒVƒi[‚ª‚¢‚Ü‚·");
+                Debug.LogWarning($"[Tutorial] {houseName} ã«ã¯ã™ã§ã«ã‚·ãƒŠãƒ¼ãŒã„ã¾ã™");
                 return;
             }
         }
 
-        // ƒVƒi[”z’u
+        // ã‚·ãƒŠãƒ¼é…ç½®
         house.AddComponent(
             sinnerComponents[sinnerID - 1].GetType()
         );
 
         housed[sinnerID - 1] = true;
 
-        // Plot”Ô†æ“¾ie‚ª Address_xj
+        // Plotç•ªå·å–å¾—ï¼ˆè¦ªãŒ Address_xï¼‰
         string plotName = house.transform.parent.name;
         int plotNumber = int.Parse(plotName.Replace(mapName, ""));
 
         plotContainedSinner[plotNumber].Add(sinnerID);
         sinnerHousedObjects[plotNumber].Add(house);
 
-        Debug.Log($"[Tutorial] {houseName} ‚É Sinner {sinnerID} ‚ğŒÅ’è”z’u");
+        Debug.Log($"[Tutorial] {houseName} ã« Sinner {sinnerID} ã‚’å›ºå®šé…ç½®");
     }
 
 }
