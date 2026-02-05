@@ -9,6 +9,8 @@ public class Tank : MonoBehaviour
     Map.MapData md;
     GameObject tile;
     const float speed = 1.0f;
+    string startPosition;
+    public string StartPosition {  get { return startPosition; } set { startPosition = value; } }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
