@@ -52,6 +52,11 @@ public class AudioManager : MonoBehaviour
         return BGM.clip;
     }
 
+    public bool IsBGMPlaying()
+    {
+        return BGM.isPlaying;
+    }
+
     /// <summary>
     /// BGM‚ğİ’è‚µ‚ÄÄ¶‚·‚é
     /// </summary>

@@ -7,16 +7,16 @@ public class Phone : MonoBehaviour
     [SerializeField] Slider musicBar;
     [SerializeField] MusicList musicList;
     public AudioClip[] queue;
-    public int nowNumber { get; private set; }
+    [SerializeField] Image playButtonImage;
+    [SerializeField] Sprite playButtonSprite;
+    [SerializeField] Sprite stopButtonSprite;
 
-    private void Start()
-    {
-        audioManager = Locator<AudioManager>.Instance;
-    }
+    public int nowNumber { get; private set; }
 
     private void OnEnable()
     {
         Locator<Phone>.Bind(this);
+        audioManager = Locator<AudioManager>.Instance;
     }
 
     private void OnDisable()
@@ -27,6 +27,14 @@ public class Phone : MonoBehaviour
     private void LateUpdate()
     {
         musicBar.value = audioManager.bgmAudio.time / audioManager.bgmAudio.clip.length;
+        if (audioManager.IsBGMPlaying())
+        {
+            if(playButtonImage.sprite != playButtonSprite) playButtonImage.sprite = playButtonSprite;
+        }
+        else
+        {
+            if (playButtonImage.sprite != stopButtonSprite) playButtonImage.sprite = stopButtonSprite;
+        }
     }
 
     public void SetQueue(AudioClip[] _clips)
@@ -63,7 +71,19 @@ public class Phone : MonoBehaviour
     public void ChangeBGM(int _num)
     {
         musicList.ChangeMusicNameText(queue[_num].name);
-        Locator<AudioManager>.Instance.PlayBGM(queue[_num]);
+        audioManager.PlayBGM(queue[_num]);
+    }
+
+    public void PlayButton()
+    {
+        if (audioManager.IsBGMPlaying())
+        {
+            audioManager.StopBGM();
+        }
+        else
+        {
+            audioManager.StartBGM();
+        }
     }
 
     public void NextMusic()
