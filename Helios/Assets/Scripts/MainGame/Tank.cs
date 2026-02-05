@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using static Map;
 
@@ -11,6 +12,10 @@ public class Tank : MonoBehaviour
     const float speed = 1.0f;
     string startPosition;
     public string StartPosition {  get { return startPosition; } set { startPosition = value; } }
+    private SpriteRenderer spriteRenderer;
+    private Sprite iconSprite;
+    public Sprite SetSprite { set { iconSprite = value; } }
+    private PointBlink point;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,6 +24,11 @@ public class Tank : MonoBehaviour
         md = map.MapDatas[int.Parse(strings[2])][int.Parse(strings[1])];
         Debug.Log(md.obj.name);
         StartCoroutine(TankMover());
+
+        spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = iconSprite;
+        point = transform.GetChild(3).GetComponent<PointBlink>();
+        StartCoroutine(Blink());
     }
 
     // Update is called once per frame
@@ -26,7 +36,14 @@ public class Tank : MonoBehaviour
     {
         
     }
-
+    private IEnumerator Blink()
+    {
+        while (true)
+        {
+            StartCoroutine(point.Blink(false));
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
     IEnumerator TankMover()
     {
      

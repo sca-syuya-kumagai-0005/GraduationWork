@@ -7,9 +7,9 @@ public class CelestialSteed : MonoBehaviour
     private GameObject[] plot = new GameObject[9];
     private SpriteRenderer spriteRenderer;
     private Sprite iconSprite;
+    public Sprite SetSprite { set { iconSprite = value; } }
     private SpecifyingDeliveryRoutes specifyingDeliveryRoutes;
     private GameObject[] drivers = new GameObject[4];
-    public Sprite SetSprite { set { iconSprite = value; } }
     private PointBlink point;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
