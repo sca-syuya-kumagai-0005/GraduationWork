@@ -520,13 +520,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialSprite:
-  - {fileID: 21300000, guid: 732165daddee5b841a64ffde1bdbb89e, type: 3}
-  - {fileID: 21300000, guid: a8a23832ae3d3044e8b9dd47b64e0099, type: 3}
-  - {fileID: 21300000, guid: aa74ab137f18cfb499abbb072e277403, type: 3}
-  - {fileID: 21300000, guid: 6c16a81f7bd25224bb4328c63d364daa, type: 3}
-  - {fileID: 21300000, guid: 7b5cd22a81b6079479cb29f22f01aa30, type: 3}
-  - {fileID: 21300000, guid: bba78bccf4c10424cacec9fec72479d5, type: 3}
-  - {fileID: 21300000, guid: d657e22d6d04d7e41b43757cac795e41, type: 3}
+  - {fileID: 21300000, guid: 70b485ab50465804c98a29e4e98f5553, type: 3}
+  - {fileID: 21300000, guid: e10d527ba4006cf48ba21d71b48e4351, type: 3}
+  - {fileID: 21300000, guid: efadf19681890fe40b9db3752f9382ca, type: 3}
+  - {fileID: 21300000, guid: 7f84be1ad4389f641bdb7a1f4c4ba618, type: 3}
+  - {fileID: 21300000, guid: 739c8de6fe5b2264c9bc91e5a0f426fc, type: 3}
+  - {fileID: 21300000, guid: a62cab9616928cb48b65017d1cd4a0f4, type: 3}
+  - {fileID: 21300000, guid: 87b5f727122138e4abbbc9b57152eb42, type: 3}
+  - {fileID: 21300000, guid: fd9d64aa0031de84ea98a558296b9ffd, type: 3}
   delayTime: 8
   tutorialImage: {fileID: 805913526}
   pageCount: 0
@@ -8359,7 +8360,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: c119ff407ed9669408edb84cd005f98e, type: 3}
   - {fileID: 4900000, guid: 44c54bb8e7adc1749b82e68c5b06295b, type: 3}
   - {fileID: 4900000, guid: 611a363c8b496ba42901d0ac243e723d, type: 3}
-  - {fileID: 4900000, guid: ce3737efb58782c47b8e2ba48222e479, type: 3}
+  - {fileID: 4900000, guid: 33ea7a5e2f9214c43a3c0863317c0ef2, type: 3}
   - {fileID: 4900000, guid: 4fcb14d2e07aa2f48b78acb1d992816e, type: 3}
   objectSpace: {fileID: 2279231698715859660, guid: 8e28c5908d8c7394d8e718f6c45a727e, type: 3}
   mapObjects:
