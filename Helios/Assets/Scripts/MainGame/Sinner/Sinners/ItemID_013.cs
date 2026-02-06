@@ -15,6 +15,7 @@ public class ItemID_013 : Sinner
         isAbnormality = false;
         for(int i = 0; i < specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
         {
+            if(specifyingDeliveryRoutes.SinnerDebuff[i] == null)
             specifyingDeliveryRoutes.SinnerDebuff[i].Add(sinnerName, false);
         }
     }

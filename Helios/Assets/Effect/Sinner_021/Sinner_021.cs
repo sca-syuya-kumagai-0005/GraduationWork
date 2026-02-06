@@ -26,6 +26,7 @@ public class Sinner_021 : MonoBehaviour
     [Header("Rotate")]
     [SerializeField] private Transform rotateTarget;
     [SerializeField] private WENS direction;
+    public WENS Direction { set { direction = value; } }
     [SerializeField] private float baseAngle = 43f;
     [SerializeField] private Vector3 rotateAngle;
     [SerializeField] private float rotateDuration = 1f; //  ‰ñ“]ŽžŠÔ
