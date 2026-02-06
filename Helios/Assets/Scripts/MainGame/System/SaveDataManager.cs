@@ -29,7 +29,7 @@ public class SaveDataManager : MonoBehaviour
             File.Create(SavePath);
             Save();
         }
-        Load();
+
     }
     private static string SavePath => System.IO.Path.Combine(Application.persistentDataPath, "SaveData.txt");
     private void Update()
@@ -37,6 +37,24 @@ public class SaveDataManager : MonoBehaviour
         //if(Input.GetMouseButtonDown(2))
         //Save();
     }
+
+    public void Format()
+    {
+        StreamWriter streamWriter = new StreamWriter(SavePath, false);
+        data[(int)DataAddress.DAY] = "1";
+        data[(int)DataAddress.HOUSEDSINNER] = null;
+        data[(int)DataAddress.MEMORY] = null;
+        for (int i = 0; i < housedSinners.Length; i++)
+        {
+            data[(int)DataAddress.HOUSEDSINNER] += "0";
+            data[(int)DataAddress.MEMORY] += "0";
+        }
+        string str = string.Join("\n", data);
+        streamWriter.WriteLine(str);
+        streamWriter.Flush();
+        streamWriter.Close();
+    }
+
     public void Save()
     {
         Debug.Log("Saved");
@@ -54,6 +72,7 @@ public class SaveDataManager : MonoBehaviour
         streamWriter.Flush();
         streamWriter.Close();
     }
+
     public void Load()
     {
         StreamReader streamReader = new StreamReader(SavePath, true);

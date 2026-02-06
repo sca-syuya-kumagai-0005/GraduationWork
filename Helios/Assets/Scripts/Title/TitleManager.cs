@@ -129,12 +129,16 @@ public class TitleManager : MonoBehaviour
     IEnumerator GoMain(bool _isPlay)
     {
         yield return StartCoroutine(animationManager.FadeAnimation(1f,0.5f));
-        if(_isPlay)
+        SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
+        if (_isPlay)
         {
-            SaveDataManager saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
             saveDataManager.Load();
         }
-        SceneManager.LoadScene("Adventure");
+        else
+        {
+            saveDataManager.Format();
+        }
+            SceneManager.LoadScene("Adventure");
     }
 
     public void SelectButton()
