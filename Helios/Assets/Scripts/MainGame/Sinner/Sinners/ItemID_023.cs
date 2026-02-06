@@ -41,7 +41,7 @@ public class ItemID_023 : Sinner
 
                 progressGraph.AddProgress();
                 Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
-                DeliveryProgressCheck();
+                StartCoroutine(DeliveryProgressCheck());
                 return;
             }
             else

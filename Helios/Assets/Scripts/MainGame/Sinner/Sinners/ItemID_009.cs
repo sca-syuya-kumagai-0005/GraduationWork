@@ -73,7 +73,7 @@ public class ItemID_009 : Sinner
             Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
         }
 
-        DeliveryProgressCheck();
+        StartCoroutine(DeliveryProgressCheck());
     }
     public override void AbnormalPhenomenon()
     {        

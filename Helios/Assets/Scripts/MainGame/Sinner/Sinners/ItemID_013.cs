@@ -50,7 +50,7 @@ public class ItemID_013 : Sinner
 
             progressGraph.AddProgress();
             Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
-            DeliveryProgressCheck();
+            StartCoroutine(DeliveryProgressCheck());
         }
         int increase = 0;
         increase += specifyingDeliveryRoutes.AbnormalCount[deliveryLineID] * 35;

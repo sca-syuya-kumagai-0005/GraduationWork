@@ -41,7 +41,7 @@ public class Player : EasingMethods
     }
     public void Heal(int value)
     {
-        if (health <= 0)
+        if (health > 0)
         health += value;
     }
     private void Start()

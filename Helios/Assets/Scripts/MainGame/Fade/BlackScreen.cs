@@ -6,12 +6,14 @@ using UnityEngine.UI;
 [DefaultExecutionOrder(-1)]
 public class BlackScreen : EasingMethods
 {
-    [SerializeField]
     private float fadeInTime;
     Image image;
+    AudioManager audioManager;
     private void Start()
     {
+        fadeInTime = 0.5f;
         image = gameObject.GetComponent<Image>();
+        audioManager = GameObject.Find("Audio").GetComponent<AudioManager>();
         StartCoroutine(FadeIn());
     }
     public IEnumerator FadeOut()
@@ -55,6 +57,7 @@ public class BlackScreen : EasingMethods
 
     public IEnumerator FadeIn()
     {
+        audioManager.FadeInBGM(fadeInTime);
         gameObject.SetActive(true);
         float t = 0.0f;
         float timerLate = fadeInTime;
@@ -74,6 +77,8 @@ public class BlackScreen : EasingMethods
     public void OnClick()
     {
         gameObject.SetActive(true);
+        audioManager.StopSE();
+        audioManager.FadeOutBGM(1.0f);
         StartCoroutine(FadeOut("MainScene"));
     }
 }

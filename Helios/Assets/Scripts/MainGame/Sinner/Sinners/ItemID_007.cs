@@ -67,7 +67,7 @@ public class ItemID_007 : Sinner
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
 
-        DeliveryProgressCheck();
+        StartCoroutine(DeliveryProgressCheck());
     }
     public override void AbnormalPhenomenon()
     {

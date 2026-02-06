@@ -201,7 +201,7 @@ public class Sinner : MonoBehaviour
         deliveryCount++;
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
-        DeliveryProgressCheck();
+        StartCoroutine(DeliveryProgressCheck());
     }
     /// <summary>
     /// 異常発生時に呼ぶ仮想関数
@@ -405,8 +405,9 @@ public class Sinner : MonoBehaviour
         progressGraph.SinnerList.Add(sinnerName);
     }
 
-    protected void DeliveryProgressCheck()
+    protected IEnumerator DeliveryProgressCheck()
     {
+        yield return new WaitForSeconds(0.1f);
         if (progressGraph.GetProgres>=1.0f && gameState.GameState != GameStateSystem.State.End)
         {
             announceManager.MakeAnnounce("本日のノルマは達成しましたが、全シナーへの配達が未完了です。");
