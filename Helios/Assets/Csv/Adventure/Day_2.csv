@@ -1,4 +1,5 @@
-﻿SetCharacter_A,上司
+﻿PlayBGM_ADV_wonder,
+SetCharacter_A,黒影　零司
 SetSpeakTiming,0
 Speak_A,お疲れ。本日もよろしく頼むよ。
 Speak_A,質問があるのか？私が知っていることなら|何でも応えよう。
@@ -18,7 +19,7 @@ Speak_A,しっかりと資料を確認し、それぞれの|シナーに必要�
 Speak_A,質問の答えとしてはこんなもので大丈夫か？
 SetCharacter_D,アナウンス
 Speak_D,ピィー…ッガガ。
-Speak_D,――月2日。本日の運送業務を開始します。
+Speak_D,――月2日。|本日の運送業務を開始します。
 RemoveCharacter_D,
 Speak_A,おっとすまない。|まだまだ知りたいことはあるだろうが|今日はここまでのようだ。
 Speak_A,では、本日も業務開始とするか。

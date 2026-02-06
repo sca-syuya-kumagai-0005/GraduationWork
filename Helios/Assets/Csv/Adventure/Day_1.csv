@@ -1,8 +1,9 @@
-﻿SetCharacter_A,上司
+﻿PlayBGM_ADV_everyday,
+SetCharacter_A,黒影　零司
 SetSpeakTiming,0
-Speak_A,ようこそ「Rest Rain Corporation」へ。
+Speak_A,ようこそ。|「Rest Rain Corporation」へ。
 Speak_A,新しい仕事仲間ができてうれしく思う。
-Speak_A,私は、「上司」。君の呼びやすいように|呼んでもらって構わない。
+Speak_A,私は、「黒影 零司」。|君の呼びやすいように呼んでもらって|構わない。
 Speak_A,これから数日間、君の教育係を務めさせて|もらう。
 Speak_A,残念ながら教育係が少なく君以外の子も|見ないといけなくてね。
 Speak_A,本当に短い期間だが、よろしく頼むよ。
@@ -20,7 +21,7 @@ Speak_A,わからないことだらけだろうが、|そのための「知る�
 Speak_A,ゆっくりと慣れていってほしい。
 SetCharacter_D,アナウンス
 Speak_D,ピィー…ッガガ。
-Speak_D,――月1日。本日の運送業務を開始します。
+Speak_D,――月1日。|本日の運送業務を開始します。
 RemoveCharacter_D,
 Speak_A,おっと、もうこんな時間か。
 Speak_A,業務開始前にはこうやってアナウンスが|響く。
