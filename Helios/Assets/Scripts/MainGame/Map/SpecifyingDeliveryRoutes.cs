@@ -14,6 +14,8 @@ using static KumagaiLibrary.String;
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
+    private float debuffSpeed;
+    public float DebuffSpeed { set { debuffSpeed = value; } }
     const int driverCount = 4;//トラックの数
     bool[] breaking = new bool[driverCount];
     public bool[] Breaking { get { return breaking; } set { breaking = value; } }
@@ -426,11 +428,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             }
             if (!isConfison[driverID])
             {
-                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 )
                 {
                     // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
-                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
-                    passArea[driverID].Add(int.Parse(str[0]));
+                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].obj.transform.parent.gameObject.name.Split("_");
+                    Debug.Log(str[1]);
+                    passArea[driverID].Add(int.Parse(str[1]));
                     passArea.Distinct();
                     nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
                     nowList.Add(map.MapDatas[routes[driverID][i][0] + 1][routes[driverID][i][1]]);
@@ -572,11 +575,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
                 Vector3 endPos = md.obj.transform.localPosition;
-                if (md.objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < md.objectID)
+                if (md.objectID < (int)MapObjectID.HOUSE_1 )
                 {
 
-                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
-                    passArea[driverID].Add(int.Parse(str[0]));
+                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].obj.transform.parent.gameObject.name.Split("_");
+                    Debug.Log(str[1]);
+                    passArea[driverID].Add(int.Parse(str[1]));
                     passArea.Distinct();
                     nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID]);
                     nowList.Add(map.MapDatas[md.heightPositionID + 1][md.widthPositionID]);
@@ -650,11 +654,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                 Vector3 lastDirction = dir;
 
-                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 )
                 {
                     // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
-                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
-                    passArea[driverID].Add(int.Parse(str[0]));
+                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].obj.transform.parent.gameObject.name.Split("_");
+                    Debug.Log(str[1]);
+                    passArea[driverID].Add(int.Parse(str[1]));
                     passArea.Distinct();
                     nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
                     nowList.Add(map.MapDatas[routes[driverID][i][0] + 1][routes[driverID][i][1]]);
@@ -789,10 +794,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
                 Vector3 endPos = md.obj.transform.localPosition;
-                if (md.objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < md.objectID)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1)
                 {
-                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
-                    passArea[driverID].Add(int.Parse(str[0]));
+                    // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].obj.transform.parent.gameObject.name.Split("_");
+                    Debug.Log(str[1]);
+                    passArea[driverID].Add(int.Parse(str[1]));
                     passArea.Distinct();
                     nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID]);
                     nowList.Add(map.MapDatas[md.heightPositionID + 1][md.widthPositionID]);
@@ -927,11 +934,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             if (!isConfison[driverID])
             {
                 Debug.Log("i" + i);
-                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1)
                 {
                     // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
-                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
-                    passArea[driverID].Add(int.Parse(str[0]));
+                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].obj.transform.parent.gameObject.name.Split("_");
+                    Debug.Log(str[1]);
+                    passArea[driverID].Add(int.Parse(str[1]));
                     passArea.Distinct();
                     nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
                     nowList.Add(map.MapDatas[routes[driverID][i][0] + 1][routes[driverID][i][1]]);
@@ -975,7 +983,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
                     dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1038,10 +1046,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
                 Vector3 endPos = md.obj.transform.localPosition;
-                if (md.objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < md.objectID)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1)
                 {
-                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
-                    passArea[driverID].Add(int.Parse(str[0]));
+                    // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].obj.transform.parent.gameObject.name.Split("_");
+                    Debug.Log(str[1]);
+                    passArea[driverID].Add(int.Parse(str[1]));
                     passArea.Distinct();
                     nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID]);
                     nowList.Add(map.MapDatas[md.heightPositionID + 1][md.widthPositionID]);
@@ -1085,7 +1095,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
                     dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1152,10 +1162,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             if (!isConfison[driverID])
             {
 
-                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1)
                 {
-                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
-                    passArea[driverID].Add(int.Parse(str[0]));
+                    // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].obj.transform.parent.gameObject.name.Split("_");
+                    Debug.Log(str[1]);
+                    passArea[driverID].Add(int.Parse(str[1]));
                     passArea.Distinct();
                     // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
                     nowList.Add(map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]]);
@@ -1200,7 +1212,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
                     dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1263,10 +1275,12 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 md = randomMd;
                 string[] objectInfo = md.name.Split("_");
                 Vector3 endPos = md.obj.transform.localPosition;
-                if (md.objectID < (int)MapObjectID.HOUSE_1 && (int)MapObjectID.HOUSE_4 < md.objectID)
+                if (map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].objectID < (int)MapObjectID.HOUSE_1)
                 {
-                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].name.Split("_");
-                    passArea[driverID].Add(int.Parse(str[0]));
+                    // Debug.Log(deliveryData[driverID].Count - 1 + ("を追加しました"));
+                    string[] str = map.MapDatas[routes[driverID][i][0]][routes[driverID][i][1]].obj.transform.parent.gameObject.name.Split("_");
+                    Debug.Log(str[1]);
+                    passArea[driverID].Add(int.Parse(str[1]));
                     passArea.Distinct();
                     nowList.Add(map.MapDatas[md.heightPositionID][md.widthPositionID]);
                     nowList.Add(map.MapDatas[md.heightPositionID + 1][md.widthPositionID]);
@@ -1310,7 +1324,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
                     dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }

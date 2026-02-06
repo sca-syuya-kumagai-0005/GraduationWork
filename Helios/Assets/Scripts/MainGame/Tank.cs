@@ -20,7 +20,7 @@ public class Tank : MonoBehaviour
     void Start()
     {
         map = GameObject.Find("Map").gameObject.GetComponent<Map>();
-        string[] strings = GameObject.Find("1_31_52").gameObject.name.Split("_");
+        string[] strings = startPosition.Split("_");
         md = map.MapDatas[int.Parse(strings[2])][int.Parse(strings[1])];
         Debug.Log(md.obj.name);
         StartCoroutine(TankMover());
