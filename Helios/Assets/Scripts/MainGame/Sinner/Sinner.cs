@@ -237,10 +237,13 @@ public class Sinner : MonoBehaviour
         float probability = probabilitys[ReceivedItemID];
 
         if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("紅い糸"))
-        if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["紅い糸"]) debuff += 50;
+            if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["紅い糸"]) debuff += 50;
 
         if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("自覚の道は己が夢"))
             if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["自覚の道は己が夢"]) debuff += 5;
+
+        if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("世界の覗き窓"))
+            if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["世界の覗き窓"]) debuff += 25;
         DamageLevel damageLevel = DamageLevel.None;
         probability += debuff;
         if (probability < 100)
