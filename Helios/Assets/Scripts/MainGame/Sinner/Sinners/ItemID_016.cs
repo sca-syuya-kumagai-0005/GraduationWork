@@ -3,7 +3,7 @@ public class ItemID_016 : Sinner
 {
     bool inCamera;
     float timer;
-    const float timeLimit = 5.0f;
+    const float timeLimit = 15.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -12,7 +12,6 @@ public class ItemID_016 : Sinner
         BoxCollider col =
         gameObject.AddComponent<BoxCollider>();
         col.isTrigger = true;
-        Debug.Log(gameObject.name);
         secureClass = SecureClass.Vigil;
         liskClass = LiskClass.Velgra;
         probabilitys = new float[8] { 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 100.0f };
@@ -20,6 +19,10 @@ public class ItemID_016 : Sinner
         sinnerName = "¢ŠE‚Ì”`‚«‘‹";
         LoadSprite("ID016");
         effect = effectObjectParent.transform.GetChild(15).gameObject;
+        for(int i = 0; i < specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
+        {
+            specifyingDeliveryRoutes.SinnerDebuff[i].Add(SinnerName, false);
+        }
     }
     // Update is called once per frame
     void Update()
@@ -27,6 +30,10 @@ public class ItemID_016 : Sinner
         if (inCamera)
         {
             timer += Time.deltaTime;
+        }
+        else
+        {
+            timer = 0.0f;
         }
         if (timer >= timeLimit)
         {
@@ -40,16 +47,30 @@ public class ItemID_016 : Sinner
         base.AbnormalPhenomenon();
 
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
+        for(int i = 0; i < specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
+        {
+            specifyingDeliveryRoutes.SinnerDebuff[i][SinnerName] = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        inCamera = true;
+        if (other.tag == "MainCamera")
+            inCamera = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        timer = 0.0f;
-        inCamera = false;
+        if (other.tag == "MainCamera")
+            inCamera = false;
+    }
+
+    public override void Release(string name)
+    {
+        for (int i = 0; i < specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
+        {
+            specifyingDeliveryRoutes.SinnerDebuff[i][SinnerName] = false;
+        }
+        base.Release(sinnerName);
     }
 }
