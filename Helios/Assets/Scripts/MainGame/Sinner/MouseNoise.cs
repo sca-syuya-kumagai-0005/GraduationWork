@@ -14,6 +14,7 @@ public class MouseNoise : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        radius = 10;
         isNoise = false;
         StartCoroutine(DrunkCorsor());
     }
