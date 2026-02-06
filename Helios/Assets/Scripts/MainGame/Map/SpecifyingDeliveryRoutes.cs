@@ -14,8 +14,10 @@ using static KumagaiLibrary.String;
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
-    private float debuffSpeed;
-    public float DebuffSpeed { set { debuffSpeed = value; } }
+    private float clownSpeed=1;
+    public float ClownSpeed { set { clownSpeed = value; } }
+    private float swordSpeed = 1;
+    public float SwordSpeed { set { swordSpeed = value; } }   
     const int driverCount = 4;//トラックの数
     bool[] breaking = new bool[driverCount];
     public bool[] Breaking { get { return breaking; } set { breaking = value; } }
@@ -477,7 +479,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*clownSpeed*swordSpeed;
                     if (isDriving[driverID])
                     {
                         dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
@@ -624,7 +626,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*clownSpeed*swordSpeed;
                     dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -701,7 +703,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*clownSpeed*swordSpeed;
                     dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -843,7 +845,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*clownSpeed*swordSpeed;
                     dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -983,7 +985,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
+                    obj.transform.position += vec / speed[driverID]*clownSpeed;
                     dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1095,7 +1097,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
+                    obj.transform.position += vec / speed[driverID]*clownSpeed;
                     dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1212,7 +1214,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
+                    obj.transform.position += vec / speed[driverID]*clownSpeed;
                     dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1324,7 +1326,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
+                    obj.transform.position += vec / speed[driverID]*clownSpeed;
                     dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
