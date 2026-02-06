@@ -1,4 +1,5 @@
-﻿SetCharacter_A,上司
+﻿PlayBGM_ADV_everyday,
+SetCharacter_A,黒影　零司
 SetSpeakTiming,0
 Speak_A,お疲れ。業務の調子はどうだ？
 Speak_A,上手くやっていけそうだろうか？
@@ -15,8 +16,8 @@ Speak_A,それはそうと、今日が研修期間の最終日だ。
 Speak_A,本当に短い期間だったが、|おそらく君なら問題ないだろう。
 Speak_A,なに、私の勘というやつだ。
 SetCharacter_D,アナウンス
-Speak_D,ピィー…ッガガ。
-Speak_D,――月3日。本日の運送業務を開始します。
+Speak_D,ピィー……ッガガ。
+Speak_D,――月3日。|本日の運送業務を開始します。
 RemoveCharacter_D,
 Speak_A,ふむ。では今日も張り切って行こうか。
 End,
