@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 859259964574273144}
   - component: {fileID: 7880940037629547043}
   - component: {fileID: 8537538818273185153}
-  m_Layer: 0
+  - component: {fileID: -1356785842024669622}
+  m_Layer: 8
   m_Name: Vertical Beam_2sec
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 60, y: -30, z: 0}
-  m_LocalScale: {x: 25, y: 200, z: 25}
+  m_LocalScale: {x: 25, y: 400, z: 25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -130,9 +131,21 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.1, y: 0.35, z: 10}
   m_Center: {x: 0, y: 0.15, z: 0}
+--- !u!114 &-1356785842024669622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4603648865618591775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61db259b2506ba44eaeef979f146cab0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

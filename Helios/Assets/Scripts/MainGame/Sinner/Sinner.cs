@@ -408,7 +408,7 @@ public class Sinner : MonoBehaviour
     protected IEnumerator DeliveryProgressCheck()
     {
         yield return new WaitForSeconds(0.1f);
-        if (progressGraph.GetProgres>=1.0f && gameState.GameState != GameStateSystem.State.End)
+        if (progressGraph.AccessProgres>=1.0f && gameState.GameState != GameStateSystem.State.End)
         {
             announceManager.MakeAnnounce("本日のノルマは達成しましたが、全シナーへの配達が未完了です。");
             announceManager.MakeAnnounce("全シナーへの配達を完了し本日の業務を終了して下さい。");

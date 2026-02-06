@@ -83,8 +83,8 @@ public class SinnerDistribute : MonoBehaviour
     {
         unmaskBlock = GameObject.Find("UnMaskBlock").gameObject;
         tutorialMG = GameObject.Find("TutorialMG").GetComponent<TutorialMG>();
-        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();　
-       
+        saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();
+        saveDataManager.Load();
         for (int i = 0; i < plotContainedSinner.Length; i++)
         {
             plotContainedSinner[i] = new List<int>();
