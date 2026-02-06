@@ -23,7 +23,7 @@ public class ItemID_031 : Sinner
         LoadSprite("ID031");
         LoadQliphothRanpage();
         LoadQliphothCounter();
-        //effect = effectObjectParent.transform.GetChild(30).gameObject;
+        effect = effectObjectParent.transform.GetChild(27).gameObject;
 
         progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
         distribute = GameObject.Find("Map").gameObject.GetComponent<SinnerDistribute>();
