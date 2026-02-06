@@ -8,13 +8,13 @@ public class Tutorial : MonoBehaviour
     int day;
     [SerializeField]float delayTime;
     [SerializeField]Image tutorialImage;
-    int pageCount = 0;
+    [SerializeField]int pageCount = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         tutorialImage.sprite = tutorialSprite[0];
         day = GameObject.Find("SaveManager").gameObject.GetComponent<SaveDataManager>().Days;
-        StartCoroutine(Delay());
+        //StartCoroutine(Delay());
        
     }
 
@@ -35,16 +35,21 @@ public class Tutorial : MonoBehaviour
                 if(hit.gameObject.name=="NextButton")
                 {
                     Next();
+                    Debug.Log("éüÇÃÉyÅ[ÉWÇ…à⁄ìÆÇµÇ‹Ç∑");
+                    break;
                 }
                 
                 if(hit.gameObject.name=="BackButton")
                 {
                     Back();
+                    break;
                 }
 
                 if(hit.gameObject.name=="CloseButton")
                 {
                     Close();
+                    pageCount=0;
+                    break;
                 }
             }
         }
@@ -57,6 +62,7 @@ public class Tutorial : MonoBehaviour
 
     private void Next()
     {
+        Debug.Log("NextÇ™åƒÇŒÇÍÇ‹ÇµÇΩ");
         pageCount++;
         pageCount%=tutorialSprite.Length;
         tutorialImage.sprite = tutorialSprite[pageCount];
