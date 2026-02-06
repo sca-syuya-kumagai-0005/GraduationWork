@@ -150,6 +150,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e05036728c00fac4a8b177e486f18a6d
+    m_Address: QliphothRanpage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e6bbd94f120832d4f9586a24fa4bf552
     m_Address: Assets/Sprits/UI/Baggage image/Joy.png
     m_ReadOnly: 0
@@ -167,6 +172,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f37e33eef0ab05647955860ebda5e2cd
     m_Address: ID002
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f40307318bfeaa54fb9976a4959e1042
+    m_Address: QliphothCounter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb34e92f85c207a4c88e765a24a7e93a
+    m_Address: ID031
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -23,7 +23,7 @@ public class Sinner : MonoBehaviour
         Zerath,
         Oblivara
     }
-    protected enum Mood
+    public enum Mood
     {
         /// <summary>
         /// 喜び
@@ -85,6 +85,7 @@ public class Sinner : MonoBehaviour
     protected LiskClass liskClass;//リスククラス
     protected string sinnerID;//シナー番号
     protected string sinnerName;//シナー名
+    public string SinnerName { get { return sinnerName; } }
     protected List<SinnerType> sinnerTypeList;//シナーの種類
     protected Sprite sinnerSprite;//画像
     protected int deliveryCount;//配達された回数
@@ -106,16 +107,20 @@ public class Sinner : MonoBehaviour
 
     protected GameObject sinnerIconObject;
 
-    private AudioManager audioManager;
-    private AudioClip[] audioClips = new AudioClip[3];
-    private string[] audioFiles=new string[3]
+    protected AudioManager audioManager;
+    protected AudioClip[] audioClips = new AudioClip[3];
+    protected string[] audioFiles=new string[3]
     {
         "Delivery_Failed",
         "Delivery_Success",
         "Warning_Sound"
     };
 
+    protected GameObject qliphothRanpageObject;
+    protected bool qliphothRanpage;
+    public bool IsQliphothRanpage { get { return qliphothRanpage; } }
     protected SpriteRenderer spriteRenderer;
+    private GameObject ranpageTarget;
     private void Awake()
     {
         sinnerTypeList = new List<SinnerType>();
@@ -139,6 +144,8 @@ public class Sinner : MonoBehaviour
         spriteRenderer.color = new Color(1.0f, 0.4f, 0.0f);
         //spriteRenderer.color = new Color(255.0f, 255.0f, 255.0f);
         StartCoroutine(AddListMyname());
+        qliphothRanpage = false;
+        LoadQliphothRanpage();
     }
     /// <summary>
     /// 配達されうる荷物の初期化
@@ -166,7 +173,12 @@ public class Sinner : MonoBehaviour
     virtual public void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
         progressGraph.SinnerList.Remove(sinnerName);
+        DeleteRanpage();
         spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
+
+        ItemID_031 delta = GameObject.FindAnyObjectByType<ItemID_031>();
+        StartCoroutine(delta.WeakingMood(deliveryItems[itemID], sinnerName));
+
         ReceivedItemID = itemID;
         this.deliveryProcessID = deliveryProcessID;
         this.deliveryLineID = deliveryLineID;
@@ -188,7 +200,7 @@ public class Sinner : MonoBehaviour
             deliveryCount++;
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
-
+        DeliveryProgressCheck();
     }
     /// <summary>
     /// 異常発生時に呼ぶ仮想関数
@@ -198,7 +210,7 @@ public class Sinner : MonoBehaviour
         specifyingDeliveryRoutes.TotalAbnormal++;
         string str = sinnerName + ":異常発生。\n直ちに損害を確認してください。";
         announceManager.MakeAnnounce(str);
-        effect.SetActive(true);
+        //effect.SetActive(true);
         audioManager.PlaySE(audioClips[2]);
     }
     /// <summary>
@@ -319,7 +331,7 @@ public class Sinner : MonoBehaviour
             }
         };
     }
-    protected void LoadSinnerObject()
+    protected void LoadSinnerIconObject()
     {
         string path = "SinnerObject";
         Addressables.LoadAssetAsync<GameObject>(path).Completed += handle =>
@@ -327,6 +339,22 @@ public class Sinner : MonoBehaviour
             if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
             {
                 sinnerIconObject = handle.Result;
+            }
+            else
+            {
+                Debug.LogError($"Failed to load sprite at path: {path}");
+            }
+        };
+    }
+
+    protected void LoadQliphothRanpage()
+    {
+        string path = "QliphothRanpage";
+        Addressables.LoadAssetAsync<GameObject>(path).Completed += handle =>
+        {
+            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            {
+                qliphothRanpageObject = handle.Result;
             }
             else
             {
@@ -370,6 +398,22 @@ public class Sinner : MonoBehaviour
         {
             announceManager.MakeAnnounce("本日のノルマは達成しましたが、全シナーへの配達が未完了です。");
             announceManager.MakeAnnounce("全シナーへの配達を完了し本日の業務を終了して下さい。");
+        }
+    }
+
+    public void QliphothRanpage()
+    {
+        ranpageTarget =
+        Instantiate(qliphothRanpageObject, transform.position, Quaternion.identity, transform);
+        qliphothRanpage = true;
+    }
+
+    public void DeleteRanpage()
+    {
+        if (qliphothRanpage)
+        {
+            qliphothRanpage = false;
+            Destroy(ranpageTarget);
         }
     }
 }

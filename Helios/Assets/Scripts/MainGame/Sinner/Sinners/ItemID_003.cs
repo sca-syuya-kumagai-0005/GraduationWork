@@ -44,7 +44,11 @@ public class ItemID_003 : Sinner
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
         progressGraph.SinnerList.Remove(sinnerName);
+        DeleteRanpage();
         spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
+
+        ItemID_031 delta = GameObject.FindAnyObjectByType<ItemID_031>();
+        StartCoroutine(delta.WeakingMood(deliveryItems[itemID], sinnerName));
         if (genesisPhase == 8)
         {
             player.Health -= 666;
