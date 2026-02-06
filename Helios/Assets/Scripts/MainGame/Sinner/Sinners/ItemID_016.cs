@@ -3,6 +3,7 @@ public class ItemID_016 : Sinner
 {
     bool inCamera;
     float timer;
+    const float timeLimit = 5.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,6 +27,11 @@ public class ItemID_016 : Sinner
         if (inCamera)
         {
             timer += Time.deltaTime;
+        }
+        if (timer >= timeLimit)
+        {
+            timer -= timeLimit;
+            AbnormalPhenomenon();
         }
     }
     public override void AbnormalPhenomenon()
