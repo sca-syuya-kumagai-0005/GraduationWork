@@ -63,6 +63,11 @@ public class ItemID_005 : Sinner
             yield return null;
         }
         timeLine.RemoveAbnormalityList(sinnerName);
-        announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+        base.Release(sinnerName);
+    }
+
+    public override void Release(string name)
+    {
+
     }
 }

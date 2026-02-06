@@ -197,7 +197,7 @@ public class Sinner : MonoBehaviour
         {
             audioManager.PlaySE(audioClips[0]);
         }
-            deliveryCount++;
+        deliveryCount++;
         progressGraph.AddProgress();
         Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
         DeliveryProgressCheck();
@@ -238,6 +238,8 @@ public class Sinner : MonoBehaviour
         if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("紅い糸"))
         if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["紅い糸"]) debuff += 50;
 
+        if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("自覚の道は己が夢"))
+            if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["自覚の道は己が夢"]) debuff += 5;
         DamageLevel damageLevel = DamageLevel.None;
         probability += debuff;
         if (probability < 100)
@@ -276,6 +278,9 @@ public class Sinner : MonoBehaviour
 
         if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("紅い糸"))
             if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["紅い糸"]) debuff += 50;
+
+        if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID].ContainsKey("自覚の道は己が夢"))
+            if (specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID]["自覚の道は己が夢"]) debuff += 5;
 
         DamageLevel damageLevel = DamageLevel.None;
         probability += debuff;
@@ -385,6 +390,10 @@ public class Sinner : MonoBehaviour
         _liskClass = (int)liskClass;
         string str = sinnerID.Split(underbar)[1];
         _sinnerID = int.Parse(str);
+    }
+    public virtual void Release(string name)
+    {
+        announceManager.MakeAnnounce(name + "の異常は解消されました。");
     }
     protected IEnumerator AddListMyname()
     {

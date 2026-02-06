@@ -65,9 +65,7 @@ public class ItemID_009 : Sinner
         {
             if (deliveryItems[itemID] == Mood.Exception)
             {
-                Destroy(mapObject);
-                deliveryItems[7] = Mood.Trust;
-                announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+                Release(sinnerName);
             }
             progressGraph.AddProgress();
             Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
@@ -88,5 +86,12 @@ public class ItemID_009 : Sinner
         isAbnormality = true;
 
         deliveryItems[7] = Mood.Exception;
+    }
+    public override void Release(string name)
+    {
+        Destroy(mapObject);
+        deliveryItems[7] = Mood.Trust;
+        announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+        base.Release(sinnerName);
     }
 }

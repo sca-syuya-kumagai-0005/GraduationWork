@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 public class ItemID_022 : Sinner
 {
@@ -12,17 +13,56 @@ public class ItemID_022 : Sinner
         sinnerName = "後奏のベル";
         LoadSprite("ID022");
         effect = effectObjectParent.transform.GetChild(21).gameObject;
+        progressGraph.SinnerList.Remove(sinnerName);
+        spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
     }
-    // Update is called once per frame
-    void Update()
+    public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
+    {
+        StartCoroutine(Deth());
+    }
+    public override void Release(string name)
     {
 
     }
-    public override void AbnormalPhenomenon()
-    {
-        //全ての異常において共通で起きる事があれば↓を変更
-        base.AbnormalPhenomenon();
 
-        //それぞれの処理はここに書く
+    private IEnumerator Deth()
+    {
+        bool isEnd = false;
+        float t = 0.0f;
+        float[] intervals = new float[15]
+        {
+            0.0f,1.0f,0.9f,0.8f,0.8f,
+            0.7f,0.6f,0.5f,0.4f,0.3f,
+            0.1f,0.1f,0.1f,0.1f,0.5f,
+        };
+        string[] texts = new string[15]
+        {
+            "『■■■■』に配達が\n完了しました。",
+            "『■■■■』に配達が\n完了しました。",
+            "『■奏■■』に配達が\n完了■ました。",
+            "『■奏■ル』に配達が\n完了■ま■た。",
+            "『後奏■ル』に配達が\n完了し■■まし■。",
+            "『後奏ベル』に配達が\n完了■■し■い■た。",
+            "『後奏ベル』に配達が\n完了し■■■い■た。",
+            "『後奏ベル』に配達が\n完了■■■ま■■し■。",
+            "『後奏ベル』に配達が\n完了■■■■ま■■た。",
+            "『後奏ベル』に配達が\n完了■てし■■ま■た。",
+            "『後奏ベル』に配達が\n完了してし■いま■た。",
+            "『後奏ベル』に配達が\n完了し■しまいました。",
+            "『後奏ベル』に配達が\n完了してしまいました。",
+            "『後奏ベル』に配達が\n完了してしまいました。",
+            "『後奏ベル』に配達が\n完了してしまいました。",
+        };
+        audioManager.FadeOutBGM(3.0f);
+        for (int i = 0; i < intervals.Length; i++)
+        {
+            yield return new WaitForSeconds(intervals[i]);
+            announceManager.MakeAnnounce(texts[i]);
+            if (i == 5)
+            {
+                effect.SetActive(true);
+                player.Health -= 666;
+            }
+        }
     }
 }

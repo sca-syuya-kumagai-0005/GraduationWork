@@ -84,4 +84,13 @@ public class ItemID_007 : Sinner
             }
         }
     }
+
+    public override void Release(string name)
+    {
+        for(int i = 0; i < specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
+        {
+            specifyingDeliveryRoutes.SinnerDebuff[i][sinnerName] = false;
+        }
+        base.Release(sinnerName);
+    }
 }

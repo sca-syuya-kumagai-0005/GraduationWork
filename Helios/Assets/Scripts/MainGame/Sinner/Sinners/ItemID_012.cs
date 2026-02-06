@@ -87,4 +87,9 @@ public class ItemID_012 : Sinner
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
         isAbnormality = true;
     }
+
+    public override void Release(string name)
+    {
+
+    }
 }

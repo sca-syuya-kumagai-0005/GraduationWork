@@ -10385,7 +10385,7 @@ MonoBehaviour:
   pin: {fileID: 999455212}
   unMask: {fileID: 388497663}
   screen: {fileID: 120075151}
-  isTutorial: 1
+  isTutorial: 0
 --- !u!114 &624398569 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3780268872884376340, guid: 722534760e37df54ca82a571061a11d7, type: 3}
@@ -12617,6 +12617,7 @@ GameObject:
   - component: {fileID: 822925928}
   - component: {fileID: 822925929}
   - component: {fileID: 822925930}
+  - component: {fileID: 822925931}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -12775,6 +12776,27 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
+--- !u!65 &822925931
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822925924}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 20, y: 12, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &824544197
 GameObject:
   m_ObjectHideFlags: 0
