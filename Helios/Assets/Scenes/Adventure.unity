@@ -428,8 +428,11 @@ MonoBehaviour:
   - {fileID: 1680258338}
   - {fileID: 263142441}
   audioClip:
-  - {fileID: 8300000, guid: a8e0cef4865b2194e8cbd26c64317d24, type: 3}
   - {fileID: 8300000, guid: 00b371d99faf4c54290730a977c1f8e0, type: 3}
+  - {fileID: 8300000, guid: a8e0cef4865b2194e8cbd26c64317d24, type: 3}
+  - {fileID: 8300000, guid: 9ef564d027c0546449889cc9ae3994d8, type: 3}
+  - {fileID: 8300000, guid: 2aed91a8d01d75e459e19638e94e91f5, type: 3}
+  - {fileID: 8300000, guid: 01e3d975da4f2d944b12a07248cd534f, type: 3}
 --- !u!1 &263142440
 GameObject:
   m_ObjectHideFlags: 0
