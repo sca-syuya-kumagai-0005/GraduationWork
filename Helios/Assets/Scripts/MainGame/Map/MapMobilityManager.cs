@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapMobilityManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class MapMobilityManager : MonoBehaviour
     [SerializeField, Range(-1, 1)] int horizontal;
     [SerializeField, Range(-1, 1)] int vertical;
 
-    [SerializeField]private string northKey = "W";
+    [SerializeField]private string northKey = "U";
     public string NorthKey {  get { return northKey; } }    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,10 +24,28 @@ public class MapMobilityManager : MonoBehaviour
 
 
         Vector3 mouseDelta = Input.mousePositionDelta;
+        if (this.transform.position.x > 0)
+        {
+            this.transform.position = new Vector3(0, this.transform.position.y, 0);
+        }
+        if (this.transform.position.x < -70)
+        {
+            this.transform.position = new Vector3(-70, this.transform.position.y, 0);
+        }
+        if (this.transform.position.y > 80)
+        {
+            this.transform.position = new Vector3(this.transform.position.x, 80, 0);
+        }
+        if (this.transform.position.y < 0)
+        {
+            this.transform.position = new Vector3(this.transform.position.x, 0, 0);
+        }
         if (Input.GetMouseButton(1))
         {
-            this.transform.position += mouseDelta * Time.deltaTime*2;
+         
+                this.transform.position += mouseDelta * Time.deltaTime * 2;
         }
+               
         this.transform.position += DirctionSet() * Time.deltaTime / speed;
     }
 
