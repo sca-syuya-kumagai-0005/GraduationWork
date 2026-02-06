@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 public class ItemID_031 : Sinner
 {
+    int abnormalityCount;
     private SinnerDistribute distribute;
     List<Sinner> allSinners;
     float timeLimit;
@@ -11,6 +12,8 @@ public class ItemID_031 : Sinner
     int count;
     GameObject qliphothCounter;
     LastBossCount lastBossCount;
+    GameObject beam;
+    AudioClip audioClip;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,6 +26,7 @@ public class ItemID_031 : Sinner
         LoadSprite("ID031");
         LoadQliphothRanpage();
         LoadQliphothCounter();
+        LoadBeamObject();
         effect = effectObjectParent.transform.GetChild(27).gameObject;
 
         progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
@@ -31,6 +35,8 @@ public class ItemID_031 : Sinner
         StartCoroutine(GetAllSinner());
         timer = 0.0f;
         count = 0;
+        abnormalityCount = 0;
+        audioClip = Resources.Load<AudioClip>("SinnersSE/LastBoss_beam");
     }
     // Update is called once per frame
     private void Update()
@@ -101,7 +107,12 @@ public class ItemID_031 : Sinner
     {
         //全ての異常において共通で起きる事があれば↓を変更
         base.AbnormalPhenomenon();
+        for (int i = 0; i < allSinners.Count; i++) allSinners[i].DeleteRanpage();
+        if (lastBossCount != null) StartCoroutine(lastBossCount.FadeOut());
+        lastBossCount = null;
         count = 0;
+        abnormalityCount++;
+        progressGraph.AccessProgres *= 0.7f;
         StartCoroutine(Beam());
     }
     private IEnumerator Beam()
@@ -111,6 +122,12 @@ public class ItemID_031 : Sinner
         const float beamInterval = 5.0f;
         float timer = 0.0f;
         const float timeLimit = 180.0f;
+        int[] beams = new int[4];
+        for(int i = 0; i < abnormalityCount; i++)
+        {
+            beams[i % 4]++;
+        }
+
         while (!isEnd)
         {
             timer += Time.deltaTime;
@@ -118,7 +135,43 @@ public class ItemID_031 : Sinner
             if (intervalCount >= beamInterval)
             {
                 intervalCount -= beamInterval;
-                Debug.Log("ビーム！！！！！！！！！！");
+                for (int i = 0; i < beams.Length; i++)
+                {
+                    for(int j = 0; j < beams[i]; j++)
+                    {
+                        Vector3 beamPos = new Vector3();
+                        int beamRotZ = 0;
+                        int rand = 0;
+                        switch (i)
+                        {
+                            case 0:
+                                rand = Random.Range(-80, -19);
+                                beamPos = new Vector3(0, rand, 0);
+                                beamRotZ = 270;
+                                break;
+                            case 1:
+                                rand = Random.Range(0, 61);
+                                beamPos = new Vector3(rand, -75, 0);
+                                beamRotZ = 0;
+                                break;
+                            case 2:
+                                rand = Random.Range(-80, -19);
+                                beamPos = new Vector3(55, rand, 0);
+                                beamRotZ = 90;
+                                break;
+                            case 3:
+                                rand = Random.Range(0, 61);
+                                beamPos = new Vector3(rand, 0, 0);
+                                beamRotZ = 180;
+                                break;
+                        }
+                        GameObject beamObject=
+                        Instantiate(beam,transform.parent.parent);
+                        beamObject.transform.localPosition = beamPos;
+                        beamObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, beamRotZ));
+                    }
+                }
+                audioManager.PlaySE(audioClip);
             }
             if (timer >= timeLimit) isEnd = true;
             yield return null;
@@ -161,6 +214,21 @@ public class ItemID_031 : Sinner
             if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
             {
                 qliphothCounter = handle.Result;
+            }
+            else
+            {
+                Debug.LogError($"Failed to load sprite at path: {path}");
+            }
+        };
+    }
+    private void LoadBeamObject()
+    {
+        string path = "Beam";
+        Addressables.LoadAssetAsync<GameObject>(path).Completed += handle =>
+        {
+            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            {
+                beam = handle.Result;
             }
             else
             {

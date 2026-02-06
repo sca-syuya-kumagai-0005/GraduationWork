@@ -8,7 +8,7 @@ public class ProgressGraph : MonoBehaviour
     [SerializeField]
     private Image image;
     private int progress;
-    public float GetProgres { get { return (float)progress / norm; } }
+    public float AccessProgres { get { return (float)progress / norm; } set { progress = (int)value; } }
     private int norm;//ƒmƒ‹ƒ}A‚»‚Ì‚¤‚¿‘‚¦•û•Ï‚¦‚é
     private int tutorialNorm = 1;
     private TimeLine timeLine;
