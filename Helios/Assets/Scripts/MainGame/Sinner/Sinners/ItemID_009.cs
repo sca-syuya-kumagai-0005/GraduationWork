@@ -41,7 +41,9 @@ public class ItemID_009 : Sinner
         spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
 
         ItemID_031 delta = GameObject.FindAnyObjectByType<ItemID_031>();
-        StartCoroutine(delta.WeakingMood(deliveryItems[itemID], sinnerName));
+        if (delta != null)
+            StartCoroutine(delta.WeakingMood(deliveryItems[itemID], sinnerName));
+
         if (deliveryItems[7] != Mood.Exception)
         {
             if (timeLine.TimeStateAccess == TimeLine.TimeState.Night || deliveryProcessID == 0)
