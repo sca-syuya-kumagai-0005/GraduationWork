@@ -35,9 +35,31 @@ public class TitleManager : MonoBehaviour
         StartCoroutine(TitleStart());
     }
 
+    float time = 0;
+    const float waitTime = 45;
     void Update()
     {
+        Wait();
         InputSlingerMove();
+    }
+
+    [Button]
+    public void DebugButton()
+    {
+        time += 50f;
+    }
+
+
+    void Wait()
+    {
+        if (!isSelect) return;
+        time += Time.deltaTime;
+        if (time >= waitTime)
+        {
+            isSelect = false;
+            time = 0;
+            StartCoroutine(animationManager.VideoAnim());
+        }
     }
 
     void InputSlingerMove()
@@ -60,6 +82,7 @@ public class TitleManager : MonoBehaviour
     public void SlingerButton(int _dir)
     {
         if (!isSelect || slingerMove.isMove) return;
+        time = 0f;
         Locator<AudioManager>.Instance.PlaySE(slingerSE);
         select = ((int)select + _dir < 0) ? Select.END : (Select)(((int)select + (int)_dir) % (int)Select.MAX);
         StartCoroutine(slingerMove.Move(_dir));
@@ -85,7 +108,7 @@ public class TitleManager : MonoBehaviour
         Instantiate(optionCanvasObj);
     }
 
-    public void CloseMyRoom()
+    public void BackTitleSelect()
     {
         Locator<AudioManager>.Instance.PlaySE(selectSE);
         StartCoroutine(animationManager.BackTitleSelect());
