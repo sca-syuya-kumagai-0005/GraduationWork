@@ -14,6 +14,7 @@ using static KumagaiLibrary.String;
 //これは配達を管理するScriptです
 public class SpecifyingDeliveryRoutes : MonoBehaviour
 {
+    [SerializeField]Sprite[] driverSprite;
     private float clownSpeed=1;
     public float ClownSpeed { set { clownSpeed = value; } }
     private float swordSpeed = 1;
@@ -376,6 +377,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
     private IEnumerator DriverMove(int driverID)
     {
         GameObject obj = driver[driverID];
+        SpriteRenderer sr = driver[driverID].GetComponent<SpriteRenderer>();
         bool lastIsConfison = false;
         List<MapData> lastList = new List<MapData>();
         List<MapData> nowList = new List<MapData>();
@@ -390,23 +392,29 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
             
             // Vector3 dir = ((routesPosition[driverID][i]+mapObject.transform.localPosition) - obj.transform.position).normalized;
             //Vector3 lastDirction = dir;
+            
             switch (deliveryProcess[driverID])
             {
                 case 0:
                     {
                         speed[driverID] = 0.35f;
-
+                        sr.sprite = driverSprite[0];
+                        driver[driverID].transform.localScale=new Vector3(0.05f,0.05f,0.05f);
                         //ここいじる
                     }
                     break;
                 case 1:
                     {
                         speed[driverID] = 0.5f;
+                        sr.sprite = driverSprite[1];
+                        driver[driverID].transform.localScale = new Vector3(0.015f,0.015f,0.015f);
                     }
                     break;
                 case 2:
                     {
                         speed[driverID] = 1f;
+                        sr.sprite = driverSprite[2];
+                        driver[driverID].transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
                     }
                     break;
             }
@@ -899,6 +907,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
     private IEnumerator DriverMove(int driverID, List<Vector3> positionID)
     {
+        SpriteRenderer sr = driver[driverID].GetComponent<SpriteRenderer>();
         GameObject obj = driver[driverID];
         bool lastIsConfison = false;
         List<MapData> lastList = new List<MapData>();
@@ -917,16 +926,22 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 case 0:
                     {
                         speed[driverID] = 0.35f;
+                        sr.sprite = driverSprite[0];
+                        driver[driverID].transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
                     }
                     break;
                 case 1:
                     {
                         speed[driverID] = 0.5f;
+                        sr.sprite = driverSprite[0];
+                        driver[driverID].transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
                     }
                     break;
                 case 2:
                     {
                         speed[driverID] = 1f;
+                        sr.sprite = driverSprite[0];
+                        driver[driverID].transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
                     }
                     break;
             }

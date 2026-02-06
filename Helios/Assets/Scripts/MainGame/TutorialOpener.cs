@@ -21,12 +21,13 @@ public class TutorialOpener : MonoBehaviour
 
             var results = new System.Collections.Generic.List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
-
-            //Debug.Log("Raycast hits:");
+            
+            
             foreach (var hit in results)
             {
                 if (hit.gameObject.name == "TutorialButton")
                 {
+                    Debug.Log(hit.gameObject.name);
                     tutorial.gameObject.SetActive(true);
                 }
 
