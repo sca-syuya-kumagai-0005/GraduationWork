@@ -47,6 +47,8 @@ public class TitleAnimationManager : MonoBehaviour
     [SerializeField, Header("自室演出")] GameObject myRoomObj;
     [SerializeField] GameObject myRoomBackGround;
     [SerializeField, Header("メモリースリンガー演出")] GameObject memorySlingerObj;
+    [SerializeField,Header("動画")] GameObject videoObj;
+    [SerializeField] TitleVideoPlayer titleVideoPlayer;
 
     bool skip = false;
     float time = 0;
@@ -206,6 +208,15 @@ public class TitleAnimationManager : MonoBehaviour
     {
         yield return StartCoroutine(FadeAnimation(1f, 0.5f));
         SetNowTitleMode(memorySlingerObj);
+        yield return StartCoroutine(FadeAnimation(0f, 0.5f));
+    }
+
+    public IEnumerator VideoAnim()
+    {
+        yield return StartCoroutine(FadeAnimation(1f, 0.5f));
+        volume.SetActive(false);
+        SetNowTitleMode(videoObj);
+        titleVideoPlayer.PlayVideo();
         yield return StartCoroutine(FadeAnimation(0f, 0.5f));
     }
 
