@@ -14,7 +14,7 @@ public class ItemID_014 : Sinner
         sinnerID = "ItemID_014";
         sinnerName = "パンツァー - TSD型 - 車掌";
         LoadSprite("ID014");
-        LoadSinnerObject();
+        LoadSinnerIconObject();
         effect = effectObjectParent.transform.GetChild(13).gameObject;
         const string underBar = "_";
         string myPositionText = gameObject.name;

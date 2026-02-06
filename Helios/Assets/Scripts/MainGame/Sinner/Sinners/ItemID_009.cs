@@ -15,7 +15,7 @@ public class ItemID_009 : Sinner
         sinnerID = "ItemID_009";
         sinnerName = "‹€‚¿‚½“V”n";
         LoadSprite("ID009");
-        LoadSinnerObject();
+        LoadSinnerIconObject();
         effect = effectObjectParent.transform.GetChild(8).gameObject;
 
         distribute = GameObject.Find("Map").gameObject.GetComponent<SinnerDistribute>();
@@ -37,7 +37,11 @@ public class ItemID_009 : Sinner
     public override void ReceiptDeliveryInformation(int itemID, int deliveryProcessID, int deliveryLineID)
     {
         progressGraph.SinnerList.Remove(sinnerName);
+        DeleteRanpage();
         spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
+
+        ItemID_031 delta = GameObject.FindAnyObjectByType<ItemID_031>();
+        StartCoroutine(delta.WeakingMood(deliveryItems[itemID], sinnerName));
         if (deliveryItems[7] != Mood.Exception)
         {
             if (timeLine.TimeStateAccess == TimeLine.TimeState.Night || deliveryProcessID == 0)
@@ -49,7 +53,7 @@ public class ItemID_009 : Sinner
                 return;
             }
             bool notPassedZoo = false;
-            if (specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.ZOO))
+            if (!specifyingDeliveryRoutes.DeleveryData[deliveryLineID].Contains((int)Map.MapObjectID.ZOO))
             {
                 IncreaseProbabilitys(90.0f);
                 notPassedZoo = true;

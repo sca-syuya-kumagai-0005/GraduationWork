@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Unity.VisualScripting;
@@ -43,7 +44,7 @@ public class SinnerDistribute : MonoBehaviour
     public List<GameObject>[] GetSinnerHousedObjects { get { return sinnerHousedObjects; } }
     private List<int>[] sinnerPools = new List<int>[poolSize]
     {
-        new List<int> { 2, 4, 5,12,13,16,17,23,12,13},
+        new List<int> { 2, 4, 5,12,13,16,17,23,12,27},
         new List<int> { 3 ,6, 7,19,20,21,22,24,27,20},
         new List<int> { 1, 8, 9,10,14,25,26, 9,10,14},
         new List<int> {31}
@@ -81,8 +82,6 @@ public class SinnerDistribute : MonoBehaviour
     {
         unmaskBlock = GameObject.Find("UnMaskBlock").gameObject;
         tutorialMG = GameObject.Find("TutorialMG").GetComponent<TutorialMG>();
-        //unmaskBlock.SetActive(tutorialMG.IsTutorial);
-        //tutorialMG.gameObject.SetActive(tutorialMG.IsTutorial);
         saveDataManager = GameObject.Find("SaveManager").GetComponent<SaveDataManager>();　
        
         for (int i = 0; i < plotContainedSinner.Length; i++)
@@ -103,8 +102,16 @@ public class SinnerDistribute : MonoBehaviour
             int gamePhase = GetGamePhase(saveDataManager.Days);
             Distribute(gamePhase);
             saveDataManager.HousedSinner = housed;
-
+            StartCoroutine(ActiveFalse());
         }
+    }
+    
+    private IEnumerator ActiveFalse()
+    {
+        yield return new WaitForEndOfFrame();
+
+        unmaskBlock.SetActive(tutorialMG.IsTutorial);
+        tutorialMG.gameObject.SetActive(tutorialMG.IsTutorial);
     }
 
     private void Distribute(int gamePhase)
