@@ -1,4 +1,4 @@
-﻿PlayBGM_ADV_wonder,
+﻿PlayBGM,ADV_wonder
 SetCharacter_A,黒影　零司
 SetSpeakTiming,0
 Speak_A,お疲れ。本日もよろしく頼むよ。
@@ -18,7 +18,7 @@ Speak_A,となればだ。シナーは少なくとも危ない存在であると
 Speak_A,しっかりと資料を確認し、それぞれの|シナーに必要な対応を行ってくれ。
 Speak_A,質問の答えとしてはこんなもので大丈夫か？
 SetCharacter_D,アナウンス
-Speak_D,ピィー…ッガガ。
+Speak_D,ピィー……ッガガ。
 Speak_D,――月2日。|本日の運送業務を開始します。
 RemoveCharacter_D,
 Speak_A,おっとすまない。|まだまだ知りたいことはあるだろうが|今日はここまでのようだ。

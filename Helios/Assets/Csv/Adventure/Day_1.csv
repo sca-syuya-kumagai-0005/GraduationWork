@@ -1,4 +1,4 @@
-﻿PlayBGM_ADV_everyday,
+﻿PlayBGM,ADV_everyday
 SetCharacter_A,黒影　零司
 SetSpeakTiming,0
 Speak_A,ようこそ。|「Rest Rain Corporation」へ。
@@ -20,7 +20,7 @@ Speak_A,立ち上げられて間もない若い会社でね、|ノウハウも�
 Speak_A,わからないことだらけだろうが、|そのための「知る」時間だ。
 Speak_A,ゆっくりと慣れていってほしい。
 SetCharacter_D,アナウンス
-Speak_D,ピィー…ッガガ。
+Speak_D,ピィー……ッガガ。
 Speak_D,――月1日。|本日の運送業務を開始します。
 RemoveCharacter_D,
 Speak_A,おっと、もうこんな時間か。

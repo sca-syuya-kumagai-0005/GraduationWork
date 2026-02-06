@@ -1,4 +1,5 @@
-﻿SetCharacter_A,同僚B
+﻿PlayBGM,ADV_despair
+SetCharacter_A,色織　叶芽
 SetSpeakTiming,0
 Speak_A,……あっ、本日は少し遅かったですね、|先輩。
 Speak_A,やはり疲れが溜まっているようですね……。
@@ -11,14 +12,18 @@ Speak_A,…………強いんですね先輩は。
 Speak_A,ふぅ……。無理しないでくださいね。
 Speak_A,私は先輩のサポートを任されていますから。
 Speak_A,えぇ、大船に乗ったつもりでいてください。
+StopBGM,
+PlayBGM,ADV_everyday
 Speak_A,では、本日初めのサポートとしてコーヒーはいかがですか？
 Speak_A,――はい。ちょっとお待ちくださいね。
+SetSpeakTiming,1
 Speak_A,――――――どうぞ、コーヒーです。
+SetSpeakTiming,0
 Speak_A,ふふっ……、大学の研究室でコーヒーを|淹れていた時を思い出してしまいました。
 Speak_A,お口に合いますか？
 Speak_A,――――はい。|お口に合ったのなら嬉しいです。
 SetCharacter_D,アナウンス
-Speak_D,ピィー…ッガガ。
+Speak_D,ピィー……ッガガ。
 Speak_D,――月21日。|本日の運送業務を開始します。
 RemoveCharacter_D,
 Speak_A,――――もうこんな時間なんですね。

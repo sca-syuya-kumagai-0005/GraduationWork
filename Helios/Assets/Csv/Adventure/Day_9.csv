@@ -1,4 +1,5 @@
-﻿SetCharacter_A,同僚A
+﻿PlayBGM,ADV_despair
+SetCharacter_A,知鳴　朔人
 SetCharacter_D,テレビアナウンサー
 SetSpeakTiming,0
 Speak_D,次のニュースです。
@@ -27,12 +28,14 @@ Speak_A,母さんに少しでも楽させるためにも、|来る日も来る�
 Speak_A,それでも生活は苦しかった。|より一層母さんが仕事に行ってな。
 Speak_A,ついに限界が来て、今は療養中ってわけだ。
 Speak_A,そんな母さんに恩返しするためにもお金が|必要ってこった。
+StopBGM,
+PlayBGM,ADV_everyday
 Speak_A,ふ～。とまあ、そんな感じだ。
 Speak_A,あんまりいい話じゃなかっただろ？
 Speak_A,とはいえ、話したら少しすっきりしたよ。
 SetCharacter_D,アナウンス
-Speak_D,ピィー…ッガガ。
-Speak_D,――月9日。本日の運送業務を開始します。
+Speak_D,ピィー……ッガガ。
+Speak_D,――月9日。|本日の運送業務を開始します。
 RemoveCharacter_D,
 Speak_A,もうこんな時間か。
 Speak_A,話を聞いてくれて、ありがとう。

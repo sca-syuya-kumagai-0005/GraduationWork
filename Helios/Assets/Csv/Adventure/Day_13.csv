@@ -1,8 +1,9 @@
-﻿SetCharacter_D,
+﻿PlayBGM,ADV_despair
+SetCharacter_D,
 SetSpeakTiming,0
 Speak_D,《休憩室に向かうと、同僚Aが荒い呼吸で|真っ暗な画面を見つめていた。》
 RemoveCharacter_D,
-SetCharacter_A,同僚A
+SetCharacter_A,知鳴　朔人
 Speak_A,はぁっ……、はぁっ……。
 Speak_A,俺は何もやってない……。
 Speak_A,そんな記憶なんてない……。
@@ -10,6 +11,7 @@ Speak_A,嘘だ……。あれは、きっと……|悪い夢なんだ。
 Speak_A,……っ、電話？
 Speak_A,もしもし……、はい。そうですが……。
 SetSpeakTiming,1
+StopBGM,
 Speak_A,――――は？
 SetSpeakTiming,0.5
 Speak_A,母さんが――しん、だ――？
@@ -21,13 +23,14 @@ Speak_A,っそうだ……！|夢ならそのうち覚めるよ…な？
 Speak_A,これは、悪い夢……。夢なんだ……。
 Speak_A,悪い夢だよ、な……。
 RemoveCharacter_A,
-SetCharacter_A,上司
+SetCharacter_A,黒影　零司
 Speak_A,お疲れ。
-Speak_A,この時間なら、同僚A君が一緒にいると|思ったが……。
+Speak_A,この時間なら、知鳴君が一緒にいると|思ったが……。
 Speak_A,ふむ……。誰が見ても心配するような|表情で、ふらふらと休憩室から出ていった、|と……。
 Speak_A,どんな状態だったか、詳しく聞かせて|くれないか？
 Speak_A,電源のついていないテレビを見つめ、|外からの電話を取っていた……？
 Speak_A,おかしいな……。本来、ここでは外からの|電話は遮断されているはずだが……？
+PlayBGM,ADV_danger
 Speak_A,――っ！
 Speak_A,すまないが私は彼を追いかけてくる！
 Speak_A,君は先に業務を開始してくれ！

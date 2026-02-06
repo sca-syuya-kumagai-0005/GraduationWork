@@ -1,14 +1,17 @@
-﻿SetCharacter_A,上司
+﻿PlayBGM,ADV_despair
+SetCharacter_A,黒影　零司
 SetSpeakTiming,0
 Speak_A,ああ、君か。お疲れ。
 Speak_A,昨日はすまなかった。君に業務のすべてを|任せる形になってしまって。
-Speak_A,それと……。彼の件についてだ。
+Speak_A,それと……。知鳴君の件についてだ。
 Speak_A,私が彼に追いついた時にはすべてが手遅れ|だった。
 Speak_A,それで、これから私は上に報告をしなくてはならない。
-Speak_A,君から当時の状況をもう一度詳しく聞く必要があってね。
+Speak_A,君から当時の状況について、|改めて詳しく聞く必要があってね。
 Speak_A,協力してもらえるか？
 SetSpeakTiming,2
-Speak_A,ありがとう。
+Speak_A,――――ありがとう。
+StopBGM,
+PlayBGM,ADV_wonder
 SetSpeakTiming,0
 Speak_A,では早速、聞かせてもらえるか？
 SetSpeakTiming,1

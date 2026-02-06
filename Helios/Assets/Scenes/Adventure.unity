@@ -417,6 +417,11 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 0ab29cf6066259e4a946c4032fd61f70, type: 3}
   - {fileID: 4900000, guid: 32ea004ff9729564cb14855ea55ba838, type: 3}
   - {fileID: 4900000, guid: 27264933c6b2f9344a18bedb45bc3d2e, type: 3}
+  - {fileID: 4900000, guid: 94c1694b4a8e9e341a8c96e992984803, type: 3}
+  - {fileID: 4900000, guid: ada4b29bbc7aa654faf5f2f07ed6083c, type: 3}
+  - {fileID: 4900000, guid: 1664b3a1d3fa63d4b88feda8a9bef272, type: 3}
+  - {fileID: 4900000, guid: ddb127c73a2b50e4ca7d6043816a4530, type: 3}
+  - {fileID: 4900000, guid: 838d236297e3e7e4f90abf3edc5797d0, type: 3}
   backGroundSprites:
   - {fileID: 21300000, guid: bee479ef6e12faf4f87cce59b5a87791, type: 3}
   characterSprites:
@@ -1306,7 +1311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c82d424f51bf5204fa93981441200300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeInTime: 3
 --- !u!114 &1151930667
 MonoBehaviour:
   m_ObjectHideFlags: 0

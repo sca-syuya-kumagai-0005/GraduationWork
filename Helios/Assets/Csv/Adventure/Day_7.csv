@@ -1,6 +1,7 @@
-﻿SetCharacter_A,同僚A
+﻿PlayBGM,ADV_everyday
+SetCharacter_A,知鳴　朔人
 SetSpeakTiming,0
-Speak_A,…ふわぁ…ん、んん。お疲れ～。
+Speak_A,……ふわぁ……ん、んん。お疲れ～。
 Speak_A,ん？あくびなんか珍しいって？
 Speak_A,そういうあんたも、|少し遅かったじゃないか。
 Speak_A,あんたも、あんまり疲れが|取れてないんだろ～?
@@ -17,9 +18,9 @@ Speak_A,俺はそういう人間だって言ったろ。
 Speak_A,とはいえ、頑張る為にも、もうすこ～し|睡眠時間が欲しいわ…。
 Speak_A,それも無理なら……|コーヒー飲んでみようかな。
 SetCharacter_D,アナウンス
-Speak_D,ピィー…ッガガ。
-Speak_D,――月7日。本日の運送業務を開始します。
+Speak_D,ピィー……ッガガ。
+Speak_D,――月7日。|本日の運送業務を開始します。
 RemoveCharacter_D,
-Speak_A,はぁ…。そんな時間はないらしい…。
+Speak_A,はぁ……。そんな時間はないらしい……。
 Speak_A,でもまあ、今日も頑張るとするか。
 End,

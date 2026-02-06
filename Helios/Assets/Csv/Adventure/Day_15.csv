@@ -1,4 +1,5 @@
-﻿SetCharacter_A,上司
+﻿PlayBGM,ADV_everyday
+SetCharacter_A,黒影　零司
 SetSpeakTiming,0
 Speak_A,お疲れ。すまないね。連日、君に頼り切って|しまう形になってしまって。
 Speak_A,今日は私も業務にあたることになる。|よろしく頼むよ。
@@ -7,7 +8,9 @@ Speak_A,なに、君のおかげで滞りなくできたからね。
 Speak_A,今日はその恩返しというのもある。
 Speak_A,ふむ……。そうだな……。
 Speak_A,あの件について少し話そうか。
+StopBGM,
 Speak_A,君にも関係がある話でもあるからな……。
+PlayBGM,ADV_despair
 Speak_A,あの件は、とあるシナーによる影響が主な|原因だった。
 Speak_A,先日の彼のミスが決め手となったのは事実|だが、直接的な原因はもっと前にあった。
 Speak_A,彼が起こした最初のミス、それが始まり|だった。
@@ -16,8 +19,10 @@ Speak_A,おそらく、その日を境に彼は悪夢を見る|ようになっ�
 Speak_A,悪夢の内容は分からないが、確実に衰弱|させる病原体としては十分だった。
 Speak_A,そうして蓄積された疲れは、管理区画が|増えたことによるミスを誘発させたという|わけだ。
 Speak_A,不幸に不幸が重なった結果と言えるが、私ももう少し気を配っていれれば彼を助けられたかもしれなかった。
+StopBGM,
 SetSpeakTiming,1
 Speak_A,………………。
+PlayBGM,ADV_everyday
 SetSpeakTiming,0
 Speak_A,ふむ……。しんみりとした話はここまでだ。
 Speak_A,君も何かあったら相談してくれ。
