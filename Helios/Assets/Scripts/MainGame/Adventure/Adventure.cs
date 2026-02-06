@@ -41,7 +41,9 @@ public class Adventure : EasingMethods
         SetCharacter = 0,
         RemoveCharacter, 
         SetSpeakTiming,
-        Speak,
+        Speak, 
+        PlayBGM,
+        StopBGM,
         End
     }
     private enum CharacterQuota
@@ -136,6 +138,14 @@ public class Adventure : EasingMethods
                         StartCoroutine(ViewText(data[commandTargetAdress], csvData[lines][column_Text]));
                         break;
 
+                    case nameof(Command.PlayBGM):
+                        StartCoroutine(PlayBGM(csvData[lines][column_Text]));
+                        break;
+
+                    case nameof(Command.StopBGM):
+                        StartCoroutine(StopBGM());
+                        break;
+
                     default:
                         StartCoroutine(ViewText("システム", lines + "行目で例外、または未対応コマンドが確認されました。"));
                         break;
@@ -177,13 +187,13 @@ public class Adventure : EasingMethods
         bool quotaIsD = false;
         switch (characterNames[quotaNumber])
         {
-            case "上司":
+            case "黒影　零司":
                 characters[quotaNumber].sprite = characterSprites[0];
                 break;
-            case "同僚A":
+            case "知鳴　朔人":
                 characters[quotaNumber].sprite = characterSprites[1];
                 break;
-            case "同僚B":
+            case "色織　叶芽":
                 characters[quotaNumber].sprite = characterSprites[2];
                 break;
             default:
@@ -306,7 +316,7 @@ public class Adventure : EasingMethods
             else messageBox.text += '\n';
             if (!isMassageSkipped)
             {
-                audioManager.PlaySE(audioClip[1]);
+                audioManager.PlaySE(audioClip[0]);
                 yield return new WaitForSeconds(textSpeed);
             }
         }
@@ -355,10 +365,36 @@ public class Adventure : EasingMethods
     /// </summary>
     /// <param name="sprite"></param>
     /// <returns></returns>
-    private IEnumerator ChangeBackGround(Sprite sprite)
+private IEnumerator PlayBGM(string bgm)
     {
-        //演出あるならどうぞ
-        gameObject.GetComponent<Image>().sprite = sprite;
-        yield return null;
+        AudioClip ac = null;
+        switch (bgm)
+        {
+            case "ADV_everyday":
+                ac = audioClip[1];
+                break;
+
+            case "ADV_danger":
+                ac = audioClip[2];
+                break;
+
+            case "ADV_despair":
+                ac = audioClip[3];
+                break;
+
+            case "ADV_wonder":
+                ac = audioClip[4];
+                break;
+        }
+        audioManager.PlayBGM(ac);
+        audioManager.FadeInBGM(0.5f);
+        yield return new WaitForSeconds(0.5f);
+        isComplete = true;
+    }
+    private IEnumerator StopBGM()
+    {
+        audioManager.FadeOutBGM(0.5f);
+        yield return new WaitForSeconds(0.5f);
+        isComplete = true;
     }
 }
