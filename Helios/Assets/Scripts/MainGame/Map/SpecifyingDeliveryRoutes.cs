@@ -457,10 +457,15 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
-                    if (recovering[driverID])
+                    while (breaking[driverID])
                     {
-                        yield break;
+                        if (recovering[driverID])
+                        {
+                            yield break;
+                        }
+                        yield return null;
                     }
+                  
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -604,10 +609,15 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
-                    if (recovering[driverID])
+                    while (breaking[driverID])
                     {
-                        yield break;
+                        if (recovering[driverID])
+                        {
+                            yield break;
+                        }
+                        yield return null;
                     }
+                   
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -681,9 +691,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
 
                 while (lastDirction == dir)
                 {
-                    if (recovering[driverID])
+                    while (breaking[driverID])
                     {
-                        yield break;
+                        if (recovering[driverID])
+                        {
+                            yield break;
+                        }
+                        yield return null;
                     }
                     if (dir.x == 1)
                     {
@@ -823,9 +837,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
-                    if (recovering[driverID])
+                    while (breaking[driverID])
                     {
-                        yield break;
+                        if (recovering[driverID])
+                        {
+                            yield break;
+                        }
+                        yield return null;
                     }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
@@ -963,9 +981,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
-                    if (recovering[driverID])
+                    while (breaking[driverID])
                     {
-                        yield break;
+                        if (recovering[driverID])
+                        {
+                            yield break;
+                        }
+                        yield return null;
                     }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
@@ -1076,9 +1098,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 while (lastDirction == dir)
                 {
                     lastDirction = dir;
-                    if (recovering[driverID])
+                    while (breaking[driverID])
                     {
-                        yield break;
+                        if (recovering[driverID])
+                        {
+                            yield break;
+                        }
+                        yield return null;
                     }
                     Vector3 vec = lastDirction * Time.deltaTime;
                     if (dir.x == 1)
@@ -1192,9 +1218,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
-                    if (recovering[driverID])
+                    while (breaking[driverID])
                     {
-                        yield break;
+                        if (recovering[driverID])
+                        {
+                            yield break;
+                        }
+                        yield return null;
                     }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
@@ -1304,9 +1334,13 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                 Vector3 lastDirction = dir;
                 while (lastDirction == dir)
                 {
-                    if (recovering[driverID])
+                    while (breaking[driverID])
                     {
-                        yield break;
+                        if (recovering[driverID])
+                        {
+                            yield break;
+                        }
+                        yield return null;
                     }
                     lastDirction = dir;
                     Vector3 vec = lastDirction * Time.deltaTime;
@@ -1668,6 +1702,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
         isItemSetting[driverID] = false;
         isProcessSetting[driverID] = false;
         isDriving[driverID] = false;
+        breaking[driverID] = false;
         driver[driverID].SetActive(false);
     }
 }
