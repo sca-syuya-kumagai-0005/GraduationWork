@@ -11,7 +11,7 @@ public class MapMobilityManager : MonoBehaviour
     [SerializeField, Range(-1, 1)] int vertical;
 
     [SerializeField]private string northKey = "W";
-    public string NorthKey {  get { return northKey; } }    
+    public string NorthKey {  get { return northKey; } set { northKey = value; } }    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

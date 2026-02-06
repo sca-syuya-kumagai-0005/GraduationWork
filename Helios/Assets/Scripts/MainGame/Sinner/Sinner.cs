@@ -211,7 +211,7 @@ public class Sinner : MonoBehaviour
         specifyingDeliveryRoutes.TotalAbnormal++;
         string str = sinnerName + ":異常発生。\n直ちに損害を確認してください。";
         announceManager.MakeAnnounce(str);
-        //effect.SetActive(true);
+        effect.SetActive(true);
         audioManager.PlaySE(audioClips[2]);
     }
     /// <summary>
