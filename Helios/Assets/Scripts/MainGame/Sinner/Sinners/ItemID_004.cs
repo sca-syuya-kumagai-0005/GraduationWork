@@ -24,10 +24,16 @@ public class ItemID_004 : Sinner
         base.AbnormalPhenomenon();
 
         //それぞれの処理はここに書く
-        if (specifyingDeliveryRoutes.SinnerDebuff[0].ContainsKey("君と歩んだクラゲ"))
+        string ID006 = "君と歩んだクラゲ";
+        if (specifyingDeliveryRoutes.SinnerDebuff[0].ContainsKey(ID006))
         {
-            specifyingDeliveryRoutes.SinnerDebuff[0]["君と歩んだクラゲ"] = false;
-            announceManager.MakeAnnounce("君と歩んだクラゲの異常は解消されました。");
+            specifyingDeliveryRoutes.SinnerDebuff[0][ID006] = false;
+            base.Release(ID006);
         }
+    }
+
+    public override void Release(string name)
+    {
+
     }
 }

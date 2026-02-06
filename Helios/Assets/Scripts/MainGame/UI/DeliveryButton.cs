@@ -21,6 +21,7 @@ public class DeliveryButton : EventSetter
     public ButtonType SetButtonType { set { myButtonType = value; } }
     private GameStateSystem gameState;
     private TutorialMG tutorialMG;
+    private bool isTutorialActive;
     private GameObject deliveryProcess;
     public GameObject SetDeliveryProcess { set { deliveryProcess = value; } }
     private Sprite[] buttonSprites = new Sprite[2];
@@ -32,7 +33,9 @@ public class DeliveryButton : EventSetter
     {
         specifyingDeliveryRoutes = GameObject.Find(driverTag).GetComponent<SpecifyingDeliveryRoutes>();
         gameState = GameObject.Find("GameState").GetComponent<GameStateSystem>();
-        tutorialMG = GameObject.Find("TutorialMG").GetComponent<TutorialMG>();
+        isTutorialActive = false;
+        tutorialMG = GameObject.FindAnyObjectByType<TutorialMG>();
+        //if(tutorialMG != null) isTutorialActive = true;
         myButton = gameObject.GetComponent<Image>();
     }
     private void OnEnable()
@@ -64,7 +67,7 @@ public class DeliveryButton : EventSetter
                     gameState.GameState = GameStateSystem.State.DeliveryPreparation;
                     //選択された配達物をSet
                     specifyingDeliveryRoutes.DeliveryItemSetting(myButtonID);
-                    if (tutorialMG.IsTutorial)
+                    if (isTutorialActive && tutorialMG.IsTutorial)
                         tutorialMG.ContinueFromOutside();
                     StartCoroutine(ChangeMySprite());
                     //配達方法UIをActiveにする
@@ -75,7 +78,7 @@ public class DeliveryButton : EventSetter
             case ButtonType.Process:
                 {
                     //対応するレーンを起動、配達方法をSet
-                    if (tutorialMG.IsTutorial)
+                    if (isTutorialActive && tutorialMG.IsTutorial)
                         tutorialMG.ContinueFromOutside();
                     specifyingDeliveryRoutes.DeliveryProcessSetting(myButtonID);
                     gameState.GameState = GameStateSystem.State.Wait;

@@ -43,8 +43,7 @@ public class ItemID_006 : Sinner
         {
             if (specifyingDeliveryRoutes.SinnerDebuff[0][sinnerName])
             {
-                specifyingDeliveryRoutes.SinnerDebuff[0][sinnerName] = false;
-                announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+                Release(sinnerName);
             }
         }
     }
@@ -55,5 +54,11 @@ public class ItemID_006 : Sinner
 
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
         specifyingDeliveryRoutes.SinnerDebuff[0][sinnerName] = true;
+    }
+
+    public override void Release(string name)
+    {
+        specifyingDeliveryRoutes.SinnerDebuff[0][sinnerName] = false;
+        base.Release(sinnerName);
     }
 }

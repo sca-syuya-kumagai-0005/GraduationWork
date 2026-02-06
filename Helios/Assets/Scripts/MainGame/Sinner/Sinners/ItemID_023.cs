@@ -35,11 +35,13 @@ public class ItemID_023 : Sinner
         {
             if (isAbnormality)
             {
-                isAbnormality = false;
-                IncreaseProbabilitys(-999.0f);
-                base.ReceiptDeliveryInformation(itemID, deliveryProcessID, deliveryLineID);
-                IncreaseProbabilitys(999.0f);
-                announceManager.MakeAnnounce(sinnerName + "ÇÃàŸèÌÇÕâè¡Ç≥ÇÍÇ‹ÇµÇΩÅB");
+                progressGraph.SinnerList.Remove(sinnerName);
+                DeleteRanpage();
+                spriteRenderer.color = new Color(0.25f, 1.0f, 0.15f);
+
+                progressGraph.AddProgress();
+                Destroy(gameObject.transform.Find("DestinationPin(Clone)").gameObject);
+                DeliveryProgressCheck();
                 return;
             }
             else
@@ -74,5 +76,11 @@ public class ItemID_023 : Sinner
 
         //ÇªÇÍÇºÇÍÇÃèàóùÇÕÇ±Ç±Ç…èëÇ≠
         isAbnormality = true;
+    }
+
+    public override void Release(string name)
+    {
+        isAbnormality = false;
+        base.Release(sinnerName);
     }
 }

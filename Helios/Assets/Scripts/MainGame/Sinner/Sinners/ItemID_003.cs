@@ -88,4 +88,8 @@ public class ItemID_003 : Sinner
             announceManager.MakeAnnounce(text);
         }
     }
+    public override void Release(string name)
+    {
+
+    }
 }

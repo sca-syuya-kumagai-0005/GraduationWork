@@ -39,4 +39,13 @@ public class ItemID_002 : Sinner
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
         specifyingDeliveryRoutes.SinnerDebuff[deliveryLineID][sinnerName] = true;
     }
+
+    public override void Release(string name)
+    {
+        for (int i = 0; i < specifyingDeliveryRoutes.SinnerDebuff.Length; i++)
+        {
+            specifyingDeliveryRoutes.SinnerDebuff[i][sinnerName] = false;
+        }
+        base.Release(sinnerName);
+    }
 }

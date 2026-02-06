@@ -47,8 +47,7 @@ public class ItemID_010 : Sinner
         }
         if (timeLine.AbnormalityList.Count > 1)
         {
-            timeLine.RemoveAbnormalityList(sinnerName);
-            announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+            Release(sinnerName);
         }
     }
     public override void AbnormalPhenomenon()
@@ -68,5 +67,12 @@ public class ItemID_010 : Sinner
         }
         //‚»‚ê‚¼‚ê‚Ìˆ—‚Í‚±‚±‚É‘‚­
         timeLine.TimeStateAccess = TimeLine.TimeState.Abnormal;
+    }
+
+    public override void Release(string name)
+    {
+        timeLine.RemoveAbnormalityList(sinnerName);
+        announceManager.MakeAnnounce(sinnerName + "‚ÌˆÙí‚Í‰ğÁ‚³‚ê‚Ü‚µ‚½B");
+        base.Release(sinnerName);
     }
 }
