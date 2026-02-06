@@ -14,6 +14,7 @@ public class ItemID_031 : Sinner
     LastBossCount lastBossCount;
     GameObject beam;
     AudioClip audioClip;
+    Sprite sprite;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,6 +28,9 @@ public class ItemID_031 : Sinner
         LoadQliphothRanpage();
         LoadQliphothCounter();
         LoadBeamObject();
+        //LoadCastleSprite();
+        //transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprite;
+        transform.localScale *= 1.1f;
         effect = effectObjectParent.transform.GetChild(27).gameObject;
 
         progressGraph = GameObject.Find("ProgressGraph").GetComponent<ProgressGraph>();
@@ -169,9 +173,9 @@ public class ItemID_031 : Sinner
                         Instantiate(beam,transform.parent.parent);
                         beamObject.transform.localPosition = beamPos;
                         beamObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, beamRotZ));
+                        audioManager.PlaySE(audioClip);
                     }
                 }
-                audioManager.PlaySE(audioClip);
             }
             if (timer >= timeLimit) isEnd = true;
             yield return null;
@@ -229,6 +233,21 @@ public class ItemID_031 : Sinner
             if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
             {
                 beam = handle.Result;
+            }
+            else
+            {
+                Debug.LogError($"Failed to load sprite at path: {path}");
+            }
+        };
+    }
+    private void LoadCastleSprite()
+    {
+        string path = "031House";
+        Addressables.LoadAssetAsync<Sprite>(path).Completed += handle =>
+        {
+            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            {
+                sprite = handle.Result;
             }
             else
             {
