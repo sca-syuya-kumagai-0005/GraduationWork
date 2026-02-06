@@ -983,7 +983,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
                     dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1095,7 +1095,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
                     dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1212,7 +1212,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
                     dir = ((routesPosition[driverID][i] + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
@@ -1324,7 +1324,7 @@ public class SpecifyingDeliveryRoutes : MonoBehaviour
                     {
                         obj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     }
-                    obj.transform.position += vec / speed[driverID];
+                    obj.transform.position += vec / speed[driverID]*debuffSpeed;
                     dir = ((endPos + map.transform.localPosition) - obj.transform.position).normalized;
                     yield return null;
                 }
