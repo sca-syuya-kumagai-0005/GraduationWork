@@ -27,8 +27,6 @@ public class ItemID_022 : Sinner
 
     private IEnumerator Deth()
     {
-        bool isEnd = false;
-        float t = 0.0f;
         float[] intervals = new float[15]
         {
             0.0f,1.0f,0.9f,0.8f,0.8f,

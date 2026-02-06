@@ -6,7 +6,7 @@ public class ItemID_031 : Sinner
 {
     private SinnerDistribute distribute;
     List<Sinner> allSinners;
-    float timeLimit = 5.0f;
+    float timeLimit;
     float timer;
     int count;
     GameObject qliphothCounter;
@@ -14,6 +14,7 @@ public class ItemID_031 : Sinner
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        timeLimit = 90.0f;
         secureClass = SecureClass.Nulla;
         liskClass = LiskClass.Oblivara;
         probabilitys = new float[8] { 200.0f, 200.0f, 200.0f, 200.0f, 200.0f, 200.0f, 200.0f, 200.0f };

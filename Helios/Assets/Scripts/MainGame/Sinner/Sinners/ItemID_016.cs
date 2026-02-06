@@ -1,10 +1,17 @@
 using UnityEngine;
 public class ItemID_016 : Sinner
 {
-
+    bool inCamera;
+    float timer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        timer = 0.0f;
+        inCamera = false;
+        BoxCollider col =
+        gameObject.AddComponent<BoxCollider>();
+        col.isTrigger = true;
+        Debug.Log(gameObject.name);
         secureClass = SecureClass.Vigil;
         liskClass = LiskClass.Velgra;
         probabilitys = new float[8] { 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 100.0f };
@@ -16,7 +23,10 @@ public class ItemID_016 : Sinner
     // Update is called once per frame
     void Update()
     {
-
+        if (inCamera)
+        {
+            timer += Time.deltaTime;
+        }
     }
     public override void AbnormalPhenomenon()
     {
@@ -24,5 +34,16 @@ public class ItemID_016 : Sinner
         base.AbnormalPhenomenon();
 
         //ÇªÇÍÇºÇÍÇÃèàóùÇÕÇ±Ç±Ç…èëÇ≠
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        inCamera = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        timer = 0.0f;
+        inCamera = false;
     }
 }
