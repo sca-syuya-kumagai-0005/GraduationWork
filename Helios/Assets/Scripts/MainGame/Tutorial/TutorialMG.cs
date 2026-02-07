@@ -285,6 +285,10 @@ public class TutorialMG : MonoBehaviour
         unMask.enabled = false;
         screen.enabled = false; 
         OnStateChanged(prevState, currentState);
+        if(currentState == TutorialState.Click)
+        {
+            tutorialcurrent.enabled = true;
+        }
     }
 
     public void OnStateChanged(TutorialState prev, TutorialState current)
