@@ -3,6 +3,7 @@ using System;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class TutorialMG : MonoBehaviour
 {
@@ -56,6 +57,8 @@ public class TutorialMG : MonoBehaviour
         public bool showCharacter = true;
     }
 
+    //[SerializeField] private 
+    private bool skipCurrentMessage = false;
 
     [SerializeField] private UnmaskScale unmaskScale;
     [SerializeField] private Image tutorialcurrent;
@@ -103,10 +106,14 @@ public class TutorialMG : MonoBehaviour
 
     public void ContinueFromOutside()
     {
-        if (!isWaitingForExternalCall) return;
-
         externalCalled = true;
+
+        // タイピング中 or 待機前でも次へ進める
+        skipCurrentMessage = true;
+        isTyping = false;
+        isClicked = true;
     }
+
 
     void Awake()
     {
@@ -342,11 +349,12 @@ public class TutorialMG : MonoBehaviour
             isTyping = true;
             isClicked = false;
             externalCalled = false;
+            skipCurrentMessage = false;
             bool actionInvoked = false;
 
             foreach (char c in message)
             {
-                if (!isTyping)
+                if (!isTyping || skipCurrentMessage)
                 {
                     tutorialText.text = message;
                     break;
@@ -364,15 +372,17 @@ public class TutorialMG : MonoBehaviour
 
             isTyping = false;
 
-            // デフォルトは Click
+            // 待ちタイプ判定
             WaitType waitType = WaitType.Click;
-
             if (data.waitTypes != null && i < data.waitTypes.Length)
             {
                 waitType = data.waitTypes[i];
             }
 
-            //  待ち方を切り替える
+            // External がもう来てたら待たない
+            if (skipCurrentMessage)
+                continue;
+
             if (waitType == WaitType.External)
             {
                 isWaitingForExternalCall = true;
@@ -389,6 +399,7 @@ public class TutorialMG : MonoBehaviour
 
         EndConversation();
     }
+
 
 
     void TryInvokeStateMessageAction(int messageIndex, ref bool actionInvoked)
@@ -487,10 +498,9 @@ public class TutorialMG : MonoBehaviour
                 break;
 
             case TutorialState.FailureExplanation:
-                ChangeState(TutorialState.DoItAloneIdiot);
-                break;
-            case TutorialState.DoItAloneIdiot:
-                unmaskScale.StartByState(currentState);
+                ChangeState(TutorialState.None);
+                SceneManager.LoadScene("TitleScene");
+                
                 break;
 
             case TutorialState.None:
